@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "Flake for Nixos and Hyprland compositor";
 
   inputs = {
     nixpkgs.url= "github:nixos/nixpkgs/nixos-unstable";
@@ -11,24 +11,23 @@
 
   outputs = { self, nixpkgs, home-manager }:
     let
-      user= "vm";
+      user= "anower";
       system = "x86_64-linux";
       pkgs= import nixpkgs {
         inherit system;
         config.allowUnfree= true;
       };
       lib= nixpkgs.lib;
-    in 
-      {
+    in {
         nixosConfigurations= {
-          anower= lib.nixosSystem {
+          ${user}= lib.nixosSystem {
             inherit system;
             modules = [
               ./configuration.nix
                 home-manager.nixosModules.home-manager {
                   home-manager.useGlobalPkgs= true;
                   home-manager.useUserPackages= true;
-                  home-manager.users.anower= {
+                  home-manager.users.${user}= {
                     imports= [ ./home.nix ];
                   };
                 }
@@ -36,7 +35,7 @@
           };
         };
         homeManagerConfig= {
-          anower= home-manager.lib.homeManagerConfiguration {
+          ${user}= home-manager.lib.homeManagerConfiguration {
             inherit system pkgs;
             username= "anower";
             homeDirectory= "/home/anower";
