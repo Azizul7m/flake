@@ -1,1 +1,8 @@
 * Documentation coming up...
+#+begin_src nix
+{
+    description = "Flake for Nixos and Hyprland compositor";
+    let
+    user = "hello";
+}
+#+end_src
