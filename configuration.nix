@@ -86,17 +86,17 @@ in
         awesome.enable = true; #AwesomeWm
         dwm.enable = true; #Dwm
       };
-      pipewire = {
-        enable = true; #Audio PipeWire
-        audio = {
-          enable = true;
-        };
-        wireplumber = {
-          enable = true;
-        };
-      };
-      plex.enable = true; # midea services daemon
     };
+    pipewire = {
+      enable = true; #Audio PipeWire
+      audio = {
+        enable = true;
+      };
+      wireplumber = {
+        enable = true;
+      };
+    };
+    plex.enable = true; # midea services daemon
     # openssh= {
     #   enable = true;
     # };
