@@ -150,6 +150,7 @@ in
     pkgs.xterm
     pkgs.home-manager
     pkgs.xorg.xrandr
+    pkgs.plex
     firefox
   ];
 
