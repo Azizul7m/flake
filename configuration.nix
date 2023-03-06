@@ -180,8 +180,8 @@ in
   };
 
 
-  #qt5
-  qt5 = {
+  #qt
+  qt = {
     enable = true;
     platformTheme = "gtk2";
     style = "gtk2";
