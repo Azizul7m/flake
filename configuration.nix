@@ -148,9 +148,9 @@ in
     wget
     pkgs.fzf
     pkgs.xterm
+    pkgs.mpv
     pkgs.home-manager
     pkgs.xorg.xrandr
-    pkgs.plex
     firefox
   ];
 
