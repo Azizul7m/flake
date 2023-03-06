@@ -77,15 +77,6 @@ in
       enable = true; #X server
       layout = "us"; #Keybaord layout
       xkbVariant = "";
-      pipewire = {
-        enable = true; #Audio PipeWire
-        audio = {
-          enable = true;
-        };
-        wireplumber = {
-          enable = true;
-        };
-      };
       libinput.enable = true; #Touchpad enable
       exportConfiguration = true;
       displayManager = {
@@ -95,6 +86,16 @@ in
         awesome.enable = true; #AwesomeWm
         dwm.enable = true; #Dwm
       };
+      pipewire = {
+        enable = true; #Audio PipeWire
+        audio = {
+          enable = true;
+        };
+        wireplumber = {
+          enable = true;
+        };
+      };
+      plex.enable = true; # midea services daemon
     };
     # openssh= {
     #   enable = true;
