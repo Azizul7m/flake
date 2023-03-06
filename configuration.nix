@@ -77,6 +77,15 @@ in
       enable = true; #X server
       layout = "us"; #Keybaord layout
       xkbVariant = "";
+      pipewire = {
+        enable = true; #Audio PipeWire
+        audio = {
+          enable = true;
+        };
+        wireplumber = {
+          enable = true;
+        };
+      };
       libinput.enable = true; #Touchpad enable
       exportConfiguration = true;
       displayManager = {
@@ -91,6 +100,7 @@ in
     #   enable = true;
     # };
   };
+
 
   #TTF
   console = {
@@ -154,9 +164,10 @@ in
       ];
     })
   ];
+
+
   # dconf
   programs.dconf.enable = true;
-  programs.sway.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -165,6 +176,18 @@ in
     enable = true;
     enableSSHSupport = true;
   };
+
+
+  #qt5
+  qt5 = {
+    enable = true;
+    platformTheme = "gtk2";
+    style = "gtk2";
+  };
+
+
+  # sway enable
+  programs.sway.enable = true;
 
   #xdg
   xdg = {
