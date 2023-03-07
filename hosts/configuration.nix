@@ -96,6 +96,8 @@ in
         enable = true;
       };
     };
+    #bluetooth
+    blueman.enable = true;
     plex.enable = true; # midea services daemon
     # openssh= {
     #   enable = true;
