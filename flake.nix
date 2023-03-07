@@ -48,23 +48,22 @@
     in
     {
       # Main Host
-      nixosConfigurations =
-        (
-          # NixOS configurations
-          import ./hosts
-            {
-              # Imports ./hosts/default.nix
-              inherit (nixpkgs) lib;
-              inherit inputs nixpkgs home-manager user doom-emacs hyprland; # Also inherit home-manager so it does not need to be defined here.
-            }
-            # home-manager configuration
-            #
-            homeConfigurations = (
-          # Non-NixOS configurations
-          import ./nix {
+      nixosConfigurations = (
+        # NixOS configurations
+        import ./hosts
+          {
+            # Imports ./hosts/default.nix
             inherit (nixpkgs) lib;
-            inherit inputs nixpkgs home-manager nixgl user host;
+            inherit inputs nixpkgs home-manager user doom-emacs hyprland; # Also inherit home-manager so it does not need to be defined here.
           }
-        );
+      );
+      # home-manager configuration
+      homeConfigurations = (
+        # Non-NixOS configurations
+        import ./nix {
+          inherit (nixpkgs) lib;
+          inherit inputs nixpkgs home-manager nixgl user host;
+        }
+      );
     };
 }
