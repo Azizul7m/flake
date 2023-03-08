@@ -58,12 +58,12 @@
           }
       );
       # home-manager configuration
-      homeConfigurations = (
-        # Non-NixOS configurations
-        import ./nix {
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager nixgl user host;
-        }
-      );
+      # homeConfigurations = (
+      #   # Non-NixOS configurations
+      #   import ./nix {
+      #     inherit (nixpkgs) lib;
+      #     inherit inputs nixpkgs home-manager nixgl user host;
+      #   }
+      # );
     };
 }

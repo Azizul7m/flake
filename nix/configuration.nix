@@ -22,16 +22,25 @@ in
     ];
 
   nix = {
+    # Nix Package Manager settings
     settings = {
-      experimental-features = [ "nix-command" "flakes" ]; #Enable flakes
-      auto-optimise-store = true; #Optimise Store
+      auto-optimise-store = true; # Optimise syslinks
     };
+    # Automatic garbage collection
     gc = {
       automatic = true;
-      dates = "weekly"; #Old packages cleanup
-      options = "--delete-older-than 7d";
+      dates = "weekly";
+      options = "--delete-older-than 2d";
     };
+    package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
+    registry.nixpkgs.flake = inputs.nixpkgs;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      keep-outputs          = true
+      keep-derivations      = true
+    '';
   };
+
 
   # Bootloader.
   boot.loader.grub = {
@@ -84,21 +93,24 @@ in
       };
       windowManager = {
         awesome.enable = true; #AwesomeWm
-        dwm.enable = true; #Dwm
       };
     };
+    # Sound
     pipewire = {
-      enable = true; #Audio PipeWire
-      audio = {
+      enable = true;
+      alsa = {
         enable = true;
+        support32Bit = true;
       };
+      pulse.enable = true;
+      jack.enable = true;
       wireplumber = {
         enable = true;
       };
     };
     #bluetooth
     blueman.enable = true;
-    plex.enable = true; # midea services daemon
+    #plex.enable = true; # midea services daemon
     # openssh= {
     #   enable = true;
     # };
@@ -119,8 +131,8 @@ in
   users.users.${user} = {
     isNormalUser = true;
     initialPassword = "password";
-    description = "vm";
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "lp" "mpd" ];
+    shell = pkgs.fish; # Default shell
     packages = with pkgs; [ ];
   };
 
@@ -146,12 +158,15 @@ in
     killall
     usbutils
     pciutils
+    udiskie # Auto Mounting
+    light # Display Brightness
+    ffmpeg # Video Support (dslr)
     alacritty
     wget
-    pkgs.fzf
-    pkgs.xterm
-    pkgs.mpv
-    pkgs.home-manager
+    fzf
+    xterm
+    mpv
+    home-manager
     pkgs.xorg.xrandr
     firefox
   ];
@@ -200,6 +215,19 @@ in
     };
   };
 
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+
+  security.rtkit.enable = true;
+  security.polkit.enable = true;
+
+
+
+  # NixOS settings
+  system = {
+    # Allow auto update (not useful in flakes)
+    autoUpgrade = {
+      enable = true;
+      channel = "https://nixos.org/channels/nixos-unstable";
+    };
+    stateVersion = "22.11";
+  };
 }
