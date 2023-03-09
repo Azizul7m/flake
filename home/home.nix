@@ -1,4 +1,4 @@
-{ config, pkgs, user, host, ... }:
+{ config, pkgs, user, ... }:
 
 {
   targets.genericLinux.enable = true;
