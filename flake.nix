@@ -25,10 +25,6 @@
             ./nix/configuration.nix
             home-manager.nixosModules.home-manager
             {
-              inherit user pkgs;
-              username = user;
-              homeDirectory = "/home/${user}";
-              stateVersion = "22.11";
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${user} = {
@@ -37,6 +33,18 @@
             }
           ];
         };
+      };
+      hmManager = {
+        ${host} = home-manager.lib.homeManagerConfiguration
+          {
+            inherit user pkgs;
+            username = user;
+            homeDirectory = "/home/${user}";
+            stateVersion = "22.11";
+            configuration = {
+              imports = [ ./home/home.nix ];
+            };
+          };
       };
     };
 }
