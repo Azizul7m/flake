@@ -26,6 +26,7 @@ in
   nix = {
     # Nix Package Manager settings
     settings = {
+      experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true; # Optimise syslinks
     };
     # Automatic garbage collection
@@ -35,12 +36,6 @@ in
       options = "--delete-older-than 2d";
     };
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
-    registry.nixpkgs.flake = inputs.nixpkgs;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-      keep-outputs          = true
-      keep-derivations      = true
-    '';
   };
 
 
