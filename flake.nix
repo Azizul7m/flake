@@ -4,8 +4,12 @@
   inputs =
     {
       nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+      home-manager = {
+        url = github:nix-community/home-manager;
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
-  outputs = { self, nixpkgs, nixosConfig, ... }:
+  outputs = { self, nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
       user = "anower";
@@ -17,7 +21,17 @@
       nixosConfigurations = {
         ${host} = lib.nixosSystem {
           inherit system;
-          modules = [ ./nix/configuration.nix ];
+          modules = [
+            ./nix/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${user} = {
+                imports = [ ./home/home.nix ];
+              };
+            }
+          ];
         };
       };
     };
