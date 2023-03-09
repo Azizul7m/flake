@@ -16,6 +16,9 @@
       host = "nix";
       pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
       lib = nixpkgs.lib;
+      homeCfg = import ./home/home.nix {
+        inherit (self) user;
+      };
     in
     {
       nixosConfigurations = {
@@ -27,8 +30,8 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${user} = import ./home/home.nix {
-                inherit (self) user;
+              home-manager.users.${user} = {
+                imports = [ homeCfg ];
               };
             }
           ];
