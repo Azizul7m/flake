@@ -27,24 +27,12 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${user} = {
-                imports = [ ./home/home.nix ];
+              home-manager.users.${user} = import ./home/home.nix {
+                inherit (self) user;
               };
             }
           ];
         };
-      };
-      hmManager = {
-        ${host} = home-manager.lib.homeManagerConfiguration
-          {
-            inherit user pkgs;
-            username = user;
-            homeDirectory = "/home/${user}";
-            stateVersion = "22.11";
-            configuration = {
-              imports = [ ./home/home.nix ];
-            };
-          };
       };
     };
 }
