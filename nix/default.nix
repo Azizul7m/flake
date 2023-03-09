@@ -2,12 +2,12 @@
 { lib, inputs, system, home-manager, user, host, ... }:
 let
   system = "x86_64-linux";                                  # System architecture
-
+  user = "anwoer";
+  host = "nix";
   pkgs = import nixpkgs {
     # inherit system;
     config.allowUnfree = true; # Allow proprietary software
   };
-
   lib = nixpkgs.lib;
 in
 {

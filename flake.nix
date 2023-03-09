@@ -4,7 +4,7 @@
     {
       nixpkgs = "nixpkgs/nixos-unstable";
     };
-  outputs = { self, nixpkgs, ... }:
+  outputs = { self, nixpkgs, nixosConfig, ... }:
     let
       user = "anower";
       host = "nix";

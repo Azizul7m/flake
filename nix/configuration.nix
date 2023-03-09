@@ -11,7 +11,9 @@
 { config, lib, pkgs, modudlesPath, ... }:
 
 let
-  user = "anower"; #define username
+  # user = "anower"; #define username
+  # Comes form flake.nix file;
+  user = (import <nixos-config>).user;
 in
 
 {
@@ -78,6 +80,32 @@ in
     LC_TIME = "bn_BD";
   };
 
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.${user} = {
+    isNormalUser = true;
+    initialPassword = "password";
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "lp" "mpd" ];
+    shell = pkgs.fish; # Default shell
+    packages = with pkgs; [ ];
+  };
+
+  security = {
+    sudo.wheelNeedsPassword = false;
+  };
+
+
+  #TTF
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "us";
+  };
+
+  #sound
+  sound.enable = true;
+  # hardware.pulseaudio.enable= true;
+
+
   # Configure keymap in X11
   # Services xserver, displayManager, windowManager, OpenSSH
   # List services that you want to enable:
@@ -117,28 +145,6 @@ in
   };
 
 
-  #TTF
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "us";
-  };
-
-  #sound
-  sound.enable = true;
-  # hardware.pulseaudio.enable= true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${user} = {
-    isNormalUser = true;
-    initialPassword = "password";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "lp" "mpd" ];
-    shell = pkgs.fish; # Default shell
-    packages = with pkgs; [ ];
-  };
-
-  security = {
-    sudo.wheelNeedsPassword = false;
-  };
 
   environment = {
     variables = {
