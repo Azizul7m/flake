@@ -27,7 +27,6 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = { inherit user; };
                 users.${user} = {
                   imports = [
                     (import ./home/home.nix)

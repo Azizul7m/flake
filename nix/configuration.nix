@@ -161,15 +161,10 @@ in
     pciutils
     udiskie # Auto Mounting
     light # Display Brightness
-    ffmpeg # Video Support (dslr)
     alacritty
     wget
     fzf
     xterm
-    mpv
-    home-manager
-    pkgs.xorg.xrandr
-    firefox
   ];
 
   fonts.fonts = with pkgs; [
