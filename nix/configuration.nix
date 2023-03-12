@@ -171,7 +171,6 @@ in
     jetbrains-mono
     dejavu_fonts
     iosevka
-    noto-fonts
     font-awesome
     (nerdfonts.override {
       fonts = [
