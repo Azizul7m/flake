@@ -21,16 +21,16 @@
       nixosConfigurations = {
         ${host} = lib.nixosSystem {
           inherit system;
-          modules = [ ./nix/configuration.nix ] ++ [
-            home-manager.nixosModules.home-manager
+          modules = [
+            ./nix/configuration.nix
+          ] ++ [
+            home-manager.nixoxModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.${user} = {
-                  imports = [
-                    (import ./home/home.nix)
-                  ];
+                  imports = [ ./home/home.nix ];
                 };
               };
             }

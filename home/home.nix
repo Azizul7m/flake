@@ -1,7 +1,12 @@
 { config, pkgs, user, ... }:
 {
   home = {
-    extraSpecialArgs = { inherit user; };
+    specialArgs = {
+      inherit inputs user host;
+      host = {
+        hostName = "${host}";
+      };
+    };
     stateVersion = "22.11";
     homeDirectory = "/home/${user}";
     username = "${user}";
