@@ -2,10 +2,7 @@
 {
   home = {
     specialArgs = {
-      inherit inputs user host;
-      host = {
-        hostName = "${host}";
-      };
+      inherit user host;
     };
     stateVersion = "22.11";
     homeDirectory = "/home/${user}";
