@@ -11,9 +11,9 @@
 { config, lib, pkgs, modudlesPath, ... }:
 
 let
-  # user = "anower"; #define username
+  user = "anower"; #define username
   # Comes form flake.nix file;
-  user = (import <nixos-config>).user;
+  # user = (import <nixos-config>).user;
 in
 
 {
