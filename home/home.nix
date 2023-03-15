@@ -3,7 +3,7 @@
   home = {
     stateVersion = "22.11";
     homeDirectory = "/home/${user}";
-    username = "${user}";
+    username = user;
     packages = with pkgs; [
       btop
       neovim
@@ -33,8 +33,8 @@
       package = pkgs.papirus-icon-theme;
     };
     font = {
-      #name = "JetBrains Mono Medium";
-      name = "FiraCode Nerd Font Mono Medium";
+      name = "JetBrains Mono Medium";
+      #name = "FiraCode Nerd Font Mono Medium";
     }; # Cursor is declared under home.pointerCursor
   };
   fonts.fontconfig.enable = true;
