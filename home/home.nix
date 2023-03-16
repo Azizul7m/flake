@@ -11,9 +11,6 @@
       ripgrep
       fd
       dmenu
-      arandr
-      font-awesome
-      nitrogen
       picom
     ];
   };

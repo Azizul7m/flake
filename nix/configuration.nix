@@ -22,7 +22,6 @@ in
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
-
   nix = {
     # Nix Package Manager settings
     settings = {
@@ -37,8 +36,6 @@ in
     };
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
   };
-
-
   # Bootloader.
   boot.loader.grub = {
     enable = true;
@@ -46,7 +43,6 @@ in
     useOSProber = true;
     configurationLimit = 2;
   };
-
   #Enable networking
   networking = {
     networkmanager.enable = true;
@@ -57,10 +53,8 @@ in
     #firewall.allowedUDPPorts = [ ... ];
     #firewall.enable = false;  # Or disable the firewall altogether.
   };
-
   # Set your time zone.
   time.timeZone = "Asia/Dhaka";
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -74,8 +68,6 @@ in
     LC_TELEPHONE = "bn_BD";
     LC_TIME = "bn_BD";
   };
-
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
@@ -98,7 +90,6 @@ in
 
   #sound
   sound.enable = true;
-  # hardware.pulseaudio.enable= true;
 
 
   # Configure keymap in X11
@@ -139,8 +130,6 @@ in
     # };
   };
 
-
-
   environment = {
     variables = {
       TERMINAL = "alacritty";
@@ -161,10 +150,31 @@ in
     pciutils
     udiskie # Auto Mounting
     light # Display Brightness
-    alacritty
     wget
     fzf
     xterm
+    neovim
+    wget
+    neofetch
+    exa
+    gcc
+    clang
+    zig
+    atool
+    ranger
+    ffmpeg
+    ffmpegthumbnailer
+    glib
+    xdg-utils
+    pciutils
+    gdb
+    killall
+    socat
+    zip
+    unzip
+    rar
+    frp
+    sops
   ];
 
   fonts.fonts = with pkgs; [
@@ -192,7 +202,6 @@ in
   };
 
 
-  #qt
   qt = {
     enable = true;
     platformTheme = "gtk2";

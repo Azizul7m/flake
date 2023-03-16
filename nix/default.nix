@@ -1,14 +1,14 @@
 # arg
 { lib, inputs, system, home-manager, user, host, ... }:
 let
-  system = "x86_64-linux";                                  # System architecture
-  user = "anwoer";
-  host = "nix";
+  # system = "x86_64-linux";                                  # System architecture
+  # user = "anower";
+  # host = "nix";
   pkgs = import nixpkgs {
     # inherit system;
     config.allowUnfree = true; # Allow proprietary software
   };
-  lib = nixpkgs.lib;
+  # lib = nixpkgs.lib;
 in
 {
   ${host} = lib.nixosSystem {
@@ -21,7 +21,7 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.users.${user} = {
-          imports = [ /home/${user}/.config/nixpkgs/home.nix ];
+          imports = [ ../home/home.nix ];
         };
       }
     ];
