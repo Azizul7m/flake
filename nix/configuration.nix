@@ -178,15 +178,8 @@ in
   ];
 
   fonts.fonts = with pkgs; [
-    jetbrains-mono
     dejavu_fonts
     iosevka
-    font-awesome
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-      ];
-    })
   ];
 
 
