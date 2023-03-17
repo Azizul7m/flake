@@ -1,6 +1,6 @@
 { config, pkgs, user, ... }:
 let
-  user = user;
+  user = "anower";
 in
 {
   home = {
@@ -15,6 +15,7 @@ in
       fd
       dmenu
       picom
+      font-awesome
     ];
   };
   programs = {

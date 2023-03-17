@@ -178,8 +178,8 @@
   ];
 
   fonts.fonts = with pkgs; [
-    dejavu_fonts
     iosevka
+    jetbrains-mono
   ];
 
 
