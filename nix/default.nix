@@ -1,15 +1,15 @@
-{ lib, inputs, nixpkgs, home-manager, nur, user, ... }:
+{ lib, inputs, nixpkgs, home-manager, user, ... }:
 let
-  inherit system pkgs;
+  system = "x86_64-linux";
 in
 {
-  desktop = lib.nixosSystem {
+  ${host} = lib.nixosSystem {
     inherit system;
     specialArgs = {
       inherit inputs user;
     };
+    modules = [
+      ./configuration.nix
+    ];
   };
-  modules = [
-    ./configuration.nix
-  ];
 }
