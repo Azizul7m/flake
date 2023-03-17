@@ -9,7 +9,22 @@ in
       inherit inputs user;
     };
     modules = [
+      #nix core config
       ./configuration.nix
+      #nix home-manager config inside nix modules
+      home-manager.nixosModules.home-manager
+      {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          extraSpecialArgs = {
+            inherit user host;
+          };
+          users.${user} = {
+            imports = [ ../home/home.nix ];
+          };
+        };
+      }
     ];
   };
 }
