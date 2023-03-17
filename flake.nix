@@ -19,7 +19,13 @@
     in
     {
       nixosConfigurations = (
-        import ./nix { inherit lib nixpkgs self inputs host user; }
+        # NixOS configurations
+        import ./nix {
+          # Imports ./nix/default.nix
+          inherit (nixpkgs) lib;
+          inherit inputs nixpkgs home-manager user host system pkgs; # Also inherit home-manager so it does not need to be defined here.
+        }
       );
+
     };
 }
