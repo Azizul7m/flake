@@ -19,7 +19,7 @@
     in
     {
       nixosConfigurations = (
-        import ./nix { inherit nixpkgs self inputs host user; }
+        import ./nix { inherit lib nixpkgs self inputs host user; }
       );
     };
 }

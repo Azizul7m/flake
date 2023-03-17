@@ -1,7 +1,4 @@
 { config, pkgs, user, ... }:
-let
-  user = "anower";
-in
 {
   home = {
     stateVersion = "22.11";
