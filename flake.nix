@@ -13,7 +13,7 @@
     let
       system = "x86_64-linux";
       user = "anower";
-      host = "nix";
+      host = "nixos";
       pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
       lib = nixpkgs.lib;
     in
@@ -26,6 +26,5 @@
           inherit inputs nixpkgs home-manager user host system pkgs; # Also inherit home-manager so it does not need to be defined here.
         }
       );
-
     };
 }
