@@ -8,13 +8,13 @@
 #   }
 # }
 
-{ config, lib, pkgs, modudlesPath, ... }:
+{ config, lib, pkgs, modudlesPath, inputs, user, ... }:
 
-let
-  user = "anower"; #define username
-  # Comes form flake.nix file;
-  # user = (import <nixos-config>).user;
-in
+# let
+#   user = "anower"; #define username
+#   # Comes form flake.nix file;
+#   # user = (import <nixos-config>).user;
+# in
 
 {
   imports =
@@ -194,12 +194,6 @@ in
     enableSSHSupport = true;
   };
 
-
-  qt = {
-    enable = true;
-    platformTheme = "gtk2";
-    style = "gtk2";
-  };
 
 
   # sway enable

@@ -1,5 +1,5 @@
 # arg
-{ lib, inputs, system, home-manager, user, host, ... }:
+{ lib, inputs, system, home-manager, nixpkgs, user, host, ... }:
 let
   # system = "x86_64-linux";                                  # System architecture
   # user = "anower";

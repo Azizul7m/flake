@@ -1,4 +1,7 @@
 { config, pkgs, user, ... }:
+let
+  user = user;
+in
 {
   home = {
     stateVersion = "22.11";
