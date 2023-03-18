@@ -153,21 +153,11 @@
     wget
     fzf
     xterm
-    neovim
     wget
-    neofetch
-    exa
-    gcc
-    clang
-    zig
     atool
-    ranger
     ffmpeg
     ffmpegthumbnailer
-    glib
     xdg-utils
-    pciutils
-    gdb
     killall
     socat
     zip
@@ -179,7 +169,16 @@
 
   fonts.fonts = with pkgs; [
     iosevka
+    source-code-pro
     jetbrains-mono
+    font-awesome # Icons
+    corefonts # MS
+    (nerdfonts.override {
+      # Nerdfont Icons override
+      fonts = [
+        "FiraCode"
+      ];
+    })
   ];
 
 
