@@ -130,6 +130,12 @@
     fish.enable = true;
     rofi.enable = true;
     hyprland.enable = true;
+    doom-emacs = {
+      # Directory containing your config.el, init.el
+      enable = true;
+      # and packages.el files
+      doomPrivateDir = ../modules/doom-emacs/.doom.d;
+    };
   };
   #Themes
   gtk = {
