@@ -129,6 +129,7 @@
     home-manager.enable = true;
     fish.enable = true;
     rofi.enable = true;
+    hyprland.enable = true;
   };
   #Themes
   gtk = {

@@ -8,8 +8,20 @@
         url = github:nix-community/home-manager;
         inputs.nixpkgs.follows = "nixpkgs";
       };
+
+      # OpenGL
+      nixgl = {
+        url = "github:guibou/nixGL";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      # Official Hyprland flake
+      hyprland = {
+        url = "github:vaxerski/Hyprland"; # Add "hyprland.nixosModules.default" to the host modules
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
-  outputs = { self, nixpkgs, home-manager, ... }@ inputs:
+  outputs = { self, nixpkgs, home-manager, hyprland, nixgl, ... }@ inputs:
     let
       system = "x86_64-linux";
       user = "anower";
@@ -23,7 +35,7 @@
         import ./nix {
           # Imports ./nix/default.nix
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager user host system pkgs; # Also inherit home-manager so it does not need to be defined here.
+          inherit inputs nixpkgs home-manager user host system pkgs hyprland nixgl; # Also inherit home-manager so it does not need to be defined here.
         }
       );
     };
