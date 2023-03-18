@@ -8,8 +8,33 @@
         url = github:nix-community/home-manager;
         inputs.nixpkgs.follows = "nixpkgs";
       };
+
+      # OpenGL
+      nixgl = {
+        url = "github:guibou/nixGL";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      emacs-overlay = {
+        # Emacs Overlays
+        url = "github:nix-community/emacs-overlay";
+        flake = false;
+      };
+
+      doom-emacs = {
+        # Nix-community Doom Emacs
+        url = "github:nix-community/nix-doom-emacs";
+        inputs.nixpkgs.follows = "nixpkgs";
+        inputs.emacs-overlay.follows = "emacs-overlay";
+      };
+
+      # Official Hyprland flake
+      hyprland = {
+        url = "github:vaxerski/Hyprland"; # Add "hyprland.nixosModules.default" to the host modules
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
-  outputs = { self, nixpkgs, home-manager, ... }@ inputs:
+  outputs = { self, nixpkgs, home-manager, hyprland, nixgl, emacs-overlay, doom-emacs, ... }@ inputs:
     let
       system = "x86_64-linux";
       user = "anower";
@@ -23,7 +48,7 @@
         import ./nix {
           # Imports ./nix/default.nix
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager user host system pkgs; # Also inherit home-manager so it does not need to be defined here.
+          inherit inputs nixpkgs home-manager user host system pkgs hyprland nixgl emacs-overlay doom-emacs; # Also inherit home-manager so it does not need to be defined here.
         }
       );
     };
