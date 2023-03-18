@@ -9,11 +9,6 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
-      # OpenGL
-      nixgl = {
-        url = "github:guibou/nixGL";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
 
       emacs-overlay = {
         # Emacs Overlays
@@ -34,7 +29,7 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
     };
-  outputs = { self, nixpkgs, home-manager, hyprland, nixgl, emacs-overlay, doom-emacs, ... }@ inputs:
+  outputs = { self, nixpkgs, home-manager, hyprland, emacs-overlay, doom-emacs, ... }@ inputs:
     let
       system = "x86_64-linux";
       user = "anower";
@@ -48,7 +43,7 @@
         import ./nix {
           # Imports ./nix/default.nix
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager user host system pkgs hyprland nixgl emacs-overlay doom-emacs; # Also inherit home-manager so it does not need to be defined here.
+          inherit inputs nixpkgs home-manager user host system pkgs hyprland emacs-overlay doom-emacs; # Also inherit home-manager so it does not need to be defined here.
         }
       );
     };
