@@ -1,4 +1,4 @@
-{ lib, inputs, nixpkgs, home-manager, user, host, ... }:
+{ lib, inputs, nixpkgs, home-manager, user, host, hyprland, ... }:
 let
   system = "x86_64-linux";
 in
@@ -18,7 +18,7 @@ in
           useGlobalPkgs = true;
           useUserPackages = true;
           extraSpecialArgs = {
-            inherit user host;
+            inherit inputs user host nixgl hyprland;
           };
           users.${user} = {
             imports = [ ../home/home.nix ];
