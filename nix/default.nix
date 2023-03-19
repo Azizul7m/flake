@@ -1,4 +1,4 @@
-{ lib, inputs, nixpkgs, home-manager, user, host, hyprland, emacs-overlay, doom-emacs, ... }:
+{ lib, inputs, nixpkgs, home-manager, user, host, hyprland, ... }:
 let
   system = "x86_64-linux";
 in

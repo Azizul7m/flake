@@ -4,23 +4,27 @@
   inputs =
     {
       nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+      nixgl.url = "github:guibou/nixGL";
       home-manager = {
         url = github:nix-community/home-manager;
         inputs.nixpkgs.follows = "nixpkgs";
       };
-
       # Official Hyprland flake
       hyprland = {
         url = "github:vaxerski/Hyprland"; # Add "hyprland.nixosModules.default" to the host modules
         inputs.nixpkgs.follows = "nixpkgs";
       };
     };
-  outputs = { self, nixpkgs, home-manager, hyprland, ... }@ inputs:
+  outputs = { self, nixpkgs, home-manager, nixgl, hyprland, ... }@ inputs:
     let
       system = "x86_64-linux";
       user = "anower";
       host = "nixos";
-      pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [ nixgl.overlay ];
+      };
       lib = nixpkgs.lib;
     in
     {

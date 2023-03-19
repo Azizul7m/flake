@@ -146,6 +146,7 @@
       #name = "FiraCode Nerd Font Mono Medium";
     }; # Cursor is declared under home.pointerCursor
   };
+  wayland.homeManager.hyprland.enable = true;
   fonts.fontconfig.enable = true;
   targets.genericLinux.enable = true;
 }

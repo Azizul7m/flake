@@ -195,9 +195,6 @@
 
 
 
-  # Hyprland enable
-  programs.hyprland.enable = true;
-
   #xdg
   xdg = {
     portal = {
