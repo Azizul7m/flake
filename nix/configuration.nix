@@ -195,8 +195,8 @@
 
 
 
-  # sway enable
-  programs.sway.enable = true;
+  # Hyprland enable
+  programs.hyprland.enable = true;
 
   #xdg
   xdg = {

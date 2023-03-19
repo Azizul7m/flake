@@ -18,7 +18,7 @@ in
           useGlobalPkgs = true;
           useUserPackages = true;
           extraSpecialArgs = {
-            inherit inputs user host hyprland emacs-overlay doom-emacs;
+            inherit inputs user host hyprland;
           };
           users.${user} = {
             imports = [ ../home/home.nix ];
