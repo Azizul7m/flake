@@ -96,6 +96,7 @@
   # Services xserver, displayManager, windowManager, OpenSSH
   # List services that you want to enable:
   services = {
+    lorri.enable = true; # lorri is a nix-shell replacement for project development
     xserver = {
       enable = true; #X server
       layout = "us"; #Keybaord layout
@@ -106,7 +107,14 @@
         sddm.enable = true; #SDDM
       };
       windowManager = {
-        awesome.enable = true; #AwesomeWm
+        awesome =
+          {
+            enable = true; #AwesomeWm
+            luaModules = with pkgs.luaPackages; [
+              luarocks # is the package manager for Lua modules
+              luadbi-mysql # Database abstraction layer
+            ];
+          };
       };
     };
     # Sound
