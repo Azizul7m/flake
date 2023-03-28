@@ -37,12 +37,10 @@
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
   };
   # Bootloader.
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/vda";
-    useOSProber = true;
-    configurationLimit = 2;
-  };
+boot.loader.systemd-boot.enable=true;
+boot.loader.efi.canTouchEfiVariables=true;
+boot.loader.efi.efiSysMountPoint= "/boot/efi";
+boot.supportedFilesystems = [ "ntfs" ];
   #Enable networking
   networking = {
     networkmanager.enable = true;
@@ -96,6 +94,7 @@
   # Services xserver, displayManager, windowManager, OpenSSH
   # List services that you want to enable:
   services = {
+    syncthing.enable = true;
     lorri.enable = true; # lorri is a nix-shell replacement for project development
     xserver = {
       enable = true; #X server
@@ -144,8 +143,8 @@
       EDITOR = "vim";
       VISUAL = "nvim";
     };
+    sessionVariables.NIXOS_OZONE_WL = "1";
   };
-
 
 
   # Allow unfree packages
@@ -155,6 +154,7 @@
   environment.systemPackages = with pkgs; [
     git
     vim
+    w3m
     killall
     usbutils
     pciutils
@@ -163,7 +163,6 @@
     wget
     fzf
     xterm
-    wget
     atool
     ffmpeg
     ffmpegthumbnailer
@@ -173,28 +172,48 @@
     zip
     unzip
     rar
+    rsync # Syncer - $ rsync -r dir1/ dir2/
     frp
     sops
+    fd
+    bat
+    ripgrep
+    bash
+    zsh
   ];
 
-  fonts.fonts = with pkgs; [
-    iosevka
-    source-code-pro
-    jetbrains-mono
-    font-awesome # Icons
-    corefonts # MS
-    (nerdfonts.override {
-      # Nerdfont Icons override
-      fonts = [
-        "FiraCode"
-      ];
-    })
-  ];
+  fonts= {
+    fontDir.enable = true;
+    enableDefaultFonts = true;
+    fonts = with pkgs; [
+      iosevka
+      ubuntu_font_family
+      jetbrains-mono
+      font-awesome # Icons
+      fantasque-sans-mono
+      corefonts # MS
+      (nerdfonts.override {
+        # Nerdfont Icons override
+        fonts = [
+          "FiraCode"
+        ];
+      })
+    ];
+    fontconfig = {
+      defaultFonts = {
+        serif = [ "Ubuntu" ];
+        sansSerif = [  "Ubuntu" ];
+        monospace = [ "UbuntuMono" ];
+      };
+    };
+  };
 
 
   # dconf
   programs.dconf.enable = true;
-
+  programs.fish = {
+    enable = true;
+  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
@@ -204,6 +223,7 @@
   };
 
 
+  
 
   #xdg
   xdg = {
@@ -226,5 +246,16 @@
       channel = "https://nixos.org/channels/nixos-unstable";
     };
     stateVersion = "22.11";
+  };
+  hardware= {
+    opengl= {
+      enable=true;
+      extraPackages = with pkgs; [
+        # intel-media-driver
+        vaapiIntel
+        intel-ocl
+        mesa-demos
+      ];
+    };
   };
 }

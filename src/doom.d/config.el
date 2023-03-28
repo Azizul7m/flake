@@ -1,5 +1,4 @@
 ;;;
-;;;
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
@@ -23,7 +22,7 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 
-(setq doom-font (font-spec :family "Iosevka Nerd Font" :size 14 :weight 'Regular)
+(setq doom-font (font-spec :family "Iosevka" :size 14 :weight 'Regular)
      doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 12))
 
 ;; JetBrains Mono
@@ -116,11 +115,13 @@
 (setq gc-cons-threshold (* 1024 1024 100))
 
 (after! company
-  (setq company-idle-delay 0)
+  (setq company-idle-delay 0.5)
   (add-hook 'after-init-hook 'global-company-mode)
   (setq company-minimum-prefix-length 0)
   (setq company-show-quick-access t)
   (setq company-tooltip-align-annotations t)
+  (setq company-dabbrev-downcase nil)
+  (setq company-dabbrev-ignore-case t)
   (setq +lsp-company-backends '(  company-capf  :separate company-yasnippet :separate company-files  :separate company-dabbrev :separate company-wordfreq))
   (setq  company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend))
 )
@@ -128,8 +129,8 @@
   :ensure t
   :commands company-lsp
   :custom
-  (company-lsp-cache-candidates 'auto))
-(global-set-key (kbd "M-/") #'company-complete)
+  (company-lsp-cache-candidate 'auto))
+;; (global-set-key (kbd "M-.") #'company-complete)
 
 
 (use-package all-the-icons-ivy-rich
@@ -172,7 +173,7 @@
 
 
 ;; codium
-(use-package! codeium)
+;;(use-package! codeium)
 
 ;; Latex
 (setq +latex-viewers 'nil)

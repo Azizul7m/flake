@@ -29,7 +29,6 @@
 
 ;;Ob
 (package!  ob-typescript)
-(package!  ob-deno)
 (package! ob-mermaid)
 
 ;;dotnet
@@ -67,7 +66,7 @@
 
 
 ;; copilot alternative
-(straight-use-package '(codeium :type git :host github :repo "Exafunction/codeium.el"))
+;; (straight-use-package '(codeium :type git :host github :repo "Exafunction/codeium.el"))
 
 
 ;; If you'd like to disable a package included with Doom, you can do so here
@@ -96,4 +95,4 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
-(unpin! org-roam company-org-roam)
+(unpin! org-roam )

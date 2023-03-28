@@ -5,33 +5,60 @@
 
 {
   imports =
-    [
-      (modulesPath + "/profiles/qemu-guest.nix")
+    [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
+  boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    {
-      device = "/dev/disk/by-label/nix";
+    { device = "/dev/disk/by-uuid/94feb2a2-6d26-4b59-b41b-14487e828994";
       fsType = "ext4";
     };
 
+  fileSystems."/boot/efi" =
+    { device = "/dev/disk/by-uuid/16CA-AB70";
+      fsType = "vfat";
+    };
+
+
   swapDevices =
-    [{ device = "/dev/disk/by-label/SWAP"; }];
+    [ { device = "/dev/disk/by-uuid/fefcb344-eb5f-474a-a484-9b5c0f0fc171"; } ];
+
+
+#HDD
+  fileSystems."/home/anower/Soft" = {
+    device = "/dev/disk/by-label/Soft_Tuto"; # Replace "sdX" with the name of your NTFS-formatted disk
+    fsType = "ntfs-3g";
+    options = [ "defaults" "uid=1000,gid=1000" ];
+  };
+
+
+  fileSystems."/home/anower/Projects" = {
+    device = "/dev/disk/by-label/Projects"; # Replace "sdX" with the name of your NTFS-formatted disk
+    fsType = "ntfs-3g";
+    options = [ "defaults" "uid=1000,gid=1000" ];
+  };
+
+
+  fileSystems."/home/anower/Entertainment" = {
+    device = "/dev/disk/by-label/Entertainment"; # Replace "sdX" with the name of your NTFS-formatted disk
+    fsType = "ntfs-3g";
+    options = [ "defaults" "uid=1000,gid=1000" ];
+  };
+
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
-
+  # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth.enable= true;
 }

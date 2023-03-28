@@ -1,5 +1,9 @@
 { config, pkgs, user, ... }:
 {
+  imports =
+    (import ../modules/programs) ++
+    ( import ../modules/services );
+
   home = {
     stateVersion = "22.11";
     homeDirectory = "/home/${user}";
@@ -9,78 +13,62 @@
 
       # General home-manager
       alacritty # Terminal Emulator
-      #dunst            # Notifications
-      #doom emacs       # Text Editor
-      #libnotify        # Dependency for Dunst
-      #neovim           # Text Editor
-      #rofi             # Menu
-      #rofi-power-menu  # Power Menu
+      dunst            # Notifications
+      libnotify        # Dependency for Dunst
       #udiskie          # Auto Mounting
-      #vim              # Text Editor
-
 
       # Terminal
-      #btop             # Resource Manager
+      btop             # Resource Manager
       nitch # Minimal fetch
-      #ranger # File Manager
+      ranger # File Manager
       tldr # Helper
-      #neovim
-      #starship
-      #ripgrep
-      #fd
-      #exa
+      neovim
+      starship
+      ripgrep
+      fd
+      exa
+      stow
+      direnv
 
       # Video/Audio
       # feh               # Image Viewer
-      # mpv               # Media Player
-      # pavucontrol       # Audio Control
+      mpv               # Media Player
+      pavucontrol       # Audio Control
       # plex-media-player # Media Player
-      # vlc               # Media Player
+      vlc               # Media Player
       # stremio           # Media Streamer
-
-
+      nitrogen
 
       # Apps
-      # appimage-run      # Runs AppImages on NixOS
-      firefox # Browser
-      # google-chrome     # Browser
+      appimage-run        # Runs AppImages on NixOS
+      firefox             # Browser
+      google-chrome       # Browser
+      gimp                # Photo Editor
+      zathura
       # remmina           # XRDP & VNC Client
 
       # File Management
       #gnome.file-roller # Archive Manager
       pcmanfm # File Manager
-      #rsync # Syncer - $ rsync -r dir1/ dir2/
-      #unzip # Zip Files
-      #unrar # Rar Files
-      #zip # Zip
+      rsync # Syncer - $ rsync -r dir1/ dir2/
 
       # General configuration
-      #git              # Repositories
-      #killall          # Stop Applications
-      #nano             # Text Editor
-      #pciutils         # Computer Utility Info
-      #pipewire         # Sound
-      #usbutils         # USB Utility Info
       #wacomtablet      # Wacom Tablet
-      #wget             # Downloader
-      #zsh              # Shell
-
 
       # Xorg configuration
-      #xclip            # Console Clipboard
-      #xorg.xev         # Input Viewer
+      xclip            # Console Clipboard
+      xorg.xev         # Input Viewer
       #xorg.xkill       # Kill Applications
-      #xorg.xrandr      # Screen Settings
-      #xterm            # Terminal
+      xorg.xrandr      # Screen Settings
 
       # Xorg home-manager
       #flameshot        # Screenshot
-      #picom            # Compositer
+      picom            # Compositer
       #sxhkd            # Shortcuts
 
       # Wayland configuration
       autotiling # Tiling Script
-      #grim             # Image Grabber
+      grim             # Image Grabber
       slurp # Region Selector
       swappy # Screenshot Editor
       swayidle # Idle Management Daemon
@@ -99,11 +87,12 @@
       # Desktop
       #ansible          # Automation
       blueman # Bluetooth
-      #deluge           # Torrents
-      #discord          # Chat
-      #ffmpeg           # Video Support (dslr)
+      linux-wifi-hotspot
+      discord          # Chat
+      tdesktop         # Telegram
+      maestral-gui      # dropbox open source 
       #gmtp             # Mount MTP (GoPro)
-      #gphoto2          # Digital Photography
+      gphoto2          # Digital Photography
       #handbrake        # Encoder
       #heroic           # Game Launcher
       #hugo             # Static Website Builder
@@ -115,20 +104,33 @@
       #simple-scan      # Scanning
       #sshpass          # Ansible dependency
 
+
       # Laptop
-      #cbatticon        # Battery Notifications
-      #libreoffice      # Office Tools
-      #simple-scan      # Scanning
+      simple-scan      # Scanning
+      onlyoffice-bin   # Office Tools
 
       # Flatpak
       #obs-studio       # Recording/Live Streaming
 
+      # Development
+      nodejs
+      python3
     ];
   };
   programs = {
     home-manager.enable = true;
-    fish.enable = true;
-    rofi.enable = true;
+    # rofi.enable = true;
+    vscode = {
+      enable = true;
+      extensions = with pkgs.vscode-extensions; [
+        vscodevim.vim
+        yzhang.markdown-all-in-one
+      ];
+    };
+    doom-emacs={
+      enable= true;
+      doomPrivateDir = ../src/doom.d;
+    };
   };
   #Themes
   gtk = {
@@ -142,11 +144,16 @@
       package = pkgs.papirus-icon-theme;
     };
     font = {
-      name = "JetBrains Mono Medium";
+      name = "Iosevka Medium";
       #name = "FiraCode Nerd Font Mono Medium";
     }; # Cursor is declared under home.pointerCursor
   };
-  wayland.homeManager.hyprland.enable = true;
+  systemd.user.targets.tray = {               # Tray.target can not be found when xsession is not enabled. This fixes the issue.
+    Unit = {
+      Description = "Home Manager System Tray";
+      Requires = [ "graphical-session-pre.target" ];
+    };
+  };
   fonts.fontconfig.enable = true;
   targets.genericLinux.enable = true;
 }

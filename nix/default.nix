@@ -1,4 +1,4 @@
-{ lib, inputs, nixpkgs, home-manager, user, host, hyprland, ... }:
+{ lib, inputs, nixpkgs, home-manager, user, host, hyprland, doom-emacs, ... }:
 let
   system = "x86_64-linux";
 in
@@ -18,10 +18,10 @@ in
           useGlobalPkgs = true;
           useUserPackages = true;
           extraSpecialArgs = {
-            inherit inputs user host hyprland;
+            inherit inputs user host hyprland doom-emacs;
           };
           users.${user} = {
-            imports = [ ../home/home.nix ];
+            imports = [ ../home/home.nix ../modules/programs/rofi.nix   doom-emacs.hmModule ] ;
           };
         };
       }

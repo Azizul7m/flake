@@ -23,7 +23,7 @@
        :completion
        company           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
-       ido               ; the other *other* search engine...
+       ;;ido               ; the other *other* search engine...
        ivy               ; a search engine for love and life
        vertico           ; the search engine of the future
 
@@ -102,7 +102,7 @@
        pdf                 ; pdf enhancements
        ;; prodigy          ; FIXME managing external services & code builders
        rgb                 ; creating color strings
-       taskrunner          ; taskrunner for all your projects
+       ;;taskrunner          ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
        tree-sitter         ; syntax and parsing, sitting in a tree...
