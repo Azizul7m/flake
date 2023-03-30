@@ -21,7 +21,7 @@ in
             inherit inputs user host hyprland doom-emacs;
           };
           users.${user} = {
-            imports = [ ../home/home.nix ../modules/programs/rofi.nix   doom-emacs.hmModule ] ;
+            imports = [ ../home/home.nix doom-emacs.hmModule ];
           };
         };
       }

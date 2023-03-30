@@ -37,10 +37,10 @@
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
   };
   # Bootloader.
-boot.loader.systemd-boot.enable=true;
-boot.loader.efi.canTouchEfiVariables=true;
-boot.loader.efi.efiSysMountPoint= "/boot/efi";
-boot.supportedFilesystems = [ "ntfs" ];
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.supportedFilesystems = [ "ntfs" ];
   #Enable networking
   networking = {
     networkmanager.enable = true;
@@ -104,6 +104,8 @@ boot.supportedFilesystems = [ "ntfs" ];
       exportConfiguration = true;
       displayManager = {
         sddm.enable = true; #SDDM
+        sddm.theme = "maldives";
+        sddm.autoNumlock = true;
       };
       windowManager = {
         awesome =
@@ -116,6 +118,8 @@ boot.supportedFilesystems = [ "ntfs" ];
           };
       };
     };
+
+
     # Sound
     pipewire = {
       enable = true;
@@ -142,6 +146,9 @@ boot.supportedFilesystems = [ "ntfs" ];
       TERMINAL = "alacritty";
       EDITOR = "vim";
       VISUAL = "nvim";
+      QT_QPA_PLATFORMTHEME = "gtk2";
+      QT_STYLE_OVERRIDE = "gtk2";
+      XDG_CURRENT_DESKTOP = "Unity";
     };
     sessionVariables.NIXOS_OZONE_WL = "1";
   };
@@ -180,9 +187,10 @@ boot.supportedFilesystems = [ "ntfs" ];
     ripgrep
     bash
     zsh
+    direnv
   ];
 
-  fonts= {
+  fonts = {
     fontDir.enable = true;
     enableDefaultFonts = true;
     fonts = with pkgs; [
@@ -202,7 +210,7 @@ boot.supportedFilesystems = [ "ntfs" ];
     fontconfig = {
       defaultFonts = {
         serif = [ "Ubuntu" ];
-        sansSerif = [  "Ubuntu" ];
+        sansSerif = [ "Ubuntu" ];
         monospace = [ "UbuntuMono" ];
       };
     };
@@ -223,7 +231,7 @@ boot.supportedFilesystems = [ "ntfs" ];
   };
 
 
-  
+
 
   #xdg
   xdg = {
@@ -247,9 +255,9 @@ boot.supportedFilesystems = [ "ntfs" ];
     };
     stateVersion = "22.11";
   };
-  hardware= {
-    opengl= {
-      enable=true;
+  hardware = {
+    opengl = {
+      enable = true;
       extraPackages = with pkgs; [
         # intel-media-driver
         vaapiIntel

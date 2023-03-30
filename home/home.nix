@@ -2,23 +2,21 @@
 {
   imports =
     (import ../modules/programs) ++
-    ( import ../modules/services );
+    (import ../modules/services);
 
   home = {
     stateVersion = "22.11";
     homeDirectory = "/home/${user}";
     username = user;
     packages = with pkgs; [
-
-
       # General home-manager
       alacritty # Terminal Emulator
-      dunst            # Notifications
-      libnotify        # Dependency for Dunst
+      dunst # Notifications
+      libnotify # Dependency for Dunst
       #udiskie          # Auto Mounting
 
       # Terminal
-      btop             # Resource Manager
+      btop # Resource Manager
       nitch # Minimal fetch
       ranger # File Manager
       tldr # Helper
@@ -29,26 +27,29 @@
       exa
       stow
       direnv
+      htop
+      neofetch
+      #tmux
 
       # Video/Audio
       # feh               # Image Viewer
-      mpv               # Media Player
-      pavucontrol       # Audio Control
+      mpv # Media Player
+      pavucontrol # Audio Control
       # plex-media-player # Media Player
-      vlc               # Media Player
+      vlc # Media Player
       # stremio           # Media Streamer
       nitrogen
 
       # Apps
-      appimage-run        # Runs AppImages on NixOS
-      firefox             # Browser
-      google-chrome       # Browser
-      gimp                # Photo Editor
+      appimage-run # Runs AppImages on NixOS
+      firefox # Browser
+      google-chrome # Browser
+      gimp # Photo Editor
       zathura
       # remmina           # XRDP & VNC Client
 
       # File Management
-      #gnome.file-roller # Archive Manager
+      gnome.file-roller # Archive Manager
       pcmanfm # File Manager
       rsync # Syncer - $ rsync -r dir1/ dir2/
 
@@ -56,19 +57,19 @@
       #wacomtablet      # Wacom Tablet
 
       # Xorg configuration
-      xclip            # Console Clipboard
-      xorg.xev         # Input Viewer
+      xclip # Console Clipboard
+      xorg.xev # Input Viewer
       #xorg.xkill       # Kill Applications
-      xorg.xrandr      # Screen Settings
+      xorg.xrandr # Screen Settings
 
       # Xorg home-manager
       #flameshot        # Screenshot
-      picom            # Compositer
+      picom # Compositer
       #sxhkd            # Shortcuts
 
       # Wayland configuration
       autotiling # Tiling Script
-      grim             # Image Grabber
+      grim # Image Grabber
       slurp # Region Selector
       swappy # Screenshot Editor
       swayidle # Idle Management Daemon
@@ -88,11 +89,11 @@
       #ansible          # Automation
       blueman # Bluetooth
       linux-wifi-hotspot
-      discord          # Chat
-      tdesktop         # Telegram
-      maestral-gui      # dropbox open source 
+      discord # Chat
+      tdesktop # Telegram
+      maestral-gui # dropbox open source
       #gmtp             # Mount MTP (GoPro)
-      gphoto2          # Digital Photography
+      gphoto2 # Digital Photography
       #handbrake        # Encoder
       #heroic           # Game Launcher
       #hugo             # Static Website Builder
@@ -106,9 +107,8 @@
 
 
       # Laptop
-      simple-scan      # Scanning
-      onlyoffice-bin   # Office Tools
-
+      simple-scan # Scanning
+      onlyoffice-bin # Office Tools
       # Flatpak
       #obs-studio       # Recording/Live Streaming
 
@@ -119,18 +119,6 @@
   };
   programs = {
     home-manager.enable = true;
-    # rofi.enable = true;
-    vscode = {
-      enable = true;
-      extensions = with pkgs.vscode-extensions; [
-        vscodevim.vim
-        yzhang.markdown-all-in-one
-      ];
-    };
-    doom-emacs={
-      enable= true;
-      doomPrivateDir = ../src/doom.d;
-    };
   };
   #Themes
   gtk = {
@@ -148,7 +136,8 @@
       #name = "FiraCode Nerd Font Mono Medium";
     }; # Cursor is declared under home.pointerCursor
   };
-  systemd.user.targets.tray = {               # Tray.target can not be found when xsession is not enabled. This fixes the issue.
+  systemd.user.targets.tray = {
+    # Tray.target can not be found when xsession is not enabled. This fixes the issue.
     Unit = {
       Description = "Home Manager System Tray";
       Requires = [ "graphical-session-pre.target" ];
