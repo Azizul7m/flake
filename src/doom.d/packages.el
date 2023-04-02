@@ -42,9 +42,13 @@
 (package! ob-rust)
 
 ;;Lsp
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
 ;; Debug
 (package! dap-mode)
+
+;;snppet
+(package! yasnippet-classic-snippets )
 
 
 ;; To install a package directly from a remote git repo, you must specify a
@@ -95,4 +99,4 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
-(unpin! org-roam )
+(unpin! org-roam  company-org-roam)

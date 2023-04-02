@@ -56,12 +56,18 @@
 
         alias pdf='zathura'
         alias txt='mousepad'
+        alias hotspot='nmcli dev wifi hotspot'
+        alias wpassword='nmcli dev wifi show-password'
 
-        alias cleanup='sudo nix-collect-garbage'
+        alias cleanup='sudo nix-collect-garbage -d'
       '';
       # Add npm path to PATH
       shellInit = ''
-        set -gx PATH /home/${user}/.npm-global/bin $PATH
+        set -gx PATH /home/${user}/.npm-global/bin /home/${user}/.config/hypr/scripts /home/${user}/.local/share/pnpm $PATH
+        # pnpm
+          set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
+          set -gx PATH "$PNPM_HOME" $PATH
+        # pnpm end
       '';
     };
   };

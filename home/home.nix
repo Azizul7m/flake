@@ -32,7 +32,7 @@
       #tmux
 
       # Video/Audio
-      # feh               # Image Viewer
+      feh # Image Viewer
       mpv # Media Player
       pavucontrol # Audio Control
       # plex-media-player # Media Player
@@ -46,6 +46,8 @@
       google-chrome # Browser
       gimp # Photo Editor
       zathura
+      figma-linux
+      wezterm
       # remmina           # XRDP & VNC Client
 
       # File Management
@@ -72,18 +74,17 @@
       grim # Image Grabber
       slurp # Region Selector
       swappy # Screenshot Editor
-      swayidle # Idle Management Daemon
       wev # Input Viewer
       wl-clipboard # Console Clipboard
-      wlr-randr # Screen Settings
-      xwayland # X for Wayland
+      swayimg
+      wofi
+      bemenu
 
       # Wayland home-manager
-      #mpvpaper         # Video Wallpaper
+      mpvpaper # Video Wallpaper
       pamixer # Pulse Audio Mixer
       swaybg # Background
       #swaylock-fancy   # Screen Locker
-      waybar # Bar
 
       # Desktop
       #ansible          # Automation
@@ -92,13 +93,13 @@
       discord # Chat
       tdesktop # Telegram
       maestral-gui # dropbox open source
-      #gmtp             # Mount MTP (GoPro)
+      gmtp # Mount MTP (GoPro)
       gphoto2 # Digital Photography
       #handbrake        # Encoder
       #heroic           # Game Launcher
       #hugo             # Static Website Builder
       #lutris           # Game Launcher
-      #mkvtoolnix       # Matroska Tool
+      mkvtoolnix # Matroska Tool
       #plex-media-player# Media Player
       #prismlauncher    # MC Launcher
       #steam            # Games

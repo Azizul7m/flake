@@ -12,6 +12,7 @@ in
       #nix core config
       ./configuration.nix
       #nix home-manager config inside nix modules
+      hyprland.nixosModules.default
       home-manager.nixosModules.home-manager
       {
         home-manager = {

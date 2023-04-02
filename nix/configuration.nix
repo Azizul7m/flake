@@ -145,12 +145,17 @@
     variables = {
       TERMINAL = "alacritty";
       EDITOR = "vim";
-      VISUAL = "nvim";
-      QT_QPA_PLATFORMTHEME = "gtk2";
-      QT_STYLE_OVERRIDE = "gtk2";
-      XDG_CURRENT_DESKTOP = "Unity";
+      VISUAL = "emacs";
+      XDG_CURRENT_DESKTOP = "sway";
+      QT_QPA_PLATFORMTHEME = "qt5ct";
+      QT_QPA_PLATFORM = "wayland";
+      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+      QT_AUTO_SCREEN_SCALE_FACTOR = "1";
     };
-    sessionVariables.NIXOS_OZONE_WL = "1";
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+      MOZ_ENABLE_WAYLAND = "1";
+    };
   };
 
 
@@ -188,6 +193,14 @@
     bash
     zsh
     direnv
+    ispell
+    #wayland
+    swaybg
+    wlogout
+    waybar
+    wlr-randr # Screen Settings
+    swayidle
+    xwayland # X for Wayland
   ];
 
   fonts = {
@@ -218,20 +231,23 @@
 
 
   # dconf
-  programs.dconf.enable = true;
-  programs.fish = {
-    enable = true;
+  programs = {
+    dconf.enable = true;
+    fish.enable = true;
+    hyprland.enable = true;
+    waybar.enable = true;
+    # Some programs need SUID wrappers, can be configured further or are
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
   };
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
+
+  qt = {
+    style = "gtk2";
+    platformTheme = "qt5ct";
   };
-
-
-
 
   #xdg
   xdg = {
@@ -256,14 +272,14 @@
     stateVersion = "22.11";
   };
   hardware = {
-    opengl = {
-      enable = true;
-      extraPackages = with pkgs; [
-        # intel-media-driver
-        vaapiIntel
-        intel-ocl
-        mesa-demos
-      ];
-    };
+    opengl.enable = true;
+    opengl.driSupport = true;
+    opengl.extraPackages = with pkgs; [
+      intel-media-driver
+      vaapiIntel
+      libvdpau-va-gl
+      vaapiVdpau
+      intel-ocl
+    ];
   };
 }

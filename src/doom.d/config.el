@@ -122,7 +122,13 @@
   (setq company-tooltip-align-annotations t)
   (setq company-dabbrev-downcase nil)
   (setq company-dabbrev-ignore-case t)
-  (setq +lsp-company-backends '(  company-capf  :separate company-yasnippet :separate company-files  :separate company-dabbrev :separate company-wordfreq))
+  (setq +lsp-company-backends '(
+                                company-files          ; files & directory
+                                company-keywords       ; keywords
+                                company-capf
+                                company-yasnippet
+                                :separate company-abbrev company-dabbrev))
+  ;; (setq +lsp-company-backends '(  company-dabbrev :separate company-capf  :separate company-yasnippet :separate company-files :separate company-wordfreq))
   (setq  company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend))
 )
 (use-package company-lsp
@@ -133,8 +139,8 @@
 ;; (global-set-key (kbd "M-.") #'company-complete)
 
 
-(use-package all-the-icons-ivy-rich
-  :init (all-the-icons-ivy-rich-mode 1))
+;; (use-package all-the-icons-ivy-rich
+;;   :init (all-the-icons-ivy-rich-mode 1))
 
 (after! ivy-rich
   :ensure t
@@ -146,34 +152,14 @@
 
 (after! yasnippet
   :config
-  (setq yas-snippet-dirs '("~/.org/snippets"))
+  (setq yas-snippet-dirs
+      '("~/.org/snippets"
+        "~/.emacs.d/snippets"                 ;; personal snippets
+        "~/.doom.d/snippet"
+        ))
   (yas-global-mode 1))
 
 ;;lsp
-(setq lsp-enable-file-watchers nil)
-
-
-;; eglot
-(after! eglot
-  (setq eglot-autoreconnect nil)
-  (setq eglot-server-programs
-        '((html-mode . ("html-languageserver"))
-          (css-mode . ("css-languageserver"))
-          (js-mode . ("typescript-language-server" "--stdio"))
-          (js2-mode . ("typescript-language-server" "--stdio"))
-          (typescript-mode . ("typescript-language-server" "--stdio"))
-          (rjsx-mode . ("typescript-language-server" "--stdio"))
-          (typescript-tsx-mode . ("typescript-language-server" "--stdio"))
-          (jsx-mode . ("typescript-language-server" "--stdio"))
-          (rust-mode . ("rust-analyzer"))
-          (css-mode . ("postcss-languageserver"))
-          (html-mode . ("vscode-html-languageserver-bin")))))
-
-
-
-
-;; codium
-;;(use-package! codeium)
 
 ;; Latex
 (setq +latex-viewers 'nil)
