@@ -48,6 +48,7 @@
       zathura
       figma-linux
       wezterm
+      blueberry # Bluetooth
       # remmina           # XRDP & VNC Client
 
       # File Management
@@ -88,18 +89,14 @@
 
       # Desktop
       #ansible          # Automation
-      blueman # Bluetooth
-      linux-wifi-hotspot
       discord # Chat
       tdesktop # Telegram
-      maestral-gui # dropbox open source
+      dropbox
       gmtp # Mount MTP (GoPro)
-      gphoto2 # Digital Photography
       #handbrake        # Encoder
       #heroic           # Game Launcher
       #hugo             # Static Website Builder
       #lutris           # Game Launcher
-      mkvtoolnix # Matroska Tool
       #plex-media-player# Media Player
       #prismlauncher    # MC Launcher
       #steam            # Games

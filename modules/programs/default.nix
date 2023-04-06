@@ -5,6 +5,5 @@
   ./direnv.nix
   ./doom-emacs.nix
   ./vscode.nix
-  ./qt.nix
   ./waybar.nix
 ]

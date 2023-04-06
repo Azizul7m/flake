@@ -16,14 +16,14 @@ in
       home-manager.nixosModules.home-manager
       {
         home-manager = {
-          useGlobalPkgs = true;
+         useGlobalPkgs = true;
           useUserPackages = true;
           extraSpecialArgs = {
             inherit inputs user host hyprland doom-emacs;
           };
           users.${user} = {
             imports = [ ../home/home.nix doom-emacs.hmModule ];
-          };
+         };
         };
       }
     ];

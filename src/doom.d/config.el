@@ -60,6 +60,8 @@
 (display-time-mode 't)
 (setq doom-themes-treemacs-theme "doom-colors")
 
+(setq max-specpdl-size 10000)
+
 ;; (require 'dashboard)
 (dashboard-setup-startup-hook)
 (use-package dashboard
@@ -132,15 +134,12 @@
   (setq  company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend))
 )
 (use-package company-lsp
-  :ensure t
   :commands company-lsp
   :custom
   (company-lsp-cache-candidate 'auto))
 ;; (global-set-key (kbd "M-.") #'company-complete)
 
 
-;; (use-package all-the-icons-ivy-rich
-;;   :init (all-the-icons-ivy-rich-mode 1))
 
 (after! ivy-rich
   :ensure t
@@ -254,7 +253,7 @@
 :config
 (setq hl-todo-highlight-punctuation ":"
         hl-todo-keyword-faces
-        `(("TODO"     warning bold)
+       `(("TODO"     warning bold)
         ("FIXME"      error bold)
         ("HACK"       font-lock-constant-face bold)
         ("REVIEW"     font-lock-keyword-face bold)

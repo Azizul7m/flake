@@ -16,7 +16,7 @@
 (package! org-noter)
 (package! org-roam-ui)
 (package! company-wordfreq)
-(package! all-the-icons-ivy-rich)
+;;(package! all-the-icons-ivy-rich)
 (package! popup-kill-ring)
 (package! elfeed-goodies)
 (package! counsel-dash)

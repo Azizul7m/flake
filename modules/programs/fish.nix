@@ -23,6 +23,8 @@
         alias la='exa -a --icons'
         alias ll='exa -la --icons'
         alias c= 'clear'
+        alias h= 'htop'
+        alias n= 'neofetch'
 
 
         alias em='emacs -nw'
@@ -48,6 +50,7 @@
         alias pull='git pull origin'
         alias push='git push origin'
         alias gstatus='git status'
+        alias glog='git log'
 
 
         alias tb='nc termbin.com 9999'
@@ -59,6 +62,7 @@
         alias hotspot='nmcli dev wifi hotspot'
         alias wpassword='nmcli dev wifi show-password'
 
+        alias nixosrebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
         alias cleanup='sudo nix-collect-garbage -d'
       '';
       # Add npm path to PATH

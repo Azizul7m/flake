@@ -56,19 +56,20 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "bn_BD";
-    LC_IDENTIFICATION = "bn_BD";
-    LC_MEASUREMENT = "bn_BD";
-    LC_MONETARY = "bn_BD";
-    LC_NAME = "bn_BD";
-    LC_NUMERIC = "bn_BD";
-    LC_PAPER = "bn_BD";
-    LC_TELEPHONE = "bn_BD";
-    LC_TIME = "bn_BD";
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
   };
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
+    description = "ANOWER HOSSAIN";
     initialPassword = "password";
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "lp" "mpd" ];
     shell = pkgs.fish; # Default shell
@@ -94,7 +95,7 @@
   # Services xserver, displayManager, windowManager, OpenSSH
   # List services that you want to enable:
   services = {
-    syncthing.enable = true;
+    #syncthing.enable = true;
     lorri.enable = true; # lorri is a nix-shell replacement for project development
     xserver = {
       enable = true; #X server
@@ -133,12 +134,10 @@
         enable = true;
       };
     };
-    #bluetooth
-    blueman.enable = true;
     #plex.enable = true; # midea services daemon
-    # openssh= {
-    #   enable = true;
-    # };
+    openssh = {
+      enable = true;
+    };
   };
 
   environment = {
@@ -174,6 +173,8 @@
     light # Display Brightness
     wget
     fzf
+    grc
+    rnix-lsp # Nix language server protocol
     xterm
     atool
     ffmpeg
@@ -195,12 +196,12 @@
     direnv
     ispell
     #wayland
-    swaybg
     wlogout
     waybar
     wlr-randr # Screen Settings
     swayidle
     xwayland # X for Wayland
+    wlprop
   ];
 
   fonts = {
@@ -261,6 +262,10 @@
   security.polkit.enable = true;
 
 
+  virtualisation = {
+    waydroid.enable = true;
+    lxd.enable = true;
+  };
 
   # NixOS settings
   system = {
@@ -274,12 +279,5 @@
   hardware = {
     opengl.enable = true;
     opengl.driSupport = true;
-    opengl.extraPackages = with pkgs; [
-      intel-media-driver
-      vaapiIntel
-      libvdpau-va-gl
-      vaapiVdpau
-      intel-ocl
-    ];
   };
 }
