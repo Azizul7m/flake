@@ -189,6 +189,7 @@
     frp
     sops
     fd
+    jq
     bat
     ripgrep
     bash

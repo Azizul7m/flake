@@ -38,6 +38,9 @@
 ;;html css sass
 ;; (package! ac-html-csswatcher)
 
+;; Assambly lang
+(package! mips-mode)
+
 ;;Rust
 (package! ob-rust)
 

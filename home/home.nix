@@ -22,11 +22,8 @@
       tldr # Helper
       neovim
       starship
-      ripgrep
-      fd
       exa
       stow
-      direnv
       htop
       neofetch
       #tmux

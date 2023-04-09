@@ -61,13 +61,15 @@
 (setq doom-themes-treemacs-theme "doom-colors")
 
 (setq max-specpdl-size 10000)
+;; cash memory
+(setq gc-cons-threshold (* 1024 1024 100))
 
 ;; (require 'dashboard)
 (dashboard-setup-startup-hook)
 (use-package dashboard
   :config
   (setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
-  (setq dashboard-startup-banner "~/.doom.d/emacs.png")
+  ;;(setq dashboard-startup-banner "~/.doom.d/emacs.png")
   (setq dashboard-heading-icons t)
   (setq dashboard-set-file-icons t)
   (setq dashboard-set-navigator t)
@@ -113,8 +115,6 @@
       org-journal-date-format "%A, %d/%m/%Y"
       org-journal-file-format "%d-%m-%Y.org")
 
-;; cash memory
-(setq gc-cons-threshold (* 1024 1024 100))
 
 (after! company
   (setq company-idle-delay 0.5)
@@ -154,7 +154,6 @@
   (setq yas-snippet-dirs
       '("~/.org/snippets"
         "~/.emacs.d/snippets"                 ;; personal snippets
-        "~/.doom.d/snippet"
         ))
   (yas-global-mode 1))
 
