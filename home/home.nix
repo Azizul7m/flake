@@ -13,8 +13,6 @@
       alacritty # Terminal Emulator
       dunst # Notifications
       libnotify # Dependency for Dunst
-      #udiskie          # Auto Mounting
-
       # Terminal
       btop # Resource Manager
       nitch # Minimal fetch
@@ -26,8 +24,7 @@
       stow
       htop
       neofetch
-      #tmux
-
+      grc
       # Video/Audio
       feh # Image Viewer
       mpv # Media Player
@@ -45,6 +42,7 @@
       zathura
       figma-linux
       wezterm
+      openbangla-keyboard
       blueberry # Bluetooth
       # remmina           # XRDP & VNC Client
 

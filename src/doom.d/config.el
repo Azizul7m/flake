@@ -32,9 +32,8 @@
 
 (setq doom-modeline-height 8) ; optional
 (custom-set-faces
-        '(mode-line ((t (:family "Fantasque Sans Mono" :height 92))))
+        '(mode-line ((t (:family "Iosevka" :height 92))))
   ;; '(mode-line-active ((t (:family "Fantasque Sans Mono" :height 92)))) ; For 29+
-        '(mode-line-inactive ((t (:family "Fantasque Sans Mono" :height 92))))
 )
 
 ;; (add-hook 'prog-mode-hook (lambda ()
@@ -60,16 +59,18 @@
 (display-time-mode 't)
 (setq doom-themes-treemacs-theme "doom-colors")
 
-(setq max-specpdl-size 10000)
+;;(setq max-specpdl-size 10000)
 ;; cash memory
 (setq gc-cons-threshold (* 1024 1024 100))
+
+
 
 ;; (require 'dashboard)
 (dashboard-setup-startup-hook)
 (use-package dashboard
   :config
-  (setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
-  ;;(setq dashboard-startup-banner "~/.doom.d/emacs.png")
+  ;;(setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
+  (setq dashboard-startup-banner "~/.face")
   (setq dashboard-heading-icons t)
   (setq dashboard-set-file-icons t)
   (setq dashboard-set-navigator t)
@@ -120,18 +121,17 @@
   (setq company-idle-delay 0.5)
   (add-hook 'after-init-hook 'global-company-mode)
   (setq company-minimum-prefix-length 0)
-  (setq company-show-quick-access t)
-  (setq company-tooltip-align-annotations t)
-  (setq company-dabbrev-downcase nil)
-  (setq company-dabbrev-ignore-case t)
+  (setq company-show-quick-access 't)
+  (setq company-tooltip-align-annotations 't)
+  (setq company-dabbrev-downcase 'nil)
+  (setq company-dabbrev-ignore-case 't)
   (setq +lsp-company-backends '(
                                 company-files          ; files & directory
                                 company-keywords       ; keywords
                                 company-capf
                                 company-yasnippet
                                 :separate company-abbrev company-dabbrev))
-  ;; (setq +lsp-company-backends '(  company-dabbrev :separate company-capf  :separate company-yasnippet :separate company-files :separate company-wordfreq))
-  (setq  company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend))
+  ;;(setq  company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend))
 )
 (use-package company-lsp
   :commands company-lsp
@@ -158,6 +158,7 @@
   (yas-global-mode 1))
 
 ;;lsp
+(setq lsp-headerline-breadcrumb-enable 't)
 
 ;; Latex
 (setq +latex-viewers 'nil)
@@ -261,15 +262,3 @@
         ("END"        error bold)
         ("DEPRECATED" font-lock-doc-face bold))))
 
-;; bangla
-(defun remove-quail-show-guidance ()
-  nil)
-(defun remove-quail-completion ()
-  (quail-select-current))
-(defun bn-company-wordfreq ()
-  (interactive)
-  (advice-add 'quail-show-guidance :override #'remove-quail-show-guidance)
-  (advice-add 'quail-completion :override #'remove-quail-completion)
-  (setq ispell-local-dictionary "bengali")
-  (setq-local company-backends '(company-wordfreq))
-  (setq-local company-transformers nil))

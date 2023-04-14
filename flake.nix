@@ -10,20 +10,28 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
       #Emacs
-      emacs-overlay = {                                                     # Emacs Overlays
-        url = "github:nix-community/emacs-overlay";
-        flake = false;
-      };
+      # emacs-overlay = {
+      #   # Emacs Overlays
+      #   url = "github:nix-community/emacs-overlay";
+      #   flake = false;
+      # };
 
-      doom-emacs = {                                                        # Nix-community Doom Emacs
+      doom-emacs = {
+        # Nix-community Doom Emacs
         url = "github:nix-community/nix-doom-emacs";
         inputs.nixpkgs.follows = "nixpkgs";
-        inputs.emacs-overlay.follows = "emacs-overlay";
+        # inputs.emacs-overlay.follows = "emacs-overlay";
+        flake = false;
       };
 
       # Official Hyprland flake
       hyprland = {
         url = "github:vaxerski/Hyprland"; # Add "hyprland.nixosModules.default" to the host modules
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      hyprland-contrib = {
+        url = "github:hyprwm/contrib";
+        # build with your own instance of nixpkgs
         inputs.nixpkgs.follows = "nixpkgs";
       };
     };
@@ -48,7 +56,8 @@
           inherit inputs nixpkgs home-manager user host system pkgs hyprland doom-emacs; # Also inherit home-manager so it does not need to be defined here.
         }
       );
-      homeConfigurations = (                                                # Non-NixOS configurations
+      homeConfigurations = (
+        # Non-NixOS configurations
         import ./nix {
           inherit (nixpkgs) lib;
           inherit inputs nixpkgs home-manager nixgl user host system;

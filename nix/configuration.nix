@@ -87,6 +87,7 @@
     keyMap = "us";
   };
 
+
   #sound
   sound.enable = true;
 
@@ -146,7 +147,7 @@
       EDITOR = "vim";
       VISUAL = "emacs";
       XDG_CURRENT_DESKTOP = "sway";
-      QT_QPA_PLATFORMTHEME = "qt5ct";
+      QT_QPA_PLATFORMTHEME = "gtk2";
       QT_QPA_PLATFORM = "wayland";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       QT_AUTO_SCREEN_SCALE_FACTOR = "1";
@@ -173,12 +174,13 @@
     light # Display Brightness
     wget
     fzf
-    grc
+
     rnix-lsp # Nix language server protocol
     xterm
     atool
     ffmpeg
     ffmpegthumbnailer
+    mate.caja-with-extensions
     xdg-utils
     killall
     socat
@@ -197,12 +199,14 @@
     direnv
     ispell
     #wayland
+
     wlogout
     waybar
     wlr-randr # Screen Settings
     swayidle
     xwayland # X for Wayland
     wlprop
+    cliphist
   ];
 
   fonts = {
@@ -248,7 +252,7 @@
 
   qt = {
     style = "gtk2";
-    platformTheme = "qt5ct";
+    platformTheme = "gtk2";
   };
 
   #xdg

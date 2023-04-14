@@ -48,10 +48,12 @@
         alias clone='git clone'
         alias commit='git commit -m'
         alias pull='git pull origin'
-        alias push='git push origin'
+        alias gpush='git push origin'
         alias gstatus='git status'
         alias glog='git log'
 
+        alias wstop='waydroid session stop || sudo waydroid container stop'
+        alias wui='waydroid show-full-ui'
 
         alias tb='nc termbin.com 9999'
         alias recordterm='asciinema rec'
