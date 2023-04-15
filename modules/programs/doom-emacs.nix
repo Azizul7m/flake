@@ -1,5 +1,4 @@
 { pkgs, ... }: {
-
   programs = {
     doom-emacs = {
       enable = true;

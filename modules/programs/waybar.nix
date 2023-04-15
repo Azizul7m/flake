@@ -27,7 +27,6 @@
             "cpu"
             "memory"
             "temperature"
-            "backlight"
             "battery"
           ];
           battery = {
@@ -63,19 +62,13 @@
             tooltip = false;
           };
           memory = { format = "{}% "; };
-          # network = {
-          #   interval = 1;
-          #   format-ethernet = "⬆{bandwidthUpBits}:⬇{bandwidthDownBits}";
-          #   format-disconnected = "Disconnected ⚠";
-          #   format-alt = "{ifname}: {ipaddr}/{cidr} ";
-          #   format-linked = "{ifname} (No IP) ";
-          #   format-wifi = "{essid} ({signalStrength}%) ";
-          # };
           network = {
-            format-wifi = " {essid}";
-            format-ethernet = " {essid}";
+            #            interval = 1;
+            format-ethernet = "⬆{bandwidthUpBits}:⬇{bandwidthDownBits}";
+            format-disconnected = "Disconnected ⚠";
+            format-alt = "{ifname}: {ipaddr}/{cidr} ";
             format-linked = "{ifname} (No IP) ";
-            format-disconnected = "睊";
+            format-wifi = "{essid} ({signalStrength}%) ";
             tooltip = true;
             tooltip-format = ''
               {ifname}

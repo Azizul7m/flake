@@ -18,10 +18,7 @@
 
 {
   imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+    [ (import ./hardware-configuration.nix) ];
   nix = {
     # Nix Package Manager settings
     settings = {
