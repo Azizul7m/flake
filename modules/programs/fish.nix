@@ -22,9 +22,7 @@
         alias ls='exa --icons'
         alias la='exa -a --icons'
         alias ll='exa -la --icons'
-        alias c= 'clear'
-        alias h= 'htop'
-        alias n= 'neofetch'
+        alias cls= 'clear'
 
 
         alias em='emacs -nw'

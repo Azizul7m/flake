@@ -5,7 +5,7 @@
       enable = true;
       history = {
         size = 10000;
-        path = "/home/${user}/zsh/history";
+        path = "/home/${user}/.zsh/history";
       };
       oh-my-zsh = {
         enable = true;
@@ -23,9 +23,7 @@
         alias ls='exa --icons'
         alias la='exa -a --icons'
         alias ll='exa -la --icons'
-        alias c= 'clear'
-        alias h= 'htop'
-        alias n= 'neofetch'
+        alias cls= 'clear'
 
 
         alias em='emacs -nw'
@@ -58,7 +56,6 @@
 
         alias tb='nc termbin.com 9999'
         alias recordterm='asciinema rec'
-
 
         alias pdf='zathura'
         alias txt='mousepad'

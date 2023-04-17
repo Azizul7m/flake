@@ -56,7 +56,7 @@ in
         horizontal_padding = 2;
         separator_color = "frame";
         startup_notification = true;
-        icon_position = "top-left";
+        icon_position = "center";
         max_icon_size = 40;
         frame_width = 0;
         #frame_color = "#${bg}";

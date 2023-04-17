@@ -42,8 +42,6 @@
       zathura
       figma-linux
       wezterm
-      openbangla-keyboard
-      blueberry # Bluetooth
       # remmina           # XRDP & VNC Client
 
       # File Management
