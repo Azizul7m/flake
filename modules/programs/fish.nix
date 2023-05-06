@@ -72,6 +72,7 @@
           set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
           set -gx PATH "$PNPM_HOME" $PATH
         # pnpm end
+        starship init fish | source
       '';
     };
   };

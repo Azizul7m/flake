@@ -148,12 +148,18 @@
 (use-package popup-kill-ring
   :bind("M-y" . popup-kill-ring))
 
+(use-package! tree-sitter
+  :hook ((rustic-mode python-mode json-mode js-mode js2-mode typescript-mode  sh-mode) . tree-sitter-mode)
+  :config
+  (require 'tree-sitter-langs)
+  (push '(typescript-tsx-mode . typescript) tree-sitter-major-mode-language-alist)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 (after! yasnippet
   :config
   (setq yas-snippet-dirs
       '("~/.org/snippets"
-        "~/.emacs.d/snippets"                 ;; personal snippets
+        ;;"~/.emacs.d/snippets"                 ;; personal snippets
         ))
   (yas-global-mode 1))
 

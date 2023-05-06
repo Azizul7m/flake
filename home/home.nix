@@ -48,7 +48,11 @@
       gnome.file-roller # Archive Manager
       pcmanfm # File Manager
       rsync # Syncer - $ rsync -r dir1/ dir2/
-
+      anydesk
+      # skypeforlinux
+      qbittorrent
+      darktable
+      krita
       # General configuration
       #wacomtablet      # Wacom Tablet
 

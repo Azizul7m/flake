@@ -38,6 +38,9 @@
 ;;html css sass
 ;; (package! ac-html-csswatcher)
 
+(package! tree-sitter)
+(package! tree-sitter-langs)
+
 ;; Assambly lang
 (package! mips-mode)
 

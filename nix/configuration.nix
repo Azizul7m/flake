@@ -29,7 +29,7 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 2d";
+      options = "--delete-older-than 7d";
     };
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
   };
@@ -94,6 +94,7 @@
   services = {
     #syncthing.enable = true;
     lorri.enable = true; # lorri is a nix-shell replacement for project development
+    # plex.enable = true; # media server
     xserver = {
       enable = true; #X server
       layout = "us"; #Keybaord layout
@@ -131,7 +132,6 @@
         enable = true;
       };
     };
-    #plex.enable = true; # midea services daemon
     openssh = {
       enable = true;
     };
