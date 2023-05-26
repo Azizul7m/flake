@@ -111,9 +111,10 @@
 
       # Development
       gcc
+      python3
       nodejs
       rustup
-      python3
+      rust-analyzer
     ];
   };
   programs = {
