@@ -11,6 +11,7 @@
     packages = with pkgs; [
       # General home-manager
       alacritty # Terminal Emulator
+      kitty
       dunst # Notifications
       libnotify # Dependency for Dunst
       # Terminal
@@ -49,7 +50,6 @@
       pcmanfm # File Manager
       rsync # Syncer - $ rsync -r dir1/ dir2/
       anydesk
-      # skypeforlinux
       qbittorrent
       darktable
       krita
@@ -82,7 +82,7 @@
       mpvpaper # Video Wallpaper
       pamixer # Pulse Audio Mixer
       swaybg # Background
-      #swaylock-fancy   # Screen Locker
+      swaylock-fancy   # Screen Locker
 
       # Desktop
       #ansible          # Automation
@@ -109,6 +109,7 @@
 
       # Development
       nodejs
+      rustup
       python3
     ];
   };

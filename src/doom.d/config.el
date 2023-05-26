@@ -196,7 +196,7 @@
 (setq google-translate-default-target-language "bn")    ; Set your target language.
 (setq define-it-output-choice 'view)  ; Output with buffer.
 (global-set-key (kbd "C-c s") 'define-it-at-point)
-(global-set-key (kbd "C-c W") 'define-it)
+(global-set-key (kbd "C-c w") 'define-it)
 
 (setq circe-network-options
       '(("Libera Chat"
@@ -223,30 +223,26 @@
       ))
 
 ;; elfeed
-(setq elfeed-goodies/entry-pane-size 0.5)
-(global-set-key (kbd "C-x w") 'elfeed)
+(setq elfeed-goodies/entry-pane-size 0.7)
+(global-set-key (kbd "C-x W") 'elfeed)
 (setq elfeed-feeds
         '("https://web.dev/feed.xml"
         "https://blog.logrocket.com/feed/"
         "https://planet.emacslife.com/atom.xml"
-        "https://www.brsoftech.com/blog/feed/"
         "https://www.smashingmagazine.com/feed"
         "https://www.sitepoint.com/feed/"
-        "https://tympanus.net/codrops/feed/"
         "https://feeds.dzone.com/webdev"
         "https://css-tricks.com/feed/"
-        "https://blog.codepen.io/feed/"
         "https://webkul.com/blog/feed/"
         "https://feeds.feedburner.com/ProgrammableWeb"
         "https://cssauthor.com/feed/"
         "https://codeconvey.com/feed/"
-        "https://www.inexture.com/feed/"
         "http://javascriptweekly.com/rss"
-        "https://www.echojs.com/rss"
         "https://www.uplogictech.com/blog/feed/"
         "https://wdrl.info/feed"
         "https://developerstroop.com/feed/"
         "https://reactjs.org/feed.xml"
+        "https://www.mikeaparicio.com/feed.xml"
         "http://davidwalsh.name/feed"
         "http://dailynerd.nl/feed/"
         "http://rss1.smashingmagazine.com/feed/"))
