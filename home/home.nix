@@ -83,12 +83,14 @@
       pamixer # Pulse Audio Mixer
       swaybg # Background
       swaylock-fancy   # Screen Locker
+      swaylock   # Screen Locker
 
       # Desktop
       #ansible          # Automation
       discord # Chat
       tdesktop # Telegram
       dropbox
+      skypeforlinux
       gmtp # Mount MTP (GoPro)
       #handbrake        # Encoder
       #heroic           # Game Launcher
@@ -108,6 +110,7 @@
       #obs-studio       # Recording/Live Streaming
 
       # Development
+      gcc
       nodejs
       rustup
       python3
