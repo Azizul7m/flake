@@ -170,13 +170,11 @@
     light # Display Brightness
     wget
     fzf
+    cliphist
 
     rnix-lsp # Nix language server protocol
     xterm
     atool
-    ffmpeg
-    ffmpegthumbnailer
-    mate.caja-with-extensions
     xdg-utils
     killall
     socat
@@ -202,7 +200,6 @@
     swayidle
     xwayland # X for Wayland
     wlprop
-    cliphist
   ];
 
   fonts = {
