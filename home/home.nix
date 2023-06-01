@@ -53,6 +53,7 @@
       qbittorrent
       darktable
       krita
+      #pureref
       # General configuration
       #wacomtablet      # Wacom Tablet
 

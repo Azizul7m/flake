@@ -12,6 +12,8 @@
 
         set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
+        set RUST_BACKTRACE 1
+
         # navigation
         alias ..='cd ..'
         alias ...='cd ../..'
@@ -42,7 +44,7 @@
         alias addup='git add -u'
         alias addall='git add .'
         alias branch='git branch'
-        alias chackout='git chackout'
+        alias checkout='git checkout'
         alias clone='git clone'
         alias commit='git commit -m'
         alias pull='git pull origin'
@@ -67,7 +69,7 @@
       '';
       # Add npm path to PATH
       shellInit = ''
-        set -gx PATH /home/${user}/.npm-global/bin /home/${user}/.config/hypr/scripts /home/${user}/.local/share/pnpm $PATH
+        set -gx PATH /home/${user}/.npm-global/bin /home/${user}/.local/share/bob/nvim-bin /home/${user}/.config/hypr/scripts /home/${user}/.cargo/bin $PATH
         # pnpm
           set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
           set -gx PATH "$PNPM_HOME" $PATH
