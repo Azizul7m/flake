@@ -42,7 +42,6 @@
       gimp # Photo Editor
       zathura
       figma-linux
-      wezterm
       # remmina           # XRDP & VNC Client
 
       # File Management
