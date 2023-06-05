@@ -3,7 +3,7 @@
   # bulding assets
   inputs =
     {
-      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+      nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
       nixgl.url = "github:guibou/nixGL";
       home-manager = {
         url = github:nix-community/home-manager;
