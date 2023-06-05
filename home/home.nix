@@ -5,7 +5,7 @@
     (import ../modules/services);
 
   home = {
-    stateVersion = "22.11";
+    stateVersion = "23.05";
     homeDirectory = "/home/${user}";
     username = user;
     packages = with pkgs; [
@@ -53,6 +53,7 @@
       qbittorrent
       darktable
       krita
+      blender
       #pureref
       # General configuration
       #wacomtablet      # Wacom Tablet
