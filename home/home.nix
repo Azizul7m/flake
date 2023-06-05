@@ -84,8 +84,8 @@
       mpvpaper # Video Wallpaper
       pamixer # Pulse Audio Mixer
       swaybg # Background
-      swaylock-fancy   # Screen Locker
-      swaylock   # Screen Locker
+      swaylock-fancy # Screen Locker
+      swaylock # Screen Locker
 
       # Desktop
       #ansible          # Automation
@@ -109,14 +109,13 @@
       simple-scan # Scanning
       onlyoffice-bin # Office Tools
       # Flatpak
-      #obs-studio       # Recording/Live Streaming
+      # obs-studio # Recording/Live Streaming
 
       # Development
       gcc
       python3
       nodejs
       rustup
-      rust-analyzer
     ];
   };
   programs = {
