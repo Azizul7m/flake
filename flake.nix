@@ -6,7 +6,7 @@
       nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
       nixgl.url = "github:guibou/nixGL";
       home-manager = {
-        url = github:nix-community/home-manager;
+        url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
       nur = {                                                     
@@ -16,8 +16,10 @@
         url = "github:neovim/neovim?dir=contrib";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+
+
     };
-  outputs = { self, nixpkgs, home-manager, nur, nixgl, neovim, ... }@ inputs:
+  outputs = { self, nixpkgs, home-manager, nur, nixgl, neovim,  ... }@ inputs:
     let
       system = "x86_64-linux";
       user = "anower";
@@ -42,7 +44,7 @@
         # Non-NixOS configurations
         import ./nix {
           inherit (pkgs) lib;
-          inherit inputs pkgs home-manager nixgl user host system;
+          inherit inputs pkgs home-manager nixgl user host system ;
         }
       );
     };

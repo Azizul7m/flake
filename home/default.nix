@@ -6,7 +6,7 @@ in
 {
   ${host} = home-manager.lib.homeManagerConfiguration {    # Currently only host that can be built
     inherit pkgs;
-    extraSpecialArgs = { inherit inputs nixgl user; };
+    extraSpecialArgs = { inherit inputs nixgl user ; };
     modules = [
       ./home.nix
       {
@@ -14,7 +14,7 @@ in
           username = "${user}";
           homeDirectory = "/home/${user}";
           packages = [ pkgs.home-manager ];
-          stateVersion = "22.11";
+          stateVersion = "23.05";
         };
       }
     ];
