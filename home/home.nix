@@ -19,7 +19,6 @@
       nitch # Minimal fetch
       ranger # File Manager
       tldr # Helper
-      neovim
       starship
       exa
       stow

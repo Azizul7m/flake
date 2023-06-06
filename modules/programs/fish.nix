@@ -69,7 +69,7 @@
       '';
       # Add npm path to PATH
       shellInit = ''
-        set -gx PATH /home/${user}/.npm-global/bin /home/${user}/.local/share/bob/nvim-bin /home/${user}/.config/hypr/scripts /home/${user}/.cargo/bin $PATH
+        set -gx PATH /home/${user}/.npm-global/bin  /home/${user}/.config/hypr/scripts /home/${user}/.cargo/bin $PATH
         # pnpm
           set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
           set -gx PATH "$PNPM_HOME" $PATH
