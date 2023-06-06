@@ -12,6 +12,7 @@
       # General home-manager
       alacritty # Terminal Emulator
       kitty
+      neovim
       dunst # Notifications
       libnotify # Dependency for Dunst
       # Terminal

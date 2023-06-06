@@ -1,4 +1,4 @@
-{lib, inputs, nixpkgs, system, home-manager, nixgl, user, host, ...}:
+{lib, inputs, pkgs, system, home-manager, nixgl, user, host, ...}:
 
 let
   pkgs = nixpkgs.legacyPackages.${system};

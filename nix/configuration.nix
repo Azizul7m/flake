@@ -165,7 +165,6 @@
     w3m
     killall
     usbutils
-    usbip
     pciutils
     udiskie # Auto Mounting
     light # Display Brightness

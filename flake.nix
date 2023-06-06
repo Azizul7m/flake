@@ -9,8 +9,15 @@
         url = github:nix-community/home-manager;
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      nur = {                                                     
+        url = "github:nix-community/NUR";                
+      };
+      neovim = {
+        url = "github:neovim/neovim?dir=contrib";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
-  outputs = { self, nixpkgs, home-manager, nixgl, ... }@ inputs:
+  outputs = { self, nixpkgs, home-manager, nur, nixgl, neovim, ... }@ inputs:
     let
       system = "x86_64-linux";
       user = "anower";
@@ -18,7 +25,7 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ nixgl.overlay ];
+        overlays = [ nixgl.overlay nur.overlay neovim.overlay];
       };
       lib = nixpkgs.lib;
     in
@@ -34,8 +41,8 @@
       homeConfigurations = (
         # Non-NixOS configurations
         import ./nix {
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager nixgl user host system;
+          inherit (pkgs) lib;
+          inherit inputs pkgs home-manager nixgl user host system;
         }
       );
     };
