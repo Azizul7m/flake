@@ -17,8 +17,9 @@
 # in
 
 {
-  imports =
-    [ (import ./hardware-configuration.nix) ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
   nix = {
     # Nix Package Manager settings
     settings = {
@@ -29,7 +30,7 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 7d";
+      options = "--delete-older-than 3d";
     };
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
   };
@@ -41,12 +42,6 @@
   #Enable networking
   networking = {
     networkmanager.enable = true;
-    #wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-    #proxy.default = "http://user:password@proxy:port/";
-    #proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-    #firewall.allowedTCPPorts = [ ... ]; # Open ports in the firewall.
-    #firewall.allowedUDPPorts = [ ... ];
-    #firewall.enable = false;  # Or disable the firewall altogether.
   };
   # Set your time zone.
   time.timeZone = "Asia/Dhaka";
@@ -67,7 +62,12 @@
     isNormalUser = true;
     description = "ANOWER HOSSAIN";
     initialPassword = "password";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "lp" "mpd" ];
+    extraGroups = [ 
+      "networkmanager" "wheel" "video" "audio" "lp" "mpd" 
+      "docker" 
+      "libvirtd" 
+      "qemu-libvirtd"
+    ];
     shell = pkgs.fish; # Default shell
     packages = with pkgs; [ ];
   };
@@ -173,7 +173,6 @@
     cliphist
 
     rnix-lsp # Nix language server protocol
-    xterm
     atool
     xdg-utils
     killall
@@ -184,20 +183,33 @@
     rsync # Syncer - $ rsync -r dir1/ dir2/
     frp
     sops
+    devbox
+    docker-compose
     fd
     jq
     bat
+    cmake
+    gcc
     ripgrep
     bash
     zsh
     direnv
     ispell
-    #wayland
 
+    #vm
+    spice
+    spice-gtk
+    spice-protocol
+    win-virtio
+    win-spice
+    virt-manager
+
+    #wayland
     wlogout
     waybar
     wlr-randr # Screen Settings
     swayidle
+    waylock
     xwayland # X for Wayland
     wlprop
   ];
@@ -209,8 +221,8 @@
       iosevka
       ubuntu_font_family
       jetbrains-mono
-      font-awesome # Icons
       fantasque-sans-mono
+      font-awesome # Icons
       corefonts # MS
       (nerdfonts.override {
         # Nerdfont Icons override
@@ -263,7 +275,24 @@
   virtualisation = {
     waydroid.enable = true;
     lxd.enable = true;
+    spiceUSBRedirection.enable = true;
+    docker = {
+      enable = true;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
+    };
+    libvirtd = {
+      enable = true;
+      qemu = {
+        swtpm.enable = true;
+        ovmf.enable = true;
+        ovmf.packages = [ pkgs.OVMFFull.fd ];
+      };
+    };
   };
+  services.spice-vdagentd.enable = true;
 
   # NixOS settings
   system = {

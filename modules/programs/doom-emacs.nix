@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, doom-emacs, ... }: {
+  imports = [ doom-emacs.hmModule ];
   programs = {
     doom-emacs = {
       enable = true;

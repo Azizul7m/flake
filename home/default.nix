@@ -1,4 +1,4 @@
-{lib, inputs, pkgs, system, home-manager, nixgl, user, host, ...}:
+{lib, inputs, pkgs, system, home-manager, nixgl, user, host,  ...}:
 
 let
   pkgs = nixpkgs.legacyPackages.${system};
@@ -9,6 +9,7 @@ in
     extraSpecialArgs = { inherit inputs nixgl user ; };
     modules = [
       ./home.nix
+
       {
         home = {
           username = "${user}";

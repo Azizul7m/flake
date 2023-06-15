@@ -7,11 +7,6 @@
         size = 10000;
         path = "/home/${user}/.zsh/history";
       };
-      oh-my-zsh = {
-        enable = true;
-        plugins = [ "git" "npm" "node" "vscode" "tmux" "command-not-found" ];
-        theme = "robbyrussell";
-      };
       initExtra = ''
         # navigation
         alias ..='cd ..'
@@ -43,7 +38,7 @@
         alias addup='git add -u'
         alias addall='git add .'
         alias branch='git branch'
-        alias chackout='git chackout'
+        alias checkout='git checkout'
         alias clone='git clone'
         alias commit='git commit -m'
         alias pull='git pull origin'
@@ -65,6 +60,9 @@
         alias nixosrebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
         alias cleanup='sudo nix-collect-garbage -d'
         eval "$(starship init zsh)"
+        eval "$(devbox global shellenv)"
+
+
       '';
     };
   };

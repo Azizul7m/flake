@@ -13,6 +13,8 @@
       alacritty # Terminal Emulator
       kitty
       neovim
+      emacs
+      emacsPackages.vterm
       dunst # Notifications
       libnotify # Dependency for Dunst
       # Terminal
@@ -107,14 +109,16 @@
       # Laptop
       simple-scan # Scanning
       onlyoffice-bin # Office Tools
+      mongodb-compass
+      docker-client
       # Flatpak
       # obs-studio # Recording/Live Streaming
 
       # Development
-      gcc
       python3
       nodejs
       rustup
+      dive
     ];
   };
   programs = {

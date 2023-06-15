@@ -68,7 +68,8 @@
             format-disconnected = "Disconnected ⚠";
             format-alt = "{ifname}: {ipaddr}/{cidr} ";
             format-linked = "{ifname} (No IP) ";
-            format-wifi = "{essid} ({signalStrength}%) ";
+            # format-wifi = "{essid} ({signalStrength}%) ";
+            format-wifi = "{signalStrength}% ";
             tooltip = true;
             tooltip-format = ''
               {ifname}
