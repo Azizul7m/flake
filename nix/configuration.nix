@@ -10,11 +10,13 @@
 
 { config, lib, pkgs, modudlesPath, inputs, user, ... }:
 
-# let
-#   user = "anower"; #define username
-#   # Comes form flake.nix file;
-#   # user = (import <nixos-config>).user;
-# in
+let
+  #   user = "anower"; #define username
+  #   # Comes form flake.nix file;
+  #   # user = (import <nixos-config>).user;
+  #
+  exec = "exec Hyprland";
+in
 
 {
   imports = [
@@ -62,10 +64,15 @@
     isNormalUser = true;
     description = "ANOWER HOSSAIN";
     initialPassword = "password";
-    extraGroups = [ 
-      "networkmanager" "wheel" "video" "audio" "lp" "mpd" 
-      "docker" 
-      "libvirtd" 
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "video"
+      "audio"
+      "lp"
+      "mpd"
+      "docker"
+      "libvirtd"
       "qemu-libvirtd"
     ];
     shell = pkgs.fish; # Default shell
@@ -95,28 +102,28 @@
     #syncthing.enable = true;
     lorri.enable = true; # lorri is a nix-shell replacement for project development
     # plex.enable = true; # media server
-    xserver = {
-      enable = true; #X server
-      layout = "us"; #Keybaord layout
-      xkbVariant = "";
-      libinput.enable = true; #Touchpad enable
-      exportConfiguration = true;
-      displayManager = {
-        sddm.enable = true; #SDDM
-        sddm.theme = "maldives";
-        sddm.autoNumlock = true;
-      };
-      windowManager = {
-        awesome =
-          {
-            enable = true; #AwesomeWm
-            luaModules = with pkgs.luaPackages; [
-              luarocks # is the package manager for Lua modules
-              luadbi-mysql # Database abstraction layer
-            ];
-          };
-      };
-    };
+    # xserver = {
+    #   enable = true; #X server
+    #   layout = "us"; #Keybaord layout
+    #   xkbVariant = "";
+    #   libinput.enable = true; #Touchpad enable
+    #   exportConfiguration = true;
+    #   displayManager = {
+    #     sddm.enable = true; #SDDM
+    #     sddm.theme = "maldives";
+    #     sddm.autoNumlock = true;
+    #   };
+    #   windowManager = {
+    #     awesome =
+    #       {
+    #         enable = true; #AwesomeWm
+    #         luaModules = with pkgs.luaPackages; [
+    #           luarocks # is the package manager for Lua modules
+    #           luadbi-mysql # Database abstraction layer
+    #         ];
+    #       };
+    #   };
+    # };
 
 
     # Sound
@@ -138,6 +145,11 @@
   };
 
   environment = {
+    loginShellInit = ''
+      if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
+        ${exec}
+      fi
+    ''; # Will automatically open Hyprland when logged into tty1
     variables = {
       TERMINAL = "alacritty";
       EDITOR = "vim";
@@ -264,12 +276,19 @@
   xdg = {
     portal = {
       wlr.enable = true;
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     };
   };
 
 
   security.rtkit.enable = true;
   security.polkit.enable = true;
+  security.pam.services.swaylock = {
+    text = ''
+      auth include login
+    '';
+  };
 
 
   virtualisation = {

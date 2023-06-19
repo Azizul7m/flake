@@ -41,14 +41,14 @@
             };
           };
           "wlr/workspaces" = {
-            format = "{name}";
+            format = "{icon}";
             on-click = "activate";
             sort-by-number = true;
             on-scroll-up = "hyprctl dispatch workspace e+1";
             on-scroll-down = "hyprctl dispatch workspace e-1";
           };
           "hyprland/window" = {
-            format = "{}";
+            format = "{icon}";
             max-length = 80;
             separate-outputs = true;
           };
