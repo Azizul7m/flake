@@ -9,7 +9,6 @@ in
     extraSpecialArgs = { inherit inputs nixgl user ; };
     modules = [
       ./home.nix
-
       {
         home = {
           username = "${user}";

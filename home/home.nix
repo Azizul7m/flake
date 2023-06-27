@@ -2,6 +2,7 @@
 {
   imports =
     (import ../modules/programs) ++
+    (import ../modules/editors) ++
     (import ../modules/services);
 
   home = {
@@ -13,8 +14,6 @@
       alacritty # Terminal Emulator
       kitty
       neovim
-      emacs
-      emacsPackages.vterm
       dunst # Notifications
       libnotify # Dependency for Dunst
       # Terminal
@@ -60,14 +59,14 @@
       #wacomtablet      # Wacom Tablet
 
       # Xorg configuration
-      xclip # Console Clipboard
-      xorg.xev # Input Viewer
+      # xclip # Console Clipboard
+      # xorg.xev # Input Viewer
       #xorg.xkill       # Kill Applications
-      xorg.xrandr # Screen Settings
+      # xorg.xrandr # Screen Settings
 
       # Xorg home-manager
       #flameshot        # Screenshot
-      picom # Compositer
+      #picom # Compositer
       #sxhkd            # Shortcuts
 
       # Wayland configuration
@@ -85,7 +84,6 @@
       mpvpaper # Video Wallpaper
       pamixer # Pulse Audio Mixer
       swaybg # Background
-      swaylock-fancy # Screen Locker
       swaylock # Screen Locker
 
       # Desktop
@@ -109,16 +107,13 @@
       # Laptop
       simple-scan # Scanning
       onlyoffice-bin # Office Tools
-      mongodb-compass
-      docker-client
       # Flatpak
       # obs-studio # Recording/Live Streaming
 
       # Development
-      python3
-      nodejs
-      rustup
-      dive
+      mongodb-compass
+      docker-client
+      jetbrains.datagrip
     ];
   };
   programs = {

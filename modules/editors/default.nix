@@ -1,3 +1,3 @@
 [
-  ./doom-emacs.nix
+  ./doomemacs.nix
 ]

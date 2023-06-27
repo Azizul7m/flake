@@ -101,6 +101,7 @@ in
   services = {
     #syncthing.enable = true;
     lorri.enable = true; # lorri is a nix-shell replacement for project development
+    getty.autologinUser = "${user}";
     # plex.enable = true; # media server
     # xserver = {
     #   enable = true; #X server
@@ -184,8 +185,10 @@ in
     fzf
     cliphist
 
-    rnix-lsp # Nix language server protocol
+
     atool
+
+    libsecret #passwd manager
     xdg-utils
     killall
     socat
@@ -195,18 +198,35 @@ in
     rsync # Syncer - $ rsync -r dir1/ dir2/
     frp
     sops
-    devbox
-    docker-compose
     fd
     jq
     bat
-    cmake
-    gcc
     ripgrep
     bash
     zsh
-    direnv
     ispell
+
+    # Dev
+    openssl
+    pkgconfig
+
+    rnix-lsp # Nix language server protocol
+    direnv
+
+    gcc
+    cmake
+    python3
+    nodejs
+
+    rustc
+    cargo
+    # carnix
+    rustfmt
+    rust-analyzer
+
+    dive
+    libclang
+
 
     #vm
     spice
