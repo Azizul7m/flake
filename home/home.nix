@@ -1,8 +1,7 @@
-{ config, pkgs, user, ... }:
+{ config, pkgs, user, doom-emacs, ... }:
 {
   imports =
     (import ../modules/programs) ++
-    (import ../modules/editors) ++
     (import ../modules/services);
 
   home = {
@@ -23,10 +22,10 @@
       tldr # Helper
       starship
       exa
+      grc
       stow
       htop
       neofetch
-      grc
       # Video/Audio
       feh # Image Viewer
       mpv # Media Player
@@ -34,7 +33,6 @@
       # plex-media-player # Media Player
       vlc # Media Player
       # stremio           # Media Streamer
-      nitrogen
 
       # Apps
       appimage-run # Runs AppImages on NixOS
@@ -42,13 +40,15 @@
       google-chrome # Browser
       gimp # Photo Editor
       zathura
+      android-file-transfer
       figma-linux
       # remmina           # XRDP & VNC Client
 
       # File Management
+      gnome.nautilus
+      gnome.gnome-disk-utility
       gnome.file-roller # Archive Manager
       pcmanfm # File Manager
-      rsync # Syncer - $ rsync -r dir1/ dir2/
       anydesk
       qbittorrent
       darktable
@@ -92,7 +92,7 @@
       tdesktop # Telegram
       dropbox
       skypeforlinux
-      gmtp # Mount MTP (GoPro)
+      # gmtp # Mount MTP (GoPro)
       #handbrake        # Encoder
       #heroic           # Game Launcher
       #hugo             # Static Website Builder
@@ -105,7 +105,7 @@
 
 
       # Laptop
-      simple-scan # Scanning
+      # simple-scan # Scanning
       onlyoffice-bin # Office Tools
       # Flatpak
       # obs-studio # Recording/Live Streaming

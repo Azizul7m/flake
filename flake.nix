@@ -14,6 +14,11 @@
       nur = {
         url = "github:nix-community/NUR";
       };
+
+      fenix = {
+        url = "github:nix-community/fenix";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
       neovim = {
         url = "github:neovim/neovim?dir=contrib";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -40,10 +45,10 @@
         inputs.emacs-overlay.follows = "emacs-overlay";
       };
     };
-  outputs = { self, nixpkgs, home-manager, nur, nixgl, neovim, doom-emacs, ... }@ inputs:
-    let
-      system = "x86_64-linux";
-      user = "anower";
+    outputs = { self, nixpkgs, home-manager, fenix, nur, nixgl, neovim, doom-emacs, ... }@ inputs:
+      let
+        system = "x86_64-linux";
+        user = "anower";
       host = "nixos";
       pkgs = import nixpkgs {
         inherit system;
@@ -65,7 +70,7 @@
         # Non-NixOS configurations
         import ./home {
           inherit (pkgs) lib;
-          inherit inputs pkgs home-manager nixgl user host system;
+          inherit inputs pkgs home-manager fenix nixgl user host system;
         }
       );
     };

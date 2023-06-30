@@ -21,6 +21,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ../Overlays
   ];
   nix = {
     # Nix Package Manager settings
@@ -102,6 +103,8 @@ in
     #syncthing.enable = true;
     lorri.enable = true; # lorri is a nix-shell replacement for project development
     getty.autologinUser = "${user}";
+    gvfs.enable = true;
+
     # plex.enable = true; # media server
     # xserver = {
     #   enable = true; #X server
@@ -209,22 +212,11 @@ in
     # Dev
     openssl
     pkgconfig
-
     rnix-lsp # Nix language server protocol
     direnv
-
     gcc
     cmake
     python3
-    nodejs
-
-    rustc
-    cargo
-    # carnix
-    rustfmt
-    rust-analyzer
-
-    dive
     libclang
 
 
