@@ -16,13 +16,9 @@ let
   #   # user = (import <nixos-config>).user;
   #
   exec = "exec Hyprland";
-in
 
-{
-  imports = [
-    ./hardware-configuration.nix
-    ../Overlays
-  ];
+in {
+  imports = [ ./hardware-configuration.nix ../Overlays ];
   nix = {
     # Nix Package Manager settings
     settings = {
@@ -43,9 +39,7 @@ in
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.supportedFilesystems = [ "ntfs" ];
   #Enable networking
-  networking = {
-    networkmanager.enable = true;
-  };
+  networking = { networkmanager.enable = true; };
   # Set your time zone.
   time.timeZone = "Asia/Dhaka";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -80,10 +74,7 @@ in
     packages = with pkgs; [ ];
   };
 
-  security = {
-    sudo.wheelNeedsPassword = false;
-  };
-
+  security = { sudo.wheelNeedsPassword = false; };
 
   #TTF
   console = {
@@ -91,44 +82,18 @@ in
     keyMap = "us";
   };
 
-
   #sound
   sound.enable = true;
-
 
   # Configure keymap in X11
   # Services xserver, displayManager, windowManager, OpenSSH
   # List services that you want to enable:
   services = {
     #syncthing.enable = true;
-    lorri.enable = true; # lorri is a nix-shell replacement for project development
+    lorri.enable =
+      true; # lorri is a nix-shell replacement for project development
     getty.autologinUser = "${user}";
     gvfs.enable = true;
-
-    # plex.enable = true; # media server
-    # xserver = {
-    #   enable = true; #X server
-    #   layout = "us"; #Keybaord layout
-    #   xkbVariant = "";
-    #   libinput.enable = true; #Touchpad enable
-    #   exportConfiguration = true;
-    #   displayManager = {
-    #     sddm.enable = true; #SDDM
-    #     sddm.theme = "maldives";
-    #     sddm.autoNumlock = true;
-    #   };
-    #   windowManager = {
-    #     awesome =
-    #       {
-    #         enable = true; #AwesomeWm
-    #         luaModules = with pkgs.luaPackages; [
-    #           luarocks # is the package manager for Lua modules
-    #           luadbi-mysql # Database abstraction layer
-    #         ];
-    #       };
-    #   };
-    # };
-
 
     # Sound
     pipewire = {
@@ -139,13 +104,9 @@ in
       };
       pulse.enable = true;
       jack.enable = true;
-      wireplumber = {
-        enable = true;
-      };
+      wireplumber = { enable = true; };
     };
-    openssh = {
-      enable = true;
-    };
+    openssh = { enable = true; };
   };
 
   environment = {
@@ -170,7 +131,6 @@ in
     };
   };
 
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -188,10 +148,8 @@ in
     fzf
     cliphist
 
-
     atool
-
-    libsecret #passwd manager
+    libsecret # passwd manager
     xdg-utils
     killall
     socat
@@ -210,15 +168,27 @@ in
     ispell
 
     # Dev
-    openssl
-    pkgconfig
     rnix-lsp # Nix language server protocol
+    nixfmt
+    shfmt # shell formater
+    shellcheck # shell checker
     direnv
+    devbox
     gcc
+    glib
+    gnumake
     cmake
-    python3
+    sqlite
+    rustfmt
+    llvm
+    clang
+    protobuf
+    pkg-config
+    libtool
+    hidapi
     libclang
-
+    openssl
+    zlib
 
     #vm
     spice
@@ -240,8 +210,8 @@ in
 
   fonts = {
     fontDir.enable = true;
-    enableDefaultFonts = true;
-    fonts = with pkgs; [
+    enableDefaultPackages = true;
+    packages = with pkgs; [
       iosevka
       ubuntu_font_family
       jetbrains-mono
@@ -250,9 +220,7 @@ in
       corefonts # MS
       (nerdfonts.override {
         # Nerdfont Icons override
-        fonts = [
-          "FiraCode"
-        ];
+        fonts = [ "FiraCode" ];
       })
     ];
     fontconfig = {
@@ -263,7 +231,6 @@ in
       };
     };
   };
-
 
   # dconf
   programs = {
@@ -293,7 +260,6 @@ in
     };
   };
 
-
   security.rtkit.enable = true;
   security.polkit.enable = true;
   security.pam.services.swaylock = {
@@ -302,17 +268,16 @@ in
     '';
   };
 
-
   virtualisation = {
     waydroid.enable = true;
     lxd.enable = true;
     spiceUSBRedirection.enable = true;
-    docker = {
+    podman = {
       enable = true;
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
     };
     libvirtd = {
       enable = true;
@@ -324,14 +289,15 @@ in
     };
   };
   services.spice-vdagentd.enable = true;
+  services.emacs.enable = true;
 
   # NixOS settings
   system = {
     # Allow auto update (not useful in flakes)
-    autoUpgrade = {
-      enable = true;
-      channel = "https://nixos.org/channels/nixos-unstable";
-    };
+    # autoUpgrade = {
+    #   enable = true;
+    #   channel = "https://nixos.org/channels/nixos-unstable";
+    # };
     stateVersion = "23.05";
   };
   hardware = {

@@ -1,8 +1,5 @@
-{ config, pkgs, user, doom-emacs, ... }:
-{
-  imports =
-    (import ../modules/programs) ++
-    (import ../modules/services);
+{ config, pkgs, user, doom-emacs, ... }: {
+  imports = (import ../modules/programs) ++ (import ../modules/services);
 
   home = {
     stateVersion = "23.05";
@@ -18,7 +15,6 @@
       # Terminal
       btop # Resource Manager
       nitch # Minimal fetch
-      ranger # File Manager
       tldr # Helper
       starship
       exa
@@ -26,6 +22,7 @@
       stow
       htop
       neofetch
+
       # Video/Audio
       feh # Image Viewer
       mpv # Media Player
@@ -39,6 +36,7 @@
       firefox # Browser
       google-chrome # Browser
       gimp # Photo Editor
+      inkscape
       zathura
       android-file-transfer
       figma-linux
@@ -58,6 +56,11 @@
       # General configuration
       #wacomtablet      # Wacom Tablet
 
+      # Emacs Stuff
+      graphviz # org-mode visualization
+      scrot # screenshot
+      emacsPackages.sqlite3
+      libvterm
       # Xorg configuration
       # xclip # Console Clipboard
       # xorg.xev # Input Viewer
@@ -103,7 +106,6 @@
       #simple-scan      # Scanning
       #sshpass          # Ansible dependency
 
-
       # Laptop
       # simple-scan # Scanning
       onlyoffice-bin # Office Tools
@@ -111,14 +113,16 @@
       # obs-studio # Recording/Live Streaming
 
       # Development
+      python3
+      rustc
+      nodejs
+      cargo
+      rust-analyzer
       mongodb-compass
-      docker-client
       jetbrains.datagrip
     ];
   };
-  programs = {
-    home-manager.enable = true;
-  };
+  programs = { home-manager.enable = true; };
   #Themes
   gtk = {
     enable = true;

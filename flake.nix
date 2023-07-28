@@ -19,15 +19,7 @@
         url = "github:nix-community/fenix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-      neovim = {
-        url = "github:neovim/neovim?dir=contrib";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
       # emacs
-      nix-doom-emacs = {
-        url = "github:nix-community/nix-doom-emacs";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
       emacs = {
         url = "github:nix-community/emacs-overlay";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -45,7 +37,7 @@
         inputs.emacs-overlay.follows = "emacs-overlay";
       };
     };
-    outputs = { self, nixpkgs, home-manager, fenix, nur, nixgl, neovim, doom-emacs, ... }@ inputs:
+    outputs = { self, nixpkgs, home-manager, fenix, nur, nixgl,  emacs, doom-emacs, ... }@ inputs:
       let
         system = "x86_64-linux";
         user = "anower";
@@ -53,7 +45,7 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ nixgl.overlay nur.overlay neovim.overlay ];
+        overlays = [ nixgl.overlay nur.overlay  emacs.overlay ];
       };
       lib = nixpkgs.lib;
     in
