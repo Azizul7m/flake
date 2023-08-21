@@ -8,46 +8,51 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "sd_mod" "sdhci_pci" ];
+  boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/014f383c-fe15-4691-baae-00bd422c2265";
+    { device = "/dev/disk/by-uuid/cb01f8d3-03b5-43c5-94d9-4c78a884a95e";
       fsType = "ext4";
     };
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/C7C6-0BAA";
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/13D1-AC42";
       fsType = "vfat";
     };
 
-
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/c558883f-5108-455c-87d6-59b9286301a2"; } ];
-
+    [ 
+    	{ device = "/dev/disk/by-uuid/d4a67c7f-4e69-4e2f-9fa5-8eab15933f78"; }
+    ];
 
 #HDD
+  fileSystems."/home" = {
+    device = "/dev/disk/by-label/home";
+    fsType = "ext4";
+  };
+
   fileSystems."/home/anower/Soft" = {
-    device = "/dev/disk/by-label/Soft_Tuto"; # Replace "sdX" with the name of your NTFS-formatted disk
+    device = "/dev/disk/by-label/Soft_Tuto";
     fsType = "ntfs-3g";
     options = [ "defaults" "uid=1000,gid=1000" ];
   };
-
-
+  
   fileSystems."/home/anower/Projects" = {
-    device = "/dev/disk/by-label/Projects"; # Replace "sdX" with the name of your NTFS-formatted disk
+    device = "/dev/disk/by-label/Projects";
     fsType = "ntfs-3g";
     options = [ "defaults" "uid=1000,gid=1000" ];
   };
 
 
   fileSystems."/home/anower/Entertainment" = {
-    device = "/dev/disk/by-label/Entertainment"; # Replace "sdX" with the name of your NTFS-formatted disk
+    device = "/dev/disk/by-label/Entertainment"; 
     fsType = "ntfs-3g";
     options = [ "defaults" "uid=1000,gid=1000" ];
   };
+
 
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -60,5 +65,4 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.bluetooth.enable= true;
 }

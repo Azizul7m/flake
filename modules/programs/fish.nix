@@ -62,6 +62,10 @@
         alias tb='nc termbin.com 9999'
         alias recordterm='asciinema rec'
 
+        # Distrobox
+        alias fedora='distrobox enter fedora'
+        alias ubuntu='distrobox enter ubuntu'
+
 
         alias pdf='zathura'
         alias txt='mousepad'
@@ -73,7 +77,7 @@
       '';
       # Add npm path to PATH
       shellInit = ''
-        set -gx PATH /home/${user}/.npm-global/bin  /home/${user}/.config/hypr/scripts /home/${user}/.cargo/bin $PATH
+        set -gx PATH /home/${user}/.npm-global/bin  /home/${user}/.config/hypr/scripts /home/${user}/.local/share/solana/install/active_release/bin /home/${user}/.cargo/bin  $PATH
         # pnpm
           set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
           set -gx PATH "$PNPM_HOME" $PATH

@@ -1,14 +1,16 @@
-{lib, inputs, pkgs, system, home-manager, nixgl, user, host, doom-emacs, ...}:
+{ lib, inputs, nixpkgs, system, home-manager, user, host, ... }:
 
 let
   pkgs = nixpkgs.legacyPackages.${system};
 in
 {
-  ${host} = home-manager.lib.homeManagerConfiguration {    # Currently only host that can be built
+  # Currently only host that can be built
+  ${host} = home-manager.lib.homeManagerConfiguration {
     inherit pkgs;
-    extraSpecialArgs = { inherit inputs nixgl user doom-emacs ; };
+    extraSpecialArgs = { inherit pkgs host user home-manager; };
     modules = [
       ./home.nix
+      ../modules/sys/gtk.nix
       {
         home = {
           username = "${user}";

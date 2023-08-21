@@ -36,11 +36,11 @@
           { key = "Paste"; action = "Paste"; }
           { key = "Copy"; action = "Copy"; }
           { key = "L"; mods = "Control"; action = "ClearLogNotice"; }
-          { key = "L"; mods = "Control"; chars = "\x0c"; }
-          { key = "PageUp"; action = "ScrollPageUp"; mode = "~Alt"; }
-          { key = "PageDown"; action = "ScrollPageDown"; mode = "~Alt"; }
-          { key = "Home"; mods = "Shift"; action = "ScrollToTop"; mode = "~Alt"; }
-          { key = "End"; mods = "Shift"; action = "ScrollToBottom"; mode = "~Alt"; }
+          #{ key = "L"; mods = "Control"; action = "fzf-cd-widget"; }
+          { key = "PageUp"; action = "ScrollPageUp"; mode = "Alt"; }
+          { key = "PageDown"; action = "ScrollPageDown"; mode = "Alt"; }
+          { key = "Home"; mods = "Shift"; action = "ScrollToTop"; mode = "Alt"; }
+          { key = "End"; mods = "Shift"; action = "ScrollToBottom"; mode = "Alt"; }
           # Vi Mode
           { key = "Space"; mode = "Vi"; action = "ScrollToBottom"; }
           { key = "Space"; mods = "Shift"; action = "ToggleViMode"; }

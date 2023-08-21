@@ -1,24 +1,17 @@
-{ lib, inputs, nixpkgs, home-manager, user, host, doom-emacs, ... }:
-let
-  system = "x86_64-linux";
-in
+{inputs, nixpkgs,  user, full_name, host, system, home-manager, ...}:
 {
-  ${host} = lib.nixosSystem {
+  # Available through 'nixos-rebuild --flake .#your-hostname'
+  ${host} = nixpkgs.lib.nixosSystem {
     inherit system;
-    specialArgs = {
-      inherit inputs user;
-    };
-    modules = [
-      #nix core config
-      ./configuration.nix
-      #nix home-manager config inside nix modules
+    specialArgs = { inherit inputs user full_name host home-manager nixpkgs system; }; 
+    modules = [ ./configuration.nix
       home-manager.nixosModules.home-manager
       {
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
           extraSpecialArgs = {
-            inherit inputs user host doom-emacs ;
+            inherit inputs user  host  nixpkgs home-manager system;
           };
           users.${user} = {
             imports = [ ../home/home.nix ];

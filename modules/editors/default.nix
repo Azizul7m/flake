@@ -1,3 +1,0 @@
-[
-  ./doomemacs.nix
-]

@@ -1,48 +1,39 @@
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-#
-# --> Equavlent of { programs.dconf.enable = true; }
-# -->
-# programs = {
-#   dconf = {
-#     enable = true;
-#   }
-# }
 
-{ config, lib, pkgs, modudlesPath, inputs, user, ... }:
+{ config, pkgs, user, full_name, host, ... }:
 
-let
-  #   user = "anower"; #define username
-  #   # Comes form flake.nix file;
-  #   # user = (import <nixos-config>).user;
-  #
-  exec = "exec Hyprland";
+{
+  imports =
+    [
+      # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
 
-in {
-  imports = [ ./hardware-configuration.nix ../Overlays ];
-  nix = {
-    # Nix Package Manager settings
-    settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store = true; # Optimise syslinks
-    };
-    # Automatic garbage collection
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 3d";
-    };
-    package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
-  };
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.supportedFilesystems = [ "ntfs" ];
-  #Enable networking
-  networking = { networkmanager.enable = true; };
+
+  networking.hostName = "${host}"; # Define your hostname.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+  # Enable networking
+  networking.networkmanager.enable = true;
+
+
+
   # Set your time zone.
   time.timeZone = "Asia/Dhaka";
+
+  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
+
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
@@ -52,161 +43,263 @@ in {
     LC_NUMERIC = "en_US.UTF-8";
     LC_PAPER = "en_US.UTF-8";
     LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
+    LC_TIME = "bn_BD";
   };
+
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+
+  # Configure keymap in X11
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
+  };
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+  # Enable sound with pipewire.
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  security.pam.services.swaylock.text = ''
+    # PAM configuration file for the swaylock screen locker. By default, it includes
+    # the 'login' configuration file (see /etc/pam.d/login)
+    auth include login
+  '';
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+  };
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
+
+  environment = {
+    #loginShellInit = ''
+    #if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
+    #${exec}
+    #fi
+    #''; # Will automatically open Hyprland when logged into tty1
+    variables = {
+      TERMINAL = "alacritty";
+      EDITOR = "nvim";
+      VISUAL = "emacs";
+      #  XDG_CURRENT_DESKTOP = "sway";
+      #QT_QPA_PLATFORMTHEME = "gtk2";
+      #QT_QPA_PLATFORM = "wayland";
+    };
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1"; #electron apps to use wayland
+      WLR_NO_HARDWARE_CURSORS = "1";
+      #MOZ_ENABLE_WAYLAND = "1";
+    };
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
-    description = "ANOWER HOSSAIN";
-    initialPassword = "password";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "video"
-      "audio"
-      "lp"
-      "mpd"
-      "docker"
-      "libvirtd"
-      "qemu-libvirtd"
-    ];
+    description = "${full_name}";
+    extraGroups = [ "networkmanager" "wheel" "mpd" "docker" "podman" ];
     shell = pkgs.fish; # Default shell
-    packages = with pkgs; [ ];
+    packages = with pkgs; [
+      firefox
+      google-chrome
+      vscode
+      toot #Mastodon CLI interface
+      gparted
+      gnome.gnome-disk-utility
+      gnome.nautilus
+      gnome.file-roller # Archive Manager
+      gnome-feeds
+      gnome.sushi #for nautilus quick file viewer
+      gnome.eog #image viewer
+      gnome.geary #Mail client
+      gnome-online-accounts
+      podman-desktop
+      appimage-run
+      zathura
+      mpv
+      maestral-gui #dropbox
+      tdlib #telegram library
+      #  thunderbird
+    ];
   };
 
-  security = { sudo.wheelNeedsPassword = false; };
+  # Enable automatic login for the user.
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "${user}";
 
-  #TTF
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "us";
-  };
-
-  #sound
-  sound.enable = true;
-
-  # Configure keymap in X11
-  # Services xserver, displayManager, windowManager, OpenSSH
-  # List services that you want to enable:
-  services = {
-    #syncthing.enable = true;
-    lorri.enable =
-      true; # lorri is a nix-shell replacement for project development
-    getty.autologinUser = "${user}";
-    gvfs.enable = true;
-
-    # Sound
-    pipewire = {
-      enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-      pulse.enable = true;
-      jack.enable = true;
-      wireplumber = { enable = true; };
-    };
-    openssh = { enable = true; };
-  };
-
-  environment = {
-    loginShellInit = ''
-      if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-        ${exec}
-      fi
-    ''; # Will automatically open Hyprland when logged into tty1
-    variables = {
-      TERMINAL = "alacritty";
-      EDITOR = "vim";
-      VISUAL = "emacs";
-      XDG_CURRENT_DESKTOP = "sway";
-      QT_QPA_PLATFORMTHEME = "gtk2";
-      QT_QPA_PLATFORM = "wayland";
-      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-      QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    };
-    sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-      MOZ_ENABLE_WAYLAND = "1";
-    };
-  };
+  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run: $ nix search wget
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
   environment.systemPackages = with pkgs; [
     git
     vim
+    ranger
+    emacs29
+    neovim
+    alacritty
+    kitty
+    wget
     w3m
+
+    btop
+    nitch
+    tldr
+    htop
+    grc
+    stow
+    neofetch
+    ripgrep
+    fd
+    fzf
+    jq
+    frp
+    bat
+    exa
+    starship
     killall
     usbutils
+    unzip
     pciutils
     udiskie # Auto Mounting
-    light # Display Brightness
-    wget
-    fzf
-    cliphist
-
-    atool
     libsecret # passwd manager
-    xdg-utils
-    killall
-    socat
-    zip
-    unzip
-    rar
-    rsync # Syncer - $ rsync -r dir1/ dir2/
-    frp
-    sops
-    fd
-    jq
-    bat
-    ripgrep
-    bash
-    zsh
-    ispell
+    coreutils #basic GNU utilities
+    imagemagick
+    cliphist #clipboard manager
 
     # Dev
+    direnv
+    devbox
+    #rustup
+    cargo
+    rustc
+    rustfmt
+    clippy
+    rust-analyzer
+
+    python3
+
+
+    clang
+    cmake
+    gcc
+    glib
+    gnumake
+    libtool
+    pkg-config
+    openssl
+    libclang
+    zlib
+    llvm
+    protobuf
+    hidapi
+    sqlite
+    podman-compose
+    distrobox
+    toolbox
+
+
+
     rnix-lsp # Nix language server protocol
     nixfmt
     shfmt # shell formater
     shellcheck # shell checker
-    direnv
-    devbox
-    gcc
-    glib
-    gnumake
-    cmake
-    sqlite
-    rustfmt
-    llvm
-    clang
-    protobuf
-    pkg-config
-    libtool
-    hidapi
-    libclang
-    openssl
-    zlib
 
-    #vm
-    spice
-    spice-gtk
-    spice-protocol
-    win-virtio
-    win-spice
-    virt-manager
 
     #wayland
     wlogout
-    waybar
     wlr-randr # Screen Settings
     swayidle
-    waylock
-    xwayland # X for Wayland
+    swaylock
     wlprop
+    eww
+    swww # wallpaper
+    libnotify #for dunst
+    dunst #notification
+    grim
+    wofi
+    rofi-wayland
+    bemenu
   ];
+
+
+  programs = {
+    dconf.enable = true;
+    fish.enable = true;
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+    #hyprland window manager
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
+    waybar = {
+      enable = true;
+    };
+  };
+
+  services = {
+    # Enable the OpenSSH daemon.
+    openssh.enable = true;
+    emacs.enable = true;
+  };
+
+
+  #xdg = {
+  #portal = {
+  #wlr.enable = true;
+  #enable = true;
+  #     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  #};
+  #};
+
+
+  virtualisation = {
+    spiceUSBRedirection.enable = true;
+    podman = {
+      enable = true;
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
+
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+
+  hardware = {
+    opengl.enable = true;
+    opengl.driSupport = true;
+  };
 
   fonts = {
     fontDir.enable = true;
@@ -224,6 +317,7 @@ in {
       })
     ];
     fontconfig = {
+      enable = true;
       defaultFonts = {
         serif = [ "Ubuntu" ];
         sansSerif = [ "Ubuntu" ];
@@ -232,76 +326,20 @@ in {
     };
   };
 
-  # dconf
-  programs = {
-    dconf.enable = true;
-    fish.enable = true;
-    hyprland.enable = true;
-    waybar.enable = true;
-    # Some programs need SUID wrappers, can be configured further or are
-    mtr.enable = true;
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
+
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true; # Optimise syslinks
     };
-  };
-
-  qt = {
-    style = "gtk2";
-    platformTheme = "gtk2";
-  };
-
-  #xdg
-  xdg = {
-    portal = {
-      wlr.enable = true;
-      enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    # Automatic garbage collection
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
     };
+    package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
   };
 
-  security.rtkit.enable = true;
-  security.polkit.enable = true;
-  security.pam.services.swaylock = {
-    text = ''
-      auth include login
-    '';
-  };
-
-  virtualisation = {
-    waydroid.enable = true;
-    lxd.enable = true;
-    spiceUSBRedirection.enable = true;
-    podman = {
-      enable = true;
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
-    };
-    libvirtd = {
-      enable = true;
-      qemu = {
-        swtpm.enable = true;
-        ovmf.enable = true;
-        ovmf.packages = [ pkgs.OVMFFull.fd ];
-      };
-    };
-  };
-  services.spice-vdagentd.enable = true;
-  services.emacs.enable = true;
-
-  # NixOS settings
-  system = {
-    # Allow auto update (not useful in flakes)
-    # autoUpgrade = {
-    #   enable = true;
-    #   channel = "https://nixos.org/channels/nixos-unstable";
-    # };
-    stateVersion = "23.05";
-  };
-  hardware = {
-    opengl.enable = true;
-    opengl.driSupport = true;
-  };
+  system.stateVersion = "23.11";
 }

@@ -1,57 +1,33 @@
-{ config, pkgs, user, doom-emacs, ... }: {
-  imports = (import ../modules/programs) ++ (import ../modules/services);
+{ config, pkgs, user, ... }: {
+  imports = (import ../modules/programs);
 
   home = {
-    stateVersion = "23.05";
+    stateVersion = "23.11";
     homeDirectory = "/home/${user}";
     username = user;
     packages = with pkgs; [
-      # General home-manager
-      alacritty # Terminal Emulator
-      kitty
-      neovim
-      dunst # Notifications
-      libnotify # Dependency for Dunst
-      # Terminal
-      btop # Resource Manager
-      nitch # Minimal fetch
-      tldr # Helper
-      starship
-      exa
-      grc
-      stow
-      htop
-      neofetch
-
       # Video/Audio
-      feh # Image Viewer
-      mpv # Media Player
-      pavucontrol # Audio Control
       # plex-media-player # Media Player
-      vlc # Media Player
+      # vlc # Media Player
       # stremio           # Media Streamer
-
       # Apps
-      appimage-run # Runs AppImages on NixOS
-      firefox # Browser
-      google-chrome # Browser
       gimp # Photo Editor
       inkscape
-      zathura
-      android-file-transfer
+      #android-file-transfer
       figma-linux
       # remmina           # XRDP & VNC Client
 
       # File Management
-      gnome.nautilus
-      gnome.gnome-disk-utility
-      gnome.file-roller # Archive Manager
-      pcmanfm # File Manager
+      #pcmanfm # File Manager
       anydesk
       qbittorrent
-      darktable
-      krita
+      #darktable
+      #krita
       blender
+      #davinci-resolve
+      libsForQt5.kdenlive
+      mediainfo #for kdenlive
+      glaxnimate #for kdenlive
       #pureref
       # General configuration
       #wacomtablet      # Wacom Tablet
@@ -60,7 +36,10 @@
       graphviz # org-mode visualization
       scrot # screenshot
       emacsPackages.sqlite3
-      libvterm
+      libvterm #Emacs Vterm
+      editorconfig-core-c #Editor config
+      wl-clipboard #for emacs org-mode
+
       # Xorg configuration
       # xclip # Console Clipboard
       # xorg.xev # Input Viewer
@@ -73,28 +52,28 @@
       #sxhkd            # Shortcuts
 
       # Wayland configuration
-      autotiling # Tiling Script
-      grim # Image Grabber
-      slurp # Region Selector
-      swappy # Screenshot Editor
-      wev # Input Viewer
-      wl-clipboard # Console Clipboard
-      swayimg
-      wofi
-      bemenu
+      #autotiling # Tiling Script
+      #grim # Image Grabber
+      #slurp # Region Selector
+      #swappy # Screenshot Editor
+      #wev # Input Viewer
+      #wl-clipboard # Console Clipboard
+      #swayimg
+      #wofi
+      #bemenu
 
       # Wayland home-manager
-      mpvpaper # Video Wallpaper
-      pamixer # Pulse Audio Mixer
-      swaybg # Background
-      swaylock # Screen Locker
+      #mpvpaper # Video Wallpaper
+      #pamixer # Pulse Audio Mixer
+      #swaybg # Background
+      #swaylock # Screen Locker
 
       # Desktop
       #ansible          # Automation
       discord # Chat
       tdesktop # Telegram
-      dropbox
-      skypeforlinux
+      #dropbox
+      #skypeforlinux
       # gmtp # Mount MTP (GoPro)
       #handbrake        # Encoder
       #heroic           # Game Launcher
@@ -108,44 +87,14 @@
 
       # Laptop
       # simple-scan # Scanning
-      onlyoffice-bin # Office Tools
+      #onlyoffice-bin # Office Tools
       # Flatpak
       # obs-studio # Recording/Live Streaming
 
       # Development
-      python3
-      rustc
-      nodejs
-      cargo
-      rust-analyzer
       mongodb-compass
-      jetbrains.datagrip
+      nodejs
+      #jetbrains.datagrip
     ];
   };
-  programs = { home-manager.enable = true; };
-  #Themes
-  gtk = {
-    enable = true;
-    theme = {
-      name = "vimix-dark-doder";
-      package = pkgs.vimix-gtk-themes;
-    };
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-    font = {
-      name = "Iosevka Medium";
-      #name = "FiraCode Nerd Font Mono Medium";
-    }; # Cursor is declared under home.pointerCursor
-  };
-  systemd.user.targets.tray = {
-    # Tray.target can not be found when xsession is not enabled. This fixes the issue.
-    Unit = {
-      Description = "Home Manager System Tray";
-      Requires = [ "graphical-session-pre.target" ];
-    };
-  };
-  fonts.fontconfig.enable = true;
-  targets.genericLinux.enable = true;
 }
