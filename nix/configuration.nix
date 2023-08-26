@@ -19,10 +19,6 @@
   networking.hostName = "${host}"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -44,20 +40,24 @@
     LC_PAPER = "en_US.UTF-8";
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "bn_BD";
+    LANG = "en_US.UTF-8";
+    LANGUAGE = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
+
+
+  # Enable the X11 windowing system. Configure keymap in X11
+  services.xserver = {
+    enable = true;
+    layout = "us,bd";
+    xkbVariant = "probhat";
+    xkbOptions = "grp:win_tab_toggle"; # Example option for layout switching
+  };
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -116,6 +116,12 @@
     extraGroups = [ "networkmanager" "wheel" "mpd" "docker" "podman" ];
     shell = pkgs.fish; # Default shell
     packages = with pkgs; [
+
+      xkb-switch
+      emacs29
+      mpv
+      alacritty
+      kitty
       firefox
       google-chrome
       vscode
@@ -132,10 +138,45 @@
       podman-desktop
       appimage-run
       zathura
-      mpv
       maestral-gui #dropbox
       tdlib #telegram library
       #  thunderbird
+
+      # Dev
+      direnv
+      devbox
+      #rustup
+      cargo
+      rustc
+      rustfmt
+      clippy
+      rust-analyzer
+
+      python3
+      clang
+      cmake
+      gcc
+      glib
+      gnumake
+      libtool
+      pkg-config
+      openssl
+      libclang
+      zlib
+      llvm
+      protobuf
+      hidapi
+      sqlite
+      podman-compose
+      distrobox
+      toolbox
+
+      rnix-lsp # Nix language server protocol
+      nixfmt
+      shfmt # shell formater
+      shellcheck # shell checker
+
+      nodejs
     ];
   };
 
@@ -156,13 +197,9 @@
     git
     vim
     ranger
-    emacs29
     neovim
-    alacritty
-    kitty
     wget
     w3m
-
     btop
     nitch
     tldr
@@ -177,7 +214,7 @@
     frp
     bat
     exa
-    starship
+    ispell
     killall
     usbutils
     unzip
@@ -187,44 +224,6 @@
     coreutils #basic GNU utilities
     imagemagick
     cliphist #clipboard manager
-
-    # Dev
-    direnv
-    devbox
-    #rustup
-    cargo
-    rustc
-    rustfmt
-    clippy
-    rust-analyzer
-
-    python3
-
-
-    clang
-    cmake
-    gcc
-    glib
-    gnumake
-    libtool
-    pkg-config
-    openssl
-    libclang
-    zlib
-    llvm
-    protobuf
-    hidapi
-    sqlite
-    podman-compose
-    distrobox
-    toolbox
-
-
-
-    rnix-lsp # Nix language server protocol
-    nixfmt
-    shfmt # shell formater
-    shellcheck # shell checker
 
 
     #wayland
@@ -247,6 +246,7 @@
   programs = {
     dconf.enable = true;
     fish.enable = true;
+    starship.enable = true;
     mtr.enable = true;
     gnupg.agent = {
       enable = true;
@@ -306,7 +306,6 @@
     enableDefaultPackages = true;
     packages = with pkgs; [
       iosevka
-      ubuntu_font_family
       jetbrains-mono
       fantasque-sans-mono
       font-awesome # Icons
@@ -319,9 +318,9 @@
     fontconfig = {
       enable = true;
       defaultFonts = {
-        serif = [ "Ubuntu" ];
-        sansSerif = [ "Ubuntu" ];
-        monospace = [ "UbuntuMono" ];
+        serif = [ "JetBrains " ];
+        sansSerif = [ "JetBrains " ];
+        monospace = [ "JetBrains Mono" ];
       };
     };
   };

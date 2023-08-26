@@ -93,7 +93,7 @@
 
       # Development
       mongodb-compass
-      nodejs
+      starship
       #jetbrains.datagrip
     ];
   };

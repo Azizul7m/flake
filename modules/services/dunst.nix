@@ -25,12 +25,6 @@ in
         origin = "bottom-right";
         offset = "10x10";
         shrink = "yes";
-        #   %a  appname
-        #   %s  summary
-        #   %b  body
-        #   %i  iconname (including its path)
-        #   %I  iconname (without its path)
-        #   %p  progress value if set ([  0%] to [100%]) or nothing
         format = ''
           %a
           <b>%s</b>

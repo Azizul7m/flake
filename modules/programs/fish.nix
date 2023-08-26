@@ -78,6 +78,8 @@
       # Add npm path to PATH
       shellInit = ''
         set -gx PATH /home/${user}/.npm-global/bin  /home/${user}/.config/hypr/scripts /home/${user}/.local/share/solana/install/active_release/bin /home/${user}/.cargo/bin  $PATH
+        set -gx xkblayout "us"
+        set -gx xkbvariant "bn_probhat"
         # pnpm
           set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
           set -gx PATH "$PNPM_HOME" $PATH

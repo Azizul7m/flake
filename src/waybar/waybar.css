@@ -13,42 +13,19 @@
 @define-color accent5 #c4a7e7;
 @define-color accent6 #ebbcba;
 
-/* DRACULA */
-@define-color accent1 #ff5555;
-@define-color accent2 #50fa7b;
-@define-color accent3 #f1fa8c;
-@define-color accent4 #bd93f9;
-@define-color accent5 #ff79c6;
-@define-color accent6 #8be9fd;
-
-/* MONOKAI PRO */
-@define-color accent1 #ff6188;
-@define-color accent2 #a9dc76;
-@define-color accent3 #ffd866;
-@define-color accent4 #fc9867;
-@define-color accent5 #ab9df2;
-@define-color accent6 #78dce8;
-
-/* TOKYO NIGHT */
-@define-color accent1 #ff7a93;
-@define-color accent2 #b9f27c;
-@define-color accent3 #ff9e64;
-@define-color accent4 #bb9af7;
-@define-color accent5 #7da6ff;
-@define-color accent6 #0db9d7;
-
 * {
     /* `otf-font-awesome` is required to be installed for icons */
     font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
+    padding: 0;
 }
 
 window#waybar {
     background-color: rgba(43, 48, 59, 0.5);
-    /* border-bottom: 3px solid rgba(100, 114, 125, 0.5); */
     color: @fgcolor;
     transition-property: background-color;
     transition-duration: .5s;
+    padding: 0;
 }
 
 window#waybar.hidden {
@@ -68,10 +45,6 @@ window#waybar.termite {
     background-color: @bgcolor;
 }
 
-window#waybar.chromium {
-    background-color: #000000;
-    border: none;
-}
 
 button {
     /* Use box-shadow instead of border so the text isn't offset */
@@ -84,11 +57,11 @@ button {
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 button:hover {
     background: inherit;
-    box-shadow: inset 0 -3px #ffffff;
+    /* box-shadow: inset 0 -3px #ffffff; */
 }
 
 #workspaces button {
-    padding: 0 5px;
+    /* padding: 0 2px; */
     background-color: transparent;
     color: #ffffff;
 }
@@ -99,7 +72,11 @@ button:hover {
 
 #workspaces button.focused {
     background-color: #64727D;
-    box-shadow: inset 0 -3px #ffffff;
+    /* box-shadow: inset 0 -3px #ffffff; */
+}
+
+#taskbar:hover{
+    background: rgba(0, 0, 0, 0.2);
 }
 
 #workspaces button.urgent {
@@ -108,7 +85,7 @@ button:hover {
 
 #mode {
     background-color: #64727D;
-    border-bottom: 3px solid #ffffff;
+    /* border-bottom: 2px solid #ffffff; */
 }
 
 #clock,
@@ -127,15 +104,17 @@ button:hover {
 #idle_inhibitor,
 #scratchpad,
 #mpd {
-    padding: 0 2px;
+    padding: 0 5px;
     color: @fgcolor;
     background: transparent;
 }
 
 #window,
 #workspaces {
-    margin: 0 4px;
+    padding: 0;
+    /* margin: 0 2px; */
 }
+
 
 /* If workspaces is the leftmost module, omit left margin */
 .modules-left > widget:first-child > #workspaces {
