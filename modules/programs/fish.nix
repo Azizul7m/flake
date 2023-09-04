@@ -65,6 +65,7 @@
         # Distrobox
         alias fedora='distrobox enter fedora'
         alias ubuntu='distrobox enter ubuntu'
+        alias kali='distrobox enter kali'
 
 
         alias pdf='zathura'

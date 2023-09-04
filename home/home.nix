@@ -72,6 +72,7 @@
       #ansible          # Automation
       discord # Chat
       tdesktop # Telegram
+      whatsapp-for-linux
       #dropbox
       #skypeforlinux
       # gmtp # Mount MTP (GoPro)

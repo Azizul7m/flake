@@ -126,8 +126,6 @@
       google-chrome
       vscode
       toot #Mastodon CLI interface
-      gparted
-      gnome.gnome-disk-utility
       gnome.nautilus
       gnome.file-roller # Archive Manager
       gnome-feeds
@@ -224,6 +222,9 @@
     coreutils #basic GNU utilities
     imagemagick
     cliphist #clipboard manager
+    gparted
+    gnome.gnome-disk-utility
+    pcmanfm
 
 
     #wayland
