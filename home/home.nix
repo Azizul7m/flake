@@ -38,27 +38,11 @@
       editorconfig-core-c #Editor config
       wl-clipboard #for emacs org-mode
 
-      # Xorg configuration
-      # xclip # Console Clipboard
-      # xorg.xev # Input Viewer
-      #xorg.xkill       # Kill Applications
-      # xorg.xrandr # Screen Settings
 
       # Xorg home-manager
       #flameshot        # Screenshot
       #picom # Compositer
       #sxhkd            # Shortcuts
-
-      # Wayland configuration
-      #autotiling # Tiling Script
-      #grim # Image Grabber
-      #slurp # Region Selector
-      #swappy # Screenshot Editor
-      #wev # Input Viewer
-      #wl-clipboard # Console Clipboard
-      #swayimg
-      #wofi
-      #bemenu
 
       # Wayland home-manager
       #mpvpaper # Video Wallpaper
