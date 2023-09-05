@@ -3,6 +3,9 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, user, full_name, host, ... }:
+let
+  exec = "exec Hyprland";
+in
 
 {
   imports =
@@ -46,18 +49,6 @@
 
 
 
-  # Enable the X11 windowing system. Configure keymap in X11
-  services.xserver = {
-    enable = true;
-    layout = "us,bd";
-    xkbVariant = "probhat";
-    xkbOptions = "grp:win_tab_toggle"; # Example option for layout switching
-  };
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -67,8 +58,6 @@
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   security.pam.services.swaylock.text = ''
-    # PAM configuration file for the swaylock screen locker. By default, it includes
-    # the 'login' configuration file (see /etc/pam.d/login)
     auth include login
   '';
 
@@ -79,21 +68,15 @@
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   environment = {
-    #loginShellInit = ''
-    #if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-    #${exec}
-    #fi
-    #''; # Will automatically open Hyprland when logged into tty1
+    loginShellInit = ''
+      if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
+        ${exec}
+      fi
+    ''; # Will automatically open Hyprland when logged into tty1
     variables = {
       TERMINAL = "alacritty";
       EDITOR = "nvim";
@@ -178,13 +161,6 @@
     ];
   };
 
-  # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "${user}";
-
-  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -270,13 +246,6 @@
   };
 
 
-  #xdg = {
-  #portal = {
-  #wlr.enable = true;
-  #enable = true;
-  #     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  #};
-  #};
 
 
   virtualisation = {
