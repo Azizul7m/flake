@@ -24,10 +24,8 @@
       #darktable
       #krita
       blender
+      olive-editor
       #davinci-resolve
-      libsForQt5.kdenlive
-      mediainfo #for kdenlive
-      glaxnimate #for kdenlive
       #pureref
       # General configuration
       #wacomtablet      # Wacom Tablet
@@ -70,6 +68,7 @@
 
       # Desktop
       #ansible          # Automation
+      irssi
       discord # Chat
       tdesktop # Telegram
       whatsapp-for-linux

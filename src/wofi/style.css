@@ -1,26 +1,30 @@
 window {
-margin: 0px;
-border: 1px solid #7A8478;
-background-color: #1E2326;
+    font-family: "iosevka";
+    font-size: 14px;
+    margin: 10px;
+    border: 1px solid #bd93f9;
+    border-radius: 7px;
+    background-color: #282a36;
 }
 
 #input {
-margin: 5px;
+margin: 8px;
 border: none;
-color: #D3C6AA;
-background-color: #272E33;
+color: #f8f8f2;
+background-color: #44475a;
 }
 
 #inner-box {
-margin: 5px;
-border: none;
-background-color: #1E2326;
+    padding: 5px;
+    border: none;
+    background-color: #282a36;
 }
 
 #outer-box {
-margin: 5px;
-border: none;
-background-color: #1E2326;
+    margin: 5px;
+    padding: 15px;
+    border: none;
+    background-color: #282a36;
 }
 
 #scroll {
@@ -28,13 +32,25 @@ margin: 0px;
 border: none;
 }
 
-
 #text {
-margin: 5px;
-border: none;
-color: #D3C6AA;
+    padding: 5px;
+    border: none;
+    color: #f8f8f2;
+}
+
+#entry.activatable #text {
+color: #282a36;
+}
+
+#entry > * {
+color: #f8f8f2;
 }
 
 #entry:selected {
-background-color: #272E33;
+    background-color: #44475a;
+    border-radius: 7px;
+}
+
+#entry:selected #text {
+    border-radius: 7px;
 }
