@@ -19,7 +19,7 @@
     frp
     bat
     exa
-    ispell
+    aspell
     killall
     usbutils
     unzip
