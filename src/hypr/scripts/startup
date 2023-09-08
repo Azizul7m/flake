@@ -13,14 +13,10 @@ function run {
 
 #autorandr horizontal
 #run caffeine
-#run 'variety'
+run 'swww img ~/.wallpapers/bike.jpg'
 #run '~/.config/awesome/wallpaper.sh'
 #run conky -c $HOME/.config/awesome/system-overview
-run 'nm-applet'
 #run 'pnmixer'
-run '/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)'
-run 'emacs --bg-daemon'
-run 'ibus-daemon --xim --replace --daemonize --panel=/usr/lib/ibus/ibus-ui-gtk3'
 #run 'flameshot',
 #run 'synology-drive -minimized',
 #run 'steam -silent',
@@ -30,7 +26,7 @@ run 'ibus-daemon --xim --replace --daemonize --panel=/usr/lib/ibus/ibus-ui-gtk3'
 # run 'picom -b --experimental-backends --config ~/.config/picom.conf'
 # run 'clipster -d'
 # run 'pidgin'
-# run 'telegram-desktop'
+run 'telegram-desktop'
 # run 'qbittorrent'
 #you can set wallpapers in themes as well
 #run applications from startup

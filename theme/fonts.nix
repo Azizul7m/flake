@@ -1,23 +1,26 @@
 { config, pkgs, ... }: {
-  gtk = {
-    enable = true;
-    theme = {
-      name = "vimix-dark-doder";
-      package = pkgs.vimix-gtk-themes;
-    };
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-    font = {
-      name = "Iosevka Medium";
-      #name = "FiraCode Nerd Font Mono Medium";
-    }; # Cursor is declared under home.pointerCursor
-  };
   fonts = {
     fontDir.enable = true;
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      iosevka
+      jetbrains-mono
+      fantasque-sans-mono
+      font-awesome # Icons
+      noto-fonts-emoji
+      corefonts # MS
+      (nerdfonts.override {
+        # Nerdfont Icons override
+        fonts = [ "FiraCode" ];
+      })
+    ];
     fontconfig = {
       enable = true;
+      defaultFonts = {
+        serif = [ "Iosevka" ];
+        sansSerif = [ "Iosevka" ];
+        monospace = [ "Iosevka" ];
+      };
       localConf = ''
         <match target="pattern">
             <test qual="any" name="family">

@@ -30,10 +30,10 @@
         alias em='emacs -nw'
         alias emds='emacs --daemon'
         alias emd='emacsclient -tty'
-        alias doomsync='~/.emacs.d/bin/doom sync'
-        alias doomdoctor='~/.emacs.d/bin/doom doctor'
-        alias doomupgrade='~/.emacs.d/bin/doom upgrade'
-        alias doompurge='~/.emacs.d/bin/doom purge'
+        alias doomsync='~/.config/emacs/bin/doom sync'
+        alias doomdoctor='~/.config/emacs/bin/doom doctor'
+        alias doomupgrade='~/.config/emacs/bin/doom upgrade'
+        alias doompurge='~/.config/emacs/bin/doom purge'
 
         alias cp='cp -i'
         alias mv='mv -i'
@@ -78,9 +78,7 @@
       '';
       # Add npm path to PATH
       shellInit = ''
-        set -gx PATH /home/${user}/.npm-global/bin  /home/${user}/.config/hypr/scripts /home/${user}/.local/share/solana/install/active_release/bin /home/${user}/.cargo/bin  $PATH
-        set -gx xkblayout "us"
-        set -gx xkbvariant "bn_probhat"
+        set -gx PATH /home/${user}/.npm-global/bin /home/${user}/.config/emacs/bin /home/${user}/.config/hypr/scripts /home/${user}/.local/share/solana/install/active_release/bin /home/${user}/.cargo/bin $PATH
         # pnpm
           set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
           set -gx PATH "$PNPM_HOME" $PATH
