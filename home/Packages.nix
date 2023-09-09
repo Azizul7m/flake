@@ -20,15 +20,6 @@
     blender
     olive-editor
 
-    # Emacs Stuff
-    graphviz # org-mode visualization
-    scrot # screenshot
-    emacsPackages.sqlite3
-    libvterm # Emacs Vterm
-    editorconfig-core-c # Editor config
-    wl-clipboard # for emacs org-mode
-    emacsPackages.djvu
-    emacsPackages.emacsql
     #internet
     google-chrome
     thunderbird
@@ -63,5 +54,15 @@
     mongodb-compass
     starship
     #jetbrains.datagrip
+
+    # Emacs Stuff
+    graphviz # org-mode visualization
+    scrot # screenshot
+    emacsPackages.sqlite3
+    libvterm # Emacs Vterm
+    editorconfig-core-c # Editor config
+    wl-clipboard # for emacs org-mode
+    emacsPackages.djvu
+    emacsPackages.emacsql
   ];
 }

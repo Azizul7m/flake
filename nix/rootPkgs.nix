@@ -50,6 +50,7 @@
     libnotify # for dunst
     dunst # notification
     grim
+    slurp
     wofi
     rofi-wayland
     bemenu
