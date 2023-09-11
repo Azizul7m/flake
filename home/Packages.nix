@@ -26,6 +26,7 @@
     #Social
     irssi
     discord # Chat
+    discordo
     tdesktop # Telegram
     whatsapp-for-linux
 

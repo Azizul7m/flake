@@ -1,8 +1,6 @@
 { pkgs, user, ... }:
-let
-  colors = import ../../src/colors/doom.nix;                 # Import colors theme
-in
-{
+let colors = import ../../src/colors/doom.nix; # Import colors theme
+in {
   home.packages = [ pkgs.libnotify ]; # Dependency
   services.dunst = {
     enable = true;
@@ -81,39 +79,5 @@ in
         timeout = 10;
       };
     };
-    #[espeak]
-    #    summary = "*"
-    #    script = dunst_espeak.sh
-
-    #[script-test]
-    #    summary = "*script*"
-    #    script = dunst_test.sh
-
-    #[ignore]
-    #    # This notification will not be displayed
-    #    summary = "foobar"
-    #    format = ""
-
-    #[signed_on]
-    #    appname = Pidgin
-    #    summary = "*signed on*"
-    #    urgency = low
-    #
-    #[signed_off]
-    #    appname = Pidgin
-    #    summary = *signed off*
-    #    urgency = low
-    #
-    #[says]
-    #    appname = Pidgin
-    #    summary = *says*
-    #    urgency = critical
-    #
-    #[twitter]
-    #    appname = Pidgin
-    #    summary = *twitter.com*
-    #    urgency = normal
-    #
-    # vim: ft=cfg
   };
 }

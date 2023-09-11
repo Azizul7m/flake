@@ -7,27 +7,15 @@
       "wlr/taskbar",
       "hyprland/window"
     ],
-    "modules-center": ["clock"],
+    "modules-center": ["clock", "mpd"],
     "modules-right": [
         "network",
         "tray",
+        "hyprland/language",
         "pulseaudio",
         "cpu",
-        "backlight",
         "battery",
     ],
-    "hyprland/window": {
-      "format": " {}",
-      "rewrite": {
-          "(\\d\\. )?(.*) - Chrome": "<span color=\"#4285F4\"></span>  $2 ",
-          "nvim (.*)": "<span color=\"#57A143\"></span>  $1",
-          "nvim": "<span color=\"#57A143\">  Neovim</span> ",
-          "ranger(.*)": "<span color=\"#ffffff\"></span>  $1",
-          "kitty (.*)": "<span color=\"#ffffff\"></span>  $1",
-          "Search(.*)": "<span color=\"#a855f7\"></span>  Search$1",
-      },
-      "separate-outputs": false
-    },
     "hyprland/workspaces": {
       "format": "{icon}",
       "format-icons": {
@@ -46,20 +34,34 @@
         "default": ""
       }
     },
-    "keyboard-state": {
-        "numlock": true,
-        "capslock": true,
-        "format": "{name} {icon}",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
+    "hyprland/window": {
+        "format": " {}",
+        "max-length": 28,
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "🌎 $1",
+            "(.*) - fish": "> [$1]"
+        },
+        "separate-outputs": true
     },
-    "idle_inhibitor": {
+    "hyprland/language": {
+        "format": "{short}",
+        "keyboard-name": "at-translated-set-2-keyboard",
+        "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next",
+    },
+    "wlr/taskbar": {
         "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
+        "icon-size": 13,
+        "icon-theme": "Numix-Circle",
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close",
+        "ignore-list": [
+        "Alacritty"
+        ],
+        "app_ids-mapping": {},
+        "rewrite": {
+            "Firefox Web Browser": "Firefox",
+            "Foot Server": "Terminal"
         }
     },
     "tray": {
@@ -72,15 +74,9 @@
         "format": "{:%I:%M %p}"
     },
     "cpu": {
-        "format": "{usage}% ",
-        "tooltip": true
-    },
-    "memory": {
-        "format": "{}% "
-    },
-    "backlight": {
-        "format": "{percent}% {icon}",
-        "format-icons": ["", "", "", "", "", "", "", "", ""]
+        "format": "{usage}% ",
+        "tooltip": true,
+        "on-click": "pkill btop || alacritty -e btop"
     },
     "battery": {
         "states": {
@@ -95,21 +91,22 @@
     },
     "network": {
         "format-wifi": "↕ {bandwidthTotalBytes} ",
-        "format-ethernet": "⇣⇡{bandwidthTotalBytes}  ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
+        "format-ethernet": "⇣⇡{bandwidthTotalBytes} 󰈀",
+        "tooltip-format": "{ifname} via {gwaddr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "󰤮",
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
         "interval": 3,
-        "on-click": "alacritty -e nmtui"
+        "on-click": "pkill nmtui || alacritty -e nmtui"
     },
     "pulseaudio": {
-        "format": "{volume}% {icon} {format_source}",
+        "format": "{volume}% {icon}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
         "format-muted": " {format_source}",
         "format-source": "{volume}% ",
         "format-source-muted": "",
+        "tooltip-format": "{volume}% {icon} {format_source}",
         "format-icons": {
             "headphone": "",
             "hands-free": "",
@@ -119,22 +116,33 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "alacritty -e pulsemixer"
+        "on-click": "pkill pulsemixer || alacritty -e pulsemixer"
     },
-    "wlr/taskbar": {
-        "format": "{icon}",
-        "icon-size": 12,
-        "icon-theme": "Numix-Circle",
-        "tooltip-format": "{title}",
-        "on-click": "activate",
-        "on-click-middle": "close",
-        "ignore-list": [""],
-        "app_ids-mapping": {
-        "firefoxdeveloperedition": "firefox-developer-edition"
+    "mpd": {
+        "format": "{stateIcon}{consumeIcon}{repeatIcon}{singleIcon} {filename}",
+        "format-disconnected": "",
+        "format-stopped": "",
+        "interval": 10,
+        "max-length": 18,
+        "tooltip-format": " {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})",
+        "consume-icons": {
+            "on": " "
         },
-        "rewrite": {
-            "Firefox Web Browser": "Firefox",
-            "Foot Server": "Terminal"
-        }
-    }
+        "random-icons": {
+            "off": "<span color=\"#f53c3c\"></span> ",
+            "on": " "
+        },
+        "repeat-icons": {
+            "on": " "
+        },
+        "single-icons": {
+            "on": ""
+        },
+        "state-icons": {
+            "paused": "",
+            "playing": " "
+        },
+        "tooltip-format-disconnected": "󰽰",
+        "on-click": "pkill ncmpcpp || alacritty -e ncmpcpp"
+    },
 }

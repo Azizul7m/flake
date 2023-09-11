@@ -1,4 +1,1 @@
-[
-  #  ./picom.nix
-  #  ./dunst.nix
-]
+[ ./mpd.nix ]

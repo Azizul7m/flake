@@ -9,13 +9,10 @@
     };
     flake-utils.url = "github:numtide/flake-utils";
     nur = { url = "github:nix-community/NUR"; };
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { self, nixpkgs, home-manager, fenix, nur, ... }@inputs:
+  outputs = { self, nixpkgs, fenix, nur, ... }@inputs:
     let
       system = "x86_64-linux";
       user = "anower";
@@ -34,14 +31,14 @@
         # Imports ./nix/default.nix
         import ./nix {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs user full_name host system pkgs home-manager;
+          inherit inputs nixpkgs user full_name host system pkgs;
         });
 
-      # Standalone home-manager configuration entrypoint
-      # Available through 'home-manager --flake .#your-username@your-hostname'
-      homeConfigurations = (import ./home {
-        inherit (nixpkgs) lib;
-        inherit inputs nixpkgs home-manager user host system pkgs;
-      });
+      # # Standalone home-manager configuration entrypoint
+      # # Available through 'home-manager --flake .#your-username@your-hostname'
+      # homeConfigurations = (import ./home {
+      #   inherit (nixpkgs) lib;
+      #   inherit inputs nixpkgs user host system pkgs;
+      # });
     };
 }

@@ -7,4 +7,5 @@
   ./vscode.nix
   ./alacritty.nix
   ./waybar.nix
+  ./nvim.nix
 ]

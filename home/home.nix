@@ -3,7 +3,7 @@ let
   homePkgs = import ./Packages.nix { inherit (pkgs) pkgs; };
   gtkConf = import ../theme/gtk.nix { inherit (pkgs) pkgs; };
 in {
-  imports = (import ../modules/programs);
+  imports = (import ../modules/programs) ++ (import ../modules/services);
   home = {
     stateVersion = "23.11";
     homeDirectory = "/home/${user}";

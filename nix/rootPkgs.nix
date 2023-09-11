@@ -8,7 +8,7 @@
     w3m
     btop
     nitch
-    tldr
+    tldr # Helper
     htop
     grc
     neofetch
@@ -32,6 +32,7 @@
     libadwaita
     pcmanfm
     pulsemixer # sound
+    home-manager
     #wayland
     wlogout
     wlr-randr # Screen Settings

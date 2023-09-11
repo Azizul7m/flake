@@ -85,9 +85,15 @@ in {
       TERMINAL = "alacritty";
       EDITOR = "nvim";
       VISUAL = "emacs";
+      XDG_CURRENT_DESKTOP = "Hyprland";
+      XDG_SESSION_TYPE = "wayland";
+      XDG_SESSION_DESKTOP = "Hyprland";
     };
     sessionVariables = {
-      #QT_QPA_PLATFORM = "wayland";
+      QT_QPA_PLATFORM = "wayland";
+      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+
+      GDK_BACKEND = "wayland";
       NIXOS_OZONE_WL = "1"; # electron apps to use wayland
       # WLR_NO_HARDWARE_CURSORS = "1";
       # MOZ_ENABLE_WAYLAND = "1";
@@ -120,7 +126,6 @@ in {
     tlp.enable = true; # TLP and auto-cpufreq for power management
     #logind.lidSwitch = "ignore";           # Laptop does not go to sleep when lid is closed
     auto-cpufreq.enable = true;
-    blueman.enable = true;
 
     # Sound settings
     pipewire = {
@@ -133,15 +138,14 @@ in {
     xserver = {
       enable = true;
       layout = "us,bd";
-      xkbVariant = "probhat";
-      xkbOptions = "caps:tab,super:alt_._toggle";
+      xkbVariant = "bd-probhat";
+      xkbOptions = "super:alt_space_toggle";
       displayManager.lightdm.enable = false; # Disable LightDM
     };
     # Enable CUPS to print documents.
     printing.enable = true;
   };
-  console.useXkbConfig = true;
-  #systemd config
+
   systemd = {
     user.services.polkit-gnome-authentication-agent-1 = {
       description = "polkit-gnome-authentication-agent-1";
