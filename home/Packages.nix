@@ -1,34 +1,38 @@
 { pkgs, ... }: {
   pkgs = with pkgs; [
     kitty
-    vscode
-    toot # Mastodon CLI interface
     podman-desktop
     appimage-run
-    zathura
     maestral-gui # dropbox
     gnome.nautilus
     gnome.file-roller # Archive Manager
     gnome.sushi # for nautilus quick file viewer
     gnome.eog # image viewer
+    yewtube # youtube
+    kooha # screenrecord
 
+    #Graphics
     gimp
     inkscape
     figma-linux
-    anydesk
-    qbittorrent
     blender
     olive-editor
 
     #internet
     google-chrome
     thunderbird
+    anydesk
+    qbittorrent
+
     #Social
     irssi
     discord # Chat
-    discordo
     tdesktop # Telegram
     whatsapp-for-linux
+
+    #Office
+    zathura
+    onlyoffice-bin
 
     # Development
     nodejs
@@ -50,10 +54,12 @@
     hidapi
     sqlite
     podman-compose
+    postman # API
     distrobox
     toolbox
     mongodb-compass
     starship
+    dockfmt # docker format
     #jetbrains.datagrip
 
     # Emacs Stuff
@@ -65,5 +71,7 @@
     wl-clipboard # for emacs org-mode
     emacsPackages.djvu
     emacsPackages.emacsql
+    emacsPackages.telega
+    emacsPackages.yasnippet-snippets
   ];
 }

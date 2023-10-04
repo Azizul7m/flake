@@ -33,12 +33,5 @@
           inherit (nixpkgs) lib;
           inherit inputs nixpkgs user full_name host system pkgs;
         });
-
-      # # Standalone home-manager configuration entrypoint
-      # # Available through 'home-manager --flake .#your-username@your-hostname'
-      # homeConfigurations = (import ./home {
-      #   inherit (nixpkgs) lib;
-      #   inherit inputs nixpkgs user host system pkgs;
-      # });
     };
 }

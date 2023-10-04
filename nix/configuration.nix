@@ -23,20 +23,21 @@ in {
   # Define your hostname.
   networking.hostName = "${host}";
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking = {
+    networkmanager = {
+      enable = true;
+      plugins = with pkgs; [
+        networkmanager-openvpn
+        networkmanager-openconnect
+      ];
+    };
+  };
   # Set your time zone.
   time.timeZone = "Asia/Dhaka";
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
     LC_PAPER = "en_US.UTF-8";
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "bn_BD";
@@ -92,11 +93,10 @@ in {
     sessionVariables = {
       QT_QPA_PLATFORM = "wayland";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-
       GDK_BACKEND = "wayland";
       NIXOS_OZONE_WL = "1"; # electron apps to use wayland
-      # WLR_NO_HARDWARE_CURSORS = "1";
-      # MOZ_ENABLE_WAYLAND = "1";
+      WLR_NO_HARDWARE_CURSORS = "1";
+      MOZ_ENABLE_WAYLAND = "1";
     };
   };
 
@@ -118,6 +118,8 @@ in {
   };
 
   services = {
+    # Mount MTP devices Trash enable;
+    gvfs = { enable = true; };
     # Enable automatic login for the user.
     getty.autologinUser = "${user}";
     # Enable the OpenSSH daemon.
@@ -138,14 +140,13 @@ in {
     xserver = {
       enable = true;
       layout = "us,bd";
-      xkbVariant = "bd-probhat";
-      xkbOptions = "super:alt_space_toggle";
+      xkbVariant = ",probhat";
       displayManager.lightdm.enable = false; # Disable LightDM
+      #xkbOptions = "super:alt_space_toggle";
     };
     # Enable CUPS to print documents.
     printing.enable = true;
   };
-
   systemd = {
     user.services.polkit-gnome-authentication-agent-1 = {
       description = "polkit-gnome-authentication-agent-1";
@@ -161,6 +162,11 @@ in {
         TimeoutStopSec = 10;
       };
     };
+    sleep.extraConfig = ''
+      AllowSuspend=yes
+      AllowHibernation=yes
+      AllowSuspendThenHibernate=yes
+      AllowHybridSleep=yes ''; # Required for clamshell mode (see script bindl lid switch and script in home.nix)
   };
   security.polkit.enable = true;
   virtualisation = {

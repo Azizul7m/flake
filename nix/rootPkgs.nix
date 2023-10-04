@@ -18,25 +18,32 @@
     jq
     frp
     bat
-    exa
+    eza
     aspell
     killall
     usbutils
     unzip
+    ffmpeg_6-full
+
+    openvpn
+    update-resolv-conf
+
     pciutils
-    udiskie # Auto Mounting
+    udisks2 # Auto Mounting
     libsecret # passwd manager
     coreutils # basic GNU utilities
     cliphist # clipboard manager
-    gparted
     libadwaita
     pcmanfm
     pulsemixer # sound
     home-manager
+
     #wayland
     wlogout
     wlr-randr # Screen Settings
     swaylock
+    swaynotificationcenter # notifications
+    libnotify
     wlprop
     wayland
     wayland-scanner
@@ -48,9 +55,6 @@
     waypaper # wallpaper
     glfw-wayland
     eww
-    libnotify # for dunst
-    dunst # notification
-    grim
     slurp
     wofi
     rofi-wayland
