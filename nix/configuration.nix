@@ -42,7 +42,7 @@ in {
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "bn_BD";
     LANG = "en_US.UTF-8";
-    LANGUAGE = "en_US.UTF-8";
+    LANGUAGE = "en";
   };
 
   # Enable sound with pipewire.
@@ -86,9 +86,11 @@ in {
       TERMINAL = "alacritty";
       EDITOR = "nvim";
       VISUAL = "emacs";
+      NODE_PATH = "$HOME/.npm_global";
       XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_TYPE = "wayland";
       XDG_SESSION_DESKTOP = "Hyprland";
+      PIP_PREFIX = "/home/${user}/.local/bin";
     };
     sessionVariables = {
       QT_QPA_PLATFORM = "wayland";
@@ -196,6 +198,12 @@ in {
       options = "--delete-older-than 7d";
     };
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
+  };
+
+  qt = {
+    enable = true;
+    style = "gtk2";
+    platformTheme = "gtk2";
   };
 
   # Allow unfree packages

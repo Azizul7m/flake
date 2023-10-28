@@ -12,6 +12,7 @@
   background-color: #303446;
   color: #c6d0f5;
   padding: 0;
+  opacity: 0.9;
 }
 
 .floating-notifications.background .notification-row .notification-background .notification {
@@ -84,20 +85,18 @@
 .control-center {
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px #414559;
   border-radius: 5px;
-  margin: 18px;
+  margin: 0px;
   background-color: #303446;
-  color: #c6d0f5;
-  padding: 14px;
+  color: #e6f0f5;
+  padding: 20px;
+  opacity: 0.95;
 }
 
 .control-center .widget-title {
-  color: #c6d0f5;
+  color: #e6f0f5;
   font-size: 1.3em;
 }
 
-.control-center .button-grid {
-  font-size: 18px;
-}
 
 .control-center .widget-title button {
   border-radius: 7px;
@@ -249,7 +248,10 @@ trough {
   background: #51576d;
   border-radius: 8px;
 }
-
+.widget-buttons-grid{
+  margin-bottom: 1rem;
+  font-size: 24px;
+}
 .widget-dnd {
   margin: 0px;
   font-size: 1.1rem;

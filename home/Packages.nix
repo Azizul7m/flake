@@ -1,49 +1,72 @@
 { pkgs, ... }: {
   pkgs = with pkgs; [
+    starship
     kitty
-    podman-desktop
     appimage-run
-    maestral-gui # dropbox
     gnome.nautilus
+    gnome.gnome-disk-utility
     gnome.file-roller # Archive Manager
     gnome.sushi # for nautilus quick file viewer
     gnome.eog # image viewer
-    yewtube # youtube
     kooha # screenrecord
+    spotify
 
     #Graphics
     gimp
     inkscape
     figma-linux
     blender
-    olive-editor
+    freecad
 
     #internet
     google-chrome
+    brave
     thunderbird
     anydesk
     qbittorrent
+    dropbox-cli
 
     #Social
-    irssi
     discord # Chat
     tdesktop # Telegram
     whatsapp-for-linux
+    skypeforlinux
 
     #Office
     zathura
+    sioyek # pdf viewver
     onlyoffice-bin
 
+    # circuit simulator
+    qucs-s
+    ngspice
+
+    #TUI
+    yewtube # youtube
+    himalaya # tui email client
+    navi
+    zellij
+    ffmpeg_6-full
+
     # Development
+    roswell # elisp package manager
     nodejs
+
     direnv
     devbox
+
     cargo
     rustc
     rustfmt
     clippy
-    rust-analyzer
-    python3
+    rust-analyzer # lsp
+
+    texlab # Lsp latex
+
+    python3Full
+    python311Packages.pip
+    pipenv
+
     gnumake
     libtool
     pkg-config
@@ -53,13 +76,14 @@
     protobuf
     hidapi
     sqlite
-    podman-compose
-    postman # API
+
     distrobox
     toolbox
     mongodb-compass
-    starship
+
     dockfmt # docker format
+    podman-compose
+    #postman # API
     #jetbrains.datagrip
 
     # Emacs Stuff

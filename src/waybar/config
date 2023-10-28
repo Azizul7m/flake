@@ -2,6 +2,7 @@
     "layer": "top",
     "height": 24,
     "spacing": 5,
+    "position": "top",
     "modules-left": [
       "hyprland/workspaces",
       "wlr/taskbar",

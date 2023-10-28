@@ -1,11 +1,13 @@
-{ pkgs, user, ... }:
-{
+{ pkgs, user, ... }: {
   programs = {
     fish = {
       enable = true;
       plugins = [
         # Enable a plugin (here grc for colorized command output) from nixpkgs
-        { name = "grc"; src = pkgs.fishPlugins.grc.src; }
+        {
+          name = "grc";
+          src = pkgs.fishPlugins.grc.src;
+        }
       ];
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
@@ -75,10 +77,11 @@
 
         alias nixosrebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
         alias cleanup='sudo nix-collect-garbage -d'
+
       '';
       # Add npm path to PATH
       shellInit = ''
-        set -gx PATH /home/${user}/.npm-global/bin /home/${user}/.config/emacs/bin /home/${user}/.config/hypr/scripts /home/${user}/.local/share/solana/install/active_release/bin /home/${user}/.cargo/bin $PATH
+        set -gx PATH /home/${user}/.npm-global/bin /home/${user}/.config/emacs/bin /home/${user}/.config/hypr/scripts /home/${user}/.local/share/solana/install/active_release/bin /home/${user}/.cargo/bin /home/${user}/.local/bin $PATH
         # pnpm
           set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
           set -gx PATH "$PNPM_HOME" $PATH

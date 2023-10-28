@@ -10,6 +10,11 @@
     name = "Vimix-Black";
     package = pkgs.vimix-icon-theme;
   };
+  cursorTheme = {
+    package = pkgs.apple-cursor;
+    name = "macOS-Monterey";
+    size = 16;
+  };
   gtk3.extraConfig = {
     gtk-xft-antialias = 1;
     gtk-xft-hinting = 1;

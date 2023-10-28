@@ -1,46 +1,78 @@
-{ pkgs, config, ... }: {
-
+{ pkgs, lib, config, ... }: {
   programs = {
     neovim = {
       enable = true;
       viAlias = true;
-      extraConfig = ''
-        syntax on
-        set number
-        set nobackup
-        set noswapfile
-        set smarttab
-        set smartindent
-        set tabstop=2
-        set shiftwidth=2
-        set softtabstop=2
-        set expandtab
+      withNodeJs = true;
+      plugins = with pkgs.vimPlugins; [
+        nvim-lspconfig
+        nvim-treesitter.withAllGrammars
+        plenary-nvim
+        gruvbox-material
+        mini-nvim
+        cmp-nvim-lsp
+        cmp_luasnip
+        cmp-buffer
+        friendly-snippets
+        comment-nvim
+        nvim-web-devicons
+        vim-nix
 
-        let mapleader = " "
-        inoremap jk <ESC>
-        nmap <Leader>e :Lexplore<CR>
+        {
+          plugin = onedarkpro-nvim;
+          config = "colorscheme onedark ";
+        }
+        {
+          plugin = lualine-nvim;
+          config = ''
+            lua << END
+                require('lualine').setup()
+            END
+          '';
+        }
+        {
+          plugin = nvim-tree-lua;
+          config = ''
+            lua << EOF
+              require("nvim-tree").setup()
+            EOF
+          '';
+        }
+        { plugin = mason-nvim; }
+        {
+          plugin = mason-lspconfig-nvim;
+          config = ''
+            lua << EOF
+              require("mason-lspconfig").setup()
+              require("mason").setup()
+            EOF'';
+        }
+        {
+          plugin = nvim-cmp;
+          config = ''
+            lua << EOF
+              require'cmp'.setup{
+                sources = {
+                  { name = 'nvim_lsp' },
+                  { name = 'luasnip' },
+                  { name = 'buffer' },
+                }
+              }
+            EOF
+          '';
+        }
 
-        "Navigate TAB
-        nmap <Tab> :tabnext<CR>
-        nmap <S-Tab> :tabprev<CR>
-        nmap <leader>n :tabnew<CR>
-        nmap <leader>wv :vsplit<cr>
-        nmap <leader>wh :split<cr>
-        nmap <leader>wq :wq<cr>
-        nmap <leader>wx :q<cr>
+        {
+          plugin = telescope-nvim;
+          config = "";
+        }
+        {
+          plugin = telescope-fzf-native-nvim;
+          config = "";
+        }
 
-        "resize buffer window with arrow
-        nnoremap <silent> <C-Up> :resize +2<CR>
-        nnoremap <silent> <C-down> :resize -2<CR>
-        nnoremap <silent> <C-left> :vertical resize +2<CR>
-        nnoremap <silent> <C-right> :vertical resize -2<CR>
-
-        "Batter window Navigation
-        nnoremap <C-h> <C-\><C-N><C-w>h
-        nnoremap <C-j> <C-\><C-N><C-w>j
-        nnoremap <C-k> <C-\><C-N><C-w>k
-        nnoremap <C-l> <C-\><C-N><C-w>l
-      '';
+      ];
+      extraConfig = lib.fileContents ../../src/nvim/init.lua;
     };
   };
 }

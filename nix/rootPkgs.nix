@@ -1,11 +1,13 @@
 { pkgs, ... }: {
   pkgs = with pkgs; [
     git
+    gitui
     vim
     ranger
     neovim
     wget
     w3m
+    ix # pastbin
     btop
     nitch
     tldr # Helper
@@ -19,11 +21,16 @@
     frp
     bat
     eza
+    figlet # assci arts
+    ispell
     aspell
+    aspellDicts.en
     killall
     usbutils
     unzip
-    ffmpeg_6-full
+    khal # calander
+    vdirsyncer # online cal address sync
+    mpv
 
     openvpn
     update-resolv-conf
@@ -33,7 +40,6 @@
     libsecret # passwd manager
     coreutils # basic GNU utilities
     cliphist # clipboard manager
-    libadwaita
     pcmanfm
     pulsemixer # sound
     home-manager

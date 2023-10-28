@@ -2,6 +2,7 @@
 let
   homePkgs = import ./Packages.nix { inherit (pkgs) pkgs; };
   gtkConf = import ../theme/gtk.nix { inherit (pkgs) pkgs; };
+  qtConf = import ../theme/qt.nix { inherit (pkgs) pkgs; };
 in {
   imports = (import ../modules/programs) ++ (import ../modules/services);
   home = {
@@ -11,6 +12,7 @@ in {
     packages = homePkgs.pkgs;
   };
   gtk = gtkConf;
+  qt = qtConf;
   #enable home-manager
   programs = { home-manager.enable = true; };
   systemd.user.targets.tray =
