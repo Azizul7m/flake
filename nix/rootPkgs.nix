@@ -4,6 +4,9 @@
     gitui
     vim
     ranger
+    joshuto # ranger like file manager
+    lf
+    pistol # fileviewer for renger and lf
     neovim
     wget
     w3m
@@ -21,19 +24,23 @@
     frp
     bat
     eza
+    yad
     figlet # assci arts
-    ispell
+    hunspell
+    hunspellDicts.en_US
     aspell
-    aspellDicts.en
+
+    xrdp # desktop remote server
+
     killall
     usbutils
     unzip
-    khal # calander
     vdirsyncer # online cal address sync
     mpv
 
     openvpn
     update-resolv-conf
+    openssl
 
     pciutils
     udisks2 # Auto Mounting
@@ -42,8 +49,8 @@
     cliphist # clipboard manager
     pcmanfm
     pulsemixer # sound
+    networkmanagerapplet
     home-manager
-
     #wayland
     wlogout
     wlr-randr # Screen Settings
@@ -57,13 +64,14 @@
     egl-wayland
     wf-recorder
     wayland-protocols
+    waypaper # wallpaper selector
     swaybg # wallpaper
-    waypaper # wallpaper
     glfw-wayland
     eww
     slurp
     wofi
     rofi-wayland
     bemenu
+
   ];
 }

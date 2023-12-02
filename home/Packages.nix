@@ -9,32 +9,31 @@
     gnome.sushi # for nautilus quick file viewer
     gnome.eog # image viewer
     kooha # screenrecord
-    spotify
+    celluloid # player
 
     #Graphics
-    gimp
     inkscape
-    figma-linux
+    #figma-linux
     blender
-    freecad
 
     #internet
     google-chrome
     brave
-    thunderbird
+    #thunderbird
+    remmina
     anydesk
     qbittorrent
-    dropbox-cli
+    dropbox
 
     #Social
     discord # Chat
     tdesktop # Telegram
     whatsapp-for-linux
-    skypeforlinux
+    weechat
 
     #Office
-    zathura
     sioyek # pdf viewver
+    foliate
     onlyoffice-bin
 
     # circuit simulator
@@ -44,16 +43,16 @@
     #TUI
     yewtube # youtube
     himalaya # tui email client
-    navi
-    zellij
-    ffmpeg_6-full
+    zellij # tmux alaternative
 
     # Development
+    vscode
     roswell # elisp package manager
     nodejs
 
     direnv
     devbox
+    exercism
 
     cargo
     rustc
@@ -63,8 +62,8 @@
 
     texlab # Lsp latex
 
-    python3Full
-    python311Packages.pip
+    python310Packages.pip
+    python310Full
     pipenv
 
     gnumake
@@ -72,9 +71,6 @@
     pkg-config
     openssl
     libclang
-    llvm
-    protobuf
-    hidapi
     sqlite
 
     distrobox
@@ -97,5 +93,8 @@
     emacsPackages.emacsql
     emacsPackages.telega
     emacsPackages.yasnippet-snippets
+    emacsPackages.grip-mode
+    texlive.combined.scheme-full # latex compailer
+    pandoc
   ];
 }

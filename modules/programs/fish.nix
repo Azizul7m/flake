@@ -60,6 +60,9 @@
 
         alias wstop='waydroid session stop || sudo waydroid container stop'
         alias wui='waydroid show-full-ui'
+        alias ranger='joshuto'
+
+
 
         alias tb='nc termbin.com 9999'
         alias recordterm='asciinema rec'
@@ -67,10 +70,11 @@
         # Distrobox
         alias fedora='distrobox enter fedora'
         alias ubuntu='distrobox enter ubuntu'
-        alias kali='distrobox enter kali'
+        alias kali='distrobox enter blackarch'
 
 
-        alias pdf='zathura'
+        alias open_term='alacritty -e zellij'
+        alias pdf='sioyek'
         alias txt='mousepad'
         alias hotspot='nmcli dev wifi hotspot'
         alias wpassword='nmcli dev wifi show-password'

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   programs = {
     tmux = {
       enable = true;
@@ -7,18 +6,18 @@
       newSession = true;
       # Stop tmux+escape craziness.
       secureSocket = false;
-      terminal = "screen-256color";
+      terminal = "screen";
       keyMode = "vi";
       resizeAmount = 5;
       customPaneNavigationAndResize = true;
-      plugins = [
-        pkgs.tmuxPlugins.nord
+      plugins = with pkgs.tmuxPlugins; [
+        yank
+        open
+        jump
+        onedark-theme
+        better-mouse-mode
       ];
-    };
-    tmate = {
-      enable = true;
-      # FIXME: This causes tmate to hang.
-      # extraConfig = config.xdg.configFile."tmux/tmux.conf".text;
+      extraConfig = "set -g mouse on ";
     };
   };
 }

@@ -87,14 +87,14 @@ in {
       EDITOR = "nvim";
       VISUAL = "emacs";
       NODE_PATH = "$HOME/.npm_global";
+      PIP_PREFIX = "$HOME/.local/bin";
       XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_TYPE = "wayland";
       XDG_SESSION_DESKTOP = "Hyprland";
-      PIP_PREFIX = "/home/${user}/.local/bin";
     };
     sessionVariables = {
-      QT_QPA_PLATFORM = "wayland";
-      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+      # QT_QPA_PLATFORM = "wayland";
+      # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       GDK_BACKEND = "wayland";
       NIXOS_OZONE_WL = "1"; # electron apps to use wayland
       WLR_NO_HARDWARE_CURSORS = "1";
@@ -108,6 +108,7 @@ in {
     dconf.enable = true;
     mtr.enable = true;
     light.enable = true;
+    openvpn3.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
@@ -198,12 +199,6 @@ in {
       options = "--delete-older-than 7d";
     };
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
-  };
-
-  qt = {
-    enable = true;
-    style = "gtk2";
-    platformTheme = "gtk2";
   };
 
   # Allow unfree packages
