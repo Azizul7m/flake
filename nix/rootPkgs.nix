@@ -27,11 +27,12 @@
     yad
     figlet # assci arts
     hunspell
+    wordnet # large lexical database of English
     hunspellDicts.en_US
     aspell
+    wkhtmltopdf
 
-    xrdp # desktop remote server
-
+    polkit
     killall
     usbutils
     unzip

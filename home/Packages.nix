@@ -13,17 +13,25 @@
 
     #Graphics
     inkscape
-    #figma-linux
+    figma-linux
     blender
+
+    # for Android
+    scrcpy
+    libsForQt5.kdeconnect-kde # kde connect
+    android-tools # adb and other stuff
 
     #internet
     google-chrome
     brave
     #thunderbird
-    remmina
+    #remmina
     anydesk
+    rustdesk
     qbittorrent
     dropbox
+    ventoy # boot usb flash drive
+    woeusb
 
     #Social
     discord # Chat
@@ -41,12 +49,12 @@
     ngspice
 
     #TUI
+    linux-wifi-hotspot
     yewtube # youtube
     himalaya # tui email client
     zellij # tmux alaternative
 
     # Development
-    vscode
     roswell # elisp package manager
     nodejs
 

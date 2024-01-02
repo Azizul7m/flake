@@ -1,10 +1,10 @@
 { pkgs, ... }: {
   enable = true;
   theme = {
-    # name = "Dracula";
-    # package = pkgs.dracula-theme;
-    name = "Materia-dark";
-    package = pkgs.materia-theme;
+    name = "Dracula";
+    package = pkgs.dracula-theme;
+    # name = "Materia-dark";
+    # package = pkgs.materia-theme;
   };
   iconTheme = {
     name = "Vimix-Black";

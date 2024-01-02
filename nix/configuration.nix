@@ -31,6 +31,8 @@ in {
         networkmanager-openconnect
       ];
     };
+    firewall.enable = true;
+    firewall.allowedTCPPorts = [ 22 80 443 ];
   };
   # Set your time zone.
   time.timeZone = "Asia/Dhaka";
@@ -200,6 +202,7 @@ in {
     };
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
   };
+  nixpkgs.config.permittedInsecurePackages = [ "qtwebkit-5.212.0-alpha4" ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
