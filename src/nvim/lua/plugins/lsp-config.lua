@@ -10,7 +10,7 @@ return{
     "williamboman/mason-lspconfig",
     config = function()
         require("mason-lspconfig").setup({
-        ensure_installed = {"lua_ls", "tsserver", "rust-analyzer"}
+        ensure_installed = {"tsserver"}
     })
     end
   },
@@ -19,8 +19,10 @@ return{
     "williamboman/nvim-lspconfig",
     config = function()
       local lspconfig = require("lspconfig")
-      lspconfig.lua_ls.setup({})
-      lspconfig.tsserver.setup({})
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      lspconfig.tsserver.setup({
+         capabilities = capabilities 
+      })
 
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
       vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, {})

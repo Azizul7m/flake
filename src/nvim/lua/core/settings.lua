@@ -6,6 +6,16 @@ vim.cmd("set shiftwidth=2")
 vim.opt.smarttab = true
 vim.wo.number = true
 vim.g.mapleader = " "
+vim.opt.swapfile = false
+vim.o.mouse= 'a'
+vim.o.breakindent= true
+vim.o.undofile= true
+vim.o.ignorecase= true
+vim.wo.signcolumn= 'yes' 
+vim.wo.cursorline = true
+vim.wo.scrolloff = 5
+
+
 -- fetch keymap
 local keymap = vim.api.nvim_set_keymap
 -- Silent keymap option
@@ -55,12 +65,6 @@ keymap("n", "<leader>bh", ":bprevious<CR>", opts)
 
 -- Clear highlights
 keymap("n", "<leader>th", ":nohlsearch<CR>", opts)
-
-
-
-
--- Git
-keymap("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
 
 
 keymap("n", "<leader>gh", "<cmd>Lspsaga lsp_finder<CR>", opts)

@@ -43,6 +43,7 @@
     sioyek # pdf viewver
     foliate
     onlyoffice-bin
+    obsidian
 
     # circuit simulator
     qucs-s
@@ -57,6 +58,10 @@
     # Development
     roswell # elisp package manager
     nodejs
+    lua
+    lua-language-server
+
+
 
     direnv
     devbox

@@ -25,5 +25,12 @@ return {
       -- load_extension, somewhere after setup function:
       require("telescope").load_extension("ui-select")
     end
+  },
+  {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup { }
+        vim.keymap.set("n", "<leader>pp", [[:Telescope projects<CR>]], opts)
+    end
   }
 }

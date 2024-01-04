@@ -202,7 +202,7 @@ in {
     };
     package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
   };
-  nixpkgs.config.permittedInsecurePackages = [ "qtwebkit-5.212.0-alpha4" ];
+  nixpkgs.config.permittedInsecurePackages = [ "qtwebkit-5.212.0-alpha4" "electron-25.9.0" ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
