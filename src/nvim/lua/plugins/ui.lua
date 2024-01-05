@@ -39,14 +39,20 @@ return {
       main = "ibl", 
       opts = {} ,
       config = function ()
-        require("ibl").setup()
+        require("ibl").setup({
+          whitespace = {
+              highlight = highlight,
+              remove_blankline_trail = false,
+          },
+          scope = { enabled = false },
+        })
       end
     },
   -- highlights some word under the cursor
     {
       "RRethy/vim-illuminate",
       config = function()
-        require("illuminate ").setup()
+        require("illuminate ").setup({})
       end,
       event = "User FileOpened",
     }
