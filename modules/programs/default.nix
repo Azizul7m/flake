@@ -5,7 +5,8 @@
   ./tmux.nix
   ./direnv.nix
   ./alacritty.nix
-  ./waybar.nix
   ./nvim.nix
   ./vscode.nix
+  ./waybar.nix
+  ./emacs.nix
 ]

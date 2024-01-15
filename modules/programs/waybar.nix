@@ -1,18 +1,22 @@
-{ config, pkgs, lib, user, ... }:
-
-{
-  lib.overlays = [
-    (self: super: {
-      waybar = super.waybar.overrideAttrs (oldAttrs: {
-        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      });
-    })
-  ];
-  programs.waybar =
-    {
+{config, pkgs, ...}: {
+  programs = {
+    waybar = {
       enable = true;
-      systemd.enable = true;
-      #settings = builtins.readFile ../../src/waybar/config;
-      style = builtins.readFile ../../src/waybar/waybar.css;
+      # systemd.enable = true;
     };
+  };
+  home.file= {
+    "config.waybar" = {
+        source = ../../src/waybar;
+        target = "${config.home.homeDirectory}/.config/waybar";
+    };
+    "config.swaync" = {
+      source = ../../src/swaync ;
+      target = "${config.home.homeDirectory}/.config/swaync";
+    };
+    "config.wofi" = {
+      source = ../../src/wofi;
+      target = "${config.home.homeDirectory}/.config/wofi";
+    };
+  };
 }

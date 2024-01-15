@@ -1,11 +1,9 @@
 { config, pkgs, user, lib, full_name, host, ... }:
-let
-  exec = "exec Hyprland";
-  rootpkgs = import ./rootPkgs.nix { inherit (pkgs) pkgs; };
+let rootpkgs = import ./rootPkgs.nix { inherit (pkgs) pkgs; };
 in {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./module/hyprland.nix # Hyprland land module
     ../theme/fonts.nix # font-confg
   ];
   # Bootloader.
@@ -20,11 +18,9 @@ in {
     consoleLogLevel = 0;
     initrd.verbose = false;
   };
-  # Define your hostname.
-  networking.hostName = "${host}";
-  # Enable networking
   networking = {
-    networkmanager = {
+    hostName = "${host}"; # Define hostname.
+    networkmanager = { # Enable networking
       enable = true;
       plugins = with pkgs; [
         networkmanager-openvpn
@@ -34,8 +30,7 @@ in {
     firewall.enable = true;
     firewall.allowedTCPPorts = [ 22 80 443 ];
   };
-  # Set your time zone.
-  time.timeZone = "Asia/Dhaka";
+  time.timeZone = "Asia/Dhaka"; # Set your time zone.
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -46,15 +41,6 @@ in {
     LANG = "en_US.UTF-8";
     LANGUAGE = "en";
   };
-
-  # Enable sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  security.pam.services.swaylock.text = ''
-    auth include login
-  '';
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
@@ -62,8 +48,6 @@ in {
     extraGroups = [ "networkmanager" "wheel" "mpd" "docker" "podman" ];
     shell = pkgs.fish; # Default shell
     packages = with pkgs; [
-      emacs29
-      mpv
       alacritty
       firefox
       rnix-lsp # Nix language server protocol
@@ -75,119 +59,98 @@ in {
       gcc
     ];
   };
-  # add your root pkgs inside PackagesRoot.nix files
-  environment.systemPackages = rootpkgs.pkgs;
-  # Environment Variables
+  users.users.minidlna = {
+    extraGroups =
+      [ "users" "samba" "wheel" "tolga" ]; # so minidlna can access the files.
+  };
   environment = {
-    loginShellInit = ''
-      if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-        ${exec}
-      fi
-    ''; # Will automatically open Hyprland when logged into tty1
-    variables = {
+    systemPackages =
+      rootpkgs.pkgs; # add your root pkgs inside PackagesRoot.nix files
+    variables = { # Environment Variables
       TERMINAL = "alacritty";
       EDITOR = "nvim";
       VISUAL = "emacs";
       NODE_PATH = "$HOME/.npm_global";
       PIP_PREFIX = "$HOME/.local/bin";
-      XDG_CURRENT_DESKTOP = "Hyprland";
-      XDG_SESSION_TYPE = "wayland";
-      XDG_SESSION_DESKTOP = "Hyprland";
-    };
-    sessionVariables = {
-      # QT_QPA_PLATFORM = "wayland";
-      # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-      GDK_BACKEND = "wayland";
-      NIXOS_OZONE_WL = "1"; # electron apps to use wayland
-      WLR_NO_HARDWARE_CURSORS = "1";
-      MOZ_ENABLE_WAYLAND = "1";
     };
   };
-
   programs = {
     fish.enable = true;
     starship.enable = true;
     dconf.enable = true;
     mtr.enable = true;
-    light.enable = true;
     openvpn3.enable = true;
+    kdeconnect.enable = true;
+    gnome-disks.enable = true;
+    file-roller.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
-    hyprland = {
-      enable = true;
-      xwayland.enable = true;
-    };
-    waybar = { enable = true; };
   };
-
+  sound.enable = true; # Enable sound with pipewire.
   services = {
-    # Mount MTP devices Trash enable;
-    gvfs = { enable = true; };
-    # Enable automatic login for the user.
-    getty.autologinUser = "${user}";
-    # Enable the OpenSSH daemon.
-    openssh.enable = true;
-    emacs.enable = true;
-    tlp.enable = true; # TLP and auto-cpufreq for power management
-    #logind.lidSwitch = "ignore";           # Laptop does not go to sleep when lid is closed
-    auto-cpufreq.enable = true;
-
-    # Sound settings
-    pipewire = {
+    create_ap.enable = true; # hotspot
+    haveged.enable = true; # daemon hotspot
+    gnome = {
+      gnome-keyring.enable = true;
+      sushi.enable = true; # quick previewer for nautilus
+    };
+    emacs = {
+      enable = true;
+      defaultEditor = true;
+    };
+    pipewire = { # Sound settings
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+    };
+    minidlna = { # NOTE: dlna midea steming
+      enable = true;
+      openFirewall = true;
+      settings = {
+        inotify = "yes";
+        friendly_name = "NixOS-DLNA";
+        media_dir =
+          [ "PV,$HOME/Videos" "PV,$HOME/Music" "PV,$HOME/Entertainment" ];
+      };
     };
     # Enable the X11 windowing system. Configure keymap in X11
     xserver = {
       enable = true;
       layout = "us,bd";
       xkbVariant = ",probhat";
-      displayManager.lightdm.enable = false; # Disable LightDM
+      # displayManager.lightdm.enable = false; # Disable LightDM
       #xkbOptions = "super:alt_space_toggle";
     };
-    # Enable CUPS to print documents.
-    printing.enable = true;
+    gvfs = { enable = true; }; # Mount MTP devices Trash enable;
+    getty.autologinUser = "${user}"; # Enable automatic login for the user.
+    openssh.enable = true; # Enable the OpenSSH daemon.
+    tlp.enable = true; # TLP and auto-cpufreq for power management
+    auto-cpufreq.enable = true;
+    printing.enable = true; # Enable CUPS to print documents.
   };
-  systemd = {
-    user.services.polkit-gnome-authentication-agent-1 = {
-      description = "polkit-gnome-authentication-agent-1";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart =
-          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
-    sleep.extraConfig = ''
-      AllowSuspend=yes
-      AllowHibernation=yes
-      AllowSuspendThenHibernate=yes
-      AllowHybridSleep=yes ''; # Required for clamshell mode (see script bindl lid switch and script in home.nix)
-  };
-  security.polkit.enable = true;
   virtualisation = {
     spiceUSBRedirection.enable = true;
     podman = {
       enable = true;
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
+      dockerCompat = true; # Create a `docker` alias for podman,
+      defaultNetwork.settings.dns_enabled =
+        true; # containers talk to each other.
     };
   };
-
   hardware = {
+    pulseaudio.enable = false;
     opengl.enable = true;
     opengl.driSupport = true;
+  };
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+    pam.services.swaylock.text = ''
+      auth include login
+    '';
   };
   nix = {
     settings = {
@@ -200,11 +163,7 @@ in {
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
-    package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
+    # package = pkgs.nixVersions.unstable; # Enable nixFlakes on system
   };
-  nixpkgs.config.permittedInsecurePackages = [ "qtwebkit-5.212.0-alpha4" "electron-25.9.0" ];
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-  system.stateVersion = "23.11";
+  nixpkgs.config.allowUnfree = true; # Allow unfree packages
 }

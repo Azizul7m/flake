@@ -1,16 +1,16 @@
 return {
   -- tabbar
   {
-      'romgrk/barbar.nvim',
-      dependencies = {
-        'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
-        'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
-      },
-      config = function ()
-          require'barbar'.setup {
-            separator = {left = '', right = ''},
-        }
-      end
+    'romgrk/barbar.nvim',
+    dependencies = {
+      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+      'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+    },
+    config = function ()
+        require'barbar'.setup {
+          separator = {left = '', right = ''},
+      }
+    end
   },
   -- statusbar
   {
@@ -48,7 +48,7 @@ return {
         })
       end
     },
-  -- highlights some word under the cursor
+    -- TODO: Need to fix same word highlights; 
     {
       "RRethy/vim-illuminate",
       config = function()

@@ -14,7 +14,7 @@
           # Font - Laptop has size manually changed at home.nix
           normal.family = "Iosevka";
           bold = { style = "Bold"; };
-          size = 8;
+          size = 10;
         };
         offset = {
           # Positioning

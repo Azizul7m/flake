@@ -10,20 +10,19 @@ local lsp_config = {
     "williamboman/mason-lspconfig",
     config = function()
         require("mason-lspconfig").setup({
-        ensure_installed = {"tsserver", "eslint", "rust-analyzer", "lua_ls"}
+        ensure_installed = {"tsserver", "eslint", "lua_ls"}
     })
     end
   },
   -- NOTE: Now neovim talk to lsp server 
   {
     "williamboman/nvim-lspconfig",
-      config = function()
+    config = function()
       local lspconfig = require("lspconfig")
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       lspconfig.tsserver.setup({
          capabilities = capabilities 
       })
-      -- Lsp keymap
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
       vim.keymap.set('n', '<leader>ai', vim.lsp.buf.definition, {})
       vim.keymap.set({'n', 'v'}, '<leader>aa', vim.lsp.buf.code_action, {})
@@ -36,9 +35,11 @@ local lsp_config = {
     'mrcjkb/rustaceanvim',
     version = '^3', -- Recommended
     ft = { 'rust' },
+    lazy = true,
   },
   {
     'saecki/crates.nvim',
+    lazy = true,
     ft = {"toml"},
     config = function(_, opts)
       local crates  = require('crates')
@@ -52,6 +53,7 @@ local lsp_config = {
   {
     "rust-lang/rust.vim",
     ft = "rust",
+    lazy = true,
     init = function ()
       vim.g.rustfmt_autosave = 1
     end

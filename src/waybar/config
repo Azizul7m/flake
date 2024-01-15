@@ -4,6 +4,7 @@
     "spacing": 5,
     "position": "top",
     "modules-left": [
+      "custom/logo",
       "hyprland/workspaces",
       "wlr/taskbar",
       "hyprland/window"
@@ -85,6 +86,10 @@
         "on-click": "swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
         "escape": true
+    },
+    "custom/logo": {
+      "format": " ",
+      "on-click": "pkill nwggrid ||nwggrid",
     },
     "tray": {
         "icon-size": 12,

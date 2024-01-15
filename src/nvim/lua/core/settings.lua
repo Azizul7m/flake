@@ -14,7 +14,8 @@ vim.o.ignorecase= true
 vim.wo.signcolumn= 'yes' 
 vim.wo.cursorline = true
 vim.wo.scrolloff = 5
-
+vim.opt.clipboard = 'unnamedplus'
+vim.api.nvim_set_option('clipboard', 'unnamedplus')
 
 -- fetch keymap
 local keymap = vim.api.nvim_set_keymap
@@ -25,7 +26,7 @@ keymap('i', 'jk', [[<esc>]], {})
 
 -- Normal --
 keymap('n', "<leader>qk", ":wqa<CR>", opts)
-keymap('n', "<leader>qK", ":qa<CR>", opts)
+keymap('n', "<leader>qK", ":q!<CR>", opts)
 
 -- Split window --
 keymap("n", "<leader>wv", ":vsplit<CR>", opts)

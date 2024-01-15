@@ -12,12 +12,14 @@ in {
   };
   gtk = gtkConf;
   #enable home-manager
-  programs = { home-manager.enable = true; };
-  systemd.user.targets.tray =
-    { # Tray.target can not be found when xsession is not enabled. This fixes the issue.
-      Unit = {
-        Description = "Home Manager System Tray";
-        Requires = [ "graphical-session-pre.target" ];
-      };
-    };
+  programs = { 
+    home-manager.enable = true;
+  };
+  # systemd.user.targets.tray =
+  #   { # Tray.target can not be found when xsession is not enabled. This fixes the issue.
+  #     Unit = {
+  #       Description = "Home Manager System Tray";
+  #       Requires = [ "graphical-session-pre.target" ];
+  #     };
+  #   };
 }

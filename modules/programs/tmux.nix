@@ -9,15 +9,19 @@
       terminal = "screen";
       keyMode = "vi";
       resizeAmount = 5;
+      clock24 = false;
       customPaneNavigationAndResize = true;
       plugins = with pkgs.tmuxPlugins; [
         yank
         open
         jump
-        onedark-theme
+        catppuccin
         better-mouse-mode
       ];
-      extraConfig = "set -g mouse on ";
+      extraConfig = "
+      set -g mouse on 
+      set-option -g status-position top
+      ";
     };
   };
 }
