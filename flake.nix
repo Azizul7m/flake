@@ -1,37 +1,44 @@
 {
-  description = "Personal flake of Azizul7m";
-
+  description = "A very basic flake";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url= "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-utils.url = "github:numtide/flake-utils";
-    nur = { url = "github:nix-community/NUR"; };
-    nix-colors.url = "github:misterio77/nix-colors";
   };
-
-  outputs = { self, nixpkgs, fenix, nur, ... }@inputs:
-    let
+  outputs = inputs@{ self, nixpkgs, home-manager,  ... }: 
+  let 
+    global = rec{
       system = "x86_64-linux";
-      user = "anower";
-      full_name = "Anower Hossain";
       host = "nixos";
+      user = "anower";
+      fullName = "Anower Hossen";
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ nur.overlay ];
       };
       lib = nixpkgs.lib;
-
-    in {
-      nixosConfigurations = (
-        # NixOS configurations
-        # Imports ./nix/default.nix
-        import ./nix {
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs user full_name host system pkgs;
-        });
     };
+    system = "x86_64-linux";
+    pkgs = global.pkgs;
+  in
+  {
+    nixosConfigurations = {
+      "${global.host}" = global.lib.nixosSystem {
+        inherit system ;
+        specialArgs = { inherit inputs global; };
+        modules = [ 
+        ./host/configuration.nix 
+        home-manager.nixosModules.home-manager {
+          home-manager = {
+           useGlobalPkgs = true;
+           useUserPackages = true;
+           users.${global.user} = import ./home/home.nix { inherit inputs global; };
+          };
+         }
+        ];
+      };
+    };
+  };
 }

@@ -1,4 +1,4 @@
-{ pkgs, user, ... }: {
+{ global, ... }: {
   programs = {
     fish = {
       enable = true;
@@ -6,13 +6,14 @@
         # Enable a plugin (here grc for colorized command output) from nixpkgs
         {
           name = "grc";
-          src = pkgs.fishPlugins.grc.src;
+          src = global.pkgs.fishPlugins.grc.src;
         }
       ];
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
 
         set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+        set DOOMDIR /home/${global.user}/.doom.d 
 
         set RUST_BACKTRACE 1
 
@@ -36,6 +37,9 @@
         alias doomdoctor='~/.config/emacs/bin/doom doctor'
         alias doomupgrade='~/.config/emacs/bin/doom upgrade'
         alias doompurge='~/.config/emacs/bin/doom purge'
+
+
+        alias v='nvim'
 
         alias cp='cp -i'
         alias mv='mv -i'
@@ -73,11 +77,10 @@
         alias kali='distrobox enter blackarch'
 
 
-        alias open_term='alacritty -e zellij'
         alias pdf='sioyek'
-        alias txt='mousepad'
-        alias hotspot='nmcli dev wifi hotspot'
-        alias wpassword='nmcli dev wifi show-password'
+        alias txt='alacritty -c nvim'
+        # alias hotspot='nmcli dev wifi hotspot'
+        # alias wpassword='nmcli dev wifi show-password'
 
         alias nixosrebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
         alias cleanup='sudo nix-collect-garbage -d'
@@ -85,12 +88,14 @@
       '';
       # Add npm path to PATH
       shellInit = ''
-        set -gx PATH /home/${user}/.npm-global/bin /home/${user}/.config/emacs/bin /home/${user}/.config/hypr/scripts /home/${user}/.local/share/solana/install/active_release/bin /home/${user}/.cargo/bin /home/${user}/.local/bin $PATH
+        set -gx PATH /home/${global.user}/.npm_global/bin  /home/${global.user}/.emacs.d/bin /home/${global.user}/.config/hypr/scripts /home/${global.user}/.local/share/solana/install/active_release/bin /home/${global.user}/.cargo/bin /home/${global.user}/.local/bin $PATH
+
         # pnpm
           set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
           set -gx PATH "$PNPM_HOME" $PATH
         # pnpm end
         starship init fish | source
+
       '';
     };
   };

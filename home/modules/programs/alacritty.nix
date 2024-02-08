@@ -1,11 +1,13 @@
-# Terminal Emulator
-#
-# Hardcoded as terminal for rofi and doom emacs
-#
-
 { pkgs, ... }:
 
 {
+  home = {
+    packages= with pkgs; [
+      eza
+      starship
+      grc
+    ];
+  };
   programs = {
     alacritty = {
       enable = true;
@@ -16,14 +18,8 @@
           bold = { style = "Bold"; };
           size = 10;
         };
-        offset = {
-          # Positioning
-          x = -1;
-          y = 0;
-        };
-        save_to_clipboard = true;
         live_config_reload = true;
-        key_bindings = [
+        keyboard.bindings = [
           {
             key = "V";
             mods = "Control";

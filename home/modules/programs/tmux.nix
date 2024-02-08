@@ -19,8 +19,8 @@
         better-mouse-mode
       ];
       extraConfig = "
-      set -g mouse on 
-      set-option -g status-position top
+        set -g mouse on 
+        set-option -g status-position top
       ";
     };
   };

@@ -25,8 +25,8 @@ function run {
 #run 'gnome-pie'
 # run 'picom -b --experimental-backends --config ~/.config/picom.conf'
 # run 'clipster -d'
-# run 'pidgin'
-run 'telegram-desktop'
+run 'kdeconnect-indicator'
+run 'nm-applet'
 # run 'qbittorrent'
 #you can set wallpapers in themes as well
 #run applications from startup

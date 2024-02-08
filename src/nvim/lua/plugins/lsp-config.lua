@@ -23,6 +23,22 @@ local lsp_config = {
       lspconfig.tsserver.setup({
          capabilities = capabilities 
       })
+      lspconfig.rnix.setup({
+         capabilities = capabilities 
+      })
+      lspconfig.emmet_ls.setup({
+         capabilities = capabilities ,
+         filetypes = { "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "svelte", "pug", "typescriptreact", "vue" },
+      })
+      lspconfig.tailwindcss.setup({
+         capabilities = capabilities 
+      })
+      lspconfig.cssmodules_ls.setup({
+        capabilities = capabilities
+      })
+      lspconfig.cssls.setup({
+        capabilities = capabilities
+      })
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
       vim.keymap.set('n', '<leader>ai', vim.lsp.buf.definition, {})
       vim.keymap.set({'n', 'v'}, '<leader>aa', vim.lsp.buf.code_action, {})

@@ -18,7 +18,7 @@ return {
     config = function()
       require('lualine').setup({
         options = {
-          theme = "dracula"
+          theme = "catppuccin"
         }
       })
     end
@@ -29,7 +29,16 @@ return {
     name = "catppuccin", 
     priority = 1000,
     config = function()
-          vim.cmd.colorscheme "catppuccin"
+      vim.cmd.colorscheme "catppuccin"
+      indent_blankline = {
+        enabled = true,
+        scope_color = "lavender", -- catppuccin color (eg. `lavender`) Default: text
+        colored_indent_levels = false,
+      }
+      illuminate = {
+        enabled = true,
+        lsp = false
+      }
       end
   },
   -- indent

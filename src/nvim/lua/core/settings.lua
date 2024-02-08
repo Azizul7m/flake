@@ -23,6 +23,11 @@ local keymap = vim.api.nvim_set_keymap
 local opts = { silent = true }
 -- insert mode
 keymap('i', 'jk', [[<esc>]], {})
+-- open vanilla file Explorer
+keymap('n', "<leader>ore", ":Lexplore<CR>", opts)
+keymap('n', "<leader>.", ":e $HOME/ ", opts)
+-- open vanilla terminal
+keymap('n', "<leader>ort", ":vsplit || :terminal <CR>", opts)
 
 -- Normal --
 keymap('n', "<leader>qk", ":wqa<CR>", opts)
@@ -45,6 +50,14 @@ keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)
 
+-- terminal
+keymap('t', '<esc>', [[<C-\><C-n>]], opts)
+keymap('t', 'jk', [[<C-\><C-n>]], opts)
+keymap('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+keymap('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+keymap('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+keymap('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+keymap('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
 -- Resize with arrows
 keymap("n", "<C-Up>", ":resize -2<CR>", opts)
 keymap("n", "<C-Down>", ":resize +2<CR>", opts)
