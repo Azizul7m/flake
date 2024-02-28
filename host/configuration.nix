@@ -1,4 +1,4 @@
-{ config, pkgs, global, ... }:
+{ config, pkgs, var, ... }:
 
 {
   imports = [
@@ -25,7 +25,7 @@
   };
   sound.enable = true;
   networking = {
-    hostName = "${global.host}"; # Define your hostname.
+    hostName = "${var.host}"; # Define your hostname.
     networkmanager.enable = true;
   };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
@@ -35,10 +35,7 @@
     LC_IDENTIFICATION = "bn_BD";
     LC_MEASUREMENT = "bn_BD";
     LC_MONETARY = "bn_BD";
-    LC_NAME = "bn_BD";
-    LC_NUMERIC = "bn_BD";
     LC_PAPER = "bn_BD";
-    LC_TELEPHONE = "bn_BD";
     LC_TIME = "bn_BD";
   };
   nix = {
@@ -47,7 +44,7 @@
         "nix-command"
         "flakes"
         "auto-allocate-uids"
-        "configurable-impure-env"
+        # "configurable-impure-env"
       ];
       auto-optimise-store = true; # Optimise syslinks
     };
@@ -69,7 +66,7 @@
   };
 
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
 
   nixpkgs.config.allowUnfree = true; # Allow unfree packages
   system.stateVersion = "24.05"; # Did you read the comment?

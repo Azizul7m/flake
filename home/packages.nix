@@ -1,22 +1,20 @@
-{ global, ... }: {
+{ var, ... }: {
   home = {
-    packages = with global.pkgs; [
+    packages = (with var.pkgs; [
       gnome.nautilus
       google-chrome
       firefox
       brave
-      vlc
+      dropbox
 
       #Office
       sioyek
 
       #Graphics
       figma-linux
-      inkscape
 
       # Social
       telegram-desktop
-
 
       #Utils
       qbittorrent
@@ -28,8 +26,11 @@
       yewtube # youtube
       htop
       neofetch
+      ghostscript
+
 
       #Dev
+      direnv
       nodejs
 
       # python310Packages.pip
@@ -44,7 +45,6 @@
 
       #postman # API
       #jetbrains.datagrip
-    ];
+    ]) ++ (with var.pkgs-unstable; [ inkscape ]);
   };
-
 }

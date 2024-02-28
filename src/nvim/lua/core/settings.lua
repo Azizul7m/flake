@@ -27,7 +27,7 @@ keymap('i', 'jk', [[<esc>]], {})
 keymap('n', "<leader>ore", ":Lexplore<CR>", opts)
 keymap('n', "<leader>.", ":e $HOME/ ", opts)
 -- open vanilla terminal
-keymap('n', "<leader>ort", ":vsplit || :terminal <CR>", opts)
+keymap('n', "<leader>oT", ":terminal <CR>", opts)
 
 -- Normal --
 keymap('n', "<leader>qk", ":wqa<CR>", opts)

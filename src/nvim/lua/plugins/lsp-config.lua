@@ -30,6 +30,7 @@ local lsp_config = {
          capabilities = capabilities ,
          filetypes = { "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "svelte", "pug", "typescriptreact", "vue" },
       })
+      -- Css
       lspconfig.tailwindcss.setup({
          capabilities = capabilities 
       })
@@ -39,6 +40,14 @@ local lsp_config = {
       lspconfig.cssls.setup({
         capabilities = capabilities
       })
+      -- toml
+      lspconfig.taplo.setup({
+        capabilities = capabilities
+      })
+      -- Markdown
+      -- lspconfig.marksman.setup({
+      --   capabilities = capabilities
+      -- })
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
       vim.keymap.set('n', '<leader>ai', vim.lsp.buf.definition, {})
       vim.keymap.set({'n', 'v'}, '<leader>aa', vim.lsp.buf.code_action, {})

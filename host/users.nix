@@ -1,10 +1,9 @@
-{ global, ...}:
-{
-  users.users.${global.user} = {
+{ var, ... }: {
+  users.users.${var.user} = {
     isNormalUser = true;
-    description = "${global.fullName }";
+    description = "${var.fullName}";
     extraGroups = [ "networkmanager" "wheel" "mpd" "docker" "libvirtd" ];
-    shell = global.pkgs.fish; # Default shell
-    packages = with global.pkgs; [ ];
+    shell = var.pkgs.fish; # Default shell
+    packages = with var.pkgs; [ ];
   };
 }

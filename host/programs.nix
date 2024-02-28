@@ -1,10 +1,9 @@
-{ config, global, ... }: {
+{ config, var, ... }: {
 
   environment = {
-    systemPackages = with global.pkgs; [
+    systemPackages = with var.pkgs; [
       xterm
       git
-      less
       neovim
       wget
       joshuto
@@ -13,12 +12,15 @@
       ripgrep
       fzf
       bat
+      tree
       hunspell
       rnix-lsp
       nixfmt
       libtool
       gcc
       cmake
+      killall
+
       clang-tools
       gnumake
       networkmanagerapplet
@@ -30,7 +32,6 @@
       coreutils # basic GNU utilities
       pulsemixer # sound
       xdg-utils # Environment integration
-
       fontconfig # root font config
     ];
   };

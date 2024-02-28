@@ -1,4 +1,4 @@
-{ global, ... }: {
+{ var, ... }: {
   programs = {
     fish = {
       enable = true;
@@ -6,14 +6,14 @@
         # Enable a plugin (here grc for colorized command output) from nixpkgs
         {
           name = "grc";
-          src = global.pkgs.fishPlugins.grc.src;
+          src = var.pkgs.fishPlugins.grc.src;
         }
       ];
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
 
         set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-        set DOOMDIR /home/${global.user}/.doom.d 
+        set DOOMDIR /home/${var.user}/.doom.d
 
         set RUST_BACKTRACE 1
 
@@ -27,7 +27,7 @@
         alias ls='exa --icons'
         alias la='exa -a --icons'
         alias ll='exa -la --icons'
-        alias cls= 'clear'
+        alias cls='clear'
 
 
         alias em='emacs -nw'
@@ -41,15 +41,16 @@
 
         alias v='nvim'
 
-        alias cp='cp -i'
-        alias mv='mv -i'
-        alias rm='rm -i'
 
         alias tas='tmux attach-session -c '
         alias tns='tmux new-session -s '
 
         alias df='df -h'
         alias free='free -m'
+
+        # get error messages from journalctl
+        alias jctl="journalctl -p 3 -xb"
+
 
         alias addup='git add -u'
         alias addall='git add .'
@@ -66,6 +67,15 @@
         alias wui='waydroid show-full-ui'
         alias ranger='joshuto'
 
+        # Play audio files in current dir by type
+        alias playwav='vlc *.wav'
+        alias playogg='vlc *.ogg'
+        alias playmp3='vlc *.mp3'
+
+        # Play video files in current dir by type
+        alias playavi='vlc *.avi'
+        alias playmov='vlc *.mov'
+        alias playmp4='vlc *.mp4'
 
 
         alias tb='nc termbin.com 9999'
@@ -75,6 +85,7 @@
         alias fedora='distrobox enter fedora'
         alias ubuntu='distrobox enter ubuntu'
         alias kali='distrobox enter blackarch'
+        alias arch='distrobox enter arch'
 
 
         alias pdf='sioyek'
@@ -88,7 +99,7 @@
       '';
       # Add npm path to PATH
       shellInit = ''
-        set -gx PATH /home/${global.user}/.npm_global/bin  /home/${global.user}/.emacs.d/bin /home/${global.user}/.config/hypr/scripts /home/${global.user}/.local/share/solana/install/active_release/bin /home/${global.user}/.cargo/bin /home/${global.user}/.local/bin $PATH
+        set -gx PATH /home/${var.user}/.npm_global/bin  /home/${var.user}/.emacs.d/bin /home/${var.user}/.config/hypr/scripts /home/${var.user}/.local/share/solana/install/active_release/bin /home/${var.user}/.cargo/bin /home/${var.user}/.local/bin $PATH
 
         # pnpm
           set -gx PNPM_HOME "/home/anower/.local/share/pnpm"

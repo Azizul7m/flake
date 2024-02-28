@@ -58,6 +58,8 @@ return {
           { name = "luasnip" , priority = 800}, -- snippets
           { name = "buffer" , priority = 700}, -- text within the current buffer
           { name = "path" , priority = 600}, -- file system paths
+          { name = 'cmp_pandoc', priority = 900 }, -- Pandoc completion
+          sorting = { enabled = true },
         }),
       })
       cmp.setup.cmdline(':', {

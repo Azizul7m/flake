@@ -9,25 +9,22 @@
 
 (package! org-roam)
 (package! org-roam-ui)
+(package! org-present)
+(package! org-modern)
 (package! evil-mc)
 (package! mermaid-mode)
 (package! define-it)
 (package! counsel-dash)
 (package! popup-kill-ring)
+(package! yasnippet-snippets)
 
 ;;Ob
 (package!  ob-typescript)
 (package!  ob-deno)
-(package! ob-rust)
-(package! ob-mermaid)
 
 
-;; Others
-(package! telega)
-(package! mastodon)
 
 ;; copilot alternative
-(package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
 ;; (package! doom-snippets
 ;;   :recipe ( :type git :host github :repo "doomemacs/snippets" :files ("*.el" "*")))
 

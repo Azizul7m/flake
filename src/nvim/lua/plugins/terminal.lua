@@ -4,7 +4,7 @@ return {
   config = function()
     require("toggleterm").setup()
     vim.keymap.set('n', "<leader>otl", ":ToggleTerm size=60 direction=vertical<CR>", {})
-    vim.keymap.set('n', "<leader>oth", ":ToggleTerm size=25 direction=horizontal<CR>", {})
+    vim.keymap.set('n', "<leader>oth", ":ToggleTerm size=100 direction=horizontal<CR>", {})
     vim.keymap.set('n', "<leader>otj", ":ToggleTerm size=10 direction=horizontal<CR>", {})
     vim.keymap.set('n', "<c-`>", ":ToggleTermToggleAll<CR>", {})
     vim.keymap.set('n', "<leader>ott", ":ToggleTermToggleAll<CR>", {})

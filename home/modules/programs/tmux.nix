@@ -6,7 +6,7 @@
       newSession = true;
       # Stop tmux+escape craziness.
       secureSocket = false;
-      terminal = "screen";
+      # terminal = "screen";
       keyMode = "vi";
       resizeAmount = 5;
       clock24 = false;
@@ -20,6 +20,7 @@
       ];
       extraConfig = "
         set -g mouse on 
+        set -g status off
         set-option -g status-position top
       ";
     };

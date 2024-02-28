@@ -1,18 +1,18 @@
-{ global, ... }: {
+{ var, ... }: {
   gtk = {
     enable = true;
     theme = {
       name = "Dracula";
-      package = global.pkgs.dracula-theme;
+      package = var.pkgs.dracula-theme;
       # name = "Materia-dark";
       # package = global.pkgs.materia-theme;
     };
     iconTheme = {
       name = "Vimix-Black";
-      package = global.pkgs.vimix-icon-theme;
+      package = var.pkgs.vimix-icon-theme;
     };
     cursorTheme = {
-      package = global.pkgs.apple-cursor;
+      package = var.pkgs.apple-cursor;
       name = "macOS-Monterey";
       size = 16;
     };

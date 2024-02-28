@@ -1,4 +1,4 @@
-{ config, global, ... }: {
+{ config, var, ... }: {
   programs = {
     hyprland = {
       enable = true;
@@ -27,7 +27,7 @@
       MOZ_ENABLE_WAYLAND = "1";
     };
 
-    systemPackages = with global.pkgs; [
+    systemPackages = with var.pkgs; [
       xdg-desktop-portal-hyprland
       kitty
       libnotify

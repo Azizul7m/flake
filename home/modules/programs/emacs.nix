@@ -1,24 +1,22 @@
 { config, pkgs, ... }: {
-  programs = { emacs = { enable = true; }; };
   home = {
-    packages = with pkgs; [
+    packages =( with pkgs; [
+      emacs29
       sqlite
       graphviz # org-mode visualization
       scrot # screenshot
-      emacsPackages.sqlite3
-      libvterm # Emacs Vterm
       editorconfig-core-c # Editor config
       wl-clipboard # for emacs org-mode
-      emacsPackages.djvu
-      emacsPackages.emacsql
-      emacsPackages.yasnippet-snippets
-      emacsPackages.grip-mode
-      texlive.combined.scheme-full # latex compailer
+      emacsPackages.jsonrpc
+      # emacsPackages.djvu
+      # emacsPackages.emacsql
+      grip
+      tetex
+      # wkhtmltopdf
       pandoc
-    ];
-    file.".config/doom" = {
-      source = ../../../src/doom;
-      target = "${config.home.homeDirectory}/.config/doom";
-    };
+      groff
+      gnuplot # A portable command-line driven graphing utility for many platforms
+    ]);
   };
+  services.emacs.enable = true;
 }
