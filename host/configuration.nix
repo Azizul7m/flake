@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ./modules/hyprland.nix
+    ./modules/nextcloud.nix
     ./fonts.nix
     ./environment.nix
     ./services.nix
