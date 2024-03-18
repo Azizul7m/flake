@@ -6,8 +6,8 @@
 * TABLE OF CONTENT                                                     :toc:
 - [[#vanila-emacs-config][VANILA *EMACS* CONFIG]]
 - [[#packages-manager-and-other-script][PACKAGES MANAGER AND OTHER SCRIPT]]
-  - [[#import-script-directory][IMPORT SCRIPT DIRECTORY]]
-  - [[#require-scripts][REQUIRE SCRIPTS]]
+  - [[#import-lisp-directory][IMPORT LISP DIRECTORY]]
+  - [[#require-lisp][REQUIRE LISP]]
 - [[#evil-mode][EVIL MODE]]
 - [[#keybinding][KEYBINDING]]
 - [[#ligature][LIGATURE]]
@@ -23,13 +23,11 @@
 - [[#whichkey][WHICHKEY]]
 - [[#completion-stuff][COMPLETION STUFF]]
   - [[#company-mode][COMPANY MODE]]
+  - [[#corfu][CORFU]]
+  - [[#cape][CAPE]]
 - [[#org-mode][ORG-MODE]]
 - [[#development][DEVELOPMENT]]
-  - [[#lsp][LSP]]
-  - [[#debug][DEBUG]]
   - [[#language][LANGUAGE]]
-  - [[#eglot][Eglot]]
-- [[#git][GIT]]
 - [[#popper][POPPER]]
 - [[#file-browser][FILE BROWSER]]
   - [[#dired][DIRED]]
@@ -49,6 +47,7 @@
   - [[#icons][ICONS]]
   - [[#theme][THEME]]
   - [[#dashboard][DASHBOARD]]
+  - [[#page-break-lines][PAGE BREAK LINES]]
   - [[#fonts][FONTS]]
   - [[#indent][INDENT]]
   - [[#formating][FORMATING]]
@@ -90,12 +89,12 @@
 (prefer-coding-system 'utf-8)
 #+end_src
 * PACKAGES MANAGER AND OTHER SCRIPT
-** IMPORT SCRIPT DIRECTORY
+** IMPORT LISP DIRECTORY
 #+BEGIN_SRC elisp
-(defvar scripts-dir (expand-file-name "scripts" user-emacs-directory))
+(defvar scripts-dir (expand-file-name "lisp" user-emacs-directory))
 (add-to-list 'load-path scripts-dir)
 #+end_src
-** REQUIRE SCRIPTS
+** REQUIRE LISP
 #+begin_src emacs-lisp
 (require 'elpaca-setup)
 (require 'buffer_move)
@@ -245,9 +244,6 @@ search" (as opposed to the basic C-s or C-r keys).
          :map minibuffer-local-map
          ("C-c C-c" . embark-collect)
          ("C-c C-e" . embark-export)))
-
-;; The `embark-consult' package is glue code to tie together `embark'
-;; and `consult'.
 (use-package embark-consult
   :ensure t)
 #+end_src
@@ -309,26 +305,119 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 ** COMPANY MODE
 #+begin_src emacs-lisp
 (use-package company
+  :disabled t
   :defer 2
   :diminish
   :custom
   (company-begin-commands '(self-insert-command))
   (company-idle-delay .1)
   (company-minimum-prefix-length 2)
-  (company-show-numbers t)
+  (company-show-numbers nil)
   (company-tooltip-align-annotations 't)
-  (global-company-mode t))
+  (global-company-mode nil))
 
 (use-package company-box
+  :disabled t
   :after company
   :diminish
   :hook (company-mode . company-box-mode))
 
 
 #+end_src
-* ORG-MODE
+** CORFU
+Code Completion
 #+begin_src emacs-lisp
-;; Otherwise, org-tempo is broken when you try to <s TAB...
+(use-package corfu
+  :ensure t
+  ;; Optional customizations
+  :custom
+  (corfu-cycle t)                 ; Allows cycling through candidates
+  (corfu-auto t)                  ; Enable auto completion
+  (corfu-auto-prefix 0)
+  (corfu-auto-delay 0.2)
+  (corfu-popupinfo-delay '(0.3 . 0.2))
+  (corfu-preview-current 'insert) ; insert previewed candidate
+  (corfu-preselect 'prompt)
+  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  :bind (:map corfu-map
+              ("M-SPC"      . corfu-insert-separator)
+              ("TAB"        . corfu-next)
+              ([tab]        . corfu-next)
+              ("S-TAB"      . corfu-previous)
+              ([backtab]    . corfu-previous)
+              ("S-<return>" . corfu-insert)
+              ("RET"        . corfu-insert))
+
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+  (corfu-popupinfo-mode))
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  ;:custom
+  ; (kind-icon-blend-background t)
+  ; (kind-icon-default-face 'corfu-default) ; only needed with blend-background
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+#+end_src
+** CAPE
+Cape has the super power to transform Company backends into Capfs and merge multiple Capfs into a Super-Capf! These transformers allow you to still take advantage of Company backends even if you are not using Company as frontend.
+#+begin_src  emacs-lisp
+(use-package cape
+  :ensure t
+  :defer 10
+  :bind (("C-c p p" . completion-at-point) ;; capf
+         ("C-c p t" . complete-tag)        ;; etags
+         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+         ("C-c p h" . cape-history)
+         ("C-c p f" . cape-file)
+         ("C-c p k" . cape-keyword)
+         ("C-c p s" . cape-elisp-symbol)
+         ("C-c p e" . cape-elisp-block)
+         ("C-c p a" . cape-abbrev)
+         ("C-c p l" . cape-line)
+         ("C-c p w" . cape-dict)
+         ("C-c p :" . cape-emoji)
+         ("C-c p \\" . cape-tex)
+         ("C-c p _" . cape-tex)
+         ("C-c p ^" . cape-tex)
+         ("C-c p &" . cape-sgml)
+         ("C-c p r" . cape-rfc1345))
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  ;;(defun my/add-shell-completion ()
+    ;;(interactive)
+    ;;(cl-pushnew #'cape-history completion-at-point-functions)
+    ;;(cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions))
+  ;;(add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
+
+  :config
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+    (add-to-list 'completion-at-point-functions #'cape-history)
+    (add-to-list 'completion-at-point-functions #'cape-keyword)
+    ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+    ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+    ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+    ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+    ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+    ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
+    ;;(add-to-list 'completion-at-point-functions #'cape-line)
+
+    ;; Ensure that pcomplete does not write to the buffer
+    ;; Silence then pcomplete capf, no errors or messages!
+    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+    ;; and behaves as a pure `completion-at-point-function'.
+    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+
+#+end_src
+
+* ORG-MODE
+Otherwise, org-tempo is broken when you try to <s TAB...
+#+begin_src emacs-lisp
 (add-hook 'org-mode-hook (lambda ()
            (setq-local electric-pair-inhibit-predicate
                    `(lambda (c)
@@ -419,30 +508,14 @@ This package implements hiding or abbreviation of the mode line displays (lighte
     (add-hook 'org-mode-hook 'toc-org-enable))
   #+end_src
 * DEVELOPMENT
-** LSP
-** DEBUG
-#+begin_src emacs-lisp
-  (use-package dap-mode
-    :after lsp-mode
-    :ensure t
-    :defer t)
-#+end_src
 ** LANGUAGE
 *** Web mode
 #+begin_src emacs-lisp
 (use-package web-mode
   :ensure t)
-
-#+end_src
-*** Html
-#+begin_src emacs-lisp
-(use-package html-mode
-  :hook 'html-mode-hook 'eglot-ensure)
-
 #+end_src
 *** Rust
 #+begin_src emacs-lisp
-
 (use-package rustic
   :ensure t
   :init
@@ -453,42 +526,11 @@ This package implements hiding or abbreviation of the mode line displays (lighte
   (rustic-mode . cargo-minor-mode)
   :config
   (setq compilation-scroll-output t))
-
-(use-package separedit
-    :ensure (separedit :type git :host github :repo "idcrook/separedit.el")
-    :config
-    (progn
-    (define-key prog-mode-map (kbd "C-c '") #'separedit)
-    (setq separedit-default-mode 'markdown-mode)))
 #+end_src
-**** SOLANA
-#+begin_src emacs-lisp
-;; (use-package eglot-solana
-  ;; :ensure t
-  ;; :hook (solana-mode . eglot-ensure))
-#+end_src
-*** TOML
-#+begin_export elisp
-(use-package toml-mode
-    :ensure t
-    :init
-    (add-hook 'toml-mode-hook 'eglot-ensure))
-#+end_export
 *** Nix
 #+begin_src emacs-lisp
 (use-package nix-mode)
 #+end_src
-
-** Eglot
-#+begin_src emacs-lisp
-#+end_src
-
-* GIT
-#+BEGIN_SRC emacs-lisp
-(use-package magit
-	 :ensure t
-	 :defer t)
-#+END_SRC
 * POPPER
 #+begin_src emacs-lisp
 (use-package popper
@@ -567,14 +609,10 @@ This package implements hiding or abbreviation of the mode line displays (lighte
   :hook (dired-mode . treemacs-icons-dired-enable-once)
   :ensure t)
 
-(use-package treemacs-magit
-  :after (treemacs magit)
-  :ensure t)
-
-;;(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-  ;;:after (treemacs persp-mode) ;;or perspective vs. persp-mode
-  ;;:ensure t
-  ;;:config (treemacs-set-scope-type 'Perspectives))
+(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+  :ensure t
+  :config (treemacs-set-scope-type 'Perspectives))
 
 #+end_src
 ** PROJECTILE
@@ -639,12 +677,31 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 * SNIPPETS
 #+begin_src emacs-lisp
 (use-package yasnippet
-  :ensure t)
-(setq yas-global-mode 1)
+  :ensure t
+  :bind ("M-+" . yas-insert-snippet)
+  :config
+  (setopt yas-snippet-dirs (append yas-snippet-dirs
+                                   '("~/.emacs.d/snippets")))
+  (yas-global-mode +1)
+  (add-to-list 'hippie-expand-try-functions-list #'yas-hippie-try-expand))
 
-(setq yas-snippet-dirs
-      '("~/.notes/org/snippets")  ;; personal snippets
-      )
+(use-package yasnippet-snippets
+  :ensure t :after yasnippet)
+(use-package yasnippet-capf
+  :ensure t
+  :after yasnippet
+  :hook ((prog-mode . yas-setup-capf)
+         (text-mode . yas-setup-capf)
+         (lsp-mode  . yas-setup-capf)
+         (sly-mode  . yas-setup-capf))
+  :bind (("C-c y" . yasnippet-capf)
+         ("M-+"   . yas-insert-snippet))
+  :config
+  (defun yas-setup-capf ()
+    (setq-local completion-at-point-functions
+                (cons 'yasnippet-capf
+                      completion-at-point-functions)))
+  (push 'yasnippet-capf completion-at-point-functions))
 #+end_src
 * RAINBOW
 #+begin_src emacs-lisp
@@ -704,29 +761,40 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
    :ensure t
    :defer t
    :config (global-hungry-delete-mode))
+
  (use-package doom-themes
  :ensure t
  :config
  (setq doom-themes-enable-bold nil  
          doom-themes-enable-italic t) ; if nil, italics is universally disabled
- (load-theme 'doom-one t)
- (doom-themes-visual-bell-config) ;; Enable flashing mode-line on errors
- (doom-themes-neotree-config) ;; Enable custom neotree them
  (setq doom-themes-treemacs-theme "doom-atom")
  (doom-themes-treemacs-config)
- (doom-themes-org-config))
-
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
+ ;;(doom-themes-org-config)
+ )
+ 
+ (use-package doom-modeline
+   :ensure t
+   :init (doom-modeline-mode 1)
+   :config
+   (setq doom-modeline-persp-icon t
+     doom-modeline-persp-name t))
+;; 
+(use-package spaceway-theme
+  :ensure nil
+  :load-path "lisp/spaceway/"
   :config
-  (setq doom-modeline-persp-icon t
-    doom-modeline-persp-name t))
+  (global-hl-line-mode t)
+  (set-frame-parameter nil 'cursor-color "#dc322f")
+  (add-to-list 'default-frame-alist '(cursor-color . "#dc322f"))
+
+  (load-theme 'spaceway t)
+  (setenv "SCHEME" "dark"))
+
 #+END_SRC
 ** DASHBOARD
 #+begin_src emacs-lisp
 (use-package dashboard
-  :ensure t 
+  :ensure t
   :init
   (setq initial-buffer-choice 'dashboard-open)
   (setq dashboard-set-heading-icons t)
@@ -734,23 +802,34 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
   ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
   (setq dashboard-startup-banner "~/.face")  ;; use custom image as banner
-  (setq dashboard-center-content nil) ;; set to 't' for centered content
+  (setq dashboard-center-content t) ;; set to 't' for centered content
+  (setq dashboard-vertically-center-content t)
+  (setq dashboard-display-icons-p t)     ; display icons on both GUI and terminal
+  (setq dashboard-icon-type 'all-the-icons)  ; use `all-the-icons' package
+
   (setq dashboard-items '((recents . 5)
                           (agenda . 5 )
                           (bookmarks . 3)
                           (projects . 3)
                           (registers . 3)))
-  :custom 
-  (dashboard-modify-heading-icons '((recents . "file-text")
-				      (bookmarks . "book")))
   :config
+  (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
+  (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
   (dashboard-setup-startup-hook))
+#+end_src
+** PAGE BREAK LINES
+#+begin_src emacs-lisp
+(use-package page-break-lines
+  :ensure t
+  :init
+  (global-page-break-lines-mode)
+)
 #+end_src
 ** FONTS
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
     :font "Iosevka"
-    :height 100
+    :height 105
     :weight 'regular)
 #+end_src
 ** INDENT 
