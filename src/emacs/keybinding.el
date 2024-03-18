@@ -150,27 +150,28 @@
       "h x" '(describe-command :wk "Display full documentation for command"))
 
     (dt/leader-keys
-      "m" '(:ignore t :wk "Org")
-      "m a" '(org-agenda :wk "Org agenda")
-      "m e" '(org-export-dispatch :wk "Org export dispatch")
-      "m i" '(org-toggle-item :wk "Org toggle item")
-      "m t" '(org-todo :wk "Org todo")
-      "m B" '(org-babel-tangle :wk "Org babel tangle")
-      "m T" '(org-todo-list :wk "Org todo list"))
+      "i" '(:ignore t :wk "Insert")
+      "i e" '(isearch-emoji-by-name :wk "Insert Emoji")
+      "i s" '(yas-insert-snippet :wk "Insert Snippets")
+      )
 
     (dt/leader-keys
-      "m b" '(:ignore t :wk "Tables")
-      "m b -" '(org-table-insert-hline :wk "Insert hline in table"))
+      "n" '(:ignore t :wk "Org")
+      "n a" '(org-agenda :wk "org agenda")
+      "n e" '(org-export-dispatch :wk "org export dispatch")
+      "n i" '(org-toggle-item :wk "org toggle item")
+      "n t" '(org-todo :wk "org todo")
+      "n t" '(org-todo-list :wk "org todo list"))
+
 
     (dt/leader-keys
-      "m d" '(:ignore t :wk "Date/deadline")
-      "m d t" '(org-time-stamp :wk "Org time stamp"))
+      "n d" '(:ignore t :wk "date/deadline")
+      "n d t" '(org-time-stamp :wk "org time stamp"))
 
     (dt/leader-keys
       "o" '(:ignore t :wk "Open")
       "o d" '(dashboard-open :wk "Dashboard")
-      "o e" '(isearch-emoji-by-name :wk "Insert Emoji")
-      "o t" '(open-vterm-full-window :wk "Vterm")
+      "o t" '(projectile-run-vterm :wk "Vterm")
       "o f" '(make-frame :wk "Open buffer in new frame")
       "o F" '(select-frame-by-name :wk "Select frame by name")
       "o p" '(project-switch-project :wk "Open Project")
@@ -180,7 +181,7 @@
     ;; projectile-command-map already has a ton of bindings 
     ;; set for us, so no need to specify each individually.
     (dt/leader-keys
-      "p" '(projectile-command-map :wk "Projectile"))
+      "p" '(projectile-commander :wk "Projectile"))
 
     (dt/leader-keys
       "s" '(:ignore t :wk "Search")
