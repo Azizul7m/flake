@@ -8,6 +8,7 @@
 - [[#packages-manager-and-other-script][PACKAGES MANAGER AND OTHER SCRIPT]]
   - [[#import-lisp-directory][IMPORT LISP DIRECTORY]]
   - [[#require-lisp][REQUIRE LISP]]
+- [[#async-savehist-repeat][Async Savehist Repeat]]
 - [[#evil-mode][EVIL MODE]]
 - [[#flycheck][FLYCHECK]]
 - [[#keybinding][KEYBINDING]]
@@ -73,6 +74,10 @@
     (setq auto-save-default nil)
     (setq locale-coding-system 'utf-8)
     (defalias 'yes-or-no-p 'y-or-n-p)
+    ;;; improve scrolling exprience
+    (setq scroll-step 1)
+    (setq scroll-conservatively 10000)
+    (setq auto-window-vscroll nil)
 
    (global-set-key [escape] 'keyboard-escape-quit)
    (global-set-key (kbd "C-=") 'text-scale-increase)
@@ -119,6 +124,35 @@
 (require 'buffer_move)
 (require 'hide-mode-line)
 #+END_SRC
+* Async Savehist Repeat
+#+begin_src emacs-lisp
+;;; Emacs look SIGNIFICANTLY less often which is a good thing.
+;;; asynchronous bytecode compilation and various other actions makes
+(use-package async
+  :ensure t
+  :after dired
+  :init
+  (dired-async-mode 1))
+
+(use-package savehist
+  :ensure nil
+  :defer 2
+  :init
+  (savehist-mode t)
+  ;; So I can always jump back to wear I left of yesterday
+  (add-to-list 'savehist-additional-variables 'global-mark-ring))
+
+(use-package repeat
+  :ensure nil
+  :defer 10
+  :init
+  (repeat-mode +1))
+
+(use-package good-scroll-mode
+  :ensure t
+  :init
+  (good-scroll-mode 1))
+#+end_src
 * EVIL MODE
 #+begin_src emacs-lisp
 (use-package evil
@@ -132,7 +166,7 @@
 (use-package evil-collection
   :after evil
   :config
-  (setq evil-collection-mode-list '(calendar dashboard dired ediff info magit ibuffer  ))
+  (setq evil-collection-mode-list '(calendar dashboard dired ediff info magit ibuffer dired))
   (add-to-list 'evil-collection-mode-list 'help) ;; evilify help mode
   (evil-collection-init))
 ;; Using RETURN to follow links in Org/Evil 
@@ -154,6 +188,11 @@
   (setq-default evil-escape-delay 0.2)
   ;; Enable Evil Escape mode globally
   (evil-escape-mode 1))
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 #+end_src
 * FLYCHECK
 #+begin_src emacs-lisp
@@ -902,7 +941,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
                           (registers . 3)))
   :config
   ;;(add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
-  (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+  ;;(add-hook 'elpaca-after-init-hook #'dashboard-initialize)
   (add-hook 'dashboard-mode-hook #'hide-mode-line-mode)
   (dashboard-setup-startup-hook))
 #+end_src
