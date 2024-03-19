@@ -177,11 +177,8 @@
       "o p" '(project-switch-project :wk "Open Project")
       "o -" '(dired-at-point :wk "Dired")
       )
-
-    ;; projectile-command-map already has a ton of bindings 
-    ;; set for us, so no need to specify each individually.
     (dt/leader-keys
-      "p" '(projectile-commander :wk "Projectile"))
+      "p" '(projectile-mode-menu :wk "Projectile"))
 
     (dt/leader-keys
       "s" '(:ignore t :wk "Search")

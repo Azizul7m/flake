@@ -9,6 +9,7 @@
   - [[#import-lisp-directory][IMPORT LISP DIRECTORY]]
   - [[#require-lisp][REQUIRE LISP]]
 - [[#evil-mode][EVIL MODE]]
+- [[#flycheck][FLYCHECK]]
 - [[#keybinding][KEYBINDING]]
 - [[#ligature][LIGATURE]]
 - [[#search-engine][SEARCH ENGINE]]
@@ -55,31 +56,49 @@
 
 * VANILA *EMACS* CONFIG
  #+BEGIN_SRC elisp
-   (menu-bar-mode -1)
-   (tool-bar-mode -1)
-   (fringe-mode -1)
-   (scroll-bar-mode -1)
-   (electric-pair-mode 1) ;; auto paire
-   (global-subword-mode 1) ;; global line number
-   (global-visual-line-mode t)
-   (global-display-line-numbers-mode 1)
-   (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (fringe-mode -1)
+    (scroll-bar-mode -1)
+    (display-battery-mode t)
+    (electric-pair-mode 1) ;; auto paire
+    (global-subword-mode 1) ;; global line number
+    (global-visual-line-mode t)
+    (global-display-line-numbers-mode 1)
+    (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
 
-   (setq use-dialog-box nil)
-   (setq use-file-dialog nil)
-   (setq make-backup-files nil)
-   (setq auto-save-default nil)
-   (setq locale-coding-system 'utf-8)
-   (defalias 'yes-or-no-p 'y-or-n-p)
+    (setq use-dialog-box nil)
+    (setq use-file-dialog nil)
+    (setq make-backup-files nil)
+    (setq auto-save-default nil)
+    (setq locale-coding-system 'utf-8)
+    (defalias 'yes-or-no-p 'y-or-n-p)
 
-  (global-set-key [escape] 'keyboard-escape-quit)
-  (global-set-key (kbd "C-=") 'text-scale-increase)
-  (global-set-key (kbd "C--") 'text-scale-decrease)
-  (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-  (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+   (global-set-key [escape] 'keyboard-escape-quit)
+   (global-set-key (kbd "C-=") 'text-scale-increase)
+   (global-set-key (kbd "C--") 'text-scale-decrease)
+   (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+   (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+   ;; Faster loading
+    (setq gc-cons-threshold (* 384 1024 1024)
+       gc-cons-percentage 1.6)
+     ;; Do not load outdeted bytecode files;
+     (setq load-prefer-newer t)
 
- (setq visual-fill-column-width 180
-       visual-fill-column-center-text t) ;; ;; Configure fill width
+ ;; Increase for lsp batter performance.
+ (setq read-process-output-max (* 3 1024 1024))
+
+ ;; default 800
+ (setq max-lisp-eval-depth 10000)
+
+ (setq package-enable-at-startup nil)
+
+
+  (setq visual-fill-column-width 180
+        visual-fill-column-center-text t) ;; ;; Configure fill width
+ ;; set custom file for emacs internal variables
+ (setq custom-file (concat user-emacs-directory "custom.el")) 
+ (load custom-file 'noerror)
 #+END_SRC
 *** locale
 #+begin_src elisp
@@ -98,6 +117,7 @@
 #+begin_src emacs-lisp
 (require 'elpaca-setup)
 (require 'buffer_move)
+(require 'hide-mode-line)
 #+END_SRC
 * EVIL MODE
 #+begin_src emacs-lisp
@@ -134,6 +154,12 @@
   (setq-default evil-escape-delay 0.2)
   ;; Enable Evil Escape mode globally
   (evil-escape-mode 1))
+#+end_src
+* FLYCHECK
+#+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 #+end_src
 * KEYBINDING
 Goto this file -> [[file:./keybinding.el][KEYBINDING]]
@@ -324,8 +350,10 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 
 
 #+end_src
-** CORFU
-Code Completion
+** TODO CORFU
+DEADLINE: <2024-03-19 মঙ্গল>
+_Fix corfu on terminal_
+Code Completion 
 #+begin_src emacs-lisp
 (use-package corfu
   :ensure t
@@ -361,6 +389,11 @@ Code Completion
   ; (kind-icon-default-face 'corfu-default) ; only needed with blend-background
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+
+;;(require 'corfu-terminal)
+;;(unless (display-graphic-p)
+  ;;(corfu-terminal-mode +1))
 #+end_src
 ** CAPE
 Cape has the super power to transform Company backends into Capfs and merge multiple Capfs into a Super-Capf! These transformers allow you to still take advantage of Company backends even if you are not using Company as frontend.
@@ -423,7 +456,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
                    `(lambda (c)
                   (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 #+end_src
-*** Bullets
+*** BULLETS
 #+begin_src emacs-lisp
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))) 
@@ -439,7 +472,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
      '(org-level-6 ((t (:inherit outline-5 :height 1.125))))
      '(org-level-7 ((t (:inherit outline-5 :height 1.1)))))
   #+end_src
-*** Org-juarnal
+*** ORG-JUARNAL
 #+begin_export emacs-lisp
 (use-package org-journal
   :ensure t
@@ -456,7 +489,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
       org-journal-date-format "%A, %d/%m/%Y"
       org-journal-file-format "%d-%m-%Y.org"))
     #+end_export
-*** Org-Roam
+*** ORG-ROAM
 #+begin_src emacs-lisp
 (use-package org-roam
   :ensure t
@@ -476,7 +509,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   (require 'org-roam-protocol))
 #+end_src
 
-*** Org-roam-ui
+*** ORG-ROAM-UI
 #+begin_src emacs-lisp
 (use-package websocket
     :after org-roam)
@@ -492,13 +525,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 #+end_src
-*** Super Agenda
-#+begin_src emacs-lisp :tangle yes
-(use-package org-super-agenda
-  :ensure t
-  :config
-  (with-eval-after-load 'org-agenda (org-super-agenda-mode)))
-#+end_src
+
 *** Org-modern
 #+begin_src emacs-lisp
 (use-package org-modern
@@ -510,7 +537,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+begin_src emacs-lisp
 (require 'org-tempo)
 #+end_src
-
 *** TOC
 #+begin_src emacs-lisp
 
@@ -524,11 +550,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   #+end_src
 * DEVELOPMENT
 ** LANGUAGE
-*** Web mode
-#+begin_src emacs-lisp
-(use-package web-mode
-  :ensure t)
-#+end_src
+
 *** Rust
 #+begin_src emacs-lisp
 (use-package rustic
@@ -550,50 +572,33 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 *** Typescript
 #+begin_src emacs-lisp
 
-(use-package tsx-ts-mode
-  :mode "\\.tsx\\'"
-  :hook (tsx-ts-mode . eglot-ensure))
+;; Syntax Highlighting
 (use-package web-mode
   :ensure t
-  :mode (("\\.html\\'" . HTML-mode))
-  :hook ((web-mode . eglot-ensure))
-  :bind (
-         :map web-mode-map
-         ("C-M-i" . completion-at-point)
-         ("C-M-u" . web-mode-element-parent)
-         ("C-M-d" . web-mode-element-child))
-  :custom
-  ;; TODO
-  ;; setup [[https://raw.githubusercontent.com/manateelazycat/lsp-bridge/master/core/tailwind_css_keyword.txt]]
-  ;; as a dictionary completion source
-  (web-mode-markup-indent-offset 2)
-  (web-mode-css-indent-offset 2)
-  (web-mode-code-indent-offset 2)
-  (web-mode-auto-close-style 1)
-  (web-mode-enable-auto-closing nil)
-  (web-mode-enable-auto-indentation nil)
-  (web-mode-enable-auto-quoting nil)
-  (web-mode-enable-auto-pairing nil)
-  (web-mode-enable-auto-opening nil)
-  (css-indent-offset 2)
-  (js-indent-level 2)
-  :init
-  (define-derived-mode HTML-mode web-mode "HTML")
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 `((HTML-mode :language-id "html")
-                   . ,(eglot-alternatives `(("vscode-html-language-server" "--stdio")
-                                            ("html-languageserver" "--stdio"))))))
+  :mode ("\\.jsx?\\'" "\\.html?\\'")
+  :config
+  (setq web-mode-content-types-alist
+        '(("jsx" . "\\.js[x]?\\'")))
+  (add-to-list 'eglot-server-programs '((javascript-mode js2-mode) . ("javascript-typescript-stdio"))))
 
-  ;; workaround to get vscode-html-language-server to provide proper diagnostics
-  (setq web-mode-markup-indent-offset 2
-        web-mode-css-indent-offset 2
-        web-mode-code-indent-offset 2
-        web-mode-auto-close-style 1
-        web-mode-enable-auto-indentation nil
-        web-mode-enable-auto-quoting nil
-        web-mode-enable-auto-pairing nil
-        web-mode-enable-auto-opening nil))
+;; JavaScript/TypeScript Development
+(use-package js2-mode
+  :ensure t
+  :mode (("\\.js\\'" . js2-mode)
+         ("\\.jsx\\'" . js2-jsx-mode)
+         ("\\.ts\\'" . typescript-mode)
+         ("\\.tsx\\'" . typescript-mode))
+  :config
+  (setq-default js2-basic-offset 2
+                js-indent-level 2)
+  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+  (add-hook 'js2-mode-hook 'eglot-ensure)
+  )
+
+(use-package typescript-mode
+  :ensure t
+  :config
+ (add-hook 'typescript-mode-hook 'eglot-ensure))
 #+end_src
 * POPPER
 #+begin_src emacs-lisp
@@ -653,7 +658,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :defer t
   :init
   (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+    (define-key winum-keymap (kbd "M-l") #'treemacs-select-window))
   :config
   (progn
     (setq
@@ -693,14 +698,11 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+end_src
 ** PROJECTILE
 #+begin_src emacs-lisp
-  (use-package projectile
-     :ensure t
-     :defer t
-     :config
-     ;; Enable Projectile globally
-     (setq projectile-completion-system 'ido)
-     (setq ido-enable-flex-matching t)
-     (projectile-mode 1))
+(use-package projectile
+   :ensure t
+   :defer t
+   :init
+   (projectile-mode 1))
 #+end_src
 * TERMINAL
 ** Vterm
@@ -742,7 +744,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
   :ensure t
-)
+  :init (exec-path-from-shell-initialize))
 #+end_src
 *** Eshell 
 #+begin_src emacs-lisp
@@ -850,28 +852,31 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
  :config
  (setq doom-themes-enable-bold nil  
          doom-themes-enable-italic t) ; if nil, italics is universally disabled
- (setq doom-themes-treemacs-theme "doom-atom")
+ (setq doom-themes-treemacs-theme "doom-colors")
  (doom-themes-treemacs-config)
- ;;(doom-themes-org-config)
- )
- 
- (use-package doom-modeline
-   :ensure t
-   :init (doom-modeline-mode 1)
-   :config
-   (setq doom-modeline-persp-icon t
-     doom-modeline-persp-name t))
-;; 
-(use-package spaceway-theme
-  :ensure nil
-  :load-path "lisp/spaceway/"
-  :config
-  (global-hl-line-mode t)
-  (set-frame-parameter nil 'cursor-color "#dc322f")
-  (add-to-list 'default-frame-alist '(cursor-color . "#dc322f"))
+ (load-theme 'doom-one t))
 
-  (load-theme 'spaceway t)
-  (setenv "SCHEME" "dark"))
+(use-package doom-modeline
+  :ensure t
+  :config
+  (setq doom-modeline-height 18)
+  (setq  doom-modeline-hud t)
+  (setq doom-modeline-icon t)
+  (setq doom-modeline-lsp-icon t)
+  :init (doom-modeline-mode 1))
+
+
+;; (use-package spaceway-theme
+  ;; :ensure nil
+  ;; :load-path "lisp/spaceway/"
+  ;; :config
+  ;; (global-hl-line-mode t)
+  ;; (set-frame-parameter nil 'cursor-color "#dc322f")
+  ;; (add-to-list 'default-frame-alist '(cursor-color . "#dc322f"))
+;; 
+  ;; (load-theme 'spaceway t)
+  ;; (setenv "SCHEME" "dark"))
+
 
 #+END_SRC
 ** DASHBOARD
@@ -888,7 +893,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   (setq dashboard-center-content t) ;; set to 't' for centered content
   (setq dashboard-vertically-center-content t)
   (setq dashboard-display-icons-p t)     ; display icons on both GUI and terminal
-  (setq dashboard-icon-type 'all-the-icons)  ; use `all-the-icons' package
+  (setq dashboard-icon-type 'nerd-icons)  ; use `all-the-icons' package
 
   (setq dashboard-items '((recents . 5)
                           (agenda . 5 )
@@ -898,6 +903,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   :config
   ;;(add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
   (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+  (add-hook 'dashboard-mode-hook #'hide-mode-line-mode)
   (dashboard-setup-startup-hook))
 #+end_src
 ** PAGE BREAK LINES

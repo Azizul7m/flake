@@ -25,3 +25,4 @@
  '(org-level-5 ((t (:inherit outline-5 :height 1.15))))
  '(org-level-6 ((t (:inherit outline-5 :height 1.125))))
  '(org-level-7 ((t (:inherit outline-5 :height 1.1)))))
+(put 'dired-find-alternate-file 'disabled nil)
