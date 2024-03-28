@@ -2,8 +2,8 @@
 {
   services = {
     xserver = {
-      layout = "us,bd";            # Configure keymap in X11
-      xkbVariant = "";
+      xkb.layout = "us,bd";            # Configure keymap in X11
+      xkb.variant = "";
       libinput.enable= true;
     };
     create_ap = {

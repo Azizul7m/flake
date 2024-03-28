@@ -177,9 +177,8 @@
       "o p" '(project-switch-project :wk "Open Project")
       "o -" '(dired-at-point :wk "Dired")
       )
-    (dt/leader-keys
-      "p" '(projectile-mode-menu :wk "Projectile"))
-
+   (dt/leader-keys
+     "p" '(projectile-command-map :wk "Projectile"))
     (dt/leader-keys
       "s" '(:ignore t :wk "Search")
       "s d" '(dictionary-search :wk "Search dictionary")

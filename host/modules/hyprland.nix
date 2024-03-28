@@ -35,8 +35,8 @@
       nwg-look
       nwg-launchers
       wlogout
+      hyprnome
       wlr-randr # Screen Settings
-      swaylock
       swaynotificationcenter # notifications
       libnotify
       wlprop
@@ -44,6 +44,8 @@
       swaybg # wallpaper
       wf-recorder
       wayland-protocols
+      hyprshot
+      hyprcursor
       wl-clipboard
       grim
       slurp

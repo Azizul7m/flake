@@ -4,7 +4,6 @@
       gnome.nautilus
       google-chrome
       firefox
-      brave
       dropbox
 
       #Office

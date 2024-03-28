@@ -7,7 +7,6 @@ in {
     (import ./theme/gtk.nix { inherit var; })
     ./modules/programs/waybar.nix
     ./modules/programs/tmux.nix
-    ./modules/programs/vscode.nix
     ./modules/programs/alacritty.nix
     ./modules/programs/emacs.nix
     ./modules/programs/rofi.nix
@@ -20,6 +19,7 @@ in {
   };
   programs = {
     home-manager.enable = true;
+    hyprlock.enable= true;
     # emacs.enable = true;
   };
   systemd.user.targets.tray =

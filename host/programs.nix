@@ -14,9 +14,6 @@
       bat
       tree
       hunspell
-      rnix-lsp
-      nixfmt
-      libtool
       gcc
       cmake
       killall

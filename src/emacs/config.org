@@ -8,9 +8,12 @@
 - [[#packages-manager-and-other-script][PACKAGES MANAGER AND OTHER SCRIPT]]
   - [[#import-lisp-directory][IMPORT LISP DIRECTORY]]
   - [[#require-lisp][REQUIRE LISP]]
+  - [[#eglot-booster][EGLOT BOOSTER]]
 - [[#async-savehist-repeat][Async Savehist Repeat]]
 - [[#evil-mode][EVIL MODE]]
 - [[#flycheck][FLYCHECK]]
+- [[#git][Git]]
+- [[#hungry-delete][Hungry-Delete]]
 - [[#keybinding][KEYBINDING]]
 - [[#ligature][LIGATURE]]
 - [[#search-engine][SEARCH ENGINE]]
@@ -124,6 +127,13 @@
 (require 'buffer_move)
 (require 'hide-mode-line)
 #+END_SRC
+
+** EGLOT BOOSTER
+#+begin_src emacs-lisp
+(require 'eglot)
+(fset #'jsonrpc--log-event #'ignore)
+#+end_src
+
 * Async Savehist Repeat
 #+begin_src emacs-lisp
 ;;; Emacs look SIGNIFICANTLY less often which is a good thing.
@@ -148,10 +158,6 @@
   :init
   (repeat-mode +1))
 
-(use-package good-scroll-mode
-  :ensure t
-  :init
-  (good-scroll-mode 1))
 #+end_src
 * EVIL MODE
 #+begin_src emacs-lisp
@@ -200,6 +206,18 @@
   :ensure t
   :init (global-flycheck-mode))
 #+end_src
+* Git
+#+begin_src emacs-lisp
+(use-package git-link)
+#+end_src
+* Hungry-Delete
+Hungry Delete is a minor-mode that causes deletion to delete all whitespace in the direction you are deleting. Works exactly like c-hungry-delete-mode, which is where the code was from. This just packages it up to be easier to use in other modes.
+#+begin_src emacs-lisp
+(use-package hungry-delete
+   :ensure t
+   :defer t
+   :config (global-hungry-delete-mode))
+#+end_src
 * KEYBINDING
 Goto this file -> [[file:./keybinding.el][KEYBINDING]]
 key binding with the help *general* package.
@@ -210,7 +228,6 @@ key binding with the help *general* package.
 #+begin_src emacs-lisp
 ;(use-package key-chord
 ;  :ensure t)
-;(key-chord-mode 1)
 #+end_src
 * LIGATURE
 #+begin_src emacs-lisp
@@ -275,9 +292,10 @@ regular expressions in any order.  In its simplest form, something like "ins pac
 `package-install'.  This is a powerful tool because we no longer need to remember exactly how something is named.
 #+begin_src emacs-lisp
 (use-package orderless
-  :ensure t
+  :demand t
   :config
-  (setq completion-styles '(orderless basic)))
+  (setq completion-styles '(orderless flex)
+        completion-category-overrides '((eglot (styles . (orderless flex))))))
 #+end_src
 ** CONSULT
 The `consult' package provides lots of commands that are enhanced variants of basic, built-in functionality.  One of the headline
@@ -370,7 +388,6 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 ** COMPANY MODE
 #+begin_src emacs-lisp
 (use-package company
-  :disabled t
   :defer 2
   :diminish
   :custom
@@ -420,6 +437,8 @@ Code Completion
   (global-corfu-mode)
   (corfu-history-mode)
   (corfu-popupinfo-mode))
+
+  (setq read-extended-command-predicate #'command-completion-default-include-p)
 (use-package kind-icon
   :ensure t
   :after corfu
@@ -459,28 +478,29 @@ Cape has the super power to transform Company backends into Capfs and merge mult
          ("C-c p r" . cape-rfc1345))
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
-  ;;(defun my/add-shell-completion ()
-    ;;(interactive)
-    ;;(cl-pushnew #'cape-history completion-at-point-functions)
-    ;;(cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions))
-  ;;(add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
+  (defun my/add-shell-completion ()
+    (interactive)
+    (cl-pushnew #'cape-history completion-at-point-functions)
+    (cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions))
+  (add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
 
   :config
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
     (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-    (add-to-list 'completion-at-point-functions #'cape-history)
-    (add-to-list 'completion-at-point-functions #'cape-keyword)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
+    ;;(add-to-list 'completion-at-point-functions #'cape-history)
+    ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
     ;;(add-to-list 'completion-at-point-functions #'cape-tex)
     ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
     ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
     ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
     ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-    ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
     ;;(add-to-list 'completion-at-point-functions #'cape-line)
 
     ;; Ensure that pcomplete does not write to the buffer
     ;; Silence then pcomplete capf, no errors or messages!
+    (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
     ;; and behaves as a pure `completion-at-point-function'.
     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
@@ -587,6 +607,27 @@ Otherwise, org-tempo is broken when you try to <s TAB...
     :init
     (add-hook 'org-mode-hook 'toc-org-enable))
   #+end_src
+***  Pandoc
+#+begin_src emacs-lisp
+(use-package org-pandoc-import
+  :ensure (:host github
+             :repo "tecosaur/org-pandoc-import"
+             :files ("*.el" "filters" "preprocessors")))
+#+end_src
+***  Pandoc export
+#+begin_src emacs-lisp
+(use-package ox-pandoc
+  :ensure (:host github
+             :repo "kawabata/ox-pandoc"
+             :files ("*.el" "filters" "preprocessors"))
+  :config
+    ;; special settings for beamer-pdf and latex-pdf exporters
+    (setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "pdfroff")))
+    (setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex")))
+    ;; special extensions for markdown_github output
+    (setq org-pandoc-format-extensions '(markdown_github+pipe_tables+raw_html))
+  )
+#+end_src
 * DEVELOPMENT
 ** LANGUAGE
 
@@ -605,39 +646,121 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+end_src
 *** Nix
 #+begin_src emacs-lisp
-(use-package nix-mode)
+(use-package nix-mode
+  :mode
+  ("\\.nix\\'"))
 #+end_src
-
-*** Typescript
+*** 
+*** TODO Typescript
+DEADLINE: <2024-03-20 বুধ>
+fix corfu completion
 #+begin_src emacs-lisp
-
-;; Syntax Highlighting
+(setq corfu-debug-mode t)
 (use-package web-mode
   :ensure t
-  :mode ("\\.jsx?\\'" "\\.html?\\'")
+  :defer t
   :config
-  (setq web-mode-content-types-alist
-        '(("jsx" . "\\.js[x]?\\'")))
-  (add-to-list 'eglot-server-programs '((javascript-mode js2-mode) . ("javascript-typescript-stdio"))))
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-style-padding 2
+        web-mode-script-padding 2
+        web-mode-enable-auto-closing t
+        web-mode-enable-auto-opening t
+        web-mode-enable-auto-pairing t
+        web-mode-enable-auto-indentation t)
+  :mode
+  (("\\.html\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.tsx\\'" . web-mode)
+  ))
 
-;; JavaScript/TypeScript Development
-(use-package js2-mode
-  :ensure t
-  :mode (("\\.js\\'" . js2-mode)
-         ("\\.jsx\\'" . js2-jsx-mode)
-         ("\\.ts\\'" . typescript-mode)
-         ("\\.tsx\\'" . typescript-mode))
-  :config
-  (setq-default js2-basic-offset 2
-                js-indent-level 2)
-  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-  (add-hook 'js2-mode-hook 'eglot-ensure)
-  )
 
-(use-package typescript-mode
+(use-package tide
   :ensure t
-  :config
- (add-hook 'typescript-mode-hook 'eglot-ensure))
+  :defer t
+  :hook ((typescript-mode . setup-tide-mode)
+         (before-save . tide-format-before-save)))
+
+(defun setup-tide-mode ()
+  "Set up Tide mode."
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (corfu-mode -1)
+  (company-mode +1))
+
+(defun my-web-mode-hook ()
+  "Hook for web-mode."
+  (when (and (string-equal "tsx" (file-name-extension buffer-file-name))
+             (locate-dominating-file default-directory "tsconfig.json"))
+    (setup-tide-mode)))
+
+(add-hook 'web-mode-hook 'my-web-mode-hook)
+
+;; Enable ESLint or TSLint for linting
+;; Ensure you have ESLint or TSLint installed globally or locally in your project
+;; You can choose either ESLint or TSLint by commenting/uncommenting the relevant lines below
+
+;; For ESLint
+;; (add-hook 'typescript-mode-hook 'eglint-initialize)
+;; (add-hook 'web-mode-hook 'eglint-initialize)
+
+;; For TSLint
+;;(add-hook 'typescript-mode-hook 'eglot-tslint)
+;(add-hook 'web-mode-hook 'eglot-tslint)
+
+(use-package json-mode)
+
+#+end_src
+
+***** Treesit 
+#+begin_src emacs-lisp
+(require 'treesit)
+
+(setq treesit-language-source-alist
+      '((bash . ("git@github.com:tree-sitter/tree-sitter-bash.git"))
+        (c . ("git@github.com:tree-sitter/tree-sitter-c.git"))
+        (cpp . ("git@github.com:tree-sitter/tree-sitter-cpp.git"))
+        (css . ("git@github.com:tree-sitter/tree-sitter-css.git"))
+        (elixir . ("git@github.com:elixir-lang/tree-sitter-elixir.git"))
+        (heex . ("git@github.com:phoenixframework/tree-sitter-heex.git"))
+        (go . ("git@github.com:tree-sitter/tree-sitter-go.git"))
+        (html . ("git@github.com:tree-sitter/tree-sitter-htm.git"))
+        (javascript . ("git@github.com:tree-sitter/tree-sitter-javascript.git"))
+        (json . ("git@github.com:tree-sitter/tree-sitter-json.git"))
+        (lua . ("git@github.com:Azganoth/tree-sitter-lua.git"))
+        (make . ("git@github.com:alemuller/tree-sitter-make.git"))
+        (ocaml . ("git@github.com:tree-sitter/tree-sitter-ocaml.git" "ocaml/src" "ocaml"))
+        (python . ("git@github.com:tree-sitter/tree-sitter-python.git"))
+        (php . ("git@github.com:tree-sitter/tree-sitter-php.git"))
+        (typescript . ("git@github.com:tree-sitter/tree-sitter-typescript.git" "typescript/src" "typescript" "tsx/src"))
+        (ruby . ("git@github.com:tree-sitter/tree-sitter-ruby.git"))
+        (rust . ("git@github.com:tree-sitter/tree-sitter-rust.git"))
+        (sql . ("git@github.com:m-novikov/tree-sitter-sql.git"))
+        (toml . ("git@github.com:tree-sitter/tree-sitter-toml.git"))
+        (zig . ("git@github.com:GrayJack/tree-sitter-zig.git"))))
+(require 'ansi-color)
+
+(defun colorize-compilation-buffer ()
+  (ansi-color-apply-on-region compilation-filter-start (point-max)))
+
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+#+end_src
+***  DevOop
+#+begin_src emacs-lisp
+(use-package terraform-mode)
+(use-package dockerfile-mode)
+
+(add-to-list 'auto-mode-alist '("\\.tf\\'" . terraform-mode))
+(add-to-list 'auto-mode-alist '("\\Dockerfile" . dockerfile-mode))
+#+end_src
+*** Direnv
+#+begin_src emacs-lisp
+(use-package envrc)
 #+end_src
 * POPPER
 #+begin_src emacs-lisp
@@ -645,7 +768,8 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :ensure t ; or :straight t
   :bind (("C-`"   . popper-toggle)
          ("M-`"   . popper-cycle)
-         ("C-M-`" . popper-toggle-type))
+         ("C-M-`" . popper-toggle-type)
+         ("M-q"     . popper-kill-latest-popup))
   :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"
@@ -696,8 +820,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :ensure t
   :defer t
   :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-l") #'treemacs-select-window))
   :config
   (progn
     (setq
@@ -717,9 +839,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
 
-(use-package treemacs-evil
-  :after (treemacs evil)
-  :ensure t)
 
 (use-package treemacs-projectile
   :after (treemacs projectile)
@@ -805,7 +924,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :bind ("M-+" . yas-insert-snippet)
   :config
   (setopt yas-snippet-dirs (append yas-snippet-dirs
-                                   '("~/.emacs.d/snippets")))
+                                   '("~/.notes/org/snippets")))
   (yas-global-mode +1)
   (add-to-list 'hippie-expand-try-functions-list #'yas-hippie-try-expand))
 
@@ -881,10 +1000,6 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 #+end_src
 ** THEME
 #+BEGIN_SRC elisp
-(use-package hungry-delete
-   :ensure t
-   :defer t
-   :config (global-hungry-delete-mode))
 
  (use-package doom-themes
  :ensure t
@@ -969,13 +1084,13 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 (add-hook 'org-mode-hook 'org-indent-mode)
 (setq org-edit-src-content-indentation 0)
 (use-package highlight-indent-guides
-    :ensure t
-    :defer t
-    :hook (prog-mode . highlight-indent-guides-mode)
-    :config
-    (setq highlight-indent-guides-method 'character)
-    (setq highlight-indent-guides-character ?\|)
-    (setq highlight-indent-guides-responsive 'top))
+  :ensure t
+  :defer t
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-character ?\|)
+  (setq highlight-indent-guides-responsive 'top))
 #+end_src
 ** FORMATING
 #+begin_src emacs-lisp

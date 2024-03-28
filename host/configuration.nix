@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     ./modules/hyprland.nix
-    ./modules/nextcloud.nix
     ./fonts.nix
     ./environment.nix
     ./services.nix
@@ -23,6 +22,16 @@
     # kernelParams = [ "quiet" "splash" ];
     # consoleLogLevel = 0;
     # initrd.verbose = false;
+    binfmt = {
+      registrations.appimage ={
+        wrapInterpreterInShell = false;
+        interpreter = "${pkgs.appimage-run}/bin/appimage-run";
+        recognitionType = "magic";
+        offset = 0;
+        mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
+        magicOrExtension = ''\x7fELF....AI\x02'';
+      };
+    };
   };
   sound.enable = true;
   networking = {

@@ -1,16 +1,18 @@
 {
   description = "A very basic flake";
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.11";
-    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+#    nixpkgs.url = "nixpkgs/nixos-23.11";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     nur.url = github:nix-community/NUR;
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+#      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprlock.url = "github:hyprwm/Hyprlock";
   };
-  outputs = inputs@{ self, nixpkgs, nur, nixpkgs-unstable, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, nur, hyprlock, home-manager, ... }:
     let
       var = rec {
         system = "x86_64-linux";
@@ -36,23 +38,18 @@
           specialArgs = { inherit inputs var; };
           modules = [
             { nixpkgs.overlays = [ nur.overlay ]; }
-            ({ pkgs, ... }:
-            let
-                nur-no-pkgs = import nur {
-                nurpkgs = import nixpkgs { system = "x86_64-linux"; };
-                };
-            in {
-                imports = [ nur-no-pkgs.repos.iopq.modules.xraya  ];
-                services.xraya.enable = true;
-            })
             ./host/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.${var.user} =
-                  import ./home/home.nix { inherit inputs var; };
+                users.${var.user} ={
+                  imports= [
+                    hyprlock.homeManagerModules.hyprlock
+                    (import ./home/home.nix { inherit inputs var; })
+                  ];
+                };
               };
             }
           ];
