@@ -3,16 +3,25 @@
   inputs = {
 #    nixpkgs.url = "nixpkgs/nixos-23.11";
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    nur.url = github:nix-community/NUR;
 
     home-manager = {
 #      url = "github:nix-community/home-manager/release-23.11";
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprlang = {
+      url = "github:hyprwm/hyprlang";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nur.url = github:nix-community/NUR;
     hyprlock.url = "github:hyprwm/Hyprlock";
+    hyprland-plugins = {
+        url = "github:hyprwm/hyprland-plugins";
+        inputs.hyprland.follows = "hyprland";
+    };
   };
-  outputs = inputs@{ self, nixpkgs, nur, hyprlock, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, nur, hyprland, hyprlock, home-manager, ... }:
     let
       var = rec {
         system = "x86_64-linux";

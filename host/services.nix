@@ -6,15 +6,15 @@
       xkb.variant = "";
       libinput.enable= true;
     };
-    create_ap = {
-      enable = true;
-      settings = {
-        INTERNET_IFACE="eno1";
-        PASSPHRASE="..11..aa";
-        WIFI_IFACE="wlp2s0";
-        SSID="NIXOS";
-      };
-    };
+    # create_ap = {
+    #   enable = true;
+    #   settings = {
+    #     INTERNET_IFACE="eno1";
+    #     PASSPHRASE="..11..aa";
+    #     WIFI_IFACE="wlp2s0";
+    #     SSID="NIXOS";
+    #   };
+    # };
     pipewire = { # Sound settings
       enable = true;
       alsa.enable = true;

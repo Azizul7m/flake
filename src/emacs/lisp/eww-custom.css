@@ -1,0 +1,31 @@
+@media screen {
+body {
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+  }
+}

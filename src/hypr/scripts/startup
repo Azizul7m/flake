@@ -27,7 +27,7 @@ function run {
 # run 'clipster -d'
 run 'kdeconnect-indicator'
 run 'nm-applet'
-run "emacs --daemon &"
+#run "emacs --daemon &"
 # run 'qbittorrent'
 #you can set wallpapers in themes as well
 #run applications from startup

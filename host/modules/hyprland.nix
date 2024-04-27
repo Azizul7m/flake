@@ -1,5 +1,7 @@
-{ config, var, ... }: {
+{ inputs, config, var, ... }:
+{
   programs = {
+    xwayland.enable= true;
     hyprland = {
       enable = true;
       xwayland.enable = true;

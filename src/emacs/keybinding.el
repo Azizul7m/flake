@@ -21,8 +21,8 @@
       "SPC" '(project-find-file :wk "Counsel M-x")
       "." '(find-file :wk "Find file")
       "=" '(perspective-map :wk "Perspective") ;; Lists all the perspective keybindings
-;;      "g c" '(comment-dwim :wk "Comment lines")
-      "u" '(universal-argument :wk "Universal argument"))
+   ;; "g c" '(comment-dwim :wk "Comment lines")
+     "u" '(universal-argument :wk "Universal argument"))
 
     (dt/leader-keys
       "a" '(:ignore t :wk "Action")

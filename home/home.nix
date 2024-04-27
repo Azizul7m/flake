@@ -19,7 +19,7 @@ in {
   };
   programs = {
     home-manager.enable = true;
-    hyprlock.enable= true;
+    hyprlock.enable= true;      # 
     # emacs.enable = true;
   };
   systemd.user.targets.tray =
@@ -52,6 +52,7 @@ in {
         "video/mp4" = "vlc.desktop";
         "video/x-matroska" = "vlc.desktop";
         "inode/directory" = "nautilus.desktop";
+        "application/AppImage" = [ "appimage-run" ];
       };
     };
   };

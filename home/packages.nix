@@ -36,7 +36,6 @@
       # pipenv
 
       # Dev
-      distrobox
       mongodb-compass
 
       dockfmt # docker format

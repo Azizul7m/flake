@@ -1,6 +1,9 @@
 { var, ... }: {
   # Install necessary packages
   environment.systemPackages = with var.pkgs; [
+    distrobox
+    toolbox
+    boxbuddy
     #virt-manager
     #virt-viewer
     #spice
@@ -10,13 +13,6 @@
     #win-spice
     #gnome.adwaita-icon-theme
   ];
-  virtualisation = {
-    spiceUSBRedirection.enable = true;
-    podman = {
-      enable = true;
-      dockerCompat = true; # Create a `docker` alias for podman,
-      defaultNetwork.settings.dns_enabled = true; # containers talk to each other.
-    };
     # libvirtd = {
       # enable = true;
       # qemu.swtpm.enable = true;
@@ -25,6 +21,15 @@
         # ovmf.packages = [ var.pkgs.OVMFFull.fd ];
       # };
     # };
+  virtualisation = {
+    spiceUSBRedirection.enable = true;
+     docker = {
+       enable = true;
+     };
+     # podman = {
+     #   enable = true;
+     #   dockerCompat = true; # Create a `docker` alias for podman,
+     # };                         
   };
   services.spice-vdagentd.enable = true;
 }

@@ -86,6 +86,7 @@
         alias ubuntu='distrobox enter ubuntu'
         alias kali='distrobox enter blackarch'
         alias arch='distrobox enter arch'
+        alias dev='distrobox enter dev'
 
 
         alias pdf='sioyek'

@@ -14,14 +14,25 @@
       bat
       tree
       hunspell
-      gcc
-      cmake
-      killall
 
+      libtool
+      gcc
+      killall
+      cmake
+      openssl
+      pkg-config
+      zlib
+      libsodium
+      gnupg
+      clang
+      llvm
+      binutils
+      libusb
       clang-tools
       gnumake
-      networkmanagerapplet
       usbutils
+
+      networkmanagerapplet
       unzip
       cliphist # clipboard manager
       pciutils

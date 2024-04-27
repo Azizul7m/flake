@@ -10,10 +10,12 @@
   - [[#require-lisp][REQUIRE LISP]]
   - [[#eglot-booster][EGLOT BOOSTER]]
 - [[#async-savehist-repeat][Async Savehist Repeat]]
+- [[#ai][AI]]
 - [[#evil-mode][EVIL MODE]]
+- [[#eww][EWW]]
 - [[#flycheck][FLYCHECK]]
-- [[#git][Git]]
-- [[#hungry-delete][Hungry-Delete]]
+- [[#git][GIT]]
+- [[#hungry-delete][HUNGRY-DELETE]]
 - [[#keybinding][KEYBINDING]]
 - [[#ligature][LIGATURE]]
 - [[#search-engine][SEARCH ENGINE]]
@@ -57,6 +59,7 @@
   - [[#indent][INDENT]]
   - [[#formating][FORMATING]]
   - [[#perspective][PERSPECTIVE]]
+- [[#visual-fill-column][Visual Fill Column]]
 
 * VANILA *EMACS* CONFIG
  #+BEGIN_SRC elisp
@@ -70,6 +73,7 @@
     (global-visual-line-mode t)
     (global-display-line-numbers-mode 1)
     (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
+    (visual-line-mode nil) ;; Kind of like word-wrap
 
     (setq use-dialog-box nil)
     (setq use-file-dialog nil)
@@ -102,7 +106,7 @@
  (setq package-enable-at-startup nil)
 
 
-  (setq visual-fill-column-width 180
+  (setq visual-fill-column-width 160
         visual-fill-column-center-text t) ;; ;; Configure fill width
  ;; set custom file for emacs internal variables
  (setq custom-file (concat user-emacs-directory "custom.el")) 
@@ -126,6 +130,7 @@
 (require 'elpaca-setup)
 (require 'buffer_move)
 (require 'hide-mode-line)
+(require 'exec-path-from-shell)
 #+END_SRC
 
 ** EGLOT BOOSTER
@@ -158,6 +163,32 @@
   :init
   (repeat-mode +1))
 
+#+end_src
+
+* AI
+#+begin_src emacs-lisp
+(use-package gptel
+ :config
+ (setq gptel-default-mode 'org-mode)
+ (setq gptel-model "gemini-pro"
+      gptel-backend (gptel-make-gemini "Gemini"
+                    :key "AIzaSyCZ8KNE1MiGPK_av8GC7QSfX0gkFHFaAUk"
+                    :stream t))
+ ;; Together.ai offers an OpenAI compatible API
+ (gptel-make-openai "TogetherAI"         ;Any name you want
+  :host "api.together.xyz"
+  :key "034dc79db5eb2889e37553de64645e3fb3e7b9261d80e1dcf6c6c5f11acd909c"
+  :stream t
+  :models '("mistralai/Mixtral-8x7B-Instruct-v0.1"
+            "codellama/CodeLlama-13b-Instruct-hf"
+            "codellama/CodeLlama-34b-Instruct-hf"))
+ (gptel-make-openai "Anyscale" 
+   :host "api.endpoints.anyscale.com"
+   :key "esecret_5ct3wfyw2njvs7pkrkqh1g2zrx"
+   :models '(
+            "mistralai/Mixtral-8x7B-Instruct-v0.1")))
+(add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+(add-hook 'gptel-post-response-hook 'gptel-end-of-response)
 #+end_src
 * EVIL MODE
 #+begin_src emacs-lisp
@@ -200,17 +231,30 @@
   :config
   (global-evil-surround-mode 1))
 #+end_src
+* EWW 
+#+begin_src emacs-lisp
+(use-package eww
+    :ensure nil
+    :config
+    (setq eww-enable-experimental-features t)
+    (setq eww-enable-javascript nil))
+
+    (add-hook 'eww-mode-hook
+              (lambda ()
+                (visual-fill-column-mode t)
+                (display-line-numbers-mode nil)))
+#+end_src
 * FLYCHECK
 #+begin_src emacs-lisp
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
 #+end_src
-* Git
+* GIT
 #+begin_src emacs-lisp
 (use-package git-link)
 #+end_src
-* Hungry-Delete
+* HUNGRY-DELETE
 Hungry Delete is a minor-mode that causes deletion to delete all whitespace in the direction you are deleting. Works exactly like c-hungry-delete-mode, which is where the code was from. This just packages it up to be easier to use in other modes.
 #+begin_src emacs-lisp
 (use-package hungry-delete
@@ -407,51 +451,44 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 
 #+end_src
 ** TODO CORFU
-DEADLINE: <2024-03-19 মঙ্গল>
-_Fix corfu on terminal_
 Code Completion 
 #+begin_src emacs-lisp
-(use-package corfu
-  :ensure t
-  ;; Optional customizations
-  :custom
-  (corfu-cycle t)                 ; Allows cycling through candidates
-  (corfu-auto t)                  ; Enable auto completion
-  (corfu-auto-prefix 0)
-  (corfu-auto-delay 0.2)
-  (corfu-popupinfo-delay '(0.3 . 0.2))
-  (corfu-preview-current 'insert) ; insert previewed candidate
-  (corfu-preselect 'prompt)
-  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
-  ;; Optionally use TAB for cycling, default is `corfu-complete'.
-  :bind (:map corfu-map
-              ("M-SPC"      . corfu-insert-separator)
-              ("TAB"        . corfu-next)
-              ([tab]        . corfu-next)
-              ("S-TAB"      . corfu-previous)
-              ([backtab]    . corfu-previous)
-              ("S-<return>" . corfu-insert)
-              ("RET"        . corfu-insert))
+  (use-package corfu
+    :ensure t
+    ;; Optional customizations
+    :custom
+    (corfu-cycle t)                 ; Allows cycling through candidates
+    (corfu-auto t)                  ; Enable auto completion
+    (corfu-auto-prefix 0)
+    (corfu-auto-delay 0.2)
+    (corfu-popupinfo-delay '(0.3 . 0.2))
+    (corfu-preview-current 'insert) ; insert previewed candidate
+    (corfu-preselect 'prompt)
+    (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+    ;; Optionally use TAB for cycling, default is `corfu-complete'.
+    :bind (:map corfu-map
+		("M-SPC"      . corfu-insert-separator)
+		("TAB"        . corfu-next)
+		([tab]        . corfu-next)
+		("S-TAB"      . corfu-previous)
+		([backtab]    . corfu-previous)
+		("S-<return>" . corfu-insert)
+		("RET"        . corfu-insert))
 
-  :init
-  (global-corfu-mode)
-  (corfu-history-mode)
-  (corfu-popupinfo-mode))
+    :init
+    (global-corfu-mode)
+    (corfu-history-mode)
+    (corfu-popupinfo-mode))
 
-  (setq read-extended-command-predicate #'command-completion-default-include-p)
-(use-package kind-icon
-  :ensure t
-  :after corfu
-  ;:custom
-  ; (kind-icon-blend-background t)
-  ; (kind-icon-default-face 'corfu-default) ; only needed with blend-background
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+    (setq read-extended-command-predicate #'command-completion-default-include-p)
+  (use-package nerd-icons-corfu
+    :ensure t
+    :config
+      (add-to-list '
+corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
-
-;;(require 'corfu-terminal)
-;;(unless (display-graphic-p)
-  ;;(corfu-terminal-mode +1))
+  (use-package corfu-terminal
+    :ensure t)
 #+end_src
 ** CAPE
 Cape has the super power to transform Company backends into Capfs and merge multiple Capfs into a Super-Capf! These transformers allow you to still take advantage of Company backends even if you are not using Company as frontend.
@@ -488,7 +525,7 @@ Cape has the super power to transform Company backends into Capfs and merge mult
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
     (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-    (add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
+    ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
     ;;(add-to-list 'completion-at-point-functions #'cape-history)
     ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
     ;;(add-to-list 'completion-at-point-functions #'cape-tex)
@@ -519,6 +556,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+begin_src emacs-lisp
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))) 
+(add-hook 'org-mode-hook (lambda () (visual-fill-column-mode t)))
 #+end_src
 *** CUSTOMS FACE
   #+begin_src emacs-lisp
@@ -590,7 +628,8 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 (use-package org-modern
   :ensure t
   :config
-  (with-eval-after-load 'org (global-org-modern-mode)))
+  ;;(with-eval-after-load 'org (global-org-modern-mode))
+  )
 #+end_src
 *** SNIPPET
 #+begin_src emacs-lisp
@@ -655,7 +694,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 DEADLINE: <2024-03-20 বুধ>
 fix corfu completion
 #+begin_src emacs-lisp
-(setq corfu-debug-mode t)
 (use-package web-mode
   :ensure t
   :defer t
@@ -669,11 +707,12 @@ fix corfu completion
         web-mode-enable-auto-opening t
         web-mode-enable-auto-pairing t
         web-mode-enable-auto-indentation t)
+  (add-hook 'web-mode-hook 'emmet-mode)
   :mode
   (("\\.html\\'" . web-mode)
    ("\\.php\\'" . web-mode)
-   ("\\.tsx\\'" . web-mode)
-  ))
+   ("\\.ejs\\'" . web-mode)
+   ("\\.tsx\\'" . web-mode)))
 
 
 (use-package tide
@@ -701,6 +740,18 @@ fix corfu completion
 
 (add-hook 'web-mode-hook 'my-web-mode-hook)
 
+
+(use-package typescript-mode
+  :ensure t
+  :hook (typescript-mode-hook )
+  :mode
+  (("\\.ts\\'" . typescript-mode)))
+(defun typescript-mode-setup()
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eglot-ensure))
+
+(add-hook 'typescript-mode-hook 'evil-collection-typescript-mode-setup)
 ;; Enable ESLint or TSLint for linting
 ;; Ensure you have ESLint or TSLint installed globally or locally in your project
 ;; You can choose either ESLint or TSLint by commenting/uncommenting the relevant lines below
@@ -714,6 +765,10 @@ fix corfu completion
 ;(add-hook 'web-mode-hook 'eglot-tslint)
 
 (use-package json-mode)
+
+
+(use-package emmet-mode
+  :ensure t)
 
 #+end_src
 
@@ -852,7 +907,6 @@ fix corfu completion
   :after (treemacs persp-mode) ;;or perspective vs. persp-mode
   :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
-
 #+end_src
 ** PROJECTILE
 #+begin_src emacs-lisp
@@ -900,9 +954,7 @@ fix corfu completion
 ** Shell
 *** 
 #+begin_src emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t
-  :init (exec-path-from-shell-initialize))
+(add-to-list 'exec-path "~/.npm_global/bin")
 #+end_src
 *** Eshell 
 #+begin_src emacs-lisp
@@ -992,14 +1044,27 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 (use-package all-the-icons-dired
   :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
 
+(use-package all-the-icons-ibuffer
+  :ensure t
+  :hook (ibuffer-mode . all-the-icons-ibuffer-mode))
+
 (use-package all-the-icons-completion
   :after (marginalia all-the-icons)
   :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
   :init
   (all-the-icons-completion-mode))
+
 #+end_src
 ** THEME
 #+BEGIN_SRC elisp
+
+
+(use-package spaceway-theme
+  :ensure nil
+  :load-path "lisp/spaceway/"
+  :config
+  ;;(load-theme 'spaceway t)
+  (setenv "SCHEME" "dark"))
 
  (use-package doom-themes
  :ensure t
@@ -1008,28 +1073,25 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
          doom-themes-enable-italic t) ; if nil, italics is universally disabled
  (setq doom-themes-treemacs-theme "doom-colors")
  (doom-themes-treemacs-config)
- (load-theme 'doom-one t))
+ (load-theme 'doom-one t)
+ )
+
+
+
 
 (use-package doom-modeline
   :ensure t
   :config
-  (setq doom-modeline-height 18)
-  (setq  doom-modeline-hud t)
-  (setq doom-modeline-icon t)
-  (setq doom-modeline-lsp-icon t)
-  :init (doom-modeline-mode 1))
+    (setq doom-modeline-height 17)
+    (setq  doom-modeline-hud t)
+    (setq doom-modeline-icon t)
+    (setq doom-modeline-lsp-icon t)
+    (setq doom-modeline-height 1)
+    (set-face-attribute 'mode-line nil :height 100)
+    (set-face-attribute 'mode-line-inactive nil :height 100)
+   :init (doom-modeline-mode 1))
 
 
-;; (use-package spaceway-theme
-  ;; :ensure nil
-  ;; :load-path "lisp/spaceway/"
-  ;; :config
-  ;; (global-hl-line-mode t)
-  ;; (set-frame-parameter nil 'cursor-color "#dc322f")
-  ;; (add-to-list 'default-frame-alist '(cursor-color . "#dc322f"))
-;; 
-  ;; (load-theme 'spaceway t)
-  ;; (setenv "SCHEME" "dark"))
 
 
 #+END_SRC
@@ -1118,4 +1180,12 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
               (ibuffer-do-sort-by-alphabetic))))
 ;; Automatically save perspective states to file when Emacs exits.
 (add-hook 'kill-emacs-hook #'persp-state-save)
+#+end_src
+* Visual Fill Column
+#+begin_src emacs-lisp
+(use-package visual-fill-column
+  :ensure t
+  :config
+  (setq-default visual-fill-column-center-text t))
+
 #+end_src

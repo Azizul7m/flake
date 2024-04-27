@@ -20,8 +20,8 @@
   boot = {
     supportedFilesystems = [ "ntfs" ];
     # kernelParams = [ "quiet" "splash" ];
-    # consoleLogLevel = 0;
-    # initrd.verbose = false;
+     consoleLogLevel = 0;
+     initrd.verbose = false;
     binfmt = {
       registrations.appimage ={
         wrapInterpreterInShell = false;
@@ -37,7 +37,26 @@
   networking = {
     hostName = "${var.host}"; # Define your hostname.
     networkmanager.enable = true;
+    firewall = {
+        enable = true;
+        allowedTCPPorts = [ 22 80 443 7878 ];
+        allowedUDPPortRanges = [
+            { from = 3000; to = 3007; }
+            { from = 4000; to = 4007; }
+            { from = 8000; to = 8009; }
+        ];
+    };
   };
+    i18n.inputMethod = {
+        enabled = "fcitx5";
+        fcitx5.addons = with pkgs; [
+        fcitx5-gtk
+        fcitx5-configtool
+        fcitx5-with-addons
+        fcitx5-m17n
+        fcitx5-openbangla-keyboard
+        ];
+    };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
