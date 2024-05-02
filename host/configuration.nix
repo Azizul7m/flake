@@ -3,7 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./modules/hyprland.nix
+    # ./modules/hyprland.nix
     ./fonts.nix
     ./environment.nix
     ./services.nix
@@ -22,8 +22,8 @@
     # kernelParams = [ "quiet" "splash" ];
      consoleLogLevel = 0;
      initrd.verbose = false;
-    binfmt = {
-      registrations.appimage ={
+     binfmt = {
+        registrations.appimage ={
         wrapInterpreterInShell = false;
         interpreter = "${pkgs.appimage-run}/bin/appimage-run";
         recognitionType = "magic";
@@ -47,16 +47,16 @@
         ];
     };
   };
-    i18n.inputMethod = {
-        enabled = "fcitx5";
-        fcitx5.addons = with pkgs; [
-        fcitx5-gtk
-        fcitx5-configtool
-        fcitx5-with-addons
-        fcitx5-m17n
-        fcitx5-openbangla-keyboard
-        ];
-    };
+    # i18n.inputMethod = {
+    #     enabled = "fcitx5";
+    #     fcitx5.addons = with pkgs; [
+    #     fcitx5-gtk
+    #     fcitx5-configtool
+    #     fcitx5-with-addons
+    #     fcitx5-m17n
+    #     fcitx5-openbangla-keyboard
+    #     ];
+    # };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -93,9 +93,10 @@
       auth include login
     '';
   };
+  hardware.pulseaudio.enable = false;
 
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+  # xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
 
   nixpkgs.config.allowUnfree = true; # Allow unfree packages
   system.stateVersion = "24.05"; # Did you read the comment?

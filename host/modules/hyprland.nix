@@ -8,13 +8,14 @@
     };
   };
   hardware = { opengl.enable = true; };
-  environment = let exec = "exec dbus-launch Hyprland";
-  in {
-    loginShellInit = ''
-      if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-        ${exec}
-      fi
-    '';
+  environment =
+    let
+      exec = "exec dbus-launch Hyprland";
+    in {
+        # loginShellInit = ''
+        #   if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
+        #       ${exec}
+        #   fi '';
 
     sessionVariables = {
       NIXOS_OZONE_WL = "1";

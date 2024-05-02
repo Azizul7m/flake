@@ -22,12 +22,17 @@ in {
     hyprlock.enable= true;      # 
     # emacs.enable = true;
   };
+
   systemd.user.targets.tray =
     { # Tray.target can not be found when xsession is not enabled. This fixes the issue.
       Unit = {
         Description = "Home Manager System Tray";
         Requires = [ "graphical-session-pre.target" ];
       };
+    };
+    dconf = {
+        enable = true;
+        settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
     };
   xdg = {
     mime.enable = true;
