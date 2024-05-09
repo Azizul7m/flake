@@ -15,6 +15,7 @@
       :states '(normal insert visual emacs)
       :keymaps 'override
       :prefix "SPC" ;; set leader
+      :non-normal-prefix "C-SPC"
       :global-prefix "C-SPC") ;; access leader in insert mode
 
     (dt/leader-keys
@@ -192,7 +193,6 @@
       "t f" '(flycheck-mode :wk "Toggle flycheck")
       "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
       "t n" '(treemacs :wk "Toggle Treemacs file viewer")
-      "t o" '(org-mode :wk "Toggle org mode")
       "t r" '(rainbow-mode :wk "Toggle rainbow mode")
       "t t" '(visual-line-mode :wk "Toggle truncated lines")
       "t v" '(vterm-toggle :wk "Toggle vterm"))

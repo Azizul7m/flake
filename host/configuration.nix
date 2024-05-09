@@ -3,13 +3,14 @@
 {
   imports = [
     ./hardware-configuration.nix
-    # ./modules/hyprland.nix
+    ./modules/hyprland.nix
     ./fonts.nix
     ./environment.nix
     ./services.nix
     ./virtualisation.nix
     ./programs.nix
     ./users.nix
+    ./modules/hyprland.nix
   ];
   # Bootloader.
   boot.loader = {
@@ -19,9 +20,12 @@
   };
   boot = {
     supportedFilesystems = [ "ntfs" ];
-    # kernelParams = [ "quiet" "splash" ];
-     consoleLogLevel = 0;
-     initrd.verbose = false;
+    kernelParams = [ "quiet" "splash" ];
+    consoleLogLevel = 0;
+    initrd = {
+       systemd.enable= true;
+       verbose = false;
+     };
      binfmt = {
         registrations.appimage ={
         wrapInterpreterInShell = false;

@@ -2,10 +2,10 @@
   gtk = {
     enable = true;
     theme = {
-      # name = "Dracula";
-      # package = var.pkgs.dracula-theme;
-      name = "Materia-dark";
-      package = var.pkgs.materia-theme;
+      name = "Dracula";
+      package = var.pkgs.dracula-theme;
+      # name = "Materia-dark";
+      # package = var.pkgs.materia-theme;
     };
     iconTheme = {
       name = "Vimix-Black";
@@ -14,7 +14,7 @@
     cursorTheme = {
       package = var.pkgs.apple-cursor;
       name = "macOS-Monterey";
-      size = 16;
+      size = 14;
     };
     gtk3 = {
       extraConfig = {

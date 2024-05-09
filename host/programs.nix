@@ -13,6 +13,7 @@
       fzf
       bat
       tree
+      ncdu
       hunspell
 
       libtool
@@ -31,6 +32,7 @@
       clang-tools
       gnumake
       usbutils
+      flatpak-builder  
 
       networkmanagerapplet
       unzip

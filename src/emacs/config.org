@@ -9,7 +9,7 @@
   - [[#import-lisp-directory][IMPORT LISP DIRECTORY]]
   - [[#require-lisp][REQUIRE LISP]]
   - [[#eglot-booster][EGLOT BOOSTER]]
-- [[#async-savehist-repeat][Async Savehist Repeat]]
+- [[#async-savehist-repeat][ASYNC SAVEHIST REPEAT]]
 - [[#ai][AI]]
 - [[#evil-mode][EVIL MODE]]
 - [[#eww][EWW]]
@@ -38,7 +38,7 @@
 - [[#popper][POPPER]]
 - [[#file-browser][FILE BROWSER]]
   - [[#dired][DIRED]]
-  - [[#treemacs][Treemacs]]
+  - [[#treemacs][TREEMACS]]
   - [[#projectile][PROJECTILE]]
 - [[#terminal][TERMINAL]]
   - [[#vterm][Vterm]]
@@ -139,7 +139,7 @@
 (fset #'jsonrpc--log-event #'ignore)
 #+end_src
 
-* Async Savehist Repeat
+* ASYNC SAVEHIST REPEAT
 #+begin_src emacs-lisp
 ;;; Emacs look SIGNIFICANTLY less often which is a good thing.
 ;;; asynchronous bytecode compilation and various other actions makes
@@ -525,9 +525,9 @@ Cape has the super power to transform Company backends into Capfs and merge mult
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
     (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+    (add-to-list 'completion-at-point-functions #'cape-keyword)
     ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
     ;;(add-to-list 'completion-at-point-functions #'cape-history)
-    ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
     ;;(add-to-list 'completion-at-point-functions #'cape-tex)
     ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
     ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
@@ -605,7 +605,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
 #+end_src
-
 *** ORG-ROAM-UI
 #+begin_src emacs-lisp
 (use-package websocket
@@ -669,7 +668,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+end_src
 * DEVELOPMENT
 ** LANGUAGE
-
 *** Rust
 #+begin_src emacs-lisp
 (use-package rustic
@@ -689,7 +687,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :mode
   ("\\.nix\\'"))
 #+end_src
-*** 
 *** TODO Typescript
 DEADLINE: <2024-03-20 বুধ>
 fix corfu completion
@@ -775,7 +772,6 @@ fix corfu completion
 ***** Treesit 
 #+begin_src emacs-lisp
 (require 'treesit)
-
 (setq treesit-language-source-alist
       '((bash . ("git@github.com:tree-sitter/tree-sitter-bash.git"))
         (c . ("git@github.com:tree-sitter/tree-sitter-c.git"))
@@ -792,17 +788,16 @@ fix corfu completion
         (ocaml . ("git@github.com:tree-sitter/tree-sitter-ocaml.git" "ocaml/src" "ocaml"))
         (python . ("git@github.com:tree-sitter/tree-sitter-python.git"))
         (php . ("git@github.com:tree-sitter/tree-sitter-php.git"))
-        (typescript . ("git@github.com:tree-sitter/tree-sitter-typescript.git" "typescript/src" "typescript" "tsx/src"))
         (ruby . ("git@github.com:tree-sitter/tree-sitter-ruby.git"))
         (rust . ("git@github.com:tree-sitter/tree-sitter-rust.git"))
         (sql . ("git@github.com:m-novikov/tree-sitter-sql.git"))
         (toml . ("git@github.com:tree-sitter/tree-sitter-toml.git"))
         (zig . ("git@github.com:GrayJack/tree-sitter-zig.git"))))
+        ;;(typescript . ("git@github.com:tree-sitter/tree-sitter-typescript.git" "typescript/src" "typescript" "tsx/src"))
 (require 'ansi-color)
 
 (defun colorize-compilation-buffer ()
   (ansi-color-apply-on-region compilation-filter-start (point-max)))
-
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 #+end_src
 ***  DevOop
@@ -869,32 +864,42 @@ fix corfu completion
     (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
 )
 #+end_src
-** Treemacs
+** TREEMACS
 #+begin_src emacs-lisp
+(defun my/treemacs-setup ()
+  "Customize settings for treemacs buffer."
+  (display-line-numbers-mode -1))
+
 (use-package treemacs
   :ensure t
   :defer t
   :init
+  (with-eval-after-load 'treemacs
+    (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
   :config
   (progn
     (setq
-         treemacs-width 35
-         treemacs-recenter-after-project-jump 'always)
+     treemacs-width 35
+     treemacs-recenter-after-project-jump 'always)
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode 'always)
-    (treemacs-hide-gitignored-files-mode nil)
-    (display-line-numbers-mode nil))
+    (treemacs-hide-gitignored-files-mode nil))
   :bind
   (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t d"   . treemacs-select-directory)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+        ("<space>"    . treemacs) ; Leader key binding
+        ("M-0"        . treemacs-select-window)
+        ("C-x t 1"    . treemacs-delete-other-windows)
+        ("C-x t t"    . treemacs)
+        ("C-x t d"    . treemacs-select-directory)
+        ("C-x t B"    . treemacs-bookmark)
+        ("C-x t C-t"  . treemacs-find-file)
+        ("C-x t M-t"  . treemacs-find-tag))
+  :hook
+  (treemacs-mode . my/treemacs-setup))
 
+(use-package treemacs-evil
+  :after (treemacs evil))
 
 (use-package treemacs-projectile
   :after (treemacs projectile)
@@ -904,10 +909,11 @@ fix corfu completion
   :hook (dired-mode . treemacs-icons-dired-enable-once)
   :ensure t)
 
-(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+(use-package treemacs-persp
+  :after (treemacs persp-mode)
   :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
+
 #+end_src
 ** PROJECTILE
 #+begin_src emacs-lisp
