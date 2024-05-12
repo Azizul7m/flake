@@ -11,6 +11,7 @@ in {
     ./modules/programs/emacs.nix
     ./modules/programs/rofi.nix
     ./modules/services/mpd.nix
+    ./modules/shells/shell.nix
   ];
   home = {
     stateVersion = "23.11";
@@ -20,7 +21,6 @@ in {
   programs = {
     home-manager.enable = true;
     hyprlock.enable= true;      # 
-    # emacs.enable = true;
   };
 
   systemd.user.targets.tray =

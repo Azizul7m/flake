@@ -5,7 +5,7 @@
   services = {
     mpd = {
       enable = true;
-      musicDirectory = "~/Music";
+      musicDirectory = "~/Music/";
       network = {
         startWhenNeeded = true;
         listenAddress = "any";

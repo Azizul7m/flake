@@ -1,16 +1,19 @@
 { var, ... }: {
   home = {
     packages = (with var.pkgs; [
-      gnome.nautilus
+    gnome.nautilus
+    baobab # disk analizer
       google-chrome
       firefox
       dropbox
 
       #Office
       sioyek
+      foliate
 
       #Graphics
       figma-linux
+      sxiv
 
       # Social
       telegram-desktop
@@ -19,27 +22,25 @@
       qbittorrent
       rustdesk
       rustdesk-server
+      appimage-run
+      bleachbit
+      sxiv
+
+      # Media
+      vlc
 
       # TUI
       lazygit
       yewtube # youtube
       htop
       neofetch
-      ghostscript
 
 
-      #Dev
-      direnv
-      nodejs
 
-      # python310Packages.pip
-      # pipenv
 
       # Dev
       mongodb-compass
 
-      dockfmt # docker format
-      podman-compose
 
       #postman # API
       #jetbrains.datagrip

@@ -740,7 +740,6 @@ fix corfu completion
 
 (use-package typescript-mode
   :ensure t
-  :hook (typescript-mode-hook )
   :mode
   (("\\.ts\\'" . typescript-mode)))
 (defun typescript-mode-setup()
@@ -758,8 +757,8 @@ fix corfu completion
 ;; (add-hook 'web-mode-hook 'eglint-initialize)
 
 ;; For TSLint
-;;(add-hook 'typescript-mode-hook 'eglot-tslint)
-;(add-hook 'web-mode-hook 'eglot-tslint)
+(add-hook 'typescript-mode-hook 'eglot-tslint)
+(add-hook 'web-mode-hook 'eglot-tslint)
 
 (use-package json-mode)
 
