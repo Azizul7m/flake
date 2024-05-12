@@ -7,6 +7,7 @@
       neovim
       wget
       joshuto
+      nitch
       ix
       fd
       ripgrep
@@ -15,24 +16,12 @@
       tree
       ncdu
       hunspell
+      typioca
 
-      libtool
-      gcc
-      killall
-      cmake
-      openssl
-      pkg-config
-      zlib
-      libsodium
-      gnupg
-      clang
-      llvm
-      binutils
       libusb
-      clang-tools
-      gnumake
       usbutils
       flatpak-builder  
+      killall
 
       networkmanagerapplet
       unzip
