@@ -94,8 +94,9 @@
         # alias hotspot='nmcli dev wifi hotspot'
         # alias wpassword='nmcli dev wifi show-password'
 
-        alias nixosrebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
-        alias cleanup='sudo nix-collect-garbage -d'
+        alias nix_rebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
+        alias nix_cleanup='sudo nix-collect-garbage -d'
+        alias nix_oldgen='sudo nix-env -p /nix/var/nix/profiles/system --delete-generations old'
 
       '';
       # Add npm path to PATH

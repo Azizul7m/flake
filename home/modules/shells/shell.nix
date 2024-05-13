@@ -1,41 +1,33 @@
 {pkgs, ...}: {
-  programs = with pkgs; [
+  home = {
+    packages = with pkgs; [
+        devbox
+        direnv
+        # C stuff
+        clang
+        llvm
+        cmake
+        libclang
+        libtool
+        openssl
+        pkg-config
+        libsodium
+        gnupg
+        gnumake
+        #js
+        nodejs
+        deno   
+        # rs
+        rustup
+        #py
+        python310Packages.pip
+        pipenv
 
-    devbox
-    direnv
-
-
-
-    # C stuff
-    clang
-    llvm
-    gcc
-    cmake
-    libclang
-    libtool
-    openssl
-    pkg-config
-    zlib
-    libsodium
-    gnupg
-    binutils
-    clang-tools
-    gnumake
-
-    #js
-    nodejs
-    deno   
-    # rs
-    rustup
-
-    #py
-    python310Packages.pip
-    pipenv
-
-    # bash
-    shfmt
-    # DevOps
-    dockfmt # docker format
-    podman-compose
-  ];
+        # bash
+        shfmt
+        # DevOps
+        dockfmt # docker format
+        podman-compose
+    ];
+  };
 }
