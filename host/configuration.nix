@@ -51,16 +51,6 @@
         ];
     };
   };
-    # i18n.inputMethod = {
-    #     enabled = "fcitx5";
-    #     fcitx5.addons = with pkgs; [
-    #     fcitx5-gtk
-    #     fcitx5-configtool
-    #     fcitx5-with-addons
-    #     fcitx5-m17n
-    #     fcitx5-openbangla-keyboard
-    #     ];
-    # };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -88,7 +78,6 @@
     };
     package = pkgs.nixVersions.unstable;
   };
-
   security = {
     rtkit.enable = true;
     # polkit.enable = true;

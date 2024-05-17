@@ -1,33 +1,34 @@
-{pkgs, ...}: {
+{var, ...}: {
   home = {
-    packages = with pkgs; [
+    packages = (with var.pkgs; [
         devbox
         direnv
         # C stuff
-        clang
-        llvm
-        cmake
-        libclang
-        libtool
-        openssl
-        pkg-config
-        libsodium
         gnupg
         gnumake
+
         #js
         nodejs
         deno   
+
         # rs
         rustup
+
         #py
         python310Packages.pip
         pipenv
 
         # bash
         shfmt
+
+        #nix
+        nixfmt
+        
         # DevOps
         dockfmt # docker format
-        podman-compose
-    ];
+        docker-compose
+    ]) ++ (with var.pkgs-stable; [
+     # rnix-lsp 
+    ]);
   };
 }

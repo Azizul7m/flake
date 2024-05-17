@@ -3,6 +3,7 @@ let gtk = import ./theme/gtk.nix { inherit var; };
 in {
   imports = [
     (import ./modules/programs/fish.nix { inherit var; })
+    (import ./modules/shells/shell.nix {inherit var;}) 
     (import ./packages.nix { inherit var; })
     (import ./theme/gtk.nix { inherit var; })
     ./modules/programs/waybar.nix
@@ -11,7 +12,6 @@ in {
     ./modules/programs/emacs.nix
     ./modules/programs/rofi.nix
     ./modules/services/mpd.nix
-    ./modules/shells/shell.nix
   ];
   home = {
     stateVersion = "23.11";

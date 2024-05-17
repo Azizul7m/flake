@@ -44,6 +44,6 @@
 
       #postman # API
       #jetbrains.datagrip
-    ]) ++ (with var.pkgs-unstable; [ inkscape ]);
+    ]) ++ (with var.pkgs-stable; [ inkscape ]);
   };
 }

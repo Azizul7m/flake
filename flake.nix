@@ -1,7 +1,7 @@
 {
   description = "A very basic flake";
   inputs = {
-#    nixpkgs.url = "nixpkgs/nixos-23.11";
+    nixpkgs-stable.url = "nixpkgs/nixos-23.11";
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
     home-manager = {
@@ -21,8 +21,7 @@
         inputs.hyprland.follows = "hyprland";
     };
   };
-  outputs = inputs@{ self, nixpkgs, nur, hyprland, hyprlock, home-manager, ... }:
-    let
+  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, nur, hyprland, hyprlock, home-manager, ... }: let
       var = rec {
         system = "x86_64-linux";
         host = "nixos";
@@ -32,7 +31,7 @@
           inherit system;
           config.allowUnfree = true;
         };
-        pkgs-unstable = import nixpkgs {
+        pkgs-stable = import nixpkgs-stable {
           inherit system;
           config.allowUnfree = true;
         };
