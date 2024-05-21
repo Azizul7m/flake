@@ -8,15 +8,18 @@
       editorconfig-core-c # Editor config
       wl-clipboard # for emacs org-mode
       emacsPackages.jsonrpc
-      # emacsPackages.djvu
-      # emacsPackages.emacsql
       grip
-      tetex
-      # wkhtmltopdf
       pandoc
+      texliveTeTeX
       groff
+      libvterm
       gnuplot # A portable command-line driven graphing utility for many platforms
     ]);
   };
-  services.emacs.enable = true;
+  services = {
+    emacs= {
+      enable = true;
+      defaultEditor = true;
+    };
+  };
 }

@@ -4,9 +4,11 @@
         devbox
         direnv
         # C stuff
-        gnupg
-        gnumake
 
+        gnumake
+        cmake
+        gnupg
+        
         #js
         nodejs
         deno   

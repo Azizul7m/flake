@@ -20,20 +20,26 @@
       # XDG_CURRENT_DESKTOP = "Hyprland";
       # XDG_SESSION_TYPE = "wayland";
       # XDG_SESSION_DESKTOP = "Hyprland";
-      QT_QPA_PLATFORM = "wayland";
+
+      QT_QPA_PLATFORM = "offscreen"; #"wayland"; 
       QT_QPA_PLATFORMTHEM= "qt6ct";
       QT_AUTO_SCREEN_SCALE_FACTOR= "1";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
 
+      
       WLR_NO_HARDWARE_CURSORS = "1";
       MOZ_ENABLE_WAYLAND = "1";
       #NIXOS_OZONE_WL = "1";
     };
 
     systemPackages = with var.pkgs; [
-      xdg-desktop-portal-hyprland
+      qt5.qtwayland
+      qt5.qtbase
+      qt5.qttools
       qt6Packages.qt6ct
       libsForQt5.qt5.qtwayland
+
+      xdg-desktop-portal-hyprland
       kitty
       libnotify
       wofi

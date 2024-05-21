@@ -35,13 +35,13 @@
         <match target="pattern">
           <test name="family"><string>serif</string></test>
           <edit name="family" mode="prepend" binding="strong">
-            <string>Bengali Bengali</string>
+            <string>Roboto</string>
           </edit>
         </match>
         <match target="pattern">
           <test name="family"><string>monospace</string></test>
           <edit name="family" mode="prepend" binding="strong">
-            <string>Bengali</string>
+            <string>Ubuntu</string>
           </edit>
         </match>
       '';
