@@ -296,3 +296,12 @@ label:focus {
 #scratchpad.empty {
 	/* background-color: transparent; */
 }
+#custom-cryptotracking {
+  /* background: #98bb6c; */
+  /* color: #1f1f28; */
+  /* padding: 0 10px; */
+  /* margin-right: 10px; */
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: 0.25s;
+}

@@ -12,6 +12,7 @@
     "modules-center": ["clock", "mpd"],
     "modules-right": [
         "network",
+        "custom/cryptotracking",
         "tray",
         "hyprland/language",
         "pulseaudio",
@@ -171,5 +172,11 @@
         },
         "tooltip-format-disconnected": "󰽰",
         "on-click": "pkill ncmpcpp || alacritty -e ncmpcpp"
+    },
+    "custom/cryptotracking": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "crypto-tracker -k e2bd23eb-64e6-4203-86e7-703e21f49913 -s BTC,ETH,SOL,BNB,XMR,NEAR,TON",
+        "restart-interval": 300
     },
 }

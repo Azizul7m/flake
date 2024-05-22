@@ -1,4 +1,7 @@
-{ config, var, ... }: {
+{ config, pkgs, ... }: {
+  home.packages = with pkgs; [
+    crypto-tracker
+  ];
   programs = {
     waybar = {
       enable = true;
