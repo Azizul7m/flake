@@ -1,14 +1,13 @@
 {config, pkg, ...}:
 {
   services = {
-    xserver = {
-      enable = true;
-      xkb.layout = "us,bd";            # Configure keymap in X11
-      xkb.variant = "";
-      libinput.enable= true;
-      displayManager.lightdm.enable= false;
-      # desktopManager.plasma5.enable = true;
-    };
+    # xserver = {
+    #   enable = true;
+    #   xkb.layout = "us,bd";            # Configure keymap in X11
+    #   xkb.variant = "";
+    #   displayManager.lightdm.enable= false;
+    #   # desktopManager.plasma5.enable = true;
+    # };
     # create_ap = {
     #   enable = true;
     #   settings = {
@@ -24,6 +23,16 @@
       alsa.support32Bit = true;
       pulse.enable = true;
     };
+    vsftpd = {
+        enable = true;
+    #   cannot chroot && write
+    #   chrootlocalUser = true;
+        writeEnable = true;
+        localUsers = true;
+        userlist = [ "anower" "cam" ];
+        userlistEnable = true;
+    };
+    libinput.enable= true; #LibInput
     flatpak.enable = true;
     getty.autologinUser = "anower";
     openssh.enable = true;

@@ -5,12 +5,12 @@ in {
     (import ./modules/programs/fish.nix { inherit var; })
     (import ./modules/shells/shell.nix {inherit var;}) 
     (import ./packages.nix { inherit var; })
-    (import ./theme/gtk.nix { inherit var; })
+     (import ../theme/gtk.nix { inherit var; })
     ./modules/programs/waybar.nix
     ./modules/programs/tmux.nix
-    ./modules/programs/alacritty.nix
+     ./modules/programs/alacritty.nix
     ./modules/programs/emacs.nix
-    ./modules/programs/rofi.nix
+     ./modules/programs/rofi.nix
     ./modules/services/mpd.nix
   ];
   home = {
@@ -32,7 +32,7 @@ in {
     };
     dconf = {
         enable = true;
-        settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+         settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
     };
   xdg = {
     mime.enable = true;

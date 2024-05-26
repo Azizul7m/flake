@@ -1,8 +1,8 @@
 { var, ... }: {
   home = {
     packages = (with var.pkgs; [
-    gnome.nautilus
-    baobab # disk analizer
+      gnome.nautilus
+      baobab # disk analizer
       google-chrome
       firefox
       dropbox
@@ -20,8 +20,6 @@
 
       #Utils
       qbittorrent
-      rustdesk
-      rustdesk-server
       appimage-run
       bleachbit
       sxiv
@@ -35,12 +33,8 @@
       htop
       neofetch
 
-
-
-
       # Dev
       mongodb-compass
-
 
       #postman # API
       #jetbrains.datagrip

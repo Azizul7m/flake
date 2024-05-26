@@ -3,30 +3,29 @@
     packages = (with var.pkgs; [
         devbox
         direnv
-        # C stuff
+        # C STUFF
 
         gnumake
         cmake
         gnupg
         
-        #js
+        #JS
         nodejs
         deno   
 
-        # rs
-        rustup
+        #RS
 
-        #py
+        #PY
         python310Packages.pip
         pipenv
 
-        # bash
+        # BASH
         shfmt
 
-        #nix
-        nixfmt
+        # NIX
+        nixfmt-classic
         
-        # DevOps
+        # DEVOPS
         dockfmt # docker format
         docker-compose
     ]) ++ (with var.pkgs-stable; [

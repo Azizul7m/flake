@@ -7,21 +7,18 @@
     home-manager = {
 #      url = "github:nix-community/home-manager/release-23.11";
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+      inputs.nixpkgs.follows = "nixpkgs";};
+    stylix.url = "github:danth/stylix";
     hyprland.url = "github:hyprwm/Hyprland";
-    hyprlang = {
-      url = "github:hyprwm/hyprlang";
+    hyprlang = {url = "github:hyprwm/hyprlang";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur.url = github:nix-community/NUR;
-    hyprlock.url = "github:hyprwm/Hyprlock";
-    hyprland-plugins = {
-        url = "github:hyprwm/hyprland-plugins";
+    nur.url = "github:nix-community/NUR";
+    hyprland-plugins = {url = "github:hyprwm/hyprland-plugins";
         inputs.hyprland.follows = "hyprland";
     };
   };
-  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, nur, hyprland, hyprlock, home-manager, ... }: let
+  outputs = inputs@{ self, nixpkgs, hyprland, ... }: let
       var = rec {
         system = "x86_64-linux";
         host = "nixos";
@@ -31,7 +28,7 @@
           inherit system;
           config.allowUnfree = true;
         };
-        pkgs-stable = import nixpkgs-stable {
+        pkgs-stable = import inputs.nixpkgs-stable {
           inherit system;
           config.allowUnfree = true;
         };
@@ -45,16 +42,17 @@
           inherit system;
           specialArgs = { inherit inputs var; };
           modules = [
-            { nixpkgs.overlays = [ nur.overlay ]; }
+            { nixpkgs.overlays = [ inputs.nur.overlay ]; }
+#            inputs.stylix.nixosModules.stylix
             ./host/configuration.nix
-            home-manager.nixosModules.home-manager
+            inputs.home-manager.nixosModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.${var.user} ={
                   imports= [
-                    hyprlock.homeManagerModules.hyprlock
+
                     (import ./home/home.nix { inherit inputs var; })
                   ];
                 };

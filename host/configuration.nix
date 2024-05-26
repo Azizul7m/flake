@@ -11,6 +11,7 @@
     ./programs.nix
     ./users.nix
     ./modules/hyprland.nix
+   # ../theme/stylix.nix
   ];
   # Bootloader.
   boot.loader = {
@@ -26,16 +27,6 @@
        systemd.enable= true;
        verbose = false;
      };
-     binfmt = {
-        registrations.appimage ={
-        wrapInterpreterInShell = false;
-        interpreter = "${pkgs.appimage-run}/bin/appimage-run";
-        recognitionType = "magic";
-        offset = 0;
-        mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
-        magicOrExtension = ''\x7fELF....AI\x02'';
-      };
-    };
   };
   sound.enable = true;
   networking = {
@@ -43,7 +34,7 @@
     networkmanager.enable = true;
     firewall = {
         enable = true;
-        allowedTCPPorts = [ 22 80 443 7878 ];
+        allowedTCPPorts = [ 20 21 22 80 443 7878 ];
         allowedUDPPortRanges = [
             { from = 3000; to = 3007; }
             { from = 4000; to = 4007; }
@@ -76,7 +67,7 @@
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
-    package = pkgs.nixVersions.unstable;
+    package = pkgs.nixVersions.latest;
   };
   security = {
     rtkit.enable = true;

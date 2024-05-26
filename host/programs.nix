@@ -4,6 +4,7 @@
     systemPackages = with var.pkgs; [
       xterm
       git
+      gh
       neovim
       wget
       joshuto
