@@ -59,7 +59,7 @@
   - [[#indent][INDENT]]
   - [[#formating][FORMATING]]
   - [[#perspective][PERSPECTIVE]]
-- [[#visual-fill-column][Visual Fill Column]]
+- [[#visual-stuff][Visual Stuff]]
 
 * VANILA *EMACS* CONFIG
  #+BEGIN_SRC elisp
@@ -551,12 +551,14 @@ Otherwise, org-tempo is broken when you try to <s TAB...
            (setq-local electric-pair-inhibit-predicate
                    `(lambda (c)
                   (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+(add-hook 'org-mode-hook (lambda () (visual-fill-column-mode t)))
+(setq display-line-numbers nil)
 #+end_src
 *** BULLETS
 #+begin_src emacs-lisp
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))) 
-(add-hook 'org-mode-hook (lambda () (visual-fill-column-mode t)))
+
 #+end_src
 *** CUSTOMS FACE
   #+begin_src emacs-lisp
@@ -1200,11 +1202,15 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 ;; Automatically save perspective states to file when Emacs exits.
 (add-hook 'kill-emacs-hook #'persp-state-save)
 #+end_src
-* Visual Fill Column
+* Visual Stuff
 #+begin_src emacs-lisp
 (use-package visual-fill-column
   :ensure t
   :config
   (setq-default visual-fill-column-center-text t))
+
+
+(use-package writeroom-mode
+  :ensure t)
 
 #+end_src

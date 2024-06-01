@@ -32,6 +32,7 @@
       coreutils # basic GNU utilities
       pulsemixer # sound
       xdg-utils # Environment integration
+      cups # A standards-based printing system for UNIX
       fontconfig # root font config
     ];
   };
