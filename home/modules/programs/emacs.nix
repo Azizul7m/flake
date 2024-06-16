@@ -1,25 +1,25 @@
 { config, pkgs, ... }: {
-  home = {
-    packages =( with pkgs; [
-      emacs29
-      sqlite
-      graphviz # org-mode visualization
-      scrot # screenshot
-      editorconfig-core-c # Editor config
-      wl-clipboard # for emacs org-mode
-      emacsPackages.jsonrpc
-      grip
-      pandoc
-      texliveTeTeX
-      groff
-      libvterm
-      gnuplot # A portable command-line driven graphing utility for many platforms
-    ]);
+  home.packages = with pkgs; [
+    sqlite
+    scrot # screenshot
+    editorconfig-core-c # Editor config
+    wl-clipboard # for emacs org-mode
+    emacsPackages.jsonrpc
+    grip
+    pandoc
+    texliveTeTeX
+    libvterm
+    tree-sitter
+    emacsPackages.vterm
+    gnuplot 
+  ];
+  programs.emacs = {
+    enable = true;
   };
-  services = {
-    emacs= {
-      enable = true;
-      defaultEditor = true;
-    };
+  services.emacs = {
+    package = pkgs.emacs-unstable;
+    enable = true;
+    defaultEditor = true;
+    client.enable = true;
   };
 }

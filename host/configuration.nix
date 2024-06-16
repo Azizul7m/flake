@@ -1,56 +1,57 @@
-{ config, pkgs, var, ... }:
+{ config, pkgs, inputs, var, ... }:
 
 {
+
   imports = [
+     inputs.stylix.nixosModules.stylix
     ./hardware-configuration.nix
-    ./modules/hyprland.nix
-    ./fonts.nix
+ #  ./modules/hyprland.nix
+ #  ./fonts.nix
     ./environment.nix
-    ./services.nix
     ./virtualisation.nix
     ./programs.nix
     ./users.nix
     ./modules/hyprland.nix
-   # ../theme/stylix.nix
+    ../theme/stylix.nix
   ];
   # Bootloader.
-  boot.loader = {
+ boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
     timeout = 1;
-  };
-  boot = {
-    supportedFilesystems = [ "ntfs" ];
-    kernelParams = [ "quiet" "splash" ];
-    consoleLogLevel = 0;
-    initrd = {
-       systemd.enable= true;
-       verbose = false;
-     };
-  };
-  sound.enable = true;
-  networking = {
-    hostName = "${var.host}"; # Define your hostname.
-    networkmanager.enable = true;
-    firewall = {
-        enable = true;
-        allowedTCPPorts = [ 20 21 22 80 443 7878 ];
-        allowedUDPPortRanges = [
-            { from = 3000; to = 3007; }
-            { from = 4000; to = 4007; }
-            { from = 8000; to = 8009; }
-        ];
+ };
+ boot = {
+   supportedFilesystems = [ "ntfs" ];
+   kernelParams = [ "quiet" "splash" ];
+   consoleLogLevel = 0;
+   initrd = {
+      systemd.enable= true;
+      verbose = false;
     };
-  };
+ };
+ sound.enable = true;
+ networking = {
+   hostName = "${var.host}"; # Define your hostname.
+   networkmanager.enable = true;
+   firewall = {
+       enable = true;
+       allowedTCPPorts = [ 20 21 22 80 443 7878 ];
+       allowedUDPPortRanges = [
+           { from = 3000; to = 3007; }
+           { from = 4000; to = 4007; }
+           { from = 8000; to = 8009; }
+       ];
+   };
+ };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "bn_BD";
+    LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "bn_BD";
     LC_MEASUREMENT = "bn_BD";
     LC_MONETARY = "bn_BD";
     LC_PAPER = "bn_BD";
-    LC_TIME = "bn_BD";
+    LC_TIME = "en_US.UTF-8";
   };
   nix = {
     settings = {
@@ -79,7 +80,7 @@
   };
   hardware.pulseaudio.enable = false;
 
-  xdg.portal.enable = true;
+  #xdg.portal.enable = true;
   # xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
 
   nixpkgs.config.allowUnfree = true; # Allow unfree packages

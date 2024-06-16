@@ -16,17 +16,15 @@
       bat
       tree
       ncdu
-      hunspell
-      typioca
 
       libusb
       usbutils
-      flatpak-builder  
       killall
+      flatpak-builder  
 
+      home-manager
       networkmanagerapplet
       unzip
-      cliphist # clipboard manager
       pciutils
       udisks2 # Auto Mounting
       coreutils # basic GNU utilities
@@ -47,5 +45,27 @@
       enable = true;
       enableSSHSupport = true;
     };
+  };
+  services = {
+    pipewire = { # Sound settings
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    vsftpd = {
+        enable = true;
+        writeEnable = true;
+        localUsers = true;
+        userlist = [ "anower" "cam" ];
+        userlistEnable = true;
+    };
+    libinput.enable= true; #LibInput
+    getty.autologinUser = "anower";
+    openssh.enable = true;
+    devmon.enable = true; # monitoring drive "Heavy"
+    gvfs.enable = true;  # trash  "Heavy"
+    udisks2.enable = true;  # auto mount drive  "Heavy"
+    flatpak.enable = true;
   };
 }

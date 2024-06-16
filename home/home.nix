@@ -1,64 +1,61 @@
-{inputs, var, ... }:
-let gtk = import ./theme/gtk.nix { inherit var; };
-in {
+{ config, pkgs, var, ... }:
+
+{
   imports = [
-    (import ./modules/programs/fish.nix { inherit var; })
-    (import ./modules/shells/shell.nix {inherit var;}) 
-    (import ./packages.nix { inherit var; })
-     (import ../theme/gtk.nix { inherit var; })
-    ./modules/programs/waybar.nix
-    ./modules/programs/tmux.nix
-     ./modules/programs/alacritty.nix
-    ./modules/programs/emacs.nix
-     ./modules/programs/rofi.nix
-    ./modules/services/mpd.nix
+    ./packages.nix
+    ./modules/programs/hyprland.nix
+    ../home/modules/shells/shell.nix
+    ../home/modules/programs/tmux.nix
+    ../home/modules/programs/rofi.nix
+    ../home/modules/programs/emacs.nix
+    ../home/modules/programs/wofi.nix
+    ../home/modules/programs/fish.nix
+    ../home/modules/programs/waybar.nix
+    ../home/modules/programs/swaync.nix
+    ../home/modules/programs/alacritty.nix
+    ../home/modules/programs/vscode.nix
+    ../home/modules/services/mpd.nix
+    ../theme/gtk.nix
   ];
-  home = {
-    stateVersion = "23.11";
-    homeDirectory = "/home/${var.user}";
-    username = "${var.user}";
+  home.username = "${var.user}";
+  home.homeDirectory = "/home/${var.user}";
+  home.stateVersion = "23.05"; # Please read the comment before changing.
+  home.packages = [
+    # # It is sometimes useful to fine-tune packages, for example, by applying
+    # # overrides. You can do that directly here, just don't forget the
+    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
+    # # fonts?
+    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+
+    # # You can also create simple shell scripts directly inside your
+    # # configuration. For example, this adds a command 'my-hello' to your
+    # # environment:
+    # (pkgs.writeShellScriptBin "my-hello" ''
+    #   echo "Hello, ${config.home.username}!"
+    # '')
+  ];
+
+  home.file = {
+    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+    # # symlink to the Nix store copy.
+    # ".screenrc".source = dotfiles/screenrc;
+
+    # # You can also set the file content immediately.
+    # ".gradle/gradle.properties".text = ''
+    #   org.gradle.console=verbose
+    #   org.gradle.daemon.idletimeout=3600000
+    # '';
+  };
+  home.sessionVariables = {
+     TERMINAL = "alacritty";
+     VISUAL = "emacs";
+     BROWSER = "firefox";
+     NODE_PATH = "$HOME/.npm_global";
+     PIP_PREFIX = "$HOME/.local/bin";
+     NIXPKGS_ALLOW_UNFREE="1";
   };
   programs = {
     home-manager.enable = true;
-    hyprlock.enable= true;      # 
-  };
-
-  systemd.user.targets.tray =
-    { # Tray.target can not be found when xsession is not enabled. This fixes the issue.
-      Unit = {
-        Description = "Home Manager System Tray";
-        Requires = [ "graphical-session-pre.target" ];
-      };
-    };
-    dconf = {
-        enable = true;
-         settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
-    };
-  xdg = {
-    mime.enable = true;
-    mimeApps = {
-      enable = true;
-      defaultApplications = {
-        "image/jpeg" = [ "sxiv.desktop" ];
-        "image/png" = [ "sxiv.desktop" ];
-        "text/plain" = "nvim.desktop";
-        "text/html" = "nvim.desktop";
-        "text/csv" = "nvim.desktop";
-        "application/pdf" = [ "sioyek.desktop" "google-chrome.desktop" ];
-        "x-scheme-handler/http" =
-          [ "google-chrome.desktop" "brave.desktop" "firefox.desktop" ];
-        "x-scheme-handler/https" =
-          [ "google-chrome.desktop" "brave.desktop" "firefox.desktop" ];
-        "x-scheme-handler/about" =
-          [ "google-chrome.desktop" "brave.desktop" "firefox.desktop" ];
-        "x-scheme-handler/unknown" =
-          [ "google-chrome.desktop" "brave.desktop" "firefox.desktop" ];
-        "audio/mp3" = "vlc.desktop";
-        "video/mp4" = "vlc.desktop";
-        "video/x-matroska" = "vlc.desktop";
-        "inode/directory" = "nautilus.desktop";
-        "application/AppImage" = [ "appimage-run" ];
-      };
-    };
   };
 }

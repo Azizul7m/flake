@@ -4,40 +4,35 @@
   stylix = {
     base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
     image = ./bike.jpg;
+
     polarity= "dark";
-    cursor = {
-        package= pkgs.bibata-cursors;
-        name= "Bibata-Modern-Ice";
-    };
+    autoEnable= true;
 
     fonts = {
         serif = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Serif";
+            package = pkgs.iosevka;
+            name = "Iosevka";
         };
-
         sansSerif = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans";
+            package = pkgs.iosevka;
+            name = "Iosevka";
         };
-
         monospace = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans Mono";
+            package = pkgs.iosevka;
+            name = "Iosevka";
         };
-
         emoji = {
-        package = pkgs.noto-fonts-emoji;
-        name = "Noto Color Emoji";
+            package = pkgs.noto-fonts-emoji;
+            name = "Noto Color Emoji";
         };
-
         sizes = {
-          applications = 10;
-          desktop = 10;
-          popups = 8;
+          applications = 12;
+          desktop = 12;
+          popups = 12;
           terminal= 8;
         };
     };
+
     targets = {
         gnome.enable = true;
         gtk.enable = true;

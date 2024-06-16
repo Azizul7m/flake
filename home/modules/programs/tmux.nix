@@ -5,24 +5,23 @@
       shortcut = "b";
       newSession = true;
       # Stop tmux+escape craziness.
-      secureSocket = false;
-      # terminal = "screen";
+      secureSocket = true;
+      terminal = "screen";
       keyMode = "vi";
       resizeAmount = 5;
       clock24 = false;
       customPaneNavigationAndResize = true;
+      mouse= true;
       plugins = with pkgs.tmuxPlugins; [
         yank
         open
         jump
-        catppuccin
         better-mouse-mode
       ];
-      extraConfig = "
-        set -g mouse on 
+    extraConfig = ''
         set -g status off
-        set-option -g status-position top
-      ";
+    '';
+
     };
   };
 }

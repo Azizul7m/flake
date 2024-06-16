@@ -17,11 +17,11 @@
             ${exec}
         fi '';
     sessionVariables = {
-       XDG_CURRENT_DESKTOP = "Hyprland";
-       XDG_SESSION_TYPE = "wayland";
-       XDG_SESSION_DESKTOP = "Hyprland";
+      XDG_CURRENT_DESKTOP = "Hyprland";
+      XDG_SESSION_TYPE = "wayland";
+      XDG_SESSION_DESKTOP = "Hyprland";
 
-      QT_QPA_PLATFORM = "offscreen";  #"wayland"; 
+#      QT_QPA_PLATFORM = "wayland"; #  "offscreen";  #
       QT_QPA_PLATFORMTHEM= "kde";
       QT_AUTO_SCREEN_SCALE_FACTOR= "1";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
@@ -48,7 +48,6 @@
       wlogout
       hyprnome
       wlr-randr # Screen Settings
-      swaynotificationcenter # notifications
       libnotify
       wlprop
       waypaper # wallpaper selector

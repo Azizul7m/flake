@@ -3,7 +3,6 @@
     fish = {
       enable = true;
       plugins = [
-        # Enable a plugin (here grc for colorized command output) from nixpkgs
         {
           name = "grc";
           src = var.pkgs.fishPlugins.grc.src;
@@ -13,9 +12,6 @@
         set fish_greeting # Disable greeting
 
         set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-        set DOOMDIR /home/${var.user}/.doom.d
-
-        set RUST_BACKTRACE 1
 
         # navigation
         alias ..='cd ..'
@@ -33,17 +29,14 @@
         alias em='emacs -nw'
         alias emds='emacs --daemon'
         alias emd='emacsclient -tty'
-        alias doomsync='~/.config/emacs/bin/doom sync'
-        alias doomdoctor='~/.config/emacs/bin/doom doctor'
-        alias doomupgrade='~/.config/emacs/bin/doom upgrade'
-        alias doompurge='~/.config/emacs/bin/doom purge'
-
 
         alias v='nvim'
+        alias c='codium'
+        alias code='codium'
 
 
-        alias tas='tmux attach-session -c '
-        alias tns='tmux new-session -s '
+        alias tas='tmux attach-session'
+        alias tns='tmux new-session'
 
         alias df='df -h'
         alias free='free -m'
@@ -63,8 +56,6 @@
         alias gstatus='git status'
         alias glog='git log'
 
-        alias wstop='waydroid session stop || sudo waydroid container stop'
-        alias wui='waydroid show-full-ui'
         alias ranger='joshuto'
 
         # Play audio files in current dir by type
@@ -91,25 +82,21 @@
 
         alias pdf='sioyek'
         alias txt='alacritty -c nvim'
-        # alias hotspot='nmcli dev wifi hotspot'
-        # alias wpassword='nmcli dev wifi show-password'
+
+        alias hotspot='nmcli dev wifi hotspot'
+        alias wpassword='nmcli dev wifi show-password'
 
         alias nix_rebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
+        alias hm_rebuild='home-manager switch --flake ~/flake#nixos'
         alias nix_cleanup='sudo nix-collect-garbage -d'
         alias nix_oldgen='sudo nix-env -p /nix/var/nix/profiles/system --delete-generations old'
 
       '';
       # Add npm path to PATH
-      shellInit = ''
-        set -gx PATH /home/${var.user}/.npm_global/bin  /home/${var.user}/.emacs.d/bin /home/${var.user}/.config/hypr/scripts /home/${var.user}/.local/share/solana/install/active_release/bin /home/${var.user}/.cargo/bin /home/${var.user}/.local/bin $PATH
+       shellInit = ''set -gx PATH $HOME/.npm_global/bin $HOME/.avm/bin $HOME/.emacs.d/bin $HOME/.config/hypr/scripts $HOME/.local/share/solana/install/active_release/bin $HOME/.cargo/bin $HOME/.local/bin $PATH
 
-        # pnpm
-          set -gx PNPM_HOME "/home/anower/.local/share/pnpm"
-          set -gx PATH "$PNPM_HOME" $PATH
-        # pnpm end
-        starship init fish | source
-
-      '';
+         starship init fish | source
+       '';
     };
   };
 }

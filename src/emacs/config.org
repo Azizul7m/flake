@@ -34,6 +34,8 @@
   - [[#cape][CAPE]]
 - [[#org-mode][ORG-MODE]]
 - [[#development][DEVELOPMENT]]
+  - [[#lspce][Lspce]]
+  - [[#tree-sitter][Tree-Sitter]]
   - [[#language][LANGUAGE]]
 - [[#popper][POPPER]]
 - [[#file-browser][FILE BROWSER]]
@@ -109,7 +111,7 @@
   (setq visual-fill-column-width 160
         visual-fill-column-center-text t) ;; ;; Configure fill width
  ;; set custom file for emacs internal variables
- (setq custom-file (concat user-emacs-directory "custom.el")) 
+ (setq custom-file (concat user-emacs-directory "custom.el"))
  (load custom-file 'noerror)
 #+END_SRC
 *** locale
@@ -182,7 +184,7 @@
   :models '("mistralai/Mixtral-8x7B-Instruct-v0.1"
             "codellama/CodeLlama-13b-Instruct-hf"
             "codellama/CodeLlama-34b-Instruct-hf"))
- (gptel-make-openai "Anyscale" 
+ (gptel-make-openai "Anyscale"
    :host "api.endpoints.anyscale.com"
    :key "esecret_5ct3wfyw2njvs7pkrkqh1g2zrx"
    :models '(
@@ -206,7 +208,7 @@
   (setq evil-collection-mode-list '(calendar dashboard dired ediff info magit ibuffer dired))
   (add-to-list 'evil-collection-mode-list 'help) ;; evilify help mode
   (evil-collection-init))
-;; Using RETURN to follow links in Org/Evil 
+;; Using RETURN to follow links in Org/Evil
 ;; Unmap keys in 'evil-maps if not done, (setq org-return-follows-link t) will not work
 (with-eval-after-load 'evil-maps
   (define-key evil-motion-state-map (kbd "SPC") nil)
@@ -231,7 +233,7 @@
   :config
   (global-evil-surround-mode 1))
 #+end_src
-* EWW 
+* EWW
 #+begin_src emacs-lisp
 (use-package eww
     :ensure nil
@@ -451,7 +453,7 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 
 #+end_src
 ** TODO CORFU
-Code Completion 
+Code Completion
 #+begin_src emacs-lisp
   (use-package corfu
     :ensure t
@@ -485,7 +487,7 @@ Code Completion
     :ensure t
     :config
       (add-to-list '
-corfu-margin-formatters #'nerd-icons-corfu-formatter))
+       corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
   (use-package corfu-terminal
     :ensure t)
@@ -519,7 +521,8 @@ Cape has the super power to transform Company backends into Capfs and merge mult
     (interactive)
     (cl-pushnew #'cape-history completion-at-point-functions)
     (cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions))
-  (add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
+  
+    (add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
 
   :config
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
@@ -538,6 +541,7 @@ Cape has the super power to transform Company backends into Capfs and merge mult
     ;; Ensure that pcomplete does not write to the buffer
     ;; Silence then pcomplete capf, no errors or messages!
     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+    (advice-add 'lspce-completion-at-point :around #'cape-wrap-buster)
     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
     ;; and behaves as a pure `completion-at-point-function'.
     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
@@ -557,7 +561,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 *** BULLETS
 #+begin_src emacs-lisp
 (use-package org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))) 
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 #+end_src
 *** CUSTOMS FACE
@@ -669,6 +673,39 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   )
 #+end_src
 * DEVELOPMENT
+** Lspce
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :ensure t)
+
+(use-package lspce
+  :load-path "~/.config/emacs/site-lisp/lspce"
+  :after markdown-mode
+  :config (progn
+            (setq lspce-send-changes-idle-time 1)
+            (setq lspce-show-log-level-in-modeline t) ;; show log level in mode line
+            (add-hook 'rust-mode-hook 'lspce-mode)
+            (setq lspce-server-programs `(
+                                          ("rustic"  "rust-analyzer" "" lspce-ra-initializationOptions)
+                                          ("rust"  "rust-analyzer" "" lspce-ra-initializationOptions)
+                                          ("typescript-ts-mode" "typescript-language-serve --stdio" )
+                                          ("javascript-mode" "typescript-language-serve --stdio" )
+                                          ("web-mode" "typescript-language-serve --stdio" )
+                                          ("python" "pylsp" "" )
+                                          ("C" "clangd" "--all-scopes-completion --clang-tidy --enable-config --header-insertion-decorators=0")
+                                          ("java" "java" lspce-jdtls-cmd-args lspce-jdtls-initializationOptions)
+                                          ))
+            )
+  )
+#+end_src
+** Tree-Sitter
+#+begin_src emacs-lisp
+(use-package tree-sitter
+  :ensure t
+  :config
+  (global-tree-sitter-mode))
+
+#+end_src
 ** LANGUAGE
 *** Rust
 #+begin_src emacs-lisp
@@ -686,10 +723,31 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 *** Nix
 #+begin_src emacs-lisp
 (use-package nix-mode
-  :mode
-  ("\\.nix\\'"))
+ :mode "\\.nix\\'")
 #+end_src
-*** TODO Typescript
+*** TODO COMMENT TypeScript
+#+begin_src emacs-lisp
+;; (use-package typescript-mode
+;;   :ensure t
+;;   :hook ( tsx-ts-mode . (lambda 'eglot-ensure))
+;;   :mode (("\\.ts\\'" . (tsx-ts-mode))))
+
+;; (use-package tsx-ts-mode
+;;   :ensure nil
+;;   :config (emmet-mode 1)
+;;   :hook ( tsx-ts-mode-hook . (lambda 'eglot-ensure))
+;;   :mode (("\\.tsx\\'" . (lambda tsx-ts-mode))))
+
+
+
+;; (use-package projectile-lint
+;;   :ensure t
+;;   :defer t)
+
+;;(projectile-lint-add-linters '("eslint" "typescript"))
+#+end_src
+
+*** Web Mode
 DEADLINE: <2024-03-20 বুধ>
 fix corfu completion
 #+begin_src emacs-lisp
@@ -710,97 +768,16 @@ fix corfu completion
   :mode
   (("\\.html\\'" . web-mode)
    ("\\.php\\'" . web-mode)
-   ("\\.ejs\\'" . web-mode)
-   ("\\.tsx\\'" . web-mode)))
+   ("\\.ejs\\'" . web-mode)))
 
 
-(use-package tide
-  :ensure t
-  :defer t
-  :hook ((typescript-mode . setup-tide-mode)
-         (before-save . tide-format-before-save)))
-
-(defun setup-tide-mode ()
-  "Set up Tide mode."
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (corfu-mode -1)
-  (company-mode +1))
-
-(defun my-web-mode-hook ()
-  "Hook for web-mode."
-  (when (and (string-equal "tsx" (file-name-extension buffer-file-name))
-             (locate-dominating-file default-directory "tsconfig.json"))
-    (setup-tide-mode)))
-
-(add-hook 'web-mode-hook 'my-web-mode-hook)
-
-
-(use-package typescript-mode
-  :ensure t
+(use-package json-mode
   :mode
-  (("\\.ts\\'" . typescript-mode)))
-(defun typescript-mode-setup()
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eglot-ensure))
-
-(add-hook 'typescript-mode-hook 'evil-collection-typescript-mode-setup)
-;; Enable ESLint or TSLint for linting
-;; Ensure you have ESLint or TSLint installed globally or locally in your project
-;; You can choose either ESLint or TSLint by commenting/uncommenting the relevant lines below
-
-;; For ESLint
-;; (add-hook 'typescript-mode-hook 'eglint-initialize)
-;; (add-hook 'web-mode-hook 'eglint-initialize)
-
-;; For TSLint
-(add-hook 'typescript-mode-hook 'eglot-tslint)
-(add-hook 'web-mode-hook 'eglot-tslint)
-
-(use-package json-mode)
-
-
+  (("\\.json\\'" . json-mode)))
 (use-package emmet-mode
   :ensure t)
-
 #+end_src
 
-***** Treesit 
-#+begin_src emacs-lisp
-(require 'treesit)
-(setq treesit-language-source-alist
-      '((bash . ("git@github.com:tree-sitter/tree-sitter-bash.git"))
-        (c . ("git@github.com:tree-sitter/tree-sitter-c.git"))
-        (cpp . ("git@github.com:tree-sitter/tree-sitter-cpp.git"))
-        (css . ("git@github.com:tree-sitter/tree-sitter-css.git"))
-        (elixir . ("git@github.com:elixir-lang/tree-sitter-elixir.git"))
-        (heex . ("git@github.com:phoenixframework/tree-sitter-heex.git"))
-        (go . ("git@github.com:tree-sitter/tree-sitter-go.git"))
-        (html . ("git@github.com:tree-sitter/tree-sitter-htm.git"))
-        (javascript . ("git@github.com:tree-sitter/tree-sitter-javascript.git"))
-        (json . ("git@github.com:tree-sitter/tree-sitter-json.git"))
-        (lua . ("git@github.com:Azganoth/tree-sitter-lua.git"))
-        (make . ("git@github.com:alemuller/tree-sitter-make.git"))
-        (ocaml . ("git@github.com:tree-sitter/tree-sitter-ocaml.git" "ocaml/src" "ocaml"))
-        (python . ("git@github.com:tree-sitter/tree-sitter-python.git"))
-        (php . ("git@github.com:tree-sitter/tree-sitter-php.git"))
-        (ruby . ("git@github.com:tree-sitter/tree-sitter-ruby.git"))
-        (rust . ("git@github.com:tree-sitter/tree-sitter-rust.git"))
-        (sql . ("git@github.com:m-novikov/tree-sitter-sql.git"))
-        (toml . ("git@github.com:tree-sitter/tree-sitter-toml.git"))
-        (zig . ("git@github.com:GrayJack/tree-sitter-zig.git"))))
-        ;;(typescript . ("git@github.com:tree-sitter/tree-sitter-typescript.git" "typescript/src" "typescript" "tsx/src"))
-(require 'ansi-color)
-
-(defun colorize-compilation-buffer ()
-  (ansi-color-apply-on-region compilation-filter-start (point-max)))
-(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-#+end_src
 ***  DevOop
 #+begin_src emacs-lisp
 (use-package terraform-mode)
@@ -811,7 +788,15 @@ fix corfu completion
 #+end_src
 *** Direnv
 #+begin_src emacs-lisp
-(use-package envrc)
+;; (use-package envrc
+;;   :hook (after-init . envrc-global-mode))
+
+ (use-package direnv
+  :config
+  (direnv-mode))
+
+(use-package dotenv-mode);
+(add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode)) ;;
 #+end_src
 * POPPER
 #+begin_src emacs-lisp
@@ -960,7 +945,7 @@ fix corfu completion
 
   (add-hook 'vterm-mode-hook #'my-vterm-cleanup-ui)
   (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
-  
+
    (add-to-list 'display-buffer-alist
                 '((lambda (buffer-or-name _)
                       (let ((buffer (get-buffer buffer-or-name)))
@@ -973,11 +958,11 @@ fix corfu completion
   )
 #+end_src
 ** Shell
-*** 
+***
 #+begin_src emacs-lisp
 (add-to-list 'exec-path "~/.npm_global/bin")
 #+end_src
-*** Eshell 
+*** Eshell
 #+begin_src emacs-lisp
   (use-package eshell-syntax-highlighting
     :after esh-mode
@@ -1090,7 +1075,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
  (use-package doom-themes
  :ensure t
  :config
- (setq doom-themes-enable-bold nil  
+ (setq doom-themes-enable-bold nil
          doom-themes-enable-italic t) ; if nil, italics is universally disabled
  (setq doom-themes-treemacs-theme "doom-colors")
  (doom-themes-treemacs-config)
@@ -1158,7 +1143,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
     :height 105
     :weight 'medium)
 #+end_src
-** INDENT 
+** INDENT
 #+begin_src emacs-lisp
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
@@ -1188,7 +1173,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   ;; I'm only setting the additional binding because setting it
   ;; helps suppress an annoying warning message.
   (persp-mode-prefix-key (kbd "C-c M-p"))
-  :init 
+  :init
   (persp-mode)
   :config
   ;; Sets a file to write to when we save states

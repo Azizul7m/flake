@@ -1,23 +1,10 @@
 { pkgs, ... }:
 
 {
-  home = {
-    packages= with pkgs; [
-      eza
-      starship
-      grc
-    ];
-  };
   programs = {
     alacritty = {
       enable = true;
       settings = {
-        font = rec {
-          # Font - Laptop has size manually changed at home.nix
-          normal.family = "Iosevka";
-          bold = { style = "Bold"; };
-          size = 10;
-        };
         live_config_reload = true;
         keyboard.bindings = [
           {
@@ -106,7 +93,6 @@
             mods = "Shift";
             action = "ToggleViMode";
           }
-
         ];
       };
     };

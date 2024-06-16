@@ -1,11 +1,13 @@
-{ var, ... }: {
+{ pkgs, inputs, ... }: {
   home = {
-    packages = (with var.pkgs; [
+    packages = (with pkgs; [
       gnome.nautilus
       baobab # disk analizer
       google-chrome
       firefox
+      brave
       dropbox
+      pcmanfm
 
       #Office
       sioyek
@@ -14,6 +16,7 @@
       #Graphics
       figma-linux
       sxiv
+      scribus
 
       # Social
       telegram-desktop
@@ -22,22 +25,29 @@
       qbittorrent
       appimage-run
       bleachbit
-      sxiv
+      boxbuddy # Distrobox container manage
 
       # Media
       vlc
+      sxiv
 
       # TUI
       lazygit
       yewtube # youtube
       htop
       neofetch
+      #Utils
+      cliphist # clipboard manager
+      cointop 
+      coinlive
 
       # Dev
+      ags # GJS library
+      gnome-builder
       mongodb-compass
 
       #postman # API
       #jetbrains.datagrip
-    ]) ++ (with var.pkgs-stable; [ inkscape ]);
+    ]);
   };
 }
