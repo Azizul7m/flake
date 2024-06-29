@@ -139,6 +139,11 @@
 #+begin_src emacs-lisp
 (require 'eglot)
 (fset #'jsonrpc--log-event #'ignore)
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(typescript-mode . ("typescript-language-server" "--stdio"))
+               '(javascript-mode . ("typescript-language-server" "--stdio"))))
 #+end_src
 
 * ASYNC SAVEHIST REPEAT
@@ -521,7 +526,7 @@ Cape has the super power to transform Company backends into Capfs and merge mult
     (interactive)
     (cl-pushnew #'cape-history completion-at-point-functions)
     (cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions))
-  
+
     (add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
 
   :config
@@ -705,6 +710,31 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :config
   (global-tree-sitter-mode))
 
+(setq treesit-language-source-alist
+      '((templ "https://github.com/vrischmann/tree-sitter-templ")
+        (bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (cmake "https://github.com/uyha/tree-sitter-cmake")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+        (go "https://github.com/tree-sitter/tree-sitter-go")
+        (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
+        (html "https://github.com/tree-sitter/tree-sitter-html")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+        (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (make "https://github.com/alemuller/tree-sitter-make")
+        (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+        (python "https://github.com/tree-sitter/tree-sitter-python")
+        (toml "https://github.com/tree-sitter/tree-sitter-toml")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript"
+                    "master" "typescript/src")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+        (haskell "https://github.com/tree-sitter/tree-sitter-haskell")
+        (typst "https://github.com/uben0/tree-sitter-typst")
+        (java "https://github.com/tree-sitter/tree-sitter-java")
+        (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
+        (rust "https://github.com/tree-sitter/tree-sitter-rust")))
 #+end_src
 ** LANGUAGE
 *** Rust
@@ -723,22 +753,21 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 *** Nix
 #+begin_src emacs-lisp
 (use-package nix-mode
- :mode "\\.nix\\'")
+ :mode "\\.nix\\'"
+ )
 #+end_src
-*** TODO COMMENT TypeScript
+*** JS/TS
 #+begin_src emacs-lisp
-;; (use-package typescript-mode
-;;   :ensure t
-;;   :hook ( tsx-ts-mode . (lambda 'eglot-ensure))
-;;   :mode (("\\.ts\\'" . (tsx-ts-mode))))
+(use-package typescript-mode
+  :ensure t
+  :mode "\\.ts\\'")
 
-;; (use-package tsx-ts-mode
-;;   :ensure nil
-;;   :config (emmet-mode 1)
-;;   :hook ( tsx-ts-mode-hook . (lambda 'eglot-ensure))
-;;   :mode (("\\.tsx\\'" . (lambda tsx-ts-mode))))
+(use-package javascript-mode
+  :ensure nil
+  :mode "\\.js\\'")
 
-
+(use-package tsx-ts-mode
+  :mode "\\.tsx\\'")
 
 ;; (use-package projectile-lint
 ;;   :ensure t
@@ -746,7 +775,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 
 ;;(projectile-lint-add-linters '("eslint" "typescript"))
 #+end_src
-
 *** Web Mode
 DEADLINE: <2024-03-20 বুধ>
 fix corfu completion
@@ -770,15 +798,14 @@ fix corfu completion
    ("\\.php\\'" . web-mode)
    ("\\.ejs\\'" . web-mode)))
 
-
 (use-package json-mode
   :mode
   (("\\.json\\'" . json-mode)))
+
 (use-package emmet-mode
   :ensure t)
 #+end_src
-
-***  DevOop
+*** DevOop
 #+begin_src emacs-lisp
 (use-package terraform-mode)
 (use-package dockerfile-mode)
@@ -1063,8 +1090,6 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 #+end_src
 ** THEME
 #+BEGIN_SRC elisp
-
-
 (use-package spaceway-theme
   :ensure nil
   :load-path "lisp/spaceway/"
@@ -1079,7 +1104,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
          doom-themes-enable-italic t) ; if nil, italics is universally disabled
  (setq doom-themes-treemacs-theme "doom-colors")
  (doom-themes-treemacs-config)
- (load-theme 'doom-gruvbox t))
+ (load-theme 'doom-one t))
 
 
 
@@ -1096,9 +1121,6 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
     (set-face-attribute 'mode-line-inactive nil :height 100)
    :init
    (doom-modeline-mode 1))
-
-
-
 
 #+END_SRC
 ** DASHBOARD

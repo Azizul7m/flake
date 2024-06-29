@@ -11,7 +11,7 @@
       };
       settings= let
             scriptsDir = "$HOME/.config/hypr/scripts";
-            term = "alacritty";
+            term = "kitty";
             browser = "brave";
             fileManager= "pcmanfm";
             menu = "pkill wofi || wofi --show drun -I";
@@ -56,6 +56,7 @@
           "nm-applet"
           "wl-paste --type text --watch cliphist store"
           "wl-paste --type image --watch cliphist store"
+          "../../../src/hypr/scripts/startup"
         ]; 
        "$mod" = "SUPER";
         bind = [
@@ -70,11 +71,6 @@
             "$mod, E, exec, ${fileManager}"
             "$mod SHIFT, E, exec, nautilus"
 
-            # Launcher
-            "ALT, SPACE, exec, pkill wofi || wofi --show drun -I"
-            "$mod ALT, SPACE, exec, wofi --show run --prompt "
-            "$mod, V, exec, cliphist list | wofi -dmenu | cliphist decode | wl-copy"
-            "$mod, p, exec,  rofi -show filebrowser"
 
             # spechal key
             ", print, exec, $screenshot"
@@ -83,11 +79,6 @@
             ",XF86AudioNext, exec, mpc next"
             ",XF86AudioPrev, exec, mpc prev"
             ",pause, exec, mpc stop"
-
-            ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-            ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-            ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-
 
             # Notifications
             "$mod, n, exec, swaync-client -t -sw"
@@ -105,6 +96,7 @@
             "$mod SHIFT, J, togglesplit, "
             "$mod, M, fullscreen"
             "$mod SHIFT, o, pin"
+            "$mod,Tab,cyclenext"          # change focus to another window
 
             "$mod, mouse:272, movewindow"
 
@@ -132,6 +124,7 @@
             "$mod CTRL, L, movewindow, r"
             "$mod CTRL, K, movewindow, u"
             "$mod CTRL, J, movewindow, d"
+
         ] ++ (
         # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
         builtins.concatLists (builtins.genList (
@@ -146,6 +139,41 @@
             ]
           )
           10));
+        #volume button that allows press and hold, volume limited to 150%
+        binde = [
+            ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+            ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+
+            "$mod  SHIFT, H, resizeactive,-50 0"
+            "$mod  SHIFT, L, resizeactive,50 0"
+            "$mod  SHIFT, K, resizeactive,0 -50"
+            "$mod  SHIFT, J, resizeactive,0 50"
+
+            "$mod SHIFT, left, resizeactive,-50 0"
+            "$mod SHIFT, right, resizeactive,50 0"
+            "$mod SHIFT, up, resizeactive,0 -50"
+            "$mod SHIFT, down, resizeactive,0 50"
+        ];
+        #volume button that will activate even while an input inhibitor is active
+        bindl = [
+           ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ];
+        #Start wofi opens wofi on first press, closes it on second
+        bindr = [
+            # Launcher
+            "ALT, SPACE, exec, pkill wofi || wofi --show drun -I"
+            "$mod ALT, SPACE, exec, pkill wofi || wofi --show run --prompt "
+            "$mod, V, exec, pkill wofi || cliphist list | wofi -dmenu | cliphist decode | wl-copy"
+            "$mod, p, exec, pkill rofi || rofi -show filebrowser"
+        ];
+        #Describe a bind
+        bindd = [];
+        #mouse binds; key: 272, 273
+        bindm = [
+         "$mod,mouse:272,movewindow" 
+         "$mod, mouse:273, resizewindow"
+
+        ];
       };
     };
   };

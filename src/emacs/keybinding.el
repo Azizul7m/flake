@@ -26,11 +26,12 @@
      "u" '(universal-argument :wk "Universal argument"))
 
     (dt/leader-keys
-      "a" '(:ignore t :wk "Action")
-      "a a" '(eglot-code-actions :wk "Eglot Code Action")
-      "a d" '(eglot-find-declaration :wk "Find Declaration")
-      "a f" '(eglot-code-action-quickfix :wk "Eglot Quickfix")
-      "a i" '(eglot-find-implementation :wk "Find Implementation")
+      "c" '(:ignore t :wk "Code Action")
+      "c a" '(eglot-code-actions :wk "Eglot Code Action")
+      "c d" '(eglot-find-declaration :wk "Find Declaration")
+      "c i" '(eglot-code-action-inline :wk "Inline code action")
+      "c f" '(eglot-find-implementation :wk "Find Implementation")
+      "c r" '(eglot-rename :wk "Rename Variables")
      )
 
     (dt/leader-keys

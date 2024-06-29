@@ -5,7 +5,8 @@
     ./packages.nix
     ./modules/programs/hyprland.nix
     ../home/modules/shells/shell.nix
-    ../home/modules/programs/tmux.nix
+    ../home/modules/programs/zellij.nix
+    ../home/modules/programs/zoxide.nix
     ../home/modules/programs/rofi.nix
     ../home/modules/programs/emacs.nix
     ../home/modules/programs/wofi.nix

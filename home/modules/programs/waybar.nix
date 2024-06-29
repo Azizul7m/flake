@@ -83,10 +83,10 @@
                                 };
                             };
                 "network"= {
-                    format-wifi= "↕ {bandwidthTotalBytes} ";
-                    format-ethernet= "⇣⇡{bandwidthTotalBytes} 󰈀";
-                    tooltip-format= "{ifname} via {gwaddr} ";
-                    format-linked= "{ifname} (No IP) ";
+                    format-wifi= " ↕ {bandwidthTotalBytes}";
+                    format-ethernet= "󰈀 ⇣⇡{bandwidthTotalBytes} ";
+                    tooltip-format= " {ifname} via {gwaddr}";
+                    format-linked= " {ifname} (No IP) ";
                     format-disconnected= "󰤮";
                     format-alt= "{ifname}: {ipaddr}/{cidr}";
                     interval= 3;

@@ -35,8 +35,8 @@
         alias code='codium'
 
 
-        alias tas='tmux attach-session'
-        alias tns='tmux new-session'
+        alias tas='zellij attach -c'
+        alias tmux='zellij'
 
         alias df='df -h'
         alias free='free -m'
@@ -95,7 +95,9 @@
       # Add npm path to PATH
        shellInit = ''set -gx PATH $HOME/.npm_global/bin $HOME/.avm/bin $HOME/.emacs.d/bin $HOME/.config/hypr/scripts $HOME/.local/share/solana/install/active_release/bin $HOME/.cargo/bin $HOME/.local/bin $PATH
 
+         zoxide init --cmd cd fish | source
          starship init fish | source
+         
        '';
     };
   };

@@ -10,10 +10,12 @@
     ];
     userSettings = {
         "editor.tabSize"= 2;
-        "editor.fontSize"= 14;
+        "editor.fontSize"= 15;
         "editor.minimap.enabled"= false;
-        "files.autoSave"= "afterDelay";
+        "editor.fontLigatures"= true;
         "editor.fontFamily"= "'Iosevka', 'monospace', monospace";
+
+        "files.autoSave"= "afterDelay";
         "window.customTitleBarVisibility"= "auto";
         "window.menuBarVisibility"= "toggle";
         "workbench.sideBar.location"= "right";
