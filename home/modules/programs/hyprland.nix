@@ -1,5 +1,6 @@
 { inputs, config, var, ... }:
 {
+  # Auto start Hyprland when system load
   wayland.windowManager = {
     hyprland= {
       enable=true;
@@ -17,8 +18,22 @@
             menu = "pkill wofi || wofi --show drun -I";
             emTerm= "open-vterm-full-window";
       in {
-        decoration = {
-            shadow_offset = "0 5";
+      decoration = {
+            shadow_ignore_window = true;
+            shadow_offset = "0 15";
+            shadow_range = "100";
+            shadow_render_power = "2";
+            shadow_scale = "0.97";
+            rounding = 5;
+            drop_shadow = "no";
+            "col.shadow" = "rgba(eaeaeaee)";
+            blur= {
+                    enabled = true;
+                    size = 2;
+                    passes = 4;
+                    vibrancy = 0.1696;
+                    popups = true;
+                };
         };
         gestures= {
             workspace_swipe = "yes";
@@ -34,20 +49,29 @@
             "col.inactive_border"= "rgba(595959aa)";
             layout = "dwindle";
         };
-        decoration= {
-            rounding = 5;
-            drop_shadow = "no";
-            shadow_range = 0;
-            shadow_render_power = 1;
-            "col.shadow" = "rgba(eaeaeaee)";
-            blur= {
-                    enabled = true;
-                    size = 2;
-                    passes = 4;
-                    vibrancy = 0.1696;
-                    popups = true;
-                };
-        };
+        # window rules
+        windowrulev2 = [
+        # telegram media viewer
+        "float, title:^(Waypaper)$"
+        "size 360 490, class:^(Waypaper)$"
+
+        # make Firefox PiP window floating and sticky
+        "float, title:^(Picture-in-Picture)$"
+        "pin, title:^(Picture-in-Picture)$"
+
+        # throw sharing indicators away
+        "workspace special silent, title:^(Firefox — Sharing Indicator)$"
+        "workspace special silent, title:^(.*is sharing (your screen|a window)\.)$"
+
+        # idle inhibit while watching videos
+        "idleinhibit focus, class:^(mpv|.+exe|celluloid)$"
+        "idleinhibit focus, class:^(firefox)$, title:^(.*YouTube.*)$"
+        "idleinhibit fullscreen, class:^(firefox)$"
+
+        "dimaround, class:^(gcr-prompter)$"
+        "dimaround, class:^(xdg-desktop-portal-gtk)$"
+        "dimaround, class:^(polkit-gnome-authentication-agent-1)$"
+        ];
         exec-once= [
           "waybar"
           "swaync"
@@ -71,15 +95,6 @@
             "$mod, E, exec, ${fileManager}"
             "$mod SHIFT, E, exec, nautilus"
 
-
-            # spechal key
-            ", print, exec, $screenshot"
-
-            ",XF86AudioPlay, exec, mpc toggle"
-            ",XF86AudioNext, exec, mpc next"
-            ",XF86AudioPrev, exec, mpc prev"
-            ",pause, exec, mpc stop"
-
             # Notifications
             "$mod, n, exec, swaync-client -t -sw"
             # Hyprland Control
@@ -97,8 +112,6 @@
             "$mod, M, fullscreen"
             "$mod SHIFT, o, pin"
             "$mod,Tab,cyclenext"          # change focus to another window
-
-            "$mod, mouse:272, movewindow"
 
             # Special workspace
             "$mod SHIFT, U, movetoworkspace, special"
@@ -144,6 +157,9 @@
             ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
             ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
 
+           ", XF86AudioNext, exec, mpc next"
+           ", XF86AudioPrev, exec, mpc prev"
+
             "$mod  SHIFT, H, resizeactive,-50 0"
             "$mod  SHIFT, L, resizeactive,50 0"
             "$mod  SHIFT, K, resizeactive,0 -50"
@@ -156,7 +172,11 @@
         ];
         #volume button that will activate even while an input inhibitor is active
         bindl = [
+           ", print, exec, grim -g $(slurp)"
+
            ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+           ", XF86AudioPlay, exec, mpc toggle"
+           ", pause, exec, mpc stop"
         ];
         #Start wofi opens wofi on first press, closes it on second
         bindr = [
@@ -170,9 +190,8 @@
         bindd = [];
         #mouse binds; key: 272, 273
         bindm = [
-         "$mod,mouse:272,movewindow" 
-         "$mod, mouse:273, resizewindow"
-
+            "$mod,mouse:272,movewindow" 
+            "$mod, mouse:273, resizewindow"
         ];
       };
     };

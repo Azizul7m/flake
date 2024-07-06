@@ -63,6 +63,10 @@
         alias playogg='vlc *.ogg'
         alias playmp3='vlc *.mp3'
 
+        # Youtube-Dl
+        alias ytvideo='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"'
+        alias ytaudio='yt-dlp -x --audio-format mp3'
+
         # Play video files in current dir by type
         alias playavi='vlc *.avi'
         alias playmov='vlc *.mov'

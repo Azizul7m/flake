@@ -1,11 +1,10 @@
 {var, ...}: {
   home = {
-    
     packages = (with var.pkgs; [
         devbox
         direnv
-        # C STUFF
 
+        # C STUFF
         libclang
         gnumake
         cmake
@@ -18,7 +17,6 @@
         nodejs
         deno   
 
-        #RS
 
         #PY
         python310
@@ -33,8 +31,11 @@
 
         # Rust
         rustup
+        cargo-watch
 
-        
+        # Web3
+        anchor
+
         # DEVOPS
         dockfmt # docker format
         docker-compose
@@ -45,12 +46,14 @@
         grc # text colored
         hunspell
         typioca
+
+        yt-dlp
+        jellyfin-ffmpeg
     ]) ++ (with var.pkgs-stable; [
      # rnix-lsp 
     ]);
     sessionVariables= {
       LIBCLANG_PATH = "${var.pkgs.libclang.lib}/lib";
-
     };
   };
 }

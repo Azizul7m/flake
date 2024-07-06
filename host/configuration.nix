@@ -1,17 +1,14 @@
 { config, pkgs, inputs, var, ... }:
-
 {
 
   imports = [
      inputs.stylix.nixosModules.stylix
     ./hardware-configuration.nix
- #  ./modules/hyprland.nix
  #  ./fonts.nix
     ./environment.nix
     ./virtualisation.nix
     ./programs.nix
     ./users.nix
-    ./modules/hyprland.nix
     ../theme/stylix.nix
   ];
   # Bootloader.
@@ -43,11 +40,11 @@
    networkmanager.enable = true;
    firewall = {
        enable = true;
-       allowedTCPPorts = [ 20 21 22 80 443 7878 ];
+       allowedTCPPorts = [ 20 21 22 80 443 7878 5173 ];
        allowedUDPPortRanges = [
            { from = 3000; to = 3007; }
+           { from = 51000; to = 51999; }
            { from = 4000; to = 4007; }
-           { from = 8000; to = 8009; }
        ];
    };
  };
@@ -88,8 +85,16 @@
   };
   hardware.pulseaudio.enable = false;
 
-  #xdg.portal.enable = true;
-  # xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+  xdg = {
+    portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-hyprland
+        xdg-desktop-portal-gtk
+      ];
+    };
+  };
+
 
   nixpkgs.config.allowUnfree = true; # Allow unfree packages
   system.stateVersion = "24.05"; # Did you read the comment?

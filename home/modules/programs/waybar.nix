@@ -24,6 +24,7 @@
                     "network"
                 ];
                 modules-right = [
+                    "mpd"
                     "custom/cryptotracking"
                     "tray"
                     "pulseaudio"
@@ -63,8 +64,7 @@
                     "app_ids-mapping"= "{}";
                 };
 
-
-                "clock"= {
+                clock= {
                     tooltip-format= "{:%Y %B}\n<tt><small>{calendar}</small></tt>";
                     format-alt= "{:%Y-%m-%d %I:%M %p}";
                     format= "{:%I:%M %p}";
@@ -79,10 +79,10 @@
                                         weeks=      "<span color='#99ffdd'><b>W{}</b></span>";
                                         weekdays=   "<span color='#ffcc66'><b>{}</b></span>";
                                         today=      "<span color='#ff6699'><b><u>{}</u></b></span>";
-                                        };
+                                    };
                                 };
                             };
-                "network"= {
+                network= {
                     format-wifi= " ↕ {bandwidthTotalBytes}";
                     format-ethernet= "󰈀 ⇣⇡{bandwidthTotalBytes} ";
                     tooltip-format= " {ifname} via {gwaddr}";
@@ -99,7 +99,7 @@
                     restart-interval= 300;
                     on-click= "pkill cointop || alacritty -e cointop";
                 };
-                "pulseaudio"= {
+                pulseaudio= {
                     format= "{volume}% {icon}";
                     format-bluetooth= "{volume}% {icon} {format_source}";
                     format-bluetooth-muted= " {icon} {format_source}";
@@ -118,16 +118,16 @@
                     };
                     on-click= "pkill pulsemixer || alacritty -e pulsemixer";
                 };
-                "tray"= {
+                tray= {
                     icon-size= 12;
                     spacing= 2;
                 };
-                "cpu"= {
+                cpu= {
                     format= "{usage}% ";
                     tooltip= true;
                     on-click= "pkill btop || alacritty -e btop";
                 };
-                "battery"= {
+                battery= {
                     states= {
                         warning= 30;
                         critical= 15;
@@ -157,6 +157,27 @@
                         dnd-inhibited-notification= "<span foreground='red'><sup></sup></span>";
                         dnd-inhibited-none= "";
                     };
+                };
+                mpd= {
+                    format= "[{elapsedTime:%M:%S}/{totalTime:%M:%S}] {stateIcon} {filename}";
+                    format-disconnected= "󰝛";
+                    format-stopped= "󰝛";
+                    interval= 10;
+                    max-length= 28;
+                    consume-icons= {"on"= " ";};
+                    random-icons= {
+                        off= "<span color=\"#f53c3c\"></span> "; 
+                        on= " ";
+                    };
+                    repeat-icons= {on= " ";};
+                    single-icons= {on= "1 ";};
+                    state-icons= {
+                        paused= "";
+                        playing= "󰝚";
+                    };
+                    on-click= "pkill ncmpcpp || alacritty -e ncmpcpp";
+                    tooltip-format= "MPD (connected)";
+                    tooltip-format-disconnected= "MPD (disconnected)";
                 };
             };
         };

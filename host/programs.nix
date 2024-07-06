@@ -22,6 +22,8 @@
       killall
       flatpak-builder  
 
+      solana-validator       
+
       home-manager
       networkmanagerapplet
       unzip
@@ -45,6 +47,11 @@
       enable = true;
       enableSSHSupport = true;
     };
+    nix-ld.enable = true;
+    nix-ld.libraries = with var.pkgs; [
+        # Add any missing dynamic libraries for unpackaged programs
+        # here, NOT in environment.systemPackages
+    ];
   };
   services = {
     pipewire = { # Sound settings
@@ -57,8 +64,13 @@
         enable = true;
         writeEnable = true;
         localUsers = true;
-        userlist = [ "anower" "cam" ];
+        userlist = [ "anower" "u0_a322" ];
         userlistEnable = true;
+        extraConfig = ''
+            pasv_enable=Yes
+            pasv_min_port=51000
+            pasv_max_port=51999
+        '';
     };
     libinput.enable= true; #LibInput
     getty.autologinUser = "anower";
