@@ -12,6 +12,7 @@
     tree-sitter
     emacsPackages.vterm
     gnuplot 
+    emacs-lsp-booster
   ];
   programs.emacs = {
     enable = true;
