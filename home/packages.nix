@@ -26,6 +26,7 @@
       appimage-run
       bleachbit
       boxbuddy # Distrobox container manage
+      remmina # Remotely ssh client
 
       # Media
       vlc

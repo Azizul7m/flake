@@ -34,7 +34,9 @@
         cargo-watch
 
         # Web3
+        solc
         anchor
+        solana-validator       
 
         # DEVOPS
         dockfmt # docker format
@@ -46,6 +48,12 @@
         grc # text colored
         hunspell
         typioca
+
+        #LSP
+        docker-ls
+        docker-compose-language-service
+        yaml-language-server
+        nodePackages_latest.typescript-language-server
 
         yt-dlp
         jellyfin-ffmpeg

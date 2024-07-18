@@ -3,19 +3,19 @@
 {
   imports = [
     ./packages.nix
-    ./modules/programs/hyprland.nix
-    ../home/modules/shells/shell.nix
-    ../home/modules/programs/zellij.nix
-    ../home/modules/programs/zoxide.nix
-    ../home/modules/programs/rofi.nix
-    ../home/modules/programs/emacs.nix
-    ../home/modules/programs/wofi.nix
-    ../home/modules/programs/fish.nix
-    ../home/modules/programs/waybar.nix
-    ../home/modules/programs/swaync.nix
-    ../home/modules/programs/alacritty.nix
-    ../home/modules/programs/vscode.nix
-    ../home/modules/services/mpd.nix
+    ../modules/programs/hyprland.nix
+    ../modules/shells/shell.nix
+    ../modules/programs/zellij.nix
+    ../modules/programs/zoxide.nix
+    ../modules/programs/rofi.nix
+    ../modules/programs/emacs.nix
+    ../modules/programs/wofi.nix
+    ../modules/programs/fish.nix
+    ../modules/programs/waybar.nix
+    ../modules/programs/swaync.nix
+    ../modules/programs/alacritty.nix
+    ../modules/programs/vscode.nix
+    ../modules/services/mpd.nix
     ../theme/gtk.nix
   ];
   home.username = "${var.user}";
@@ -55,6 +55,10 @@
      NODE_PATH = "$HOME/.npm_global";
      PIP_PREFIX = "$HOME/.local/bin";
      NIXPKGS_ALLOW_UNFREE="1";
+  };
+  nix = {
+    package = pkgs.nix;
+    settings.experimental-features = ["nix-command" "flakes"];
   };
   programs = {
     home-manager.enable = true;

@@ -22,7 +22,6 @@
       killall
       flatpak-builder  
 
-      solana-validator       
 
       home-manager
       networkmanagerapplet
@@ -59,18 +58,6 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-    };
-    vsftpd = {
-        enable = true;
-        writeEnable = true;
-        localUsers = true;
-        userlist = [ "anower" "u0_a322" ];
-        userlistEnable = true;
-        extraConfig = ''
-            pasv_enable=Yes
-            pasv_min_port=51000
-            pasv_max_port=51999
-        '';
     };
     libinput.enable= true; #LibInput
     getty.autologinUser = "anower";

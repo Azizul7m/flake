@@ -4,11 +4,11 @@
   imports = [
      inputs.stylix.nixosModules.stylix
     ./hardware-configuration.nix
- #  ./fonts.nix
     ./environment.nix
     ./virtualisation.nix
     ./programs.nix
     ./users.nix
+    ../modules/services/postgress.nix
     ../theme/stylix.nix
   ];
   # Bootloader.

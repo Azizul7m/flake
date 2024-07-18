@@ -1,4 +1,3 @@
-
 #+STARTUP: nofold
 #+title: Emacs Config
 #+author: Azizul Islam
@@ -9,7 +8,6 @@
 - [[#packages-manager-and-other-script][PACKAGES MANAGER AND OTHER SCRIPT]]
   - [[#import-lisp-directory][IMPORT LISP DIRECTORY]]
   - [[#require-lisp][REQUIRE LISP]]
-  - [[#eglot][EGLOT]]
 - [[#async-savehist-repeat][ASYNC SAVEHIST REPEAT]]
 - [[#ai][AI]]
 - [[#evil-mode][EVIL MODE]]
@@ -35,9 +33,11 @@
   - [[#cape][CAPE]]
 - [[#org-mode][ORG-MODE]]
 - [[#development][DEVELOPMENT]]
+  - [[#direnv][DIRENV]]
+  - [[#eglot][EGLOT]]
   - [[#lsp][LSP]]
-  - [[#tree-sitter][Tree-Sitter]]
   - [[#language][LANGUAGE]]
+  - [[#tree-sitter][TREE-SITTER]]
 - [[#popper][POPPER]]
 - [[#file-browser][FILE BROWSER]]
   - [[#dired][DIRED]]
@@ -135,28 +135,6 @@
 (require 'hide-mode-line)
 (require 'exec-path-from-shell)
 #+END_SRC
-
-** EGLOT
-#+begin_src emacs-lisp
-
-;; (use-package eglot
-;;     :ensure nil
-;;     :init
-;;     (setq eglot-corfu-backend t))
-
-;; (use-package eglot
-;;   :ensure nil
-;;   :config
-;;   (add-hook 'prog-mode-hook 'eglot-ensure))
-
-(fset #'jsonrpc--log-event #'ignore)
-
-
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(typescript-mode . ("typescript-language-server" "--stdio"))
-               '(javascript-mode . ("typescript-language-server" "--stdio"))))
-#+end_src
 
 * ASYNC SAVEHIST REPEAT
 #+begin_src emacs-lisp
@@ -447,8 +425,7 @@ This package implements hiding or abbreviation of the mode line displays (lighte
   (company-idle-delay .1)
   (company-minimum-prefix-length 2)
   (company-show-numbers nil)
-  (company-tooltip-align-annotations 't)
-  (global-company-mode nil))
+  (company-tooltip-align-annotations 't))
 
 (use-package company-box
   :disabled t
@@ -456,6 +433,7 @@ This package implements hiding or abbreviation of the mode line displays (lighte
   :diminish
   :hook (company-mode . company-box-mode))
 
+(setq company-global-modes nil)
 
 #+end_src
 ** TODO CORFU
@@ -469,7 +447,8 @@ Code Completion
     (corfu-auto t)                  ; Enable auto completion
     (corfu-auto-prefix 0)
     (corfu-auto-delay 0.2)
-    (corfu-popupinfo-delay '(0.3 . 0.2))
+    (corfu-
+     popupinfo-delay '(0.3 . 0.2))
     (corfu-preview-current 'insert) ; insert previewed candidate
     (corfu-preselect 'prompt)
     (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
@@ -640,8 +619,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 (use-package org-modern
   :ensure t
   :config
-  ;;(with-eval-after-load 'org (global-org-modern-mode))
-  )
+  (with-eval-after-load 'org (global-org-modern-mode)))
 #+end_src
 *** SNIPPET
 #+begin_src emacs-lisp
@@ -679,17 +657,139 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   )
 #+end_src
 * DEVELOPMENT
+** DIRENV
+#+begin_src emacs-lisp
+;; (use-package envrc
+;;   :hook (after-init . envrc-global-mode))
+
+ (use-package direnv
+  :config
+  (direnv-mode))
+
+(use-package dotenv-mode);
+(add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode)) ;;
+#+end_src
+** EGLOT
+#+begin_src emacs-lisp
+
+(use-package eglot
+    :ensure nil
+    :init
+    (setq eglot-corfu-backend t))
+(fset #'jsonrpc--log-event #'ignore)
+
+;; (use-package eglot
+;;   :ensure nil
+;;   :config
+;;   (add-hook 'prog-mode-hook 'eglot-ensure))
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(typescript-mode . ("typescript-language-server" "--stdio"))
+               '(javascript-mode . ("typescript-language-server" "--stdio"))
+               ))
+#+end_src
+
 ** LSP
 #+begin_src emacs-lisp
 (use-package markdown-mode
   :ensure t)
 (use-package lsp-mode
-  :ensure t
-  :config
-  (setq company-mode -1))
+  :ensure t)
+(setq lsp-company-backend 'corfu)
 
 #+End_src
-** Tree-Sitter
+** LANGUAGE
+*** DevOop
+#+begin_src emacs-lisp
+(use-package terraform-mode)
+(use-package dockerfile-mode)
+(use-package docker-compose-mode)
+
+(add-to-list 'auto-mode-alist '("\\.tf\\'" . terraform-mode))
+(add-to-list 'auto-mode-alist '("\\Dockerfile" . dockerfile-mode))
+(add-to-list 'auto-mode-alist '("\\docker-compose.yml" . docker-compose-mode))
+#+end_src
+*** JS/TS
+#+begin_src emacs-lisp
+(use-package typescript-mode
+    :ensure t
+    :mode "\\.ts\\'"
+    :config
+    (setq-default typescript-lsp-extra-server-flags "--log-level=verbose"))
+
+(use-package javascript-mode
+  :ensure nil
+  :mode "\\.js\\'")
+
+;; (use-package projectile-lint
+;;   :ensure t
+;;   :defer t)
+
+;;(projectile-lint-add-linters '("eslint" "typescript"))
+#+end_src
+*** Nix
+#+begin_src emacs-lisp
+(use-package nix-mode
+ :mode "\\.nix\\'"
+ )
+#+end_src
+*** Rust
+#+begin_src emacs-lisp
+(use-package rustic
+  :ensure t
+  :init
+  (setq rustic-lsp-server-extra-args "--debug")
+  (setq rustic-lsp-client 'eglot))
+
+(use-package cargo-mode
+  :hook
+  (rustic-mode . cargo-minor-mode)
+  :config
+  (setq compilation-scroll-output t))
+#+end_src
+*** Solidity 
+#+begin_src emacs-lisp
+(use-package solidity-mode
+  :ensure t
+  :config
+  (setq solidity-comment-style 'star)) ;; this is the default)
+(add-hook 'solidity-mode-hook 'lsp-mode)
+#+end_src
+*** tailwind
+#+begin_src emacs-lisp :tangle yes
+#+end_src
+
+#+end_src
+*** Web Mode
+#+begin_src emacs-lisp
+(use-package web-mode
+  :ensure t
+  :defer t
+  :config
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-style-padding 2
+        web-mode-script-padding 2
+        web-mode-enable-auto-closing t
+        web-mode-enable-auto-opening t
+        web-mode-enable-auto-pairing t
+        web-mode-enable-auto-indentation t)
+  (add-hook 'web-mode-hook 'emmet-mode)
+  :mode
+  (("\\.html\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.ejs\\'" . web-mode)))
+
+(use-package json-mode
+  :mode
+  (("\\.json\\'" . json-mode)))
+
+(use-package emmet-mode
+  :ensure t)
+#+end_src
+** TREE-SITTER
 #+begin_src emacs-lisp
 (use-package treesit
   :ensure nil
@@ -761,98 +861,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
       (os/setup-install-grammars))
 
 #+end_src
-** LANGUAGE
-*** Rust
-#+begin_src emacs-lisp
-(use-package rustic
-  :ensure t
-  :init
-  (setq rustic-lsp-server-extra-args "--debug")
-  (setq rustic-lsp-client 'eglot))
-
-(use-package cargo-mode
-  :hook
-  (rustic-mode . cargo-minor-mode)
-  :config
-  (setq compilation-scroll-output t))
-#+end_src
-*** Nix
-#+begin_src emacs-lisp
-(use-package nix-mode
- :mode "\\.nix\\'"
- )
-#+end_src
-*** JS/TS
-#+begin_src emacs-lisp
-(use-package typescript-mode
-    :ensure t
-    :mode "\\.ts\\'"
-    :config
-    (setq-default typescript-lsp-extra-server-flags "--log-level=verbose"))
-
-(use-package javascript-mode
-  :ensure nil
-  :mode "\\.js\\'")
-
-;; (use-package projectile-lint
-;;   :ensure t
-;;   :defer t)
-
-;;(projectile-lint-add-linters '("eslint" "typescript"))
-#+end_src
-*** tailwind
-#+begin_src emacs-lisp :tangle yes
-#+end_src
-
-#+end_src
-*** Web Mode
-#+begin_src emacs-lisp
-(use-package web-mode
-  :ensure t
-  :defer t
-  :config
-  (setq web-mode-markup-indent-offset 2
-        web-mode-css-indent-offset 2
-        web-mode-code-indent-offset 2
-        web-mode-style-padding 2
-        web-mode-script-padding 2
-        web-mode-enable-auto-closing t
-        web-mode-enable-auto-opening t
-        web-mode-enable-auto-pairing t
-        web-mode-enable-auto-indentation t)
-  (add-hook 'web-mode-hook 'emmet-mode)
-  :mode
-  (("\\.html\\'" . web-mode)
-   ("\\.php\\'" . web-mode)
-   ("\\.ejs\\'" . web-mode)))
-
-(use-package json-mode
-  :mode
-  (("\\.json\\'" . json-mode)))
-
-(use-package emmet-mode
-  :ensure t)
-#+end_src
-*** DevOop
-#+begin_src emacs-lisp
-(use-package terraform-mode)
-(use-package dockerfile-mode)
-
-(add-to-list 'auto-mode-alist '("\\.tf\\'" . terraform-mode))
-(add-to-list 'auto-mode-alist '("\\Dockerfile" . dockerfile-mode))
-#+end_src
-*** Direnv
-#+begin_src emacs-lisp
-;; (use-package envrc
-;;   :hook (after-init . envrc-global-mode))
-
- (use-package direnv
-  :config
-  (direnv-mode))
-
-(use-package dotenv-mode);
-(add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode)) ;;
-#+end_src
 * POPPER
 #+begin_src emacs-lisp
 (use-package popper
@@ -878,6 +886,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
             "\\*mu4e-update\\*"
             "\\*GDB.*out\\*"
             "\\*vterm\\*"
+            "\\*Warnings\\*"
           help-mode
           compilation-mode))
   (popper-mode +1)

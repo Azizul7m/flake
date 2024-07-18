@@ -6,6 +6,7 @@
     (vterm-toggle)
     (delete-other-windows))
 
+
   (use-package general
     :config
     (general-evil-setup)
@@ -18,12 +19,19 @@
       :non-normal-prefix "C-SPC"
       :global-prefix "C-SPC") ;; access leader in insert mode
 
+
     (dt/leader-keys
       "SPC" '(project-find-file :wk "Counsel M-x")
       "." '(find-file :wk "Find file")
       "=" '(perspective-map :wk "Perspective") ;; Lists all the perspective keybindings
    ;; "g c" '(comment-dwim :wk "Comment lines")
      "u" '(universal-argument :wk "Universal argument"))
+
+     (dt/leader-keys
+       "a" '(:ignore t :wk "Artificial Intelligence")
+       "a i" '(gptel :wk "Gptel")
+       "a m" '(gptel-menu :wk "Setting")
+       )
 
     (dt/leader-keys
       "c" '(:ignore t :wk "Code Action")
