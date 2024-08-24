@@ -4,7 +4,7 @@
       enable = true;
       settings = {
         location = "center";
-        height = 400;
+        height = 380;
         width= 650;
         show_all= false;
         print_command= true;

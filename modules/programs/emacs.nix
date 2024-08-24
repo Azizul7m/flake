@@ -10,6 +10,7 @@
     texliveTeTeX
     libvterm
     tree-sitter
+    wkhtmltopdf
     emacsPackages.vterm
     gnuplot 
     emacs-lsp-booster

@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }: {
   home = {
     packages = (with pkgs; [
-      gnome.nautilus
+      nautilus
       baobab # disk analizer
       google-chrome
       firefox
@@ -12,11 +12,15 @@
       #Office
       sioyek
       foliate
+      onlyoffice-bin_latest
 
       #Graphics
       figma-linux
+      inkscape
+      gimp
       sxiv
       scribus
+      blender
 
       # Social
       telegram-desktop
@@ -27,27 +31,35 @@
       bleachbit
       boxbuddy # Distrobox container manage
       remmina # Remotely ssh client
-
       # Media
       vlc
       sxiv
+      zed-editor
 
       # TUI
       lazygit
       yewtube # youtube
       htop
       neofetch
+      btop
+      superfile
       #Utils
+      playerctl
+      wineWowPackages.waylandFull
+      winetricks
+      zenity # Diolog
+      ghostscript
       cliphist # clipboard manager
-      cointop 
+      cointop
       coinlive
 
       # Dev
+      gdbgui
       ags # GJS library
       gnome-builder
       mongodb-compass
 
-      #postman # API
+      insomnia
       #jetbrains.datagrip
     ]);
   };

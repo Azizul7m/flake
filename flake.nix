@@ -3,7 +3,6 @@
   inputs = {
     nixpkgs-stable.url = "nixpkgs/nixos-23.11";
     nixpkgs.url = "nixpkgs/nixos-unstable";
-
     home-manager = {
 #     url = "github:nix-community/home-manager/release-23.11";
       url = "github:nix-community/home-manager";
@@ -38,6 +37,7 @@
           inherit system;
           specialArgs = { inherit inputs var; };
           modules = [
+            inputs.stylix.nixosModules.stylix
             ./host/configuration.nix
           ];
         };
@@ -45,7 +45,9 @@
       homeConfigurations."${var.host}" = inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         extraSpecialArgs = { inherit inputs var; };
-        modules = [ ./home/home.nix ];
+        modules = [
+          ./home/home.nix
+        ];
       };
     };
 }

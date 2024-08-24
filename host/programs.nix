@@ -1,7 +1,6 @@
 { config, var, ... }: {
-
   environment = {
-    systemPackages = with var.pkgs; [
+     systemPackages = with var.pkgs; [
       xterm
       git
       gh
@@ -16,12 +15,12 @@
       bat
       tree
       ncdu
+      gdb
 
       libusb
       usbutils
       killall
-      flatpak-builder  
-
+      
 
       home-manager
       networkmanagerapplet
@@ -35,6 +34,8 @@
       fontconfig # root font config
     ];
   };
+
+  stylix.enable = true;
   programs = {
     dconf.enable = true;
     mtr.enable = true;
@@ -42,15 +43,11 @@
     fish.enable = true;
     kdeconnect.enable = true;
     gnome-disks.enable = true;
+    command-not-found.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
-    nix-ld.enable = true;
-    nix-ld.libraries = with var.pkgs; [
-        # Add any missing dynamic libraries for unpackaged programs
-        # here, NOT in environment.systemPackages
-    ];
   };
   services = {
     pipewire = { # Sound settings
@@ -59,12 +56,12 @@
       alsa.support32Bit = true;
       pulse.enable = true;
     };
+    dbus.enable = true; # inter-process communication (IPC) 
     libinput.enable= true; #LibInput
     getty.autologinUser = "anower";
-    openssh.enable = true;
     devmon.enable = true; # monitoring drive "Heavy"
     gvfs.enable = true;  # trash  "Heavy"
     udisks2.enable = true;  # auto mount drive  "Heavy"
-    flatpak.enable = true;
+    #flatpak.enable = true;
   };
 }

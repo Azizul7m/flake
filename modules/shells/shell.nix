@@ -1,67 +1,65 @@
-{var, ...}: {
+{ var, ... }: {
   home = {
     packages = (with var.pkgs; [
-        devbox
-        direnv
 
-        # C STUFF
-        libclang
-        gnumake
-        cmake
-        gnupg
-        gcc
-        pkg-config
-        systemd        # Some core packages are bundle with systemd
-        
-        #JS
-        nodejs
-        deno   
+      # C STUFF
+      libclang
+      gnumake
+      cmake
+      gnupg
+      gcc
+      pkg-config
+      systemd # Some core packages are bundle with systemd
 
+      #JS
+      nodejs
+      deno
 
-        #PY
-        python310
-        python310Packages.pip
-        pipenv
+      #PY
+      python310
+      python310Packages.pip
+      pipenv
 
-        # BASH
-        shfmt
+      # BASH
+      shfmt
 
-        # NIX
-        nixfmt-classic
+      # NIX
+      nixfmt-classic
 
-        # Rust
-        rustup
-        cargo-watch
+      # Rust
+      rustup
+      cargo-watch
 
-        # Web3
-        solc
-        anchor
-        solana-validator       
+      # Web3
+      solc
+      anchor
+      solana-validator
 
-        # DEVOPS
-        dockfmt # docker format
-        docker-compose
+      # DEVOPS
+      devbox
+      direnv
+      dockfmt # docker format
+      docker-compose
 
-        #utils
-        starship 
-        eza # ls alternative
-        grc # text colored
-        hunspell
-        typioca
+      #utils
+      starship
+      eza # ls alternative
+      grc # text colored
+      hunspell
+      typioca
 
-        #LSP
-        docker-ls
-        docker-compose-language-service
-        yaml-language-server
-        nodePackages_latest.typescript-language-server
+      #LSP
+      docker-ls
+      docker-compose-language-service
+      yaml-language-server
+      nodePackages_latest.typescript-language-server
 
-        yt-dlp
-        jellyfin-ffmpeg
-    ]) ++ (with var.pkgs-stable; [
-     # rnix-lsp 
-    ]);
-    sessionVariables= {
-      LIBCLANG_PATH = "${var.pkgs.libclang.lib}/lib";
-    };
+      yt-dlp
+      jellyfin-ffmpeg
+    ]) ++ (with var.pkgs-stable;
+      [
+        # rnix-lsp 
+      ]);
+    sessionVariables = { LIBCLANG_PATH = "${var.pkgs.libclang.lib}/lib"; };
   };
 }

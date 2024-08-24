@@ -1,6 +1,40 @@
 { inputs, config, var, ... }:
 {
-  # Auto start Hyprland when system load
+  home.packages = with var.pkgs; [
+      qt5.qtwayland
+      qt5.qtbase
+      qt5.qttools
+      qt6Packages.qt6ct
+      libsForQt5.qt5.qtwayland
+
+      kitty
+      libnotify
+      wofi
+      nwg-look
+      nwg-launchers
+      wlogout
+      hyprnome
+      wlr-randr # Screen Settings
+
+      libnotify
+      wlprop
+      waypaper # wallpaper selector
+      swaybg # wallpaper
+      wf-recorder
+      wayland-protocols
+      hyprshot
+      hyprcursor
+      wl-clipboard
+      grim
+      slurp
+      bemenu
+      scrot # screenshot utils
+      maim # screenshot utils
+      wayland-scanner
+      wtype
+      wlay
+      wob # volume gui progress bar
+    ];    
   wayland.windowManager = {
     hyprland= {
       enable=true;
@@ -12,11 +46,13 @@
       };
       settings= let
             scriptsDir = "$HOME/.config/hypr/scripts";
-            term = "kitty";
+            term = "alacritty";
             browser = "brave";
             fileManager= "pcmanfm";
             menu = "pkill wofi || wofi --show drun -I";
             emTerm= "open-vterm-full-window";
+            fctix = "fcitx5 -9;sleep 1;fcitx5 -d --replace; sleep 1;fcitx5-remote -r";
+            screenshot = "grim -g $(slurp) | wl-copy";
       in {
       decoration = {
             shadow_ignore_window = true;
@@ -27,20 +63,20 @@
             rounding = 5;
             drop_shadow = "no";
             "col.shadow" = "rgba(eaeaeaee)";
-            blur= {
-                    enabled = true;
-                    size = 2;
-                    passes = 4;
-                    vibrancy = 0.1696;
-                    popups = true;
-                };
+            blur={
+              enabled = true;
+              size = 2;
+              passes = 4;
+              vibrancy = 0.1696;
+              popups = true;
+            };
         };
         gestures= {
-            workspace_swipe = "yes";
+          workspace_swipe = "yes";
         };
-        master= {
-            new_is_master = true;
-        };
+        #master= {
+            #new_is_master = true;
+        #};
         general = {
             gaps_in = 3;
             gaps_out = 5;
@@ -49,11 +85,23 @@
             "col.inactive_border"= "rgba(595959aa)";
             layout = "dwindle";
         };
+        exec-once= [
+          "waybar"
+          "swaync"
+          "waypaper --restore"
+          "kdeconnect-indicator"
+          "nm-applet"
+          "fcitx5 -d"
+          "openbangla-gui --tray --dark"
+          "wl-paste --type text --watch cliphist store"
+          "wl-paste --type image --watch cliphist store"
+          "../../../src/hypr/scripts/startup"
+        ]; 
         # window rules
         windowrulev2 = [
         # telegram media viewer
-        "float, title:^(Waypaper)$"
-        "size 360 490, class:^(Waypaper)$"
+        "float, title:^(Waypaper|bemenu|Telegram|yed|rofi)$"
+        "size 340 480, class:^(Waypaper|Telegram)$"
 
         # make Firefox PiP window floating and sticky
         "float, title:^(Picture-in-Picture)$"
@@ -72,16 +120,6 @@
         "dimaround, class:^(xdg-desktop-portal-gtk)$"
         "dimaround, class:^(polkit-gnome-authentication-agent-1)$"
         ];
-        exec-once= [
-          "waybar"
-          "swaync"
-          "waypaper --restore"
-          "kdeconnect-indicator"
-          "nm-applet"
-          "wl-paste --type text --watch cliphist store"
-          "wl-paste --type image --watch cliphist store"
-          "../../../src/hypr/scripts/startup"
-        ]; 
        "$mod" = "SUPER";
         bind = [
             # mouse movements
@@ -94,16 +132,18 @@
             "$mod, V, exec, roficlip"
             "$mod, E, exec, ${fileManager}"
             "$mod SHIFT, E, exec, nautilus"
+            "$mod SHIFT, N, exec, waypaper --random"
 
             # Notifications
             "$mod, n, exec, swaync-client -t -sw"
+            "$mod CONTROL, u, exec, ${fctix}"
+
             # Hyprland Control
             "$mod CONTROL, R, exec, hyprctl reload"
             "$mod SHIFT, RETUR, layoutmsg, addmaster"
             "$mod ALT, RETURN, layoutmsg, removemaster"
             # Power
             "$mod CONTROL, Q, exit,"
-            "$mod, L, exec, wlogout "
             "$mod, Q, killactive,"
             #Layout
             "$mod, SPACE, togglefloating,"
@@ -116,6 +156,8 @@
             # Special workspace
             "$mod SHIFT, U, movetoworkspace, special"
             "$mod, U, togglespecialworkspace,"
+
+            #"$mod, ., ${var.pkgs.ibus-layout-toggle}"
 
             # Scroll through existing workspaces with mainMod + scroll
             "$mod, mouse_down, workspace, e+1"
@@ -172,20 +214,21 @@
         ];
         #volume button that will activate even while an input inhibitor is active
         bindl = [
-           ", print, exec, grim -g $(slurp)"
-
+          ", print, exec, ${screenshot}"
            ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
            ", XF86AudioPlay, exec, mpc toggle"
            ", pause, exec, mpc stop"
         ];
         #Start wofi opens wofi on first press, closes it on second
         bindr = [
-            # Launcher
-            "ALT, SPACE, exec, pkill wofi || wofi --show drun -I"
-            "$mod ALT, SPACE, exec, pkill wofi || wofi --show run --prompt "
-            "$mod, V, exec, pkill wofi || cliphist list | wofi -dmenu | cliphist decode | wl-copy"
-            "$mod, p, exec, pkill rofi || rofi -show filebrowser"
+           # Launcher
+           "ALT, SPACE, exec, pkill wofi || wofi --show drun -I"
+           "$mod SHIFT, SPACE, exec, pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'"
+           "$mod, V, exec, pkill wofi || cliphist list | wofi -dmenu | cliphist decode | wl-copy"
+           "$mod, p, exec, pkill rofi || rofi -show filebrowser"
+           "ALT, f4, exec, wlogout "
         ];
+         
         #Describe a bind
         bindd = [];
         #mouse binds; key: 272, 273
@@ -196,40 +239,5 @@
       };
     };
   };
-  home.packages = with var.pkgs; [
-      qt5.qtwayland
-      qt5.qtbase
-      qt5.qttools
-      qt6Packages.qt6ct
-      libsForQt5.qt5.qtwayland
-
-      kitty
-      libnotify
-      wofi
-      nwg-look
-      nwg-launchers
-      wlogout
-      hyprnome
-      wlr-randr # Screen Settings
-
-      libnotify
-      wlprop
-      waypaper # wallpaper selector
-      swaybg # wallpaper
-      wf-recorder
-      wayland-protocols
-      hyprshot
-      hyprcursor
-      wl-clipboard
-      grim
-      slurp
-      bemenu
-      scrot # screenshot utils
-      maim # screenshot utils
-      wayland-scanner
-      wtype
-      wlay
-      wob # volume gui progress bar
-    ];    
 }
 

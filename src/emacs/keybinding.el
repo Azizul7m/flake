@@ -30,7 +30,6 @@
      (dt/leader-keys
        "a" '(:ignore t :wk "Artificial Intelligence")
        "a i" '(gptel :wk "Gptel")
-       "a m" '(gptel-menu :wk "Setting")
        )
 
     (dt/leader-keys
@@ -223,6 +222,12 @@
       "w J" '(buf-move-down :wk "Buffer move down")
       "w K" '(buf-move-up :wk "Buffer move up")
       "w L" '(buf-move-right :wk "Buffer move right"))
+
+    (dt/leader-keys
+      "'" '(:ignore t :wk "Chat") ;; Window splits
+      "' e" '(erc-tls :wk "Erc IRC client")
+      "' r" '(rcirc :wk "Rcirc IRC client")
+      )
   )
 
 ;;(provide 'keybinding.el)

@@ -40,21 +40,22 @@
 
         alias df='df -h'
         alias free='free -m'
+        alias rmi='rm -rf'
 
         # get error messages from journalctl
         alias jctl="journalctl -p 3 -xb"
 
 
-        alias addup='git add -u'
-        alias addall='git add .'
-        alias branch='git branch'
-        alias checkout='git checkout'
-        alias clone='git clone'
-        alias commit='git commit -m'
-        alias pull='git pull origin'
-        alias gpush='git push origin'
-        alias gstatus='git status'
-        alias glog='git log'
+        alias gap='git add -u'
+        alias gaa='git add .'
+        alias gco='git checkout'
+        alias gc='git clone'
+        alias gp='git pull origin'
+        alias gm='git commit -m'
+        alias gb='git branch'
+        alias gs='git status'
+        alias gl='git log'
+        alias gf='git diff'
 
         alias ranger='joshuto'
 
@@ -64,8 +65,8 @@
         alias playmp3='vlc *.mp3'
 
         # Youtube-Dl
-        alias ytvideo='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"'
-        alias ytaudio='yt-dlp -x --audio-format mp3'
+        alias ytv='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"'
+        alias yta='yt-dlp -x --audio-format mp3'
 
         # Play video files in current dir by type
         alias playavi='vlc *.avi'
@@ -77,11 +78,8 @@
         alias recordterm='asciinema rec'
 
         # Distrobox
-        alias fedora='distrobox enter fedora'
-        alias ubuntu='distrobox enter ubuntu'
-        alias kali='distrobox enter blackarch'
-        alias arch='distrobox enter arch'
-        alias dev='distrobox enter dev'
+        alias dev='ssh anower@10.145.124.2'
+        alias dev='ssh anower@10.145.124.3'
 
 
         alias pdf='sioyek'

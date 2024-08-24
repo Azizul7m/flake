@@ -1,8 +1,9 @@
 { var, ... }: {
-  # Install necessary packages
   environment.systemPackages = with var.pkgs; [
-    distrobox
-    toolbox
+    # distrobox
+    # toolbox
+    lxd-lts # Ensure lxd is explicitly listed
+    #vagrant # Lxd like container system
     # boxbuddy
     # virt-manager
     # virt-viewer
@@ -22,23 +23,31 @@
     #     ovmf.packages = [ var.pkgs.OVMFFull.fd ];
     #   };
     # };
-    docker = {
+    podman = {
       enable = true;
-      extraOptions = ''
-          --data-root=/tmp/docker
+      dockerCompat = true;
+    };
+    lxd = {
+      enable = true;
+      ui.enable = true;
+      zfsSupport = true;
+      recommendedSysctlSettings = true;
+    };
+    lxc = {
+      enable = true;
+      lxcfs.enable = true;
+      systemConfig = ''
+        lxc.lxcpath = /var/lib/lxd/storage-pools
+        lxc.bdev.zfs.root = rpool/safe/lxd
       '';
-     };
-     # podman = {
-     #   enable = true;
-     #   dockerCompat = true; # Create a `docker` alias for podman,
-       # extraOptions = ''
-       #   --storage-driver=overlay
-       #   --storage-opt=runroot= /tmp/podman
-       # '';
-    # };                         
+    };
     spiceUSBRedirection.enable = true;
   };
-  services = {
-    spice-vdagentd.enable = true;
+  # services = { spice-vdagentd.enable = true; };
+  # environment.variables = { VAGRANT_DEFAULT_PROVIDER = "libvirt"; };
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.forwarding" = true;
+    "net.ipv4.conf.default.forwarding" = true;
   };
+  boot.kernelModules = [ "nf_nat_ftp"  ];
 }

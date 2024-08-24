@@ -1,4 +1,4 @@
-#+STARTUP: nofold
+#+STARTUP: fold
 #+title: Emacs Config
 #+author: Azizul Islam
 #+email: azizul7m@gmail.com
@@ -10,11 +10,14 @@
   - [[#require-lisp][REQUIRE LISP]]
 - [[#async-savehist-repeat][ASYNC SAVEHIST REPEAT]]
 - [[#ai][AI]]
+  - [[#gptel][Gptel]]
+  - [[#gptel-quick][gptel-quick]]
 - [[#evil-mode][EVIL MODE]]
 - [[#eww][EWW]]
 - [[#flycheck][FLYCHECK]]
 - [[#git][GIT]]
 - [[#hungry-delete][HUNGRY-DELETE]]
+- [[#irc][IRC]]
 - [[#keybinding][KEYBINDING]]
 - [[#ligature][LIGATURE]]
 - [[#search-engine][SEARCH ENGINE]]
@@ -41,12 +44,13 @@
 - [[#popper][POPPER]]
 - [[#file-browser][FILE BROWSER]]
   - [[#dired][DIRED]]
-  - [[#treemacs][TREEMACS]]
   - [[#projectile][PROJECTILE]]
+  - [[#treemacs][TREEMACS]]
 - [[#terminal][TERMINAL]]
   - [[#vterm][Vterm]]
   - [[#vterm-toggle][Vterm toggle]]
   - [[#shell][Shell]]
+- [[#remote][REMOTE]]
 - [[#snippets][SNIPPETS]]
 - [[#rainbow][RAINBOW]]
 - [[#sudo-edit][SUDO EDIT]]
@@ -63,57 +67,63 @@
   - [[#formating][FORMATING]]
   - [[#perspective][PERSPECTIVE]]
 - [[#visual-stuff][VISUAL STUFF]]
+- [[#vm][VM]]
 
 * VANILA *EMACS* CONFIG
  #+BEGIN_SRC elisp
-    (menu-bar-mode -1)
-    (tool-bar-mode -1)
-    (fringe-mode -1)
-    (scroll-bar-mode -1)
-    (display-battery-mode t)
-    (electric-pair-mode 1) ;; auto paire
-    (global-subword-mode 1) ;; global line number
-    (global-visual-line-mode t)
-    (global-display-line-numbers-mode 1)
-    (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
-    (visual-line-mode nil) ;; Kind of like word-wrap
-
-    (setq use-dialog-box nil)
-    (setq use-file-dialog nil)
-    (setq make-backup-files nil)
-    (setq auto-save-default nil)
-    (setq locale-coding-system 'utf-8)
-    (defalias 'yes-or-no-p 'y-or-n-p)
-    ;;; improve scrolling exprience
-    (setq scroll-step 1)
-    (setq scroll-conservatively 10000)
-    (setq auto-window-vscroll nil)
-
-   (global-set-key [escape] 'keyboard-escape-quit)
-   (global-set-key (kbd "C-=") 'text-scale-increase)
-   (global-set-key (kbd "C--") 'text-scale-decrease)
-   (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-   (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
-   ;; Faster loading
-    (setq gc-cons-threshold (* 384 1024 1024)
-       gc-cons-percentage 1.6)
-     ;; Do not load outdeted bytecode files;
-     (setq load-prefer-newer t)
-
- ;; Increase for lsp batter performance.
- (setq read-process-output-max (* 3 1024 1024))
-
- ;; default 800
- (setq max-lisp-eval-depth 10000)
-
- (setq package-enable-at-startup nil)
+     (menu-bar-mode -1)
+     (tool-bar-mode -1)
+     (fringe-mode -1)
+     (scroll-bar-mode -1)
 
 
-  (setq visual-fill-column-width 160
-        visual-fill-column-center-text t) ;; ;; Configure fill width
- ;; set custom file for emacs internal variables
- (setq custom-file (concat user-emacs-directory "custom.el"))
- (load custom-file 'noerror)
+ 
+     (display-battery-mode t)
+     (electric-pair-mode 1) ;; auto paire
+     (global-subword-mode 1) ;; global line number
+     (global-visual-line-mode t)
+     (global-display-line-numbers-mode 1)
+     (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
+     (visual-line-mode nil) ;; Kind of like word-wrap
+     (blink-cursor-mode -1)
+     (global-hl-line-mode 1)
+
+     (setq use-dialog-box nil)
+     (setq use-file-dialog nil)
+     (setq make-backup-files nil)
+     (setq auto-save-default nil)
+     (setq locale-coding-system 'utf-8)
+     (defalias 'yes-or-no-p 'y-or-n-p)
+     ;;; improve scrolling exprience
+     (setq scroll-step 1)
+     (setq scroll-conservatively 10000)
+     (setq auto-window-vscroll nil)
+
+    (global-set-key [escape] 'keyboard-escape-quit)
+    (global-set-key (kbd "C-=") 'text-scale-increase)
+    (global-set-key (kbd "C--") 'text-scale-decrease)
+    (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+    (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+    ;; Faster loading
+     (setq gc-cons-threshold (* 384 1024 1024)
+        gc-cons-percentage 1.6)
+      ;; Do not load outdeted bytecode files;
+      (setq load-prefer-newer t)
+
+  ;; Increase for lsp batter performance.
+  (setq read-process-output-max (* 3 1024 1024))
+
+  ;; default 800
+  (setq max-lisp-eval-depth 10000)
+
+  (setq package-enable-at-startup nil)
+
+
+   (setq visual-fill-column-width 160
+         visual-fill-column-center-text t) ;; ;; Configure fill width
+  ;; set custom file for emacs internal variables
+  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (load custom-file 'noerror)
 #+END_SRC
 *** locale
 #+begin_src elisp
@@ -163,6 +173,7 @@
 #+end_src
 
 * AI
+** Gptel
 #+begin_src emacs-lisp
 (use-package gptel
  :config
@@ -184,8 +195,13 @@
    :key "esecret_5ct3wfyw2njvs7pkrkqh1g2zrx"
    :models '(
             "mistralai/Mixtral-8x7B-Instruct-v0.1")))
+
+(global-set-key (kbd "C-c <return>") 'gptel-send)
 (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
-(add-hook 'gptel-post-response-hook 'gptel-end-of-response)
+(add-hook 'gptel-post-response-functions 'gptel-end-of-response)
+#+end_src
+** gptel-quick 
+#+begin_src emacs-lisp
 #+end_src
 * EVIL MODE
 #+begin_src emacs-lisp
@@ -235,7 +251,7 @@
     :ensure nil
     :config
     (setq eww-enable-experimental-features t)
-    (setq eww-enable-javascript nil))
+    (setq eww-enable-javascript t))
 
     (add-hook 'eww-mode-hook
               (lambda ()
@@ -259,6 +275,25 @@ Hungry Delete is a minor-mode that causes deletion to delete all whitespace in t
    :ensure t
    :defer t
    :config (global-hungry-delete-mode))
+#+end_src
+* IRC
+#+begin_src emacs-lisp
+(setq erc-autojoin-mode t
+   erc-server "irc.libera.chat"
+   erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs" "##rust"))
+   erc-nick "Azizul7m"   
+   erc-user-full-name "Azizul Islam"  ; And this!
+   erc-track-shorten-start 8
+   erc-interpret-mirc-color t
+   erc-query-display 'buffer
+   erc-kill-buffer-on-part t
+   ;; messages
+   erc-hide-list '("JOIN" "PART" "QUIT")
+   ;; tracking -----------------------------------------------------------
+   erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
+                             "324" "329" "332" "333" "353" "477")
+   erc-auto-query 'bury)
+;;(erc-spelling-mode 1)
 #+end_src
 * KEYBINDING
 Goto this file -> [[file:./keybinding.el][KEYBINDING]]
@@ -439,43 +474,41 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 ** TODO CORFU
 Code Completion
 #+begin_src emacs-lisp
-  (use-package corfu
-    :ensure t
-    ;; Optional customizations
-    :custom
-    (corfu-cycle t)                 ; Allows cycling through candidates
-    (corfu-auto t)                  ; Enable auto completion
-    (corfu-auto-prefix 0)
-    (corfu-auto-delay 0.2)
-    (corfu-
-     popupinfo-delay '(0.3 . 0.2))
-    (corfu-preview-current 'insert) ; insert previewed candidate
-    (corfu-preselect 'prompt)
-    (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
-    ;; Optionally use TAB for cycling, default is `corfu-complete'.
-    :bind (:map corfu-map
-		("M-SPC"      . corfu-insert-separator)
-		("TAB"        . corfu-next)
-		([tab]        . corfu-next)
-		("S-TAB"      . corfu-previous)
-		([backtab]    . corfu-previous)
-		("S-<return>" . corfu-insert)
-		("RET"        . corfu-insert))
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-cycle t)                 ; Allows cycling through candidates
+  (corfu-auto t)                  ; Enable auto completion
+  (corfu-auto-prefix 0)
+  (corfu-auto-delay 0.2)
+  (corfu-popupinfo-delay '(0.2 . 0.1))
+  (corfu-preview-current 'insert) ; insert previewed candidate
+  (corfu-preselect 'prompt)
+  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+  :bind (:map corfu-map
+	("M-SPC"      . corfu-insert-separator)
+	("TAB"        . corfu-next)
+	([tab]        . corfu-next)
+	("S-TAB"      . corfu-previous)
+	([backtab]    . corfu-previous)
+	("S-<return>" . corfu-insert)
+	("RET"        . corfu-insert))
 
-    :init
-    (corfu-history-mode)
-    (corfu-popupinfo-mode)
-    (global-corfu-mode))
+  :init
+  (corfu-history-mode)
+  (corfu-popupinfo-mode)
+  (global-corfu-mode))
 
-  (setq read-extended-command-predicate #'command-completion-default-include-p)
-  (use-package nerd-icons-corfu
-    :ensure t
-    :config
-      (add-to-list '
-       corfu-margin-formatters #'nerd-icons-corfu-formatter))
+(setq read-extended-command-predicate #'command-completion-default-include-p)
 
-  (use-package corfu-terminal
-    :ensure t)
+(use-package nerd-icons-corfu
+  :ensure t
+  :config
+    (add-to-list '
+     corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package corfu-terminal
+  :ensure t)
 #+end_src
 ** CAPE
 Cape has the super power to transform Company backends into Capfs and merge multiple Capfs into a Super-Capf! These transformers allow you to still take advantage of Company backends even if you are not using Company as frontend.
@@ -501,11 +534,10 @@ Cape has the super power to transform Company backends into Capfs and merge mult
          ("C-c p &" . cape-sgml)
          ("C-c p r" . cape-rfc1345))
   :init
-  ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (defun my/add-shell-completion ()
     (interactive)
-    (cl-pushnew #'cape-history completion-at-point-functions)
-    (cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions))
+    (cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions)
+    (cl-pushnew #'cape-history completion-at-point-functions))
 
     (add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
 
@@ -514,22 +546,10 @@ Cape has the super power to transform Company backends into Capfs and merge mult
     (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-elisp-block)
     (add-to-list 'completion-at-point-functions #'cape-keyword)
-    ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
-    ;;(add-to-list 'completion-at-point-functions #'cape-history)
-    ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-    ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-    ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-    ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-    ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-    ;;(add-to-list 'completion-at-point-functions #'cape-line)
 
-    ;; Ensure that pcomplete does not write to the buffer
-    ;; Silence then pcomplete capf, no errors or messages!
     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
     (advice-add 'lsp-completion-at-point :around #'cape-wrap-super)
     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
-
-    ;; and behaves as a pure `completion-at-point-function'.
     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
 
 #+end_src
@@ -671,7 +691,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+end_src
 ** EGLOT
 #+begin_src emacs-lisp
-
 (use-package eglot
     :ensure nil
     :init
@@ -695,8 +714,9 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 (use-package markdown-mode
   :ensure t)
 (use-package lsp-mode
-  :ensure t)
-(setq lsp-company-backend 'corfu)
+  :ensure t
+  :init
+  (setq lsp-company-backend 'corfu))
 
 #+End_src
 ** LANGUAGE
@@ -715,6 +735,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 (use-package typescript-mode
     :ensure t
     :mode "\\.ts\\'"
+    :hook (typescript-ts-mode . 'eglot-ensure)
     :config
     (setq-default typescript-lsp-extra-server-flags "--log-level=verbose"))
 
@@ -731,13 +752,15 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 *** Nix
 #+begin_src emacs-lisp
 (use-package nix-mode
- :mode "\\.nix\\'"
- )
+ :mode ("\\.nix\\'")
+ :hook (nix-mode . lsp)
+ :ensure t)
 #+end_src
 *** Rust
 #+begin_src emacs-lisp
 (use-package rustic
   :ensure t
+  :hook format-all-mode
   :init
   (setq rustic-lsp-server-extra-args "--debug")
   (setq rustic-lsp-client 'eglot))
@@ -748,7 +771,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :config
   (setq compilation-scroll-output t))
 #+end_src
-*** Solidity 
+*** Solidity
 #+begin_src emacs-lisp
 (use-package solidity-mode
   :ensure t
@@ -765,6 +788,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+begin_src emacs-lisp
 (use-package web-mode
   :ensure t
+  :hook format-all-mode
   :defer t
   :config
   (setq web-mode-markup-indent-offset 2
@@ -914,6 +938,18 @@ Otherwise, org-tempo is broken when you try to <s TAB...
     (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
 )
 #+end_src
+
+** PROJECTILE
+#+begin_src emacs-lisp
+(use-package projectile
+   :ensure t
+   :defer t
+   :config
+        ;; (setq projectile-enable-caching t)
+         (setq projectile-file-exists-remote-cache-expire nil)
+   :init
+   (projectile-mode 1))
+#+end_src
 ** TREEMACS
 #+begin_src emacs-lisp
 (defun my/treemacs-setup ()
@@ -977,14 +1013,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :config (treemacs-set-scope-type 'Perspectives))
 
 #+end_src
-** PROJECTILE
-#+begin_src emacs-lisp
-(use-package projectile
-   :ensure t
-   :defer t
-   :init
-   (projectile-mode 1))
-#+end_src
 * TERMINAL
 ** Vterm
 #+begin_src emacs-lisp
@@ -1037,6 +1065,10 @@ Otherwise, org-tempo is broken when you try to <s TAB...
       eshell-scroll-to-bottom-on-input t
       eshell-destroy-buffer-when-process-dies t
       eshell-visual-commands'("bash" "fish" "htop" "ssh" "top" "zsh"))
+#+end_src
+* REMOTE
+#+begin_src emacs-lisp
+  ;;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 #+end_src
 * SNIPPETS
 #+begin_src emacs-lisp
@@ -1256,4 +1288,11 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 (use-package writeroom-mode
   :ensure t)
 
+#+end_src
+
+* VM
+#+begin_src emacs-lisp
+(use-package vagrant
+  :ensure t)
+(setq tramp-remote-tramp-use-rsync t)
 #+end_src
