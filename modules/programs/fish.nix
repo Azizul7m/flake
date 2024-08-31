@@ -30,9 +30,10 @@
         alias emds='emacs --daemon'
         alias emd='emacsclient -tty'
 
-        alias v='nvim'
+        alias vim='nvim'
         alias c='codium'
         alias code='codium'
+        alias file='superfile'
 
 
         alias tas='zellij attach -c'
@@ -83,7 +84,7 @@
 
 
         alias pdf='sioyek'
-        alias txt='alacritty -c nvim'
+        alias v='alacritty -e nvim'
 
         alias hotspot='nmcli dev wifi hotspot'
         alias wpassword='nmcli dev wifi show-password'
@@ -99,7 +100,7 @@
 
          zoxide init --cmd cd fish | source
          starship init fish | source
-         
+
        '';
     };
   };

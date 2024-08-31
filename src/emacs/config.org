@@ -12,6 +12,18 @@
 - [[#ai][AI]]
   - [[#gptel][Gptel]]
   - [[#gptel-quick][gptel-quick]]
+- [[#completion-stuff][COMPLETION STUFF]]
+  - [[#company-mode][COMPANY MODE]]
+  - [[#corfu][CORFU]]
+  - [[#cape][CAPE]]
+  - [[#consult][CONSULT]]
+- [[#development][DEVELOPMENT]]
+  - [[#direnv][DIRENV]]
+  - [[#eglot][EGLOT]]
+  - [[#lsp][LSP]]
+  - [[#lsp-bridge][LSP-BRIDGE]]
+  - [[#language][LANGUAGE]]
+  - [[#tree-sitter][TREE-SITTER]]
 - [[#evil-mode][EVIL MODE]]
 - [[#eww][EWW]]
 - [[#flycheck][FLYCHECK]]
@@ -24,23 +36,13 @@
   - [[#vertico][VERTICO]]
   - [[#vertico-posframe][VERTICO-POSFRAME]]
   - [[#orderless][ORDERLESS]]
-  - [[#consult][CONSULT]]
+  - [[#consult-1][CONSULT]]
   - [[#embark][EMBARK]]
   - [[#wgrep][WGREP]]
   - [[#marginalia][MARGINALIA]]
 - [[#diminish][DIMINISH]]
 - [[#whichkey][WHICHKEY]]
-- [[#completion-stuff][COMPLETION STUFF]]
-  - [[#company-mode][COMPANY MODE]]
-  - [[#corfu][CORFU]]
-  - [[#cape][CAPE]]
 - [[#org-mode][ORG-MODE]]
-- [[#development][DEVELOPMENT]]
-  - [[#direnv][DIRENV]]
-  - [[#eglot][EGLOT]]
-  - [[#lsp][LSP]]
-  - [[#language][LANGUAGE]]
-  - [[#tree-sitter][TREE-SITTER]]
 - [[#popper][POPPER]]
 - [[#file-browser][FILE BROWSER]]
   - [[#dired][DIRED]]
@@ -53,11 +55,14 @@
 - [[#remote][REMOTE]]
 - [[#snippets][SNIPPETS]]
 - [[#rainbow][RAINBOW]]
+  - [[#rainbow-1][Rainbow]]
+  - [[#selected-window][selected-window]]
 - [[#sudo-edit][SUDO EDIT]]
 - [[#tldr][TlDR]]
 - [[#heighlight-todo-list][HEIGHLIGHT TODO LIST]]
 - [[#transparency][TRANSPARENCY]]
 - [[#ui-stuff][UI STUFF]]
+  - [[#posframe][POSFRAME]]
   - [[#icons][ICONS]]
   - [[#theme][THEME]]
   - [[#dashboard][DASHBOARD]]
@@ -177,19 +182,20 @@
 #+begin_src emacs-lisp
 (use-package gptel
  :config
- (setq gptel-default-mode 'org-mode)
- (setq gptel-model "gemini-pro"
-      gptel-backend (gptel-make-gemini "Gemini"
-                    :key "AIzaSyCZ8KNE1MiGPK_av8GC7QSfX0gkFHFaAUk"
-                    :stream t))
+ ;;(setq gptel-default-mode 'org-mode)
+ (gptel-make-gemini "Gemini" :key "AIzaSyCZ8KNE1MiGPK_av8GC7QSfX0gkFHFaAUk" :stream t)
  ;; Together.ai offers an OpenAI compatible API
- (gptel-make-openai "TogetherAI"         ;Any name you want
-  :host "api.together.xyz"
-  :key "034dc79db5eb2889e37553de64645e3fb3e7b9261d80e1dcf6c6c5f11acd909c"
-  :stream t
-  :models '("mistralai/Mixtral-8x7B-Instruct-v0.1"
-            "codellama/CodeLlama-13b-Instruct-hf"
-            "codellama/CodeLlama-34b-Instruct-hf"))
+(setq gptel-model   "mistralai/Mixtral-8x7B-Instruct-v0.1"
+ gptel-backend
+ (gptel-make-openai "TogetherAI"         
+   :host "api.together.xyz"
+   :key "034dc79db5eb2889e37553de64645e3fb3e7b9261d80e1dcf6c6c5f11acd909c"                   
+   :stream t
+   :models '(;; has many more, check together.ai
+             "mistralai/Mixtral-8x7B-Instruct-v0.1"
+             "codellama/CodeLlama-13b-Instruct-hf"
+             "codellama/CodeLlama-34b-Instruct-hf")))
+
  (gptel-make-openai "Anyscale"
    :host "api.endpoints.anyscale.com"
    :key "esecret_5ct3wfyw2njvs7pkrkqh1g2zrx"
@@ -202,6 +208,325 @@
 #+end_src
 ** gptel-quick 
 #+begin_src emacs-lisp
+#+end_src
+* COMPLETION STUFF
+** COMPANY MODE
+#+begin_src emacs-lisp
+(use-package company
+  :defer 2
+  :diminish
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay .1)
+  (company-minimum-prefix-length 2)
+  (company-show-numbers nil)
+  (company-tooltip-align-annotations 't))
+
+(use-package company-box
+  :disabled t
+  :after company
+  :diminish
+  :hook (company-mode . company-box-mode))
+
+(setq company-global-modes nil)
+
+#+end_src
+** TODO CORFU
+Code Completion
+#+begin_src emacs-lisp
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-cycle t)                 ; Allows cycling through candidates
+  (corfu-auto t)                  ; Enable auto completion
+  (corfu-auto-prefix 0)
+  (corfu-auto-delay 0.2)
+  (corfu-popupinfo-delay '(0.2 . 0.1))
+  (corfu-preview-current 'insert) ; Insert previewed candidate
+  (corfu-preselect 'prompt)
+  (corfu-quit-no-match 'separator)
+  (corfu-on-exact-match nil)
+  :bind (:map corfu-map
+         ("TAB" . corfu-next)
+         ([tab] . corfu-next)
+         ("S-TAB" . corfu-previous)
+         ([backtab] . corfu-previous)
+         ("RET" . corfu-insert))
+  :init
+  (corfu-history-mode)
+  (corfu-popupinfo-mode)
+  (global-corfu-mode))
+
+
+(setq read-extended-command-predicate #'command-completion-default-include-p)
+
+(use-package nerd-icons-corfu
+  :ensure t
+  :config
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package corfu-terminal
+  :ensure t)
+#+end_src
+** CAPE
+Cape has the super power to transform Company backends into Capfs and merge multiple Capfs into a Super-Capf! These transformers allow you to still take advantage of Company backends even if you are not using Company as frontend.
+#+begin_src  emacs-lisp
+(use-package cape
+  :ensure t
+  :bind (("C-c p p" . completion-at-point) ;; capf
+         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+         ("C-c p f" . cape-file)
+         ("C-c p k" . cape-keyword)
+         ("C-c p s" . cape-elisp-symbol))
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block))
+
+;; (use-package cape
+;;   :ensure t
+;;   :defer 10
+;;   :bind (("C-c p p" . completion-at-point) ;; capf
+;;          ("C-c p t" . complete-tag)        ;; etags
+;;          ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+;;          ("C-c p h" . cape-history)
+;;          ("C-c p f" . cape-file)
+;;          ("C-c p k" . cape-keyword)
+;;          ("C-c p s" . cape-elisp-symbol)
+;;          ("C-c p e" . cape-elisp-block)
+;;          ("C-c p a" . cape-abbrev)
+;;          ("C-c p l" . cape-line)
+;;          ("C-c p w" . cape-dict)
+;;          ("C-c p :" . cape-emoji)
+;;          ("C-c p \\" . cape-tex)
+;;          ("C-c p _" . cape-tex)
+;;          ("C-c p ^" . cape-tex)
+;;          ("C-c p &" . cape-sgml)
+;;          ("C-c p r" . cape-rfc1345))
+;;   :init
+;;   (defun my/add-shell-completion ()
+;;     (interactive)
+;;     (cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions)
+;;     (cl-pushnew #'cape-history completion-at-point-functions))
+
+;;     (add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
+
+;;   :config
+;;     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+;;     (add-to-list 'completion-at-point-functions #'cape-file)
+;;     (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+;;     (add-to-list 'completion-at-point-functions #'cape-keyword)
+
+;;     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+;;     (advice-add 'lsp-completion-at-point :around #'cape-wrap-super)
+;;     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+;;     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+
+#+end_src
+** CONSULT
+#+begin_src emacs-lisp
+(use-package consult-omni
+  :ensure (consult-omni :type git :host github :repo "armindarvish/consult-omni" :branch "main" :files (:defaults "sources/*.el"))
+  :after consult
+  :custom
+  (consult-omni-show-preview t) ;;; show previews
+  (consult-omni-preview-key "C-o") ;;; set the preview key to C-o
+  :config
+  ;; Load Sources Core code
+  (require 'consult-omni-sources)
+  ;; Load Embark Actions
+  (require 'consult-omni-embark)
+
+  ;; Either load all source modules or a selected list
+
+  ;;; Select a list of modules you want to aload, otherwise all sources all laoded
+  ; (setq consult-omni-sources-modules-to-load (list 'consult-omni-wkipedia 'consult-omni-notes))
+  ;; (consult-omni-sources-load-modules)
+  (setq consult-omni-multi-sources '("calc"
+                                     "File"
+                                     "Buffer"
+                                     "Bookmark"
+                                     "Apps"
+                                     "gptel"
+                                     "Brave"
+                                     "Dictionary"
+                                     "Google"
+                                     "Wikipedia"
+                                     "elfeed"
+                                     ;; "mu4e"
+                                     ;; "buffers text search"
+                                     "Notes Search"
+                                     "Org Agenda"
+                                     "GitHub"
+                                     "YouTube"
+                                     "Invidious"))
+  ;;; Set API KEYs. It is recommended to use a function that returns the string for better security.
+  ;; (setq consult-omni-google-customsearch-key "YOUR-GOOGLE-API-KEY-OR-FUNCTION")
+  ;; (setq consult-omni-google-customsearch-cx "YOUR-GOOGLE-CX-NUMBER-OR-FUNCTION")
+  ;; (setq consult-omni-brave-api-key "YOUR-BRAVE-API-KEY-OR-FUNCTION")
+  ;; (setq consult-omni-stackexchange-api-key "YOUR-STACKEXCHANGE-API-KEY-OR-FUNCTION")
+  ;; (setq consult-omni-pubmed-api-key "YOUR-PUBMED-API-KEY-OR-FUNCTION")
+  ;; (setq consult-omni-openai-api-key "YOUR-OPENAI-API-KEY-OR-FUNCTION")
+
+;;; Pick you favorite autosuggest command.
+  (setq consult-omni-default-autosuggest-command #'consult-omni-dynamic-brave-autosuggest) ;;or any other autosuggest source you define
+ ;;; Set your shorthand favorite interactive command
+  (setq consult-omni-default-interactive-command #'consult-omni-multi))
+#+end_src
+* DEVELOPMENT
+** DIRENV
+#+begin_src emacs-lisp
+;; (use-package envrc
+;;   :hook (after-init . envrc-global-mode))
+
+ (use-package direnv
+  :config
+  (direnv-mode))
+
+(use-package dotenv-mode);
+(add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode)) ;;
+#+end_src
+** EGLOT
+#+begin_src emacs-lisp
+(use-package eglot
+    :ensure nil
+    :init
+    (setq eglot-corfu-backend t))
+(fset #'jsonrpc--log-event #'ignore)
+
+;; (use-package eglot-booster
+;; 	:after eglot
+;; 	:config	(eglot-booster-mode))
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(typescript-mode . ("typescript-language-server" "--stdio"))
+               '(javascript-mode . ("typescript-language-server" "--stdio"))
+               ))
+#+end_src
+
+** LSP
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :ensure t)
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :custom
+  (read-process-output-max (* 1024 1024))
+  :init
+    (setq lsp-completion-provider :none)
+    (setq lsp-diagnostics-provider :flycheck)
+    (setq lsp-headerline-breadcrumb-enable nil)
+  :init
+    (setq lsp-keymap-prefix "C-c l"))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode))
+
+(use-package lsp-treemacs
+  :after lsp)
+
+(use-package lsp-ivy)
+#+End_src
+
+** LSP-BRIDGE
+#+begin_src emacs-lisp
+#+end_src
+** LANGUAGE
+*** DevOop
+#+begin_src emacs-lisp
+(use-package terraform-mode)
+(use-package dockerfile-mode)
+(use-package docker-compose-mode)
+
+(add-to-list 'auto-mode-alist '("\\.tf\\'" . terraform-mode))
+(add-to-list 'auto-mode-alist '("\\Dockerfile" . dockerfile-mode))
+(add-to-list 'auto-mode-alist '("\\docker-compose.yml" . docker-compose-mode))
+#+end_src
+*** JS/TS
+#+begin_src emacs-lisp
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2
+        typescript-lsp-extra-server-flags "--log-level=verbose"))
+
+#+end_src
+*** Nix
+#+begin_src emacs-lisp
+(use-package nix-mode
+ :mode ("\\.nix\\'")
+ :hook (nix-mode . lsp)
+ :ensure t)
+#+end_src
+*** Rust
+#+begin_src emacs-lisp
+(use-package rustic
+  :ensure t
+  :init
+  (setq rustic-lsp-server-extra-args "--debug")
+  (setq rustic-lsp-client 'eglot))
+
+(use-package cargo-mode
+  :hook
+  (rustic-mode . cargo-minor-mode)
+  :config
+  (setq compilation-scroll-output t))
+#+end_src
+*** Solidity
+#+begin_src emacs-lisp
+(use-package solidity-mode
+  :ensure t
+  :config
+  (setq solidity-comment-style 'star)) ;; this is the default)
+(add-hook 'solidity-mode-hook 'lsp-mode)
+#+end_src
+*** tailwind
+#+begin_src emacs-lisp :tangle yes
+#+end_src
+
+#+end_src
+*** Web Mode
+#+begin_src emacs-lisp
+(use-package web-mode
+  :ensure t
+  :hook format-all-mode
+  :defer t
+  :config
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-style-padding 2
+        web-mode-script-padding 2
+        web-mode-enable-auto-closing t
+        web-mode-enable-auto-opening t
+        web-mode-enable-auto-pairing t
+        web-mode-enable-auto-indentation t)
+  (add-hook 'web-mode-hook 'emmet-mode)
+  :mode
+  (("\\.html\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.ejs\\'" . web-mode)))
+
+(use-package json-mode
+  :mode
+  (("\\.json\\'" . json-mode)))
+
+(use-package emmet-mode
+  :ensure t)
+#+end_src
+** TREE-SITTER
+#+begin_src emacs-lisp
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (setq treesit-auto-langs '(javascript typescript tsx css html rustic))
+  (treesit-auto-add-to-auto-mode-alist '(javascript typescript tsx css html rustic))
+  (global-treesit-auto-mode))
 #+end_src
 * EVIL MODE
 #+begin_src emacs-lisp
@@ -225,7 +550,9 @@
   (define-key evil-motion-state-map (kbd "SPC") nil)
   (define-key evil-motion-state-map (kbd "K") nil)
   (define-key evil-motion-state-map (kbd "RET") nil)
-  (define-key evil-motion-state-map (kbd "TAB") nil))
+  (define-key evil-motion-state-map (kbd "TAB") nil)
+  (define-key evil-normal-state-map (kbd "C-.") 'embark-act)
+  (define-key evil-visual-state-map (kbd "C-.") 'embark-act))
   ;; Setting RETURN key in org-mode to follow links
 (setq org-return-follows-link  t)
 
@@ -261,7 +588,11 @@
 * FLYCHECK
 #+begin_src emacs-lisp
 (use-package flycheck
-  :ensure t
+  :hook (lsp-mode . flycheck-mode)
+  :bind (:map flycheck-mode-map
+              ("M-n" . flycheck-previous-error)
+              ("M-p" . flycheck-next-error))
+  :custom (flycheck-display-errors-delay .3)
   :init (global-flycheck-mode))
 #+end_src
 * GIT
@@ -449,111 +780,6 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 	  which-key-allow-imprecise-window-fit nil
 	  which-key-separator " → " ))
 #+end_src
-* COMPLETION STUFF
-** COMPANY MODE
-#+begin_src emacs-lisp
-(use-package company
-  :defer 2
-  :diminish
-  :custom
-  (company-begin-commands '(self-insert-command))
-  (company-idle-delay .1)
-  (company-minimum-prefix-length 2)
-  (company-show-numbers nil)
-  (company-tooltip-align-annotations 't))
-
-(use-package company-box
-  :disabled t
-  :after company
-  :diminish
-  :hook (company-mode . company-box-mode))
-
-(setq company-global-modes nil)
-
-#+end_src
-** TODO CORFU
-Code Completion
-#+begin_src emacs-lisp
-(use-package corfu
-  :ensure t
-  :custom
-  (corfu-cycle t)                 ; Allows cycling through candidates
-  (corfu-auto t)                  ; Enable auto completion
-  (corfu-auto-prefix 0)
-  (corfu-auto-delay 0.2)
-  (corfu-popupinfo-delay '(0.2 . 0.1))
-  (corfu-preview-current 'insert) ; insert previewed candidate
-  (corfu-preselect 'prompt)
-  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
-  :bind (:map corfu-map
-	("M-SPC"      . corfu-insert-separator)
-	("TAB"        . corfu-next)
-	([tab]        . corfu-next)
-	("S-TAB"      . corfu-previous)
-	([backtab]    . corfu-previous)
-	("S-<return>" . corfu-insert)
-	("RET"        . corfu-insert))
-
-  :init
-  (corfu-history-mode)
-  (corfu-popupinfo-mode)
-  (global-corfu-mode))
-
-(setq read-extended-command-predicate #'command-completion-default-include-p)
-
-(use-package nerd-icons-corfu
-  :ensure t
-  :config
-    (add-to-list '
-     corfu-margin-formatters #'nerd-icons-corfu-formatter))
-
-(use-package corfu-terminal
-  :ensure t)
-#+end_src
-** CAPE
-Cape has the super power to transform Company backends into Capfs and merge multiple Capfs into a Super-Capf! These transformers allow you to still take advantage of Company backends even if you are not using Company as frontend.
-#+begin_src  emacs-lisp
-(use-package cape
-  :ensure t
-  :defer 10
-  :bind (("C-c p p" . completion-at-point) ;; capf
-         ("C-c p t" . complete-tag)        ;; etags
-         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-         ("C-c p h" . cape-history)
-         ("C-c p f" . cape-file)
-         ("C-c p k" . cape-keyword)
-         ("C-c p s" . cape-elisp-symbol)
-         ("C-c p e" . cape-elisp-block)
-         ("C-c p a" . cape-abbrev)
-         ("C-c p l" . cape-line)
-         ("C-c p w" . cape-dict)
-         ("C-c p :" . cape-emoji)
-         ("C-c p \\" . cape-tex)
-         ("C-c p _" . cape-tex)
-         ("C-c p ^" . cape-tex)
-         ("C-c p &" . cape-sgml)
-         ("C-c p r" . cape-rfc1345))
-  :init
-  (defun my/add-shell-completion ()
-    (interactive)
-    (cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions)
-    (cl-pushnew #'cape-history completion-at-point-functions))
-
-    (add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
-
-  :config
-    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-    (add-to-list 'completion-at-point-functions #'cape-file)
-    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-    (add-to-list 'completion-at-point-functions #'cape-keyword)
-
-    (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
-    (advice-add 'lsp-completion-at-point :around #'cape-wrap-super)
-    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
-    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
-
-#+end_src
-
 * ORG-MODE
 Otherwise, org-tempo is broken when you try to <s TAB...
 #+begin_src emacs-lisp
@@ -675,215 +901,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
     ;; special extensions for markdown_github output
     (setq org-pandoc-format-extensions '(markdown_github+pipe_tables+raw_html))
   )
-#+end_src
-* DEVELOPMENT
-** DIRENV
-#+begin_src emacs-lisp
-;; (use-package envrc
-;;   :hook (after-init . envrc-global-mode))
-
- (use-package direnv
-  :config
-  (direnv-mode))
-
-(use-package dotenv-mode);
-(add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode)) ;;
-#+end_src
-** EGLOT
-#+begin_src emacs-lisp
-(use-package eglot
-    :ensure nil
-    :init
-    (setq eglot-corfu-backend t))
-(fset #'jsonrpc--log-event #'ignore)
-
-;; (use-package eglot
-;;   :ensure nil
-;;   :config
-;;   (add-hook 'prog-mode-hook 'eglot-ensure))
-
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(typescript-mode . ("typescript-language-server" "--stdio"))
-               '(javascript-mode . ("typescript-language-server" "--stdio"))
-               ))
-#+end_src
-
-** LSP
-#+begin_src emacs-lisp
-(use-package markdown-mode
-  :ensure t)
-(use-package lsp-mode
-  :ensure t
-  :init
-  (setq lsp-company-backend 'corfu))
-
-#+End_src
-** LANGUAGE
-*** DevOop
-#+begin_src emacs-lisp
-(use-package terraform-mode)
-(use-package dockerfile-mode)
-(use-package docker-compose-mode)
-
-(add-to-list 'auto-mode-alist '("\\.tf\\'" . terraform-mode))
-(add-to-list 'auto-mode-alist '("\\Dockerfile" . dockerfile-mode))
-(add-to-list 'auto-mode-alist '("\\docker-compose.yml" . docker-compose-mode))
-#+end_src
-*** JS/TS
-#+begin_src emacs-lisp
-(use-package typescript-mode
-    :ensure t
-    :mode "\\.ts\\'"
-    :hook (typescript-ts-mode . 'eglot-ensure)
-    :config
-    (setq-default typescript-lsp-extra-server-flags "--log-level=verbose"))
-
-(use-package javascript-mode
-  :ensure nil
-  :mode "\\.js\\'")
-
-;; (use-package projectile-lint
-;;   :ensure t
-;;   :defer t)
-
-;;(projectile-lint-add-linters '("eslint" "typescript"))
-#+end_src
-*** Nix
-#+begin_src emacs-lisp
-(use-package nix-mode
- :mode ("\\.nix\\'")
- :hook (nix-mode . lsp)
- :ensure t)
-#+end_src
-*** Rust
-#+begin_src emacs-lisp
-(use-package rustic
-  :ensure t
-  :hook format-all-mode
-  :init
-  (setq rustic-lsp-server-extra-args "--debug")
-  (setq rustic-lsp-client 'eglot))
-
-(use-package cargo-mode
-  :hook
-  (rustic-mode . cargo-minor-mode)
-  :config
-  (setq compilation-scroll-output t))
-#+end_src
-*** Solidity
-#+begin_src emacs-lisp
-(use-package solidity-mode
-  :ensure t
-  :config
-  (setq solidity-comment-style 'star)) ;; this is the default)
-(add-hook 'solidity-mode-hook 'lsp-mode)
-#+end_src
-*** tailwind
-#+begin_src emacs-lisp :tangle yes
-#+end_src
-
-#+end_src
-*** Web Mode
-#+begin_src emacs-lisp
-(use-package web-mode
-  :ensure t
-  :hook format-all-mode
-  :defer t
-  :config
-  (setq web-mode-markup-indent-offset 2
-        web-mode-css-indent-offset 2
-        web-mode-code-indent-offset 2
-        web-mode-style-padding 2
-        web-mode-script-padding 2
-        web-mode-enable-auto-closing t
-        web-mode-enable-auto-opening t
-        web-mode-enable-auto-pairing t
-        web-mode-enable-auto-indentation t)
-  (add-hook 'web-mode-hook 'emmet-mode)
-  :mode
-  (("\\.html\\'" . web-mode)
-   ("\\.php\\'" . web-mode)
-   ("\\.ejs\\'" . web-mode)))
-
-(use-package json-mode
-  :mode
-  (("\\.json\\'" . json-mode)))
-
-(use-package emmet-mode
-  :ensure t)
-#+end_src
-** TREE-SITTER
-#+begin_src emacs-lisp
-(use-package treesit
-  :ensure nil
-      :mode (("\\.tsx\\'" . tsx-ts-mode)
-             ("\\.js\\'"  . typescript-ts-mode)
-             ("\\.mjs\\'" . typescript-ts-mode)
-             ("\\.mts\\'" . typescript-ts-mode)
-             ("\\.cjs\\'" . typescript-ts-mode)
-             ("\\.ts\\'"  . typescript-ts-mode)
-             ("\\.jsx\\'" . tsx-ts-mode)
-             ("\\.json\\'" .  json-ts-mode)
-             ("\\.Dockerfile\\'" . dockerfile-ts-mode)
-             ("\\.prisma\\'" . prisma-ts-mode)
-             ;; More modes defined here...
-             )
-      :preface
-      (defun os/setup-install-grammars ()
-        "Install Tree-sitter grammars if they are absent."
-        (interactive)
-        (dolist (grammar
-                 '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
-                   (bash "https://github.com/tree-sitter/tree-sitter-bash")
-                   (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.20.1"))
-                   (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.21.2" "src"))
-                   (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.20.2"))
-                   (python . ("https://github.com/tree-sitter/tree-sitter-python" "v0.20.4"))
-                   (go "https://github.com/tree-sitter/tree-sitter-go" "v0.20.0")
-                   (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-                   (make "https://github.com/alemuller/tree-sitter-make")
-                   (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-                   (cmake "https://github.com/uyha/tree-sitter-cmake")
-                   (c "https://github.com/tree-sitter/tree-sitter-c")
-                   (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-                   (toml "https://github.com/tree-sitter/tree-sitter-toml")
-                   (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
-                   (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
-                   (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))
-                   (prisma "https://github.com/victorhqc/tree-sitter-prisma")))
-          (add-to-list 'treesit-language-source-alist grammar)
-          ;; Only install `grammar' if we don't already have it
-          ;; installed. However, if you want to *update* a grammar then
-          ;; this obviously prevents that from happening.
-          (unless (treesit-language-available-p (car grammar))
-            (treesit-install-language-grammar (car grammar)))))
-
-      ;; Optional, but recommended. Tree-sitter enabled major modes are
-      ;; distinct from their ordinary counterparts.
-      ;;
-      ;; You can remap major modes with `major-mode-remap-alist'. Note
-      ;; that this does *not* extend to hooks! Make sure you migrate them
-      ;; also
-      (dolist (mapping
-               '((python-mode . python-ts-mode)
-                 (css-mode . css-ts-mode)
-                 (typescript-mode . typescript-ts-mode)
-                 (js-mode . typescript-ts-mode)
-                 (js2-mode . typescript-ts-mode)
-                 (c-mode . c-ts-mode)
-                 (c++-mode . c++-ts-mode)
-                 (c-or-c++-mode . c-or-c++-ts-mode)
-                 (bash-mode . bash-ts-mode)
-                 (css-mode . css-ts-mode)
-                 (json-mode . json-ts-mode)
-                 (js-json-mode . json-ts-mode)
-                 (sh-mode . bash-ts-mode)
-                 (sh-base-mode . bash-ts-mode)))
-        (add-to-list 'major-mode-remap-alist mapping))
-      :config
-      (os/setup-install-grammars))
-
 #+end_src
 * POPPER
 #+begin_src emacs-lisp
@@ -1100,10 +1117,14 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   (push 'yasnippet-capf completion-at-point-functions))
 #+end_src
 * RAINBOW
+** Rainbow
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+end_src
+** selected-window
+#+begin_src emacs-lisp
 #+end_src
 * SUDO EDIT
 #+begin_src emacs-lisp
@@ -1134,6 +1155,12 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 (add-to-list 'default-frame-alist '(alpha-background . 90)) ; For all new frames henceforth
 #+end_src
 * UI STUFF
+** POSFRAME
+#+begin_src emacs-lisp
+(use-package posframe
+  :ensure t
+  :after dashboard)
+#+end_src
 ** ICONS
 #+begin_src emacs-lisp
 (use-package all-the-icons
@@ -1252,8 +1279,13 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 #+end_src
 ** FORMATING
 #+begin_src emacs-lisp
-(use-package format-all
-	 :ensure t)
+(use-package apheleia
+  :ensure t
+  :config
+  (setq apheleia-global-mode 1)
+  (setq apheleia-remote-algorithm 'remote)
+  (setf (alist-get 'prettier apheleia-formatters)
+        '("prettier" "--stdin-filepath" filepath)))
 #+end_src
 ** PERSPECTIVE
 #+begin_src emacs-lisp

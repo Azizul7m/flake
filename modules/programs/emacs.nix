@@ -19,7 +19,7 @@
     enable = true;
   };
   services.emacs = {
-    package = pkgs.emacs-unstable;
+    package = pkgs.emacs;
     enable = true;
     defaultEditor = true;
     client.enable = true;

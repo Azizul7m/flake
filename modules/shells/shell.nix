@@ -32,7 +32,7 @@
 
       # Web3
       solc
-      anchor
+      #anchor
       solana-validator
 
       # DEVOPS
@@ -40,6 +40,7 @@
       direnv
       dockfmt # docker format
       docker-compose
+      emacs-lsp-booster
 
       #utils
       starship

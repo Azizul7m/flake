@@ -8,6 +8,7 @@
     ../modules/programs/zoxide.nix
     ../modules/programs/rofi.nix
     ../modules/programs/emacs.nix
+    ../modules/programs/nvim.nix
     ../modules/programs/wofi.nix
     ../modules/programs/fish.nix
     ../modules/programs/waybar.nix
@@ -45,7 +46,7 @@
   };
   home.sessionVariables = {
      TERMINAL = "alacritty";
-     VISUAL = "emacsclient -t -a '' ";
+     VISUAL = "nvim";
      BROWSER = "brave";
      NODE_PATH = "$HOME/.npm_global";
      PIP_PREFIX = "$HOME/.local/bin";

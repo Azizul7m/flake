@@ -17,6 +17,8 @@ in {
       QT_IM_MODULES = "wayland;fcitx;ibus";
       #Nix
       NIXPKGS_ALLOW_UNFREE = "1";
+
+      HYPRCURSOR_SIZE = "18"; 
     };
     loginShellInit = ''
       if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
