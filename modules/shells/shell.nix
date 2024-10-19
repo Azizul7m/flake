@@ -1,8 +1,8 @@
 { var, ... }: {
   home = {
     packages = (with var.pkgs; [
-
       # C STUFF
+      libtool
       libclang
       gnumake
       cmake
@@ -10,10 +10,17 @@
       gcc
       pkg-config
       systemd # Some core packages are bundle with systemd
+      openssl
+
+      nmap
+
+      android-tools
+      adb-sync
+      adbfs-rootless
 
       #JS
-      nodejs
       deno
+      nodejs
 
       #PY
       python310
@@ -32,6 +39,7 @@
 
       # Web3
       solc
+
       #anchor
       solana-validator
 

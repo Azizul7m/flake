@@ -8,11 +8,13 @@
       brave
       dropbox
       pcmanfm
+      anydesk
 
       #Office
       sioyek
       foliate
       onlyoffice-bin_latest
+      zoom-us
 
       #Graphics
       figma-linux
@@ -43,8 +45,10 @@
       neofetch
       btop
       superfile
+
       #Utils
       playerctl
+      screenkey
       wineWowPackages.waylandFull
       winetricks
       zenity # Diolog

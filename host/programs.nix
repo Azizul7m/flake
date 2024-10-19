@@ -1,9 +1,10 @@
 { config, var, ... }: {
   environment = {
-     systemPackages = with var.pkgs; [
+    systemPackages = with var.pkgs; [
       xterm
       git
       gh
+      nushell
       neovim
       wget
       joshuto
@@ -16,11 +17,11 @@
       tree
       ncdu
       gdb
+      sshfs
 
       libusb
       usbutils
       killall
-      
 
       home-manager
       networkmanagerapplet
@@ -56,12 +57,12 @@
       alsa.support32Bit = true;
       pulse.enable = true;
     };
-    dbus.enable = true; # inter-process communication (IPC) 
-    libinput.enable= true; #LibInput
+    dbus.enable = true; # inter-process communication (IPC)
+    libinput.enable = true; # LibInput
     getty.autologinUser = "anower";
     devmon.enable = true; # monitoring drive "Heavy"
-    gvfs.enable = true;  # trash  "Heavy"
-    udisks2.enable = true;  # auto mount drive  "Heavy"
+    gvfs.enable = true; # trash  "Heavy"
+    udisks2.enable = true; # auto mount drive  "Heavy"
     #flatpak.enable = true;
   };
 }

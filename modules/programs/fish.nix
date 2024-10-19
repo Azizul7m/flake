@@ -2,12 +2,10 @@
   programs = {
     fish = {
       enable = true;
-      plugins = [
-        {
-          name = "grc";
-          src = var.pkgs.fishPlugins.grc.src;
-        }
-      ];
+      plugins = [{
+        name = "grc";
+        src = var.pkgs.fishPlugins.grc.src;
+      }];
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
 
@@ -79,8 +77,7 @@
         alias recordterm='asciinema rec'
 
         # Distrobox
-        alias dev='ssh anower@10.145.124.2'
-        alias dev='ssh anower@10.145.124.3'
+        alias dev='ssh anower@10.155.119.10'
 
 
         alias pdf='sioyek'
@@ -96,12 +93,12 @@
 
       '';
       # Add npm path to PATH
-       shellInit = ''set -gx PATH $HOME/.npm_global/bin $HOME/.avm/bin $HOME/.emacs.d/bin $HOME/.config/hypr/scripts $HOME/.local/share/solana/install/active_release/bin $HOME/.cargo/bin $HOME/.local/bin $PATH
+      shellInit = ''
+        set -gx PATH $HOME/.npm_global/bin $HOME/.deno/bin $HOME/.bun/bin $HOME/.avm/bin $HOME/.emacs.d/bin $HOME/.config/hypr/scripts $HOME/.local/share/solana/install/active_release/bin $HOME/.cargo/bin $HOME/.local/bin $PATH
 
-         zoxide init --cmd cd fish | source
-         starship init fish | source
-
-       '';
+                 zoxide init --cmd cd fish | source
+                 starship init fish | source
+      '';
     };
   };
 }

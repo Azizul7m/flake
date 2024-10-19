@@ -1,4 +1,4 @@
-#+STARTUP: fold
+#+STARTUP: unfold
 #+title: Emacs Config
 #+author: Azizul Islam
 #+email: azizul7m@gmail.com
@@ -16,16 +16,20 @@
   - [[#company-mode][COMPANY MODE]]
   - [[#corfu][CORFU]]
   - [[#cape][CAPE]]
+  - [[#eldoc][Eldoc]]
   - [[#consult][CONSULT]]
 - [[#development][DEVELOPMENT]]
+  - [[#codespaces][CODESPACES]]
   - [[#direnv][DIRENV]]
   - [[#eglot][EGLOT]]
   - [[#lsp][LSP]]
   - [[#lsp-bridge][LSP-BRIDGE]]
   - [[#language][LANGUAGE]]
   - [[#tree-sitter][TREE-SITTER]]
+  - [[#debug][Debug]]
 - [[#evil-mode][EVIL MODE]]
 - [[#eww][EWW]]
+- [[#env][ENV]]
 - [[#flycheck][FLYCHECK]]
 - [[#git][GIT]]
 - [[#hungry-delete][HUNGRY-DELETE]]
@@ -43,6 +47,8 @@
 - [[#diminish][DIMINISH]]
 - [[#whichkey][WHICHKEY]]
 - [[#org-mode][ORG-MODE]]
+  - [[#markdown-mode][Markdown mode]]
+  - [[#enote][Enote]]
 - [[#popper][POPPER]]
 - [[#file-browser][FILE BROWSER]]
   - [[#dired][DIRED]]
@@ -51,7 +57,6 @@
 - [[#terminal][TERMINAL]]
   - [[#vterm][Vterm]]
   - [[#vterm-toggle][Vterm toggle]]
-  - [[#shell][Shell]]
 - [[#remote][REMOTE]]
 - [[#snippets][SNIPPETS]]
 - [[#rainbow][RAINBOW]]
@@ -69,6 +74,7 @@
   - [[#page-break-lines][PAGE BREAK LINES]]
   - [[#fonts][FONTS]]
   - [[#indent][INDENT]]
+  - [[#indent-guides][INDENT-GUIDES]]
   - [[#formating][FORMATING]]
   - [[#perspective][PERSPECTIVE]]
 - [[#visual-stuff][VISUAL STUFF]]
@@ -76,59 +82,63 @@
 
 * VANILA *EMACS* CONFIG
  #+BEGIN_SRC elisp
-     (menu-bar-mode -1)
-     (tool-bar-mode -1)
-     (fringe-mode -1)
-     (scroll-bar-mode -1)
+      (menu-bar-mode -1)
+      (tool-bar-mode -1)
+      (fringe-mode -1)
+
+  (scroll-bar-mode -1)
+ (save-place-mode 1)
 
 
- 
-     (display-battery-mode t)
-     (electric-pair-mode 1) ;; auto paire
-     (global-subword-mode 1) ;; global line number
-     (global-visual-line-mode t)
-     (global-display-line-numbers-mode 1)
-     (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
-     (visual-line-mode nil) ;; Kind of like word-wrap
-     (blink-cursor-mode -1)
-     (global-hl-line-mode 1)
+      (display-battery-mode t)
+      (electric-pair-mode 1) ;; auto paire
+      (global-subword-mode 1) ;; global line number
+      (global-display-line-numbers-mode 1)
+      (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
+      (blink-cursor-mode -1)
+      (global-hl-line-mode 1)
 
-     (setq use-dialog-box nil)
-     (setq use-file-dialog nil)
-     (setq make-backup-files nil)
-     (setq auto-save-default nil)
-     (setq locale-coding-system 'utf-8)
-     (defalias 'yes-or-no-p 'y-or-n-p)
-     ;;; improve scrolling exprience
-     (setq scroll-step 1)
-     (setq scroll-conservatively 10000)
-     (setq auto-window-vscroll nil)
+      (setq-default truncate-lines t)
 
-    (global-set-key [escape] 'keyboard-escape-quit)
-    (global-set-key (kbd "C-=") 'text-scale-increase)
-    (global-set-key (kbd "C--") 'text-scale-decrease)
-    (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-    (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
-    ;; Faster loading
-     (setq gc-cons-threshold (* 384 1024 1024)
-        gc-cons-percentage 1.6)
-      ;; Do not load outdeted bytecode files;
-      (setq load-prefer-newer t)
+      (setq scroll-margin 8)
+      (setq use-dialog-box nil)
+      (setq use-file-dialog nil)
+      (setq make-backup-files nil)
+      (setq auto-save-default nil)
+      (setq locale-coding-system 'utf-8)
+      (defalias 'yes-or-no-p 'y-or-n-p)
+      ;;; improve scrolling exprience
+      (setq scroll-step 1)
+      (setq scroll-conservatively 10000)
+      (setq auto-window-vscroll nil)
 
-  ;; Increase for lsp batter performance.
-  (setq read-process-output-max (* 3 1024 1024))
+     (global-set-key [escape] 'keyboard-escape-quit)
+     (global-set-key (kbd "C-=") 'text-scale-increase)
+     (global-set-key (kbd "C--") 'text-scale-decrease)
+     (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+     (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+     (global-set-key (kbd "M-j") 'consult-buffer)
 
-  ;; default 800
-  (setq max-lisp-eval-depth 10000)
+     ;; Faster loading
+      (setq gc-cons-threshold (* 384 1024 1024)
+         gc-cons-percentage 1.6)
+       ;; Do not load outdeted bytecode files;
+       (setq load-prefer-newer t)
 
-  (setq package-enable-at-startup nil)
+   ;; Increase for lsp batter performance.
+   (setq read-process-output-max (* 3 1024 1024))
+
+   ;; default 800
+   (setq max-lisp-eval-depth 10000)
+
+   (setq package-enable-at-startup nil)
 
 
-   (setq visual-fill-column-width 160
-         visual-fill-column-center-text t) ;; ;; Configure fill width
-  ;; set custom file for emacs internal variables
-  (setq custom-file (concat user-emacs-directory "custom.el"))
-  (load custom-file 'noerror)
+    (setq visual-fill-column-width 160
+          visual-fill-column-center-text t) ;; ;; Configure fill width
+   ;; set custom file for emacs internal variables
+   (setq custom-file (concat user-emacs-directory "custom.el"))
+   (load custom-file 'noerror)
 #+END_SRC
 *** locale
 #+begin_src elisp
@@ -148,7 +158,6 @@
 (require 'elpaca-setup)
 (require 'buffer_move)
 (require 'hide-mode-line)
-(require 'exec-path-from-shell)
 #+END_SRC
 
 * ASYNC SAVEHIST REPEAT
@@ -257,7 +266,6 @@ Code Completion
   (corfu-popupinfo-mode)
   (global-corfu-mode))
 
-
 (setq read-extended-command-predicate #'command-completion-default-include-p)
 
 (use-package nerd-icons-corfu
@@ -284,45 +292,15 @@ Cape has the super power to transform Company backends into Capfs and merge mult
   (add-to-list 'completion-at-point-functions #'cape-keyword)
   (add-to-list 'completion-at-point-functions #'cape-elisp-block))
 
-;; (use-package cape
-;;   :ensure t
-;;   :defer 10
-;;   :bind (("C-c p p" . completion-at-point) ;; capf
-;;          ("C-c p t" . complete-tag)        ;; etags
-;;          ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-;;          ("C-c p h" . cape-history)
-;;          ("C-c p f" . cape-file)
-;;          ("C-c p k" . cape-keyword)
-;;          ("C-c p s" . cape-elisp-symbol)
-;;          ("C-c p e" . cape-elisp-block)
-;;          ("C-c p a" . cape-abbrev)
-;;          ("C-c p l" . cape-line)
-;;          ("C-c p w" . cape-dict)
-;;          ("C-c p :" . cape-emoji)
-;;          ("C-c p \\" . cape-tex)
-;;          ("C-c p _" . cape-tex)
-;;          ("C-c p ^" . cape-tex)
-;;          ("C-c p &" . cape-sgml)
-;;          ("C-c p r" . cape-rfc1345))
-;;   :init
-;;   (defun my/add-shell-completion ()
-;;     (interactive)
-;;     (cl-pushnew #'pcomplete-completions-at-point completion-at-point-functions)
-;;     (cl-pushnew #'cape-history completion-at-point-functions))
-
-;;     (add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
-
-;;   :config
-;;     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-;;     (add-to-list 'completion-at-point-functions #'cape-file)
-;;     (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-;;     (add-to-list 'completion-at-point-functions #'cape-keyword)
-
-;;     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
-;;     (advice-add 'lsp-completion-at-point :around #'cape-wrap-super)
-;;     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
-;;     (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
-
+#+end_src
+** Eldoc
+#+begin_src emacs-lisp
+(use-package eldoc-box
+  :config
+  (setq eldoc-box-max-pixel-height 450
+        eldoc-box-max-pixel-width 600
+        eldoc-box-show-help-tooltip t
+        eldoc-box-tooltip-delay 500))
 #+end_src
 ** CONSULT
 #+begin_src emacs-lisp
@@ -375,11 +353,18 @@ Cape has the super power to transform Company backends into Capfs and merge mult
   (setq consult-omni-default-interactive-command #'consult-omni-multi))
 #+end_src
 * DEVELOPMENT
+** CODESPACES 
+This package provides support for connecting to GitHub Codespaces in Emacs via TRAMP. 
+#+begin_src emacs-lisp
+(use-package codespaces
+  :ensure t
+  :config (codespaces-setup))
+(setq tramp-ssh-controlmaster-options "")
+(setq vc-handled-backends '(Git))
+;;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+#+end_src
 ** DIRENV
 #+begin_src emacs-lisp
-;; (use-package envrc
-;;   :hook (after-init . envrc-global-mode))
-
  (use-package direnv
   :config
   (direnv-mode))
@@ -390,45 +375,40 @@ Cape has the super power to transform Company backends into Capfs and merge mult
 ** EGLOT
 #+begin_src emacs-lisp
 (use-package eglot
-    :ensure nil
-    :init
+  :ensure nil
+  :hook ((prog-mode . eglot-ensure))  ;; Automatically start eglot in programming modes
+  :bind (:map eglot-mode-map
+              ("C-c C-a" . 'eglot-code-actions)
+              ("C-c C-r" . 'eglot-rename)
+              ("C-c C-d" . 'eglot-menu))
+
+  :config
+    (setq eglot-enable-auto-start t)
+  :init
     (setq eglot-corfu-backend t))
+    (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs '(
+                ((typescript-mode tsx-mode javascript-mode) . ("typescript-language-server" "--stdio"))
+                ((css-mode scss-mode html-mode) "tailwindcss-language-server" "--stdio")
+                (rustic-mode . ("rust-analyzer"))
+                )))
 (fset #'jsonrpc--log-event #'ignore)
 
-;; (use-package eglot-booster
-;; 	:after eglot
-;; 	:config	(eglot-booster-mode))
 
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(typescript-mode . ("typescript-language-server" "--stdio"))
-               '(javascript-mode . ("typescript-language-server" "--stdio"))
-               ))
+
+(use-package eglot-booster
+  :ensure nil
+  :after eglot
+  :init (require 'eglot-booster)
+  :config
+  (setq eglot-booster-no-remote-boost t)
+  (eglot-booster-mode))
+(setq eglot-server-json-parser #'json-parse-string-no-itaewc)
+
 #+end_src
 
 ** LSP
 #+begin_src emacs-lisp
-(use-package markdown-mode
-  :ensure t)
-
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :custom
-  (read-process-output-max (* 1024 1024))
-  :init
-    (setq lsp-completion-provider :none)
-    (setq lsp-diagnostics-provider :flycheck)
-    (setq lsp-headerline-breadcrumb-enable nil)
-  :init
-    (setq lsp-keymap-prefix "C-c l"))
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode))
-
-(use-package lsp-treemacs
-  :after lsp)
-
-(use-package lsp-ivy)
 #+End_src
 
 ** LSP-BRIDGE
@@ -447,19 +427,39 @@ Cape has the super power to transform Company backends into Capfs and merge mult
 #+end_src
 *** JS/TS
 #+begin_src emacs-lisp
-(use-package typescript-mode
-  :mode "\\.ts\\'"
-  :hook (typescript-mode . lsp-deferred)
+(use-package typescript-ts-mode
+  :ensure nil
+  :mode ("\\.ts\\'" . 'typescript-ts-mode)
+  :hook (typescript-mode . 'eglot-ensure)
+  :config
+  (setq typescript-indent-level 2
+        typescript-lsp-extra-server-flags "--log-level=verbose"))
+(use-package tsx-ts-mode
+  :ensure nil
+  :mode ("\\.tsx\\'" . tsx-ts-mode)
+  :hook (tsx-ts-mode . eglot-ensure)
   :config
   (setq typescript-indent-level 2
         typescript-lsp-extra-server-flags "--log-level=verbose"))
 
 #+end_src
+*** Deno 
+#+begin_src emacs-lisp
+(add-to-list 'eglot-server-programs '((js-mode typescript-mode) . (eglot-deno "deno" "lsp")))
+
+  (defclass eglot-deno (eglot-lsp-server) ()
+    :documentation "A custom class for deno lsp.")
+
+  (cl-defmethod eglot-initialization-options ((server eglot-deno))
+    "Passes through required deno initialization options"
+    (list :enable t
+    :lint t))
+#+end_src
 *** Nix
 #+begin_src emacs-lisp
 (use-package nix-mode
  :mode ("\\.nix\\'")
- :hook (nix-mode . lsp)
+ :hook (nix-mode . 'eglot-ensure)
  :ensure t)
 #+end_src
 *** Rust
@@ -468,7 +468,9 @@ Cape has the super power to transform Company backends into Capfs and merge mult
   :ensure t
   :init
   (setq rustic-lsp-server-extra-args "--debug")
+  (setq rustic-format-on-save nil)
   (setq rustic-lsp-client 'eglot))
+
 
 (use-package cargo-mode
   :hook
@@ -476,15 +478,38 @@ Cape has the super power to transform Company backends into Capfs and merge mult
   :config
   (setq compilation-scroll-output t))
 #+end_src
+
+#+begin_src emacs-lisp
+;; (with-eval-after-load "lsp-rust"
+;;  (lsp-register-client
+;;   (make-lsp-client
+;;    :new-connection (lsp-stdio-connection
+;;                     (lambda ()
+;;                       `(,(or (executable-find
+;;                               (cl-first lsp-rust-analyzer-server-command))
+;;                              (lsp-package-path 'rust-analyzer)
+;;                              "rust-analyzer")
+;;                         ,@(cl-rest lsp-rust-analyzer-server-args))))
+;;    :remote? t
+;;    :major-modes '(rust-mode rustic-mode)
+;;    :initialization-options 'lsp-rust-analyzer--make-init-options
+;;    :notification-handlers (ht<-alist lsp-rust-notification-handlers)
+;;    :action-handlers (ht ("rust-analyzer.runSingle" #'lsp-rust--analyzer-run-single))
+;;    :library-folders-fn (lambda (_workspace) lsp-rust-library-directories)
+;;    :after-open-fn (lambda ()
+;;                     (when lsp-rust-analyzer-server-display-inlay-hints
+;;                       (lsp-rust-analyzer-inlay-hints-mode)))
+;;    :ignore-messages nil
+;;    :server-id 'rust-analyzer-remote)))
+#+end_src
 *** Solidity
 #+begin_src emacs-lisp
+;; Set up the Solidity mode and related packages
 (use-package solidity-mode
   :ensure t
-  :config
-  (setq solidity-comment-style 'star)) ;; this is the default)
-(add-hook 'solidity-mode-hook 'lsp-mode)
+  :mode ("\\.sol\\'" . solidity-mode))
 #+end_src
-*** tailwind
+*** Tailwindcss
 #+begin_src emacs-lisp :tangle yes
 #+end_src
 
@@ -527,6 +552,9 @@ Cape has the super power to transform Company backends into Capfs and merge mult
   (setq treesit-auto-langs '(javascript typescript tsx css html rustic))
   (treesit-auto-add-to-auto-mode-alist '(javascript typescript tsx css html rustic))
   (global-treesit-auto-mode))
+#+end_src
+** Debug
+#+begin_src emacs-lisp
 #+end_src
 * EVIL MODE
 #+begin_src emacs-lisp
@@ -585,14 +613,25 @@ Cape has the super power to transform Company backends into Capfs and merge mult
                 (visual-fill-column-mode t)
                 (display-line-numbers-mode nil)))
 #+end_src
+* ENV
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+
+
+(use-package use-package-ensure-system-package
+  :ensure t)
+#+end_src
 * FLYCHECK
 #+begin_src emacs-lisp
 (use-package flycheck
-  :hook (lsp-mode . flycheck-mode)
   :bind (:map flycheck-mode-map
               ("M-n" . flycheck-previous-error)
               ("M-p" . flycheck-next-error))
-  :custom (flycheck-display-errors-delay .3)
+  :custom (flycheck-display-errors-delay .2)
   :init (global-flycheck-mode))
 #+end_src
 * GIT
@@ -637,27 +676,13 @@ key binding with the help *general* package.
 (use-package ligature
   :ensure t
   :config
-  ;; Enable the "www" ligature in every possible major mode
   (ligature-set-ligatures 't '("www"))
-  (ligature-set-ligatures '(prog-mode
-                           org-mode)
-                          '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-                                       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-                                       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-                                       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-                                       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-                                       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-                                       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-                                       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-                                       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-                                       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-                                       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-                                       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-                                       "\\\\" "://"))
-  ;; Enable traditional ligature support in eww-mode, if the
-  ;; `variable-pitch' face supports it
-  (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
   (global-ligature-mode t))
+
+;; (use-package fira-code-mode
+;;   :ensure t
+;;   :custom (fira-code-mode-disabled-ligatures '("x" "=>"))  ; ligatures you don't want
+;;   :hook prog-mode)      
 #+end_src
 * SEARCH ENGINE
 ** VERTICO
@@ -680,10 +705,8 @@ need to modify its behaviour.
          posframe
          (vertico-posframe-poshandler . posframe-poshandler-frame-top-center)
          (vertico-posframe-border-width . 15)
-         ;; NOTE: This is useful when emacs is used in both in X and
-         ;; terminal, for posframe do not work well in terminal, so
-         ;; vertico-buffer-mode will be used as fallback at the
-         ;; moment.
+         (vertico-posframe-width . 850)
+         (vertico-posframe-height . 600)
          (vertico-posframe-fallback-mode . vertico-buffer-mode))
         (t posframe)))
 (setq vertico-posframe-parameters '((left-fringe . 5) (right-fringe . 5)))
@@ -772,10 +795,10 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 	  which-key-sort-uppercase-first nil
 	  which-key-add-column-padding 1
 	  which-key-max-display-columns nil
-	  which-key-min-display-lines 6
+	  which-key-min-display-lines 4
 	  which-key-side-window-slot -10
 	  which-key-side-window-max-height 0.25
-	  which-key-idle-delay 0.8
+	  which-key-idle-delay 0.5
 	  which-key-max-description-length 25
 	  which-key-allow-imprecise-window-fit nil
 	  which-key-separator " → " ))
@@ -867,6 +890,12 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :config
   (with-eval-after-load 'org (global-org-modern-mode)))
 #+end_src
+
+*** Org Notion
+#+begin_src emacs-lisp
+(use-package org-present
+  :ensure t) 
+#+end_src
 *** SNIPPET
 #+begin_src emacs-lisp
 (require 'org-tempo)
@@ -881,14 +910,14 @@ Otherwise, org-tempo is broken when you try to <s TAB...
     :init
     (add-hook 'org-mode-hook 'toc-org-enable))
   #+end_src
-***  Pandoc
+*** Pandoc
 #+begin_src emacs-lisp
 (use-package org-pandoc-import
   :ensure (:host github
              :repo "tecosaur/org-pandoc-import"
              :files ("*.el" "filters" "preprocessors")))
 #+end_src
-***  Pandoc export
+*** Pandoc export
 #+begin_src emacs-lisp
 (use-package ox-pandoc
   :ensure (:host github
@@ -901,6 +930,21 @@ Otherwise, org-tempo is broken when you try to <s TAB...
     ;; special extensions for markdown_github output
     (setq org-pandoc-format-extensions '(markdown_github+pipe_tables+raw_html))
   )
+#+end_src
+** Markdown mode
+#+begin_src elisp
+(use-package markdown-mode
+  :ensure t
+  :config
+  (setq markdown-fontify-code-blocks-natively t))
+#+end_src
+** Enote
+#+begin_src emacs-lisp
+(require 'enote)
+(global-set-key (kbd "C-c n e c") 'create-enote-frame)
+(global-set-key (kbd "C-c n e d") 'enote--delete-note)
+(global-set-key (kbd "C-c n e s") 'enote--save-buffer-to-file)
+(global-set-key (kbd "C-c n e m") 'enote--make-frame)
 #+end_src
 * POPPER
 #+begin_src emacs-lisp
@@ -1065,27 +1109,10 @@ Otherwise, org-tempo is broken when you try to <s TAB...
                    (window-height . 0.3)))
   )
 #+end_src
-** Shell
-***
-#+begin_src emacs-lisp
-(add-to-list 'exec-path "~/.npm_global/bin")
-#+end_src
-*** Eshell
-#+begin_src emacs-lisp
-  (use-package eshell-syntax-highlighting
-    :after esh-mode
-    :config
-    (eshell-syntax-highlighting-global-mode +1))
-(setq eshell-history-size 5000
-      eshell-buffer-maximum-lines 5000
-      eshell-hist-ignoredups t
-      eshell-scroll-to-bottom-on-input t
-      eshell-destroy-buffer-when-process-dies t
-      eshell-visual-commands'("bash" "fish" "htop" "ssh" "top" "zsh"))
-#+end_src
 * REMOTE
 #+begin_src emacs-lisp
-  ;;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+(setq tramp-default-method "ssh")
+(setq tramp-default-remote-shell "/usr/bin/bash")
 #+end_src
 * SNIPPETS
 #+begin_src emacs-lisp
@@ -1105,7 +1132,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :after yasnippet
   :hook ((prog-mode . yas-setup-capf)
          (text-mode . yas-setup-capf)
-         (lsp-mode  . yas-setup-capf)
          (sly-mode  . yas-setup-capf))
   :bind (("C-c y" . yasnippet-capf)
          ("M-+"   . yas-insert-snippet))
@@ -1152,7 +1178,8 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 * TRANSPARENCY
 With Emacs version 29, true transparency has been added.  I have turned transparency off by setting the alpha to ‘100’.  If you want some slight transparency, try setting alpha to ‘90’.  Of course, if you set alpha to ‘0’, the background of Emacs would completely transparent.
 #+begin_src emacs-lisp
-(add-to-list 'default-frame-alist '(alpha-background . 90)) ; For all new frames henceforth
+(set-frame-parameter nil 'alpha-background 80) ; For current frame
+(add-to-list 'default-frame-alist '(alpha-background . 80)) ; For all new frames henceforth
 #+end_src
 * UI STUFF
 ** POSFRAME
@@ -1268,14 +1295,16 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 (eval-after-load 'org-indent '(diminish 'org-indent-mode))
 (add-hook 'org-mode-hook 'org-indent-mode)
 (setq org-edit-src-content-indentation 0)
-(use-package highlight-indent-guides
-  :ensure t
-  :defer t
-  :hook (prog-mode . highlight-indent-guides-mode)
+#+end_src
+
+** INDENT-GUIDES
+#+begin_src emacs-lisp
+(use-package indent-bars
+  :ensure (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+  :hook (prog-mode . indent-bars-mode)
   :config
-  (setq highlight-indent-guides-method 'character)
-  (setq highlight-indent-guides-character ?\|)
-  (setq highlight-indent-guides-responsive 'top))
+  (setq indent-bars-prefer-character "|"))
+  (setopt indent-bars-ts-color '(inherit unspecified :blend 0.15))
 #+end_src
 ** FORMATING
 #+begin_src emacs-lisp
@@ -1284,8 +1313,32 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   :config
   (setq apheleia-global-mode 1)
   (setq apheleia-remote-algorithm 'remote)
-  (setf (alist-get 'prettier apheleia-formatters)
-        '("prettier" "--stdin-filepath" filepath)))
+  (setf (alist-get 'prettier-json apheleia-formatters)
+        '("prettier" "--stdin-filepath" filepath))
+  (apheleia-global-mode +1))
+
+  
+#+end_src
+
+*** Combobulate
+#+begin_src emacs-lisp
+(use-package combobulate
+  :custom
+  ;; You can customize Combobulate's key prefix here.
+  ;; Note that you may have to restart Emacs for this to take effect!
+  (combobulate-key-prefix "C-c o")
+  :hook
+  ((python-ts-mode . combobulate-mode)
+   (js-ts-mode . combobulate-mode)
+   (go-mode . go-ts-mode)
+   (html-ts-mode . combobulate-mode)
+   (css-ts-mode . combobulate-mode)
+   (yaml-ts-mode . combobulate-mode)
+   (typescript-ts-mode . combobulate-mode)
+   (json-ts-mode . combobulate-mode)
+   (tsx-ts-mode . combobulate-mode))
+  ;; Amend this to the directory where you keep Combobulate's source
+  :load-path ("~/Repository/combobulate"))
 #+end_src
 ** PERSPECTIVE
 #+begin_src emacs-lisp

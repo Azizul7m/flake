@@ -22,7 +22,7 @@
     wf-recorder
     wayland-protocols
     hyprshot
-    hyprcursor
+    #hyprcursor
     wl-clipboard
     grim
     slurp
@@ -33,6 +33,7 @@
     wtype
     wlay
     wob # volume gui progress bar
+    wev # key cast
   ];
   wayland.windowManager = {
     hyprland = {
@@ -97,9 +98,12 @@
         ];
         # window rules
         windowrulev2 = [
+          #Opacity
+          "opacity 0.9 0.9, class:^(Emacs|Alacritty)$"
+
           # telegram media viewer
-          "float, title:^(Waypaper|bemenu|Telegram|yed|rofi)$"
-          "size 340 480, class:^(Waypaper|Telegram)$"
+          "float, title:^(Waypaper|bemenu|Telegram|yed|rofi|screenkey)$"
+          "size 340 480, class:^(Waypaper|Telegram|Alacritty)$"
 
           # make Firefox PiP window floating and sticky
           "float, title:^(Picture-in-Picture)$"
