@@ -18,8 +18,9 @@
       ncdu
       gdb
       sshfs
+      nmap
 
-      libusb
+      libusb1
       usbutils
       killall
 
@@ -42,27 +43,12 @@
     mtr.enable = true;
     nm-applet.enable = true;
     fish.enable = true;
-    kdeconnect.enable = true;
+    #kdeconnect.enable = true;
     gnome-disks.enable = true;
     command-not-found.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
-  };
-  services = {
-    pipewire = { # Sound settings
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-    dbus.enable = true; # inter-process communication (IPC)
-    libinput.enable = true; # LibInput
-    getty.autologinUser = "anower";
-    devmon.enable = true; # monitoring drive "Heavy"
-    gvfs.enable = true; # trash  "Heavy"
-    udisks2.enable = true; # auto mount drive  "Heavy"
-    #flatpak.enable = true;
   };
 }

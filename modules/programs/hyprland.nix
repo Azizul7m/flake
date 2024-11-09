@@ -1,4 +1,10 @@
 { inputs, config, var, ... }: {
+
+  imports = [
+    ../services/hypridle.nix
+  #  ../services/hyprpaper.nix
+  ];
+
   home.packages = with var.pkgs; [
     qt5.qtwayland
     qt5.qtbase
@@ -22,7 +28,6 @@
     wf-recorder
     wayland-protocols
     hyprshot
-    #hyprcursor
     wl-clipboard
     grim
     slurp
@@ -35,6 +40,9 @@
     wob # volume gui progress bar
     wev # key cast
   ];
+  programs = {
+    freetube.enable = true;
+  };
   wayland.windowManager = {
     hyprland = {
       enable = true;
@@ -51,8 +59,7 @@
         fileManager = "pcmanfm";
         menu = "pkill wofi || wofi --show drun -I";
         emTerm = "open-vterm-full-window";
-        fctix =
-          "fcitx5 -9;sleep 1;fcitx5 -d --replace; sleep 1;fcitx5-remote -r";
+        fctix ="fcitx5 -9;sleep 1;fcitx5 -d --replace; sleep 1;fcitx5-remote -r";
         screenshot = "grim -g $(slurp) | wl-copy";
       in {
         decoration = {
@@ -99,7 +106,7 @@
         # window rules
         windowrulev2 = [
           #Opacity
-          "opacity 0.9 0.9, class:^(Emacs|Alacritty)$"
+          "opacity 0.9 0.9, class:^(Emacs|Alacritty|VSCodium)$"
 
           # telegram media viewer
           "float, title:^(Waypaper|bemenu|Telegram|yed|rofi|screenkey)$"

@@ -1,4 +1,7 @@
 { var, ... }: {
+  programs = {
+    bun.enable = true;
+  };
   home = {
     packages = (with var.pkgs; [
       # C STUFF
@@ -11,8 +14,6 @@
       pkg-config
       systemd # Some core packages are bundle with systemd
       openssl
-
-      nmap
 
       android-tools
       adb-sync

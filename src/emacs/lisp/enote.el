@@ -77,7 +77,7 @@
     (when current-file
         (setq called-file-name current-file))))
 
-(defun calculate-cursor-position ()
+(defun calculate--position ()
   "Calculate the position of the cursor in pixel coordinates."
   (let* ((cursor-pos (posn-x-y (posn-at-point)))
          (edge (window-inside-pixel-edges))

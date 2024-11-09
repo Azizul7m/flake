@@ -22,7 +22,7 @@
       gimp
       sxiv
       scribus
-      blender
+      # blender
 
       # Social
       telegram-desktop
@@ -31,12 +31,10 @@
       qbittorrent
       appimage-run
       bleachbit
-      boxbuddy # Distrobox container manage
-      remmina # Remotely ssh client
+      # boxbuddy # Distrobox container manage
       # Media
       vlc
       sxiv
-      zed-editor
 
       # TUI
       lazygit
@@ -51,7 +49,7 @@
       screenkey
       wineWowPackages.waylandFull
       winetricks
-      zenity # Diolog
+      #zenity # Diolog
       ghostscript
       cliphist # clipboard manager
       cointop
@@ -61,7 +59,7 @@
       gdbgui
       ags # GJS library
       gnome-builder
-      mongodb-compass
+      # mongodb-compass
 
       insomnia
       #jetbrains.datagrip

@@ -6,10 +6,11 @@
     ./programs.nix
     ./users.nix
     ./networking.nix
+    ./services.nix
     ./fonts.nix
-    ../modules/services/postgress.nix
     ../modules/programs/ibus.nix
     ../modules/ui/stylix.nix
+    ../modules/services/postgress.nix
   ];
   # Bootloader.
   boot.loader = {

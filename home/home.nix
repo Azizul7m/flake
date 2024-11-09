@@ -1,14 +1,14 @@
-{ config, pkgs, var, ... }:
-{
+{ config, pkgs, var, ... }: {
   imports = [
     ./packages.nix
+    ./xdg.nix
     ../modules/programs/hyprland.nix
     ../modules/shells/shell.nix
     ../modules/programs/zellij.nix
     ../modules/programs/zoxide.nix
     ../modules/programs/rofi.nix
     ../modules/programs/emacs.nix
-    ../modules/programs/nvim.nix
+    ../modules/programs/nvim/nvim.nix
     ../modules/programs/wofi.nix
     ../modules/programs/fish.nix
     ../modules/programs/waybar.nix
@@ -38,32 +38,29 @@
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
 
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
+    # "~/.local/share/wayland-sessions/hyprland.desktop".text = ''
+    #           [Desktop Entry]
+    #           Name=Hyprland
+    #           Comment=Hyprland Wayland session
+    #           Exec=${pkgs.hyprland}/bin/Hyprland
+    #           Type=Application
+    #           Keywords=wayland;hyprland
+    #   	'';
   };
+
   home.sessionVariables = {
-     TERMINAL = "alacritty";
-     VISUAL = "nvim";
-     BROWSER = "brave";
-     NODE_PATH = "$HOME/.npm_global";
-     PIP_PREFIX = "$HOME/.local/bin";
-     NIXPKGS_ALLOW_UNFREE="1";
+    TERMINAL = "alacritty";
+    VISUAL = "nvim";
+    BROWSER = "brave";
+    NODE_PATH = "$HOME/.npm_global";
+    PIP_PREFIX = "$HOME/.local/bin";
+    NIXPKGS_ALLOW_UNFREE = 1;
+    NIXPKGS_ALLOW_INSECURE = 1;
+    NIX_CONF_PATH = "~/flake";
   };
-
-  programs = {
-    home-manager.enable = true;
-  };
-
-  # XDG
-  xdg = {
-    enable = true;
-  };
-
+  programs = { home-manager.enable = true; };
   nix = {
     package = pkgs.nix;
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings.experimental-features = [ "nix-command" "flakes" ];
   };
 }

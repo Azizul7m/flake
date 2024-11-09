@@ -4,8 +4,6 @@
       "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
     image = ./bike.jpg;
     polarity = "dark";
-    cursor.package = pkgs.bibata-cursors;
-    cursor.name = "Bibata-Modern-Ice";
     fonts = {
       serif = {
         package = pkgs.iosevka;

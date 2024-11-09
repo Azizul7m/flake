@@ -1,11 +1,11 @@
 {
   description = "A very basic flake";
   inputs = {
-    nixpkgs-stable.url = "nixpkgs/nixos-23.11";
+    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
     nixpkgs.url = "nixpkgs/nixos-unstable";
     home-manager = {
-      #     url = "github:nix-community/home-manager/release-23.11";
-      url = "github:nix-community/home-manager";
+       # url = "github:nix-community/home-manager/release-24.05";
+       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix.url = "github:danth/stylix";
