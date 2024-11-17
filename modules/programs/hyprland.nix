@@ -2,7 +2,7 @@
 
   imports = [
     ../services/hypridle.nix
-  #  ../services/hyprpaper.nix
+    #  ../services/hyprpaper.nix
   ];
 
   home.packages = with var.pkgs; [
@@ -40,9 +40,7 @@
     wob # volume gui progress bar
     wev # key cast
   ];
-  programs = {
-    freetube.enable = true;
-  };
+  programs = { freetube.enable = true; };
   wayland.windowManager = {
     hyprland = {
       enable = true;
@@ -53,13 +51,29 @@
         enableXdgAutostart = true;
       };
       settings = let
+        env = [
+          "HYPRLAND_LOG_WLR,1"
+          "HYPRLAND_TRACE1,1" # Corrected variable name
+          "XDG_SESSION_TYPE,wayland"
+          "XDG_CURRENT_DESKTOP,Hyprland"
+          "GDK_BACKEND,wayland,x11,*"
+          "QT_QPA_PLATFORM,wayland;xcb"
+          "SDL_VIDEODRIVER,wayland"
+          "CLUTTER_BACKEND,wayland"
+          "XDG_CURRENT_DESKTOP,Hyprland"
+          "XDG_SESSION_TYPE,wayland"
+          "XDG_SESSION_DESKTOP,Hyprland"
+          "MOZ_ENABLE_WAYLAND,1"
+          "MOZ_WEBRENDER,1"
+        ];
         scriptsDir = "$HOME/.config/hypr/scripts";
-        term = "alacritty";
+        terminal = "alacritty";
         browser = "brave";
         fileManager = "pcmanfm";
         menu = "pkill wofi || wofi --show drun -I";
-        emTerm = "open-vterm-full-window";
-        fctix ="fcitx5 -9;sleep 1;fcitx5 -d --replace; sleep 1;fcitx5-remote -r";
+        emacsTerminal = "open-vterm-full-window";
+        fctix =
+          "fcitx5 -9;sleep 1;fcitx5 -d --replace; sleep 1;fcitx5-remote -r";
         screenshot = "grim -g $(slurp) | wl-copy";
       in {
         decoration = {
@@ -83,6 +97,7 @@
         #master= {
         #new_is_master = true;
         #};
+        env = env;
         general = {
           gaps_in = 3;
           gaps_out = 5;
@@ -132,8 +147,8 @@
         "$mod" = "SUPER";
         bind = [
           # mouse movements
-          "$mod, RETURN, exec, emacsclient -ce '(${emTerm})'"
-          "ALT, RETURN, exec, ${term}"
+          "$mod, RETURN, exec, emacsclient -ce '(${emacsTerminal})'"
+          "ALT, RETURN, exec, ${terminal}"
           "$mod CONTROL, RETURN, exec, xterm"
           "$mod, B, exec, ${browser}"
           "$mod ALT, B, exec, firefox"

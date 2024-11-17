@@ -75,6 +75,7 @@
   - [[#page-break-lines][PAGE BREAK LINES]]
   - [[#fonts][FONTS]]
   - [[#indent][INDENT]]
+  - [[#pluntuml][PluntUML]]
   - [[#indent-guides][INDENT-GUIDES]]
   - [[#formating][FORMATING]]
   - [[#perspective][PERSPECTIVE]]
@@ -331,23 +332,23 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 #+end_src
 ** EGLOT
 #+begin_src emacs-lisp
-;; (use-package eglot
-;;   :straight nil
-;;   :hook ((prog-mode . 'eglot-ensure))  ;; Automatically start eglot in programming modes
-;;   :bind (:map eglot-mode-map
-;;               ("C-c C-a" . 'eglot-code-actions)
-;;               ("C-c C-r" . 'eglot-rename)
-;;               ("C-c C-d" . 'eglot-menu))
+(use-package eglot
+  :hook ((rust-mode nix-mode) . eglot-ensure)
+  :bind (:map eglot-mode-map
+              ("C-c C-a" . eglot-code-actions)
+              ("C-c C-r" . eglot-rename)
+              ("C-c C-d" . eglot-menu))
+  :config
+  (add-to-list 'eglot-server-programs
+               '((tsx-ts-mode typescript-ts-mode javascript-mode) . ("typescript-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '((css-mode scss-mode html-mode) . ("tailwindcss-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '((rust-mode rustic-mode) . ("~/.cargo/bin/rust-analyzer" :initializationOptions
+                                            (:procMacro (:enable t)
+                                                         :cargo (:buildScripts (:enable t)
+                                                                                :features "all"))))))
 
-;;   :config
-;;     (setq eglot-enable-auto-start t)
-;;   :init
-;;     (setq eglot-corfu-backend t))
-(with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '(
-                ((typescript-mode tsx-mode javascript-mode) . ("typescript-language-server" "--stdio"))
-                ((css-mode scss-mode html-mode) "tailwindcss-language-server" "--stdio")
-                (rustic-mode . ("rust-analyzer")))))
 
 (fset #'jsonrpc--log-event #'ignore)
 (setq eglot-server-json-parser #'json-parse-string-no-itaewc)
@@ -376,7 +377,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :config
   (setq typescript-indent-level 2
 	typescript-lsp-extra-server-flags "--log-level=verbose"))
-        (add-hook 'tsx-ts-mode-hook #'eglot-ensure)
+  (add-hook 'tsx-ts-mode-hook #'eglot-ensure)
 #+end_src
 *** Deno
 #+begin_src emacs-lisp
@@ -764,25 +765,14 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 Otherwise, org-tempo is broken when you try to <s TAB...
 #+begin_src emacs-lisp
 (straight-use-package 'org)
-
-(use-package org
-:straight t
-:config
-(setq org-startup-indented t
-        display-line-numbers nil)
-
-;; Hook to customize electric pair behavior in org-mode
+ ;; Hook to customize electric pair behavior in org-mode
 (add-hook 'org-mode-hook
-            (lambda ()
-            (setq-local electric-pair-inhibit-predicate
-                        `(lambda (c)
-                            (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
-
-;; Hook to enable visual fill column mode
-(add-hook 'org-mode-hook
-            (lambda ()
-            (visual-fill-column-mode t))))
+          (lambda ()
+            (setq visual-fill-column-mode t
+                  line-number-mode -1)))
+            
 #+end_src
+
 *** BULLETS
 #+begin_src emacs-lisp
 (use-package org-bullets)
@@ -1267,8 +1257,9 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
     :font "Iosevka"
-    :height 105
-    :weight 'medium)
+    :height 102
+    :weight 'regular)
+
 #+end_src
 ** INDENT
 #+begin_src emacs-lisp
@@ -1280,6 +1271,15 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 (setq org-edit-src-content-indentation 0)
 #+end_src
 
+** PluntUML
+#+begin_src emacs-lisp
+(use-package uniline
+  :defer t
+  :bind ("C-<insert>"     . uniline-mode)
+  :bind ("C-<insertchar>" . uniline-mode)
+  :config
+  (setq line-spacing nil))
+#+end_src
 ** INDENT-GUIDES
 #+begin_src emacs-lisp
 (use-package indent-bars

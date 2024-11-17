@@ -37,15 +37,6 @@
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
-
-    # "~/.local/share/wayland-sessions/hyprland.desktop".text = ''
-    #           [Desktop Entry]
-    #           Name=Hyprland
-    #           Comment=Hyprland Wayland session
-    #           Exec=${pkgs.hyprland}/bin/Hyprland
-    #           Type=Application
-    #           Keywords=wayland;hyprland
-    #   	'';
   };
 
   home.sessionVariables = {
@@ -57,6 +48,17 @@
     NIXPKGS_ALLOW_UNFREE = 1;
     NIXPKGS_ALLOW_INSECURE = 1;
     NIX_CONF_PATH = "~/flake";
+
+    # MOZ_ENABLE_WAYLAND = "1";
+    # MOZ_WEBRENDER = "1";
+    # CLUTTER_BACKEND = "wayland";
+    # SDL_VIDEODRIVER = "wayland";
+    # XDG_PORTAL_BACKEND = "xdg-desktop-portal-hyprland";
+    # GDK_BACKEND = "wayland";
+    # QT_QPA_PLATFORMTHEME = "kde";
+    # QT_QPA_PLATFORM = "wayland;xcb";
+    # QT_IM_MODULES = "wayland;fcitx;ibus";
+    # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
   programs = { home-manager.enable = true; };
   nix = {

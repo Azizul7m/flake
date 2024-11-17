@@ -46,6 +46,7 @@
     #kdeconnect.enable = true;
     gnome-disks.enable = true;
     command-not-found.enable = true;
+    hyprland.portalPackage = var.pkgs.xdg-desktop-portal-hyprland;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
