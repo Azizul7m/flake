@@ -1,7 +1,5 @@
 { var, ... }: {
-  programs = {
-    bun.enable = true;
-  };
+  programs = { bun.enable = true; };
   home = {
     packages = (with var.pkgs; [
       # C STUFF
@@ -33,6 +31,8 @@
 
       # NIX
       nixfmt-classic
+      nixd
+      nixdoc
 
       # Rust
       rustup

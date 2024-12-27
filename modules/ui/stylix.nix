@@ -2,7 +2,7 @@
   stylix = {
     base16Scheme =
       "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
-    image = ./bike.jpg;
+    image = ../../src/colors/bike.jpg;
     polarity = "dark";
     fonts = {
       serif = {
@@ -22,9 +22,9 @@
         name = "Noto Color Emoji";
       };
       sizes = {
-        applications = 12;
-        desktop = 12;
-        popups = 12;
+        applications = 10;
+        desktop = 10;
+        popups = 10;
         terminal = 8;
       };
     };

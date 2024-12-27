@@ -43,7 +43,7 @@
     mtr.enable = true;
     nm-applet.enable = true;
     fish.enable = true;
-    #kdeconnect.enable = true;
+    kdeconnect.enable = true;
     gnome-disks.enable = true;
     command-not-found.enable = true;
     hyprland.portalPackage = var.pkgs.xdg-desktop-portal-hyprland;

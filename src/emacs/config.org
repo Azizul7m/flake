@@ -25,7 +25,6 @@
   - [[#lsp][LSP]]
   - [[#language][LANGUAGE]]
   - [[#tree-sitter][TREE-SITTER]]
-  - [[#ts-fold][TS-FOLD]]
   - [[#debug][Debug]]
 - [[#emacs-application-framework][EMACS APPLICATION FRAMEWORK]]
 - [[#evil-mode][EVIL MODE]]
@@ -412,27 +411,6 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 #+end_src
 
 #+begin_src emacs-lisp
-;; (with-eval-after-load "lsp-rust"
-;;  (lsp-register-client
-;;   (make-lsp-client
-;;    :new-connection (lsp-stdio-connection
-;;                     (lambda ()
-;;                       `(,(or (executable-find
-;;                               (cl-first lsp-rust-analyzer-server-command))
-;;                              (lsp-package-path 'rust-analyzer)
-;;                              "rust-analyzer")
-;;                         ,@(cl-rest lsp-rust-analyzer-server-args))))
-;;    :remote? t
-;;    :major-modes '(rust-mode rustic-mode)
-;;    :initialization-options 'lsp-rust-analyzer--make-init-options
-;;    :notification-handlers (ht<-alist lsp-rust-notification-handlers)
-;;    :action-handlers (ht ("rust-analyzer.runSingle" #'lsp-rust--analyzer-run-single))
-;;    :library-folders-fn (lambda (_workspace) lsp-rust-library-directories)
-;;    :after-open-fn (lambda ()
-;;                     (when lsp-rust-analyzer-server-display-inlay-hints
-;;                       (lsp-rust-analyzer-inlay-hints-mode)))
-;;    :ignore-messages nil
-;;    :server-id 'rust-analyzer-remote)))
 #+end_src
 *** Solidity
 #+begin_src emacs-lisp
@@ -485,12 +463,6 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   (treesit-auto-add-to-auto-mode-alist '(javascript typescript tsx css html rustic))
   (global-treesit-auto-mode))
 
-
-#+end_src
-** TS-FOLD
-#+begin_src emacs-lisp
-(use-package ts-fold
-  :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold"))
 #+end_src
 ** Debug
 #+begin_src emacs-lisp
@@ -764,7 +736,6 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 * ORG-MODE
 Otherwise, org-tempo is broken when you try to <s TAB...
 #+begin_src emacs-lisp
-(straight-use-package 'org)
  ;; Hook to customize electric pair behavior in org-mode
 (add-hook 'org-mode-hook
           (lambda ()
@@ -790,69 +761,16 @@ Otherwise, org-tempo is broken when you try to <s TAB...
      '(org-level-6 ((t (:inherit outline-5 :height 1.125))))
      '(org-level-7 ((t (:inherit outline-5 :height 1.1)))))
   #+end_src
-*** ORG-JUARNAL
-#+begin_export emacs-lisp
-(use-package org-journal
-  :straight t
-  :defer t
-  :init
-  ;; Change default prefix key; needs to be set before loading org-journal
-  (setq org-journal-prefix-key "C-c j ")
-  :config
-  (setq
-      org-journal-dir "~/.notes/org/journal"
-      org-journal-date-prefix "#+TITLE: "
-      org-journal-time-format "%I:%M %p "
-      org-journal-time-prefix "* "
-      org-journal-date-format "%A, %d/%m/%Y"
-      org-journal-file-format "%d-%m-%Y.org"))
-    #+end_export
-*** Org-Note
+*** DENOTE
 #+begin_src emacs-lisp
-(use-package orgnote
-  :general (:states '(normal visual)
-                    :config
-                    (setq orgnote-enable-roam-sync-p t)
-                    :keymaps 'org-mode-map
-                    "SPC np" 'orgnote-publish-file))
+(use-package denote
+  :ensure t)
 #+end_src
 *** ORG-ROAM
 #+begin_src emacs-lisp
-(use-package org-roam
-  :straight t
-  :init
-  (setq org-roam-v2-ack t)
-  :custom
-  (org-roam-directory (file-truename "~/.notes/org"))
-  (org-roam-completion-everywhere t)
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ("C-c n j" . org-roam-dailies-capture-today)) ;; Dailies
-  :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode)
-  ;; If using org-roam-protocol
-  (org-roam-setup))
 #+end_src
 *** ORG-ROAM-UI
 #+begin_src emacs-lisp
-(use-package websocket
-    :after org-roam)
-(use-package org-roam-ui
-    :after org-roam ;; or :after org
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-;;  :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
 #+end_src
 
 *** Org-modern
@@ -865,8 +783,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 
 *** Org Notion
 #+begin_src emacs-lisp
-(use-package org-present
-  :straight t)
 #+end_src
 *** SNIPPET
 #+begin_src emacs-lisp
@@ -882,27 +798,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
     :init
     (add-hook 'org-mode-hook 'toc-org-enable))
   #+end_src
-*** Pandoc
-#+begin_src emacs-lisp
-(use-package org-pandoc-import
-  :straight (:host github
-             :repo "tecosaur/org-pandoc-import"
-             :files ("*.el" "filters" "preprocessors")))
-#+end_src
-*** Pandoc export
-#+begin_src emacs-lisp
-(use-package ox-pandoc
-  :straight (:host github
-             :repo "kawabata/ox-pandoc"
-             :files ("*.el" "filters" "preprocessors"))
-  :config
-    ;; special settings for beamer-pdf and latex-pdf exporters
-    (setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "pdfroff")))
-    (setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex")))
-    ;; special extensions for markdown_github output
-    (setq org-pandoc-format-extensions '(markdown_github+pipe_tables+raw_html))
-  )
-#+end_src
 ** Markdown mode
 #+begin_src elisp
 (use-package markdown-mode
@@ -912,11 +807,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+end_src
 ** Enote
 #+begin_src emacs-lisp
-(require 'enote)
-(global-set-key (kbd "C-c n e c") 'create-enote-frame)
-(global-set-key (kbd "C-c n e d") 'enote--delete-note)
-(global-set-key (kbd "C-c n e s") 'enote--save-buffer-to-file)
-(global-set-key (kbd "C-c n e m") 'enote--make-frame)
 #+end_src
 * POPPER
 #+begin_src emacs-lisp
@@ -993,14 +883,12 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :defer t
   :config
   (progn
-    (setq
-     treemacs-width 35
+    (setq treemacs-width 35
      treemacs-recenter-after-project-jump 'always)
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode 'always)
-    (treemacs-hide-gitignored-files-mode nil)
-    )
+    (treemacs-hide-gitignored-files-mode nil))
 
   :bind
   (:map global-map
@@ -1016,7 +904,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   (treemacs-mode . my/treemacs-setup))
 
   (with-eval-after-load 'treemacs
-    (define-key treemacs-mode-map (kbd "w") nil)
     (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 
 (use-package treemacs-all-the-icons
@@ -1061,7 +948,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 #+end_src
 ** VTERM TOGGLE
 #+begin_src emacs-lisp
-
 (use-package vterm-toggle
   :after vterm
   :config
@@ -1089,7 +975,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 * REMOTE
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh")
-  (setq tramp-default-remote-shell "/bin/bash")
+(setq tramp-default-remote-shell "/bin/bash")
 #+end_src
 * SNIPPETS
 #+begin_src emacs-lisp
@@ -1301,33 +1187,12 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 
 *** Combobulate
 #+begin_src emacs-lisp
-  (use-package combobulate
-    :straight t
-    :custom
-    ;; You can customize Combobulate's key prefix here.
-    ;; Note that you may have to restart Emacs for this to take effect!
-    (combobulate-key-prefix "C-c o")
-    :hook
-    ((python-ts-mode . combobulate-mode)
-     (js-ts-mode . combobulate-mode)
-     (go-mode . go-ts-mode)
-     (html-ts-mode . combobulate-mode)
-     (css-ts-mode . combobulate-mode)
-     (yaml-ts-mode . combobulate-mode)
-     (typescript-ts-mode . combobulate-mode)
-     (json-ts-mode . combobulate-mode)
-     (tsx-ts-mode . combobulate-mode))
-    ;; Amend this to the directory where you keep Combobulate's source
-    :load-path ("~/Repository/combobulate"))
 #+end_src
 ** PERSPECTIVE
 #+begin_src emacs-lisp
 (use-package perspective
    :straight t
   :custom
-  ;; NOTE! I have also set 'SCP =' to open the perspective menu.
-  ;; I'm only setting the additional binding because setting it
-  ;; helps suppress an annoying warning message.
   (persp-mode-prefix-key (kbd "C-c M-p"))
   :init
   (persp-mode)

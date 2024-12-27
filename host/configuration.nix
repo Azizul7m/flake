@@ -24,7 +24,7 @@
     consoleLogLevel = 0;
     initrd = {
       systemd.enable = true;
-      verbose = false;
+      verbose = true;
     };
     binfmt.registrations.appimage = {
       wrapInterpreterInShell = false;
@@ -37,6 +37,7 @@
   };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
   i18n = {
+    inputMethod = { enable = true; };
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
       LC_ADDRESS = "en_US.UTF-8";
