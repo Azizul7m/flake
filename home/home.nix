@@ -16,6 +16,7 @@
     ../modules/programs/alacritty.nix
     ../modules/programs/vscode.nix
     ../modules/services/mpd.nix
+    ../modules/services/lorri.nix
     ../modules/ui/gtk.nix
   ];
   home.username = "${var.user}";
@@ -43,7 +44,9 @@
     TERMINAL = "alacritty";
     VISUAL = "nvim";
     BROWSER = "brave";
-    NODE_PATH = "$HOME/.npm_global";
+    RUSTUP_HOME = "$HOME/.local";
+    CARGO_HOME = "$HOME/.local";
+    NODE_PATH = "$HOME/.local";
     PIP_PREFIX = "$HOME/.local/bin";
     NIXPKGS_ALLOW_UNFREE = 1;
     NIXPKGS_ALLOW_INSECURE = 1;

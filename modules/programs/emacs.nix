@@ -19,7 +19,7 @@
     enable = true;
   };
   services.emacs = {
-    package = pkgs.emacs;
+    package = pkgs.emacs-gtk;
     enable = true;
     defaultEditor = true;
     client.enable = true;

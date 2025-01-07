@@ -1,4 +1,4 @@
-#+STARTUP: unfold
+#+STARTUP: fold
 #+title: Emacs Config
 #+author: Azizul Islam
 #+email: azizul7m@gmail.com
@@ -16,7 +16,7 @@
   - [[#company-mode][COMPANY MODE]]
   - [[#corfu][CORFU]]
   - [[#cape][CAPE]]
-  - [[#eldoc][Eldoc]]
+  - [[#eldoc][ELDOC]]
   - [[#consult][CONSULT]]
 - [[#development][DEVELOPMENT]]
   - [[#codespaces][CODESPACES]]
@@ -25,7 +25,8 @@
   - [[#lsp][LSP]]
   - [[#language][LANGUAGE]]
   - [[#tree-sitter][TREE-SITTER]]
-  - [[#debug][Debug]]
+  - [[#debug][DEBUG]]
+  - [[#formating][FORMATING]]
 - [[#emacs-application-framework][EMACS APPLICATION FRAMEWORK]]
 - [[#evil-mode][EVIL MODE]]
 - [[#eww][EWW]]
@@ -76,9 +77,10 @@
   - [[#indent][INDENT]]
   - [[#pluntuml][PluntUML]]
   - [[#indent-guides][INDENT-GUIDES]]
-  - [[#formating][FORMATING]]
   - [[#perspective][PERSPECTIVE]]
 - [[#visual-stuff][VISUAL STUFF]]
+- [[#web][WEB]]
+  - [[#chrome-emacs][CHROME-EMACS]]
 - [[#vm][VM]]
 
 * VANILA *EMACS* CONFIG
@@ -243,7 +245,7 @@
 (setq company-global-modes nil)
 
 #+end_src
-** TODO CORFU
+** CORFU
 Code Completion
 #+begin_src emacs-lisp
 (use-package corfu
@@ -296,7 +298,7 @@ Cape has the super power to transform Company backends into Capfs and merge mult
   (add-to-list 'completion-at-point-functions #'cape-elisp-block))
 
 #+end_src
-** Eldoc
+** ELDOC
 #+begin_src emacs-lisp
 (use-package eldoc-box
   :config
@@ -332,7 +334,8 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 ** EGLOT
 #+begin_src emacs-lisp
 (use-package eglot
-  :hook ((rust-mode nix-mode) . eglot-ensure)
+  :hook (('prog-mode  . 'eglot-ensure)
+         ('after-save-hook . 'eglot-format))
   :bind (:map eglot-mode-map
               ("C-c C-a" . eglot-code-actions)
               ("C-c C-r" . eglot-rename)
@@ -344,10 +347,10 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
                '((css-mode scss-mode html-mode) . ("tailwindcss-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
                '((rust-mode rustic-mode) . ("~/.cargo/bin/rust-analyzer" :initializationOptions
-                                            (:procMacro (:enable t)
+                                            (:procMacro (:enable t
+                                                                 :ignored (:leptos_macro (:server)))
                                                          :cargo (:buildScripts (:enable t)
                                                                                 :features "all"))))))
-
 
 (fset #'jsonrpc--log-event #'ignore)
 (setq eglot-server-json-parser #'json-parse-string-no-itaewc)
@@ -372,11 +375,10 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 (use-package typescript-ts-mode
   :straight t
   :mode ("\\.ts\\'" . 'typescript-ts-mode)
-  :hook (typescript-mode . 'eglot-ensure)
+  :hook ('typescript-ts-mode . 'eglot-ensure)
   :config
   (setq typescript-indent-level 2
 	typescript-lsp-extra-server-flags "--log-level=verbose"))
-  (add-hook 'tsx-ts-mode-hook #'eglot-ensure)
 #+end_src
 *** Deno
 #+begin_src emacs-lisp
@@ -390,7 +392,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 #+begin_src emacs-lisp
 (use-package nix-mode
  :mode ("\\.nix\\'")
- :hook (nix-mode . 'eglot-ensure)
+ :hook ('nix-mode . 'eglot-ensure)
  :straight t)
 #+end_src
 *** Rust
@@ -399,9 +401,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :straight t
   :init
   (setq rustic-lsp-server-extra-args "--debug")
-  (setq rustic-format-on-save nil)
   (setq rustic-lsp-client 'eglot))
-
 
 (use-package cargo-mode
   :hook
@@ -409,20 +409,12 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :config
   (setq compilation-scroll-output t))
 #+end_src
-
-#+begin_src emacs-lisp
-#+end_src
 *** Solidity
 #+begin_src emacs-lisp
 ;; Set up the Solidity mode and related packages
 (use-package solidity-mode
   :straight t
   :mode ("\\.sol\\'" . solidity-mode))
-#+end_src
-*** Tailwindcss
-#+begin_src emacs-lisp :tangle yes
-#+end_src
-
 #+end_src
 *** Web Mode
 #+begin_src emacs-lisp
@@ -464,7 +456,26 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   (global-treesit-auto-mode))
 
 #+end_src
-** Debug
+** DEBUG
+#+begin_src emacs-lisp
+#+end_src
+** FORMATING
+#+begin_src emacs-lisp
+(use-package apheleia
+  :straight t
+  :config
+  (setq apheleia-global-mode 1)
+  (setq apheleia-remote-algorithm 'remote)
+  ;;   ;; Define leptosfmt as a formatter
+  ;; (add-to-list 'apheleia-formatters
+  ;;              '(leptosfmt . ("leptosfmt")))
+  ;; ;; Associate leptosfmt with rustic-mode or rust-mode
+  ;; (add-to-list 'apheleia-mode-alist
+  ;;              '(rustic-mode . leptosfmt))
+  (apheleia-global-mode +1))
+#+end_src
+
+*** Combobulate
 #+begin_src emacs-lisp
 #+end_src
 * EMACS APPLICATION FRAMEWORK
@@ -491,7 +502,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
     (evil-mode))
 (use-package evil-collection
   :config
-  (setq evil-collection-mode-list '(calendar dashboard dired ediff info magit ibuffer dired elpaca))
+  (setq evil-collection-mode-list '(calendar dashboard dired ediff info magit ibuffer dired))
   (add-to-list 'evil-collection-mode-list 'help) ;; evilify help mode
   (evil-collection-init))
 ;; Using RETURN to follow links in Org/Evil
@@ -501,19 +512,15 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   (define-key evil-motion-state-map (kbd "K") nil)
   (define-key evil-motion-state-map (kbd "RET") nil)
   (define-key evil-motion-state-map (kbd "TAB") nil)
-  (define-key evil-normal-state-map (kbd "C-.") 'embark-act)
-  (define-key evil-visual-state-map (kbd "C-.") 'embark-act))
-  ;; Setting RETURN key in org-mode to follow links
+  (define-key evil-normal-state-map (kbd "M-.") 'embark-act)
+  (define-key evil-visual-state-map (kbd "M-.") 'embark-act))
 (setq org-return-follows-link  t)
 
 ;;Mapping "jk" to Escape in Emacs' evil-mode
 (use-package evil-escape
   :config
-  ;; Set the key sequence you want to use for escaping
   (setq-default evil-escape-key-sequence "jk")
-  ;; Adjust the delay if needed
   (setq-default evil-escape-delay 0.2)
-  ;; Enable Evil Escape mode globally
   (evil-escape-mode 1))
 
 (use-package evil-surround
@@ -579,7 +586,7 @@ Hungry Delete is a minor-mode that causes deletion to delete all whitespace in t
 #+begin_src emacs-lisp
 (setq erc-autojoin-mode t
    erc-server "irc.libera.chat"
-   erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs" "##rust"))
+   erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs" "#rust"))
    erc-nick "Azizul7m"
    erc-user-full-name "Azizul Islam"  ; And this!
    erc-track-shorten-start 8
@@ -911,7 +918,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :config
   (treemacs-load-theme "all-the-icons"))
 
-(use-package treemacs-evil)
 
 (use-package treemacs-projectile
   :after (treemacs projectile)
@@ -1042,8 +1048,8 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 * TRANSPARENCY
 With Emacs version 29, true transparency has been added.  I have turned transparency off by setting the alpha to ‘100’.  If you want some slight transparency, try setting alpha to ‘90’.  Of course, if you set alpha to ‘0’, the background of Emacs would completely transparent.
 #+begin_src emacs-lisp
-(set-frame-parameter nil 'alpha-background 80) ; For current frame
-(add-to-list 'default-frame-alist '(alpha-background . 80)) ; For all new frames henceforth
+(set-frame-parameter nil 'alpha-background 90) ; For current frame
+(add-to-list 'default-frame-alist '(alpha-background . 90)) ; For all new frames henceforth
 #+end_src
 * UI STUFF
 ** POSFRAME
@@ -1075,34 +1081,30 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 #+end_src
 ** THEME
 #+BEGIN_SRC elisp
-  (use-package timu-spacegrey-theme
+ (use-package doom-themes
+ :straight t
+ :config
+ (setq doom-themes-enable-bold nil
+	 doom-themes-enable-italic t) ; if nil, italics is universally disabled
+ (setq doom-themes-treemacs-theme "doom-colors")
+ (doom-themes-treemacs-config)
+ (load-theme 'doom-one t))
+
+(use-package doom-modeline
   :straight t
   :config
-  ;;(load-theme 'timu-spacegrey t)
-  (setenv "SCHEME" "dark"))
-
-   (use-package doom-themes
-   :straight t
-   :config
-   (setq doom-themes-enable-bold nil
-	   doom-themes-enable-italic t) ; if nil, italics is universally disabled
-   (setq doom-themes-treemacs-theme "doom-colors")
-   (doom-themes-treemacs-config)
-   (load-theme 'doom-one t)
-   )
-
-  (use-package doom-modeline
-    :straight t
-    :config
-      (setq doom-modeline-height 17)
-      (setq  doom-modeline-hud t)
-      (setq doom-modeline-icon t)
-      (setq doom-modeline-lsp-icon t)
-      (setq doom-modeline-height 1)
-      (set-face-attribute 'mode-line nil :height 100)
-      (set-face-attribute 'mode-line-inactive nil :height 100)
-     :init
-     (doom-modeline-mode 1))
+    (setq doom-modeline-height 17)
+    (setq  doom-modeline-hud t)
+    (setq doom-modeline-icon t)
+    (setq doom-modeline-lsp-icon t)
+    (setq doom-modeline-height 1)
+    (setq doom-modeline-buffer-encoding nil)
+    (setq doom-modeline-project-name t)
+    (setq doom-modeline-irc t)
+    (set-face-attribute 'mode-line nil :height 100)
+    (set-face-attribute 'mode-line-inactive nil :height 100)
+   :init
+   (doom-modeline-mode 1))
 
 #+END_SRC
 ** DASHBOARD
@@ -1114,7 +1116,6 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   (setq dashboard-set-heading-icons t)
   (setq dashboard-set-file-icons t)
   (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
-  ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
   (setq dashboard-startup-banner "~/.face")  ;; use custom image as banner
   (setq dashboard-center-content t) ;; set to 't' for centered content
   (setq dashboard-vertically-center-content t)
@@ -1126,9 +1127,6 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
                           (projects . 3)
                           (registers . 3)))
   :config
-  ;;(add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
-  ;;(add-hook 'elpaca-after-init-hook #'dashboard-initialize)
-  (add-hook 'dashboard-mode-hook #'hide-mode-line-mode)
   (dashboard-setup-startup-hook))
 #+end_src
 ** PAGE BREAK LINES
@@ -1175,19 +1173,6 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   (setq indent-bars-prefer-character "|"))
   (setopt indent-bars-ts-color '(inherit unspecified :blend 0.15))
 #+end_src
-** FORMATING
-#+begin_src emacs-lisp
-(use-package apheleia
-  :straight t
-  :config
-  (setq apheleia-global-mode 1)
-  (setq apheleia-remote-algorithm 'remote)
-  (apheleia-global-mode +1))
-#+end_src
-
-*** Combobulate
-#+begin_src emacs-lisp
-#+end_src
 ** PERSPECTIVE
 #+begin_src emacs-lisp
 (use-package perspective
@@ -1220,7 +1205,20 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   :straight t)
 
 #+end_src
-
+* WEB
+** CHROME-EMACS
+#+begin_src emacs-lisp
+;; (use-package atomic-chrome
+;;   :demand t
+;;   :straight (atomic-chrome
+;;              :repo "KarimAziev/atomic-chrome"
+;;              :type git
+;;              :host github)
+;;   :commands (atomic-chrome-start-server)
+;;   :config
+;;   (setq-default atomic-chrome-extension-type-list '(atomic-chrome))
+;;   (atomic-chrome-start-server))
+#+end_src
 * VM
 #+begin_src emacs-lisp
 (use-package vagrant

@@ -1,7 +1,7 @@
 { var, ... }: {
-  programs = { bun.enable = true; };
-  home = {
-    packages = (with var.pkgs; [
+  programs = { fish.enable = true; };
+  home = with var.pkgs; {
+    packages = ([
       # C STUFF
       libtool
       libclang
@@ -9,9 +9,9 @@
       cmake
       gnupg
       gcc
+      openssl
       pkg-config
       systemd # Some core packages are bundle with systemd
-      openssl
 
       android-tools
       adb-sync
@@ -30,11 +30,18 @@
       shfmt
 
       # NIX
+      devbox
+      direnv
+      nix-direnv
       nixfmt-classic
       nixd
       nixdoc
 
       # Rust
+      trunk
+      dioxus-cli
+      cargo-leptos
+      leptosfmt
       rustup
       cargo-watch
 
@@ -45,10 +52,9 @@
       solana-validator
 
       # DEVOPS
-      devbox
-      direnv
       dockfmt # docker format
       docker-compose
+
       emacs-lsp-booster
 
       #utils
@@ -66,10 +72,10 @@
 
       yt-dlp
       jellyfin-ffmpeg
-    ]) ++ (with var.pkgs-stable;
-      [
-        # rnix-lsp 
-      ]);
-    sessionVariables = { LIBCLANG_PATH = "${var.pkgs.libclang.lib}/lib"; };
+    ]);
+    sessionVariables = {
+      LIBCLANG_PATH = "${libclang.lib}/lib";
+      PKG_CONFIG_PATH = "${openssl.out}/lib/pkgconfig";
+    };
   };
 }

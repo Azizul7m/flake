@@ -18,16 +18,15 @@
     nwg-look
     nwg-launchers
     wlogout
-    hyprnome
     wlr-randr # Screen Settings
 
-    libnotify
     wlprop
     waypaper # wallpaper selector
     swaybg # wallpaper
     wf-recorder
     wayland-protocols
     hyprshot
+    hyprnotify
     wl-clipboard
     grim
     slurp
@@ -71,10 +70,10 @@
         browser = "brave";
         fileManager = "pcmanfm";
         menu = "pkill wofi || wofi --show drun -I";
-        emacsTerminal = "open-vterm-full-window";
+        emacsTerminal = "emacsclient  -c";
         fctix =
           "fcitx5 -9;sleep 1;fcitx5 -d --replace; sleep 1;fcitx5-remote -r";
-        screenshot = "grim -g $(slurp) | wl-copy";
+        screenshot = "hyprshot -m region";
       in {
         decoration = {
           shadow_ignore_window = true;
@@ -147,7 +146,7 @@
         "$mod" = "SUPER";
         bind = [
           # mouse movements
-          "$mod, RETURN, exec, emacsclient -ce '(${emacsTerminal})'"
+          "$mod, RETURN, exec, emacsclient -cnq"
           "ALT, RETURN, exec, ${terminal}"
           "$mod CONTROL, RETURN, exec, xterm"
           "$mod, B, exec, ${browser}"
