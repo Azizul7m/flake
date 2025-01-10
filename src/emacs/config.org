@@ -147,22 +147,6 @@
 * PACKAGES MANAGER AND OTHER SCRIPT
 ** PACKAGE MANAGER BOOTSTRAP
 #+BEGIN_SRC elisp
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'org)
-
-(setq straight-use-package-by-default t)
 #+end_src
 ** REQUIRE LISP
 #+begin_src emacs-lisp
@@ -345,6 +329,9 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
               ("C-c C-r" . eglot-rename)
               ("C-c C-d" . eglot-menu))
   :config
+  (setq eglot-sync-connect 1
+        eglot-autoshutdown t ;; auto shutdowns server of close the buffer 
+        eglot-autoreconnect 1)
   (add-to-list 'eglot-server-programs
                '((tsx-ts-mode typescript-ts-mode javascript-mode) . ("typescript-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
@@ -355,6 +342,8 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
                                                                  :ignored (:leptos_macro (:server)))
                                                          :cargo (:buildScripts (:enable t)
                                                                                 :features "all"))))))
+
+
 
 (fset #'jsonrpc--log-event #'ignore)
 (setq eglot-server-json-parser #'json-parse-string-no-itaewc)
@@ -868,12 +857,12 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 (use-package peep-dired
   :after dired
   :hook (evil-normalize-keymaps . peep-dired-hook)
-  :config
-    (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
-    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
-    (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
-    (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
-)
+  :bind (("M--" . 'dired)
+         :map dired-mode-map
+               ("h" . 'dired-up-directory)
+               ("l" . 'dired-open-file)
+               ("j" . 'dired-next-line)
+               ("k" . 'dired-previous-line)))
 #+end_src
 
 ** PROJECTILE
@@ -982,14 +971,13 @@ Otherwise, org-tempo is broken when you try to <s TAB...
      ("d" "~/Downloads/"                "Downloads")))
   :config
   ;; (dirvish-peek-mode) ; Preview files in minibuffer
-  ;; (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
-  (setq dirvish-mode-line-format
-        '(:left (sort symlink) :right (omit yank index)))
-  (setq dirvish-attributes
-        '(nerd-icons file-time file-size collapse subtree-state vc-state git-msg))
+   (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
+  ;; (setq dirvish-mode-line-format
+  ;;       '(:left (sort symlink) :right (omit yank index)))
+  ;; (setq dirvish-attributes
+  ;;       '(nerd-icons file-time file-size collapse subtree-state vc-state git-msg))
   (setq delete-by-moving-to-trash t)
-  (setq dired-listing-switches
-        "-l --almost-all --human-readable --group-directories-first --no-group")
+  (setq dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
   :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
   (("C-c f" . dirvish-fd)
    :map dirvish-mode-map ; Dirvish inherits `dired-mode-map'
