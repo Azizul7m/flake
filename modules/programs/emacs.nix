@@ -12,12 +12,10 @@
     tree-sitter
     wkhtmltopdf
     emacsPackages.vterm
-    gnuplot 
+    gnuplot
     emacs-lsp-booster
+    emacs-gtk
   ];
-  programs.emacs = {
-    enable = true;
-  };
   services.emacs = {
     package = pkgs.emacs-gtk;
     enable = true;

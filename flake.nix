@@ -4,8 +4,8 @@
     nixpkgs-stable.url = "nixpkgs/nixos-24.05";
     nixpkgs.url = "nixpkgs/nixos-unstable";
     home-manager = {
-       # url = "github:nix-community/home-manager/release-24.05";
-       url = "github:nix-community/home-manager";
+      # url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix.url = "github:danth/stylix";
@@ -19,7 +19,8 @@
         system = "x86_64-linux";
         host = "nixos";
         user = "anower";
-        fullName = "Anower Hossen";
+        userName = "Azizul Islam";
+        userEmail = "azizul7m@gmail.com";
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;

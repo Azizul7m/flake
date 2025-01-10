@@ -6,7 +6,7 @@
 * TABLE OF CONTENT                                                     :toc:
 - [[#vanila-emacs-config][VANILA *EMACS* CONFIG]]
 - [[#packages-manager-and-other-script][PACKAGES MANAGER AND OTHER SCRIPT]]
-  - [[#import-lisp-directory][IMPORT LISP DIRECTORY]]
+  - [[#package-manager-bootstrap][PACKAGE MANAGER BOOTSTRAP]]
   - [[#require-lisp][REQUIRE LISP]]
 - [[#async-savehist-repeat][ASYNC SAVEHIST REPEAT]]
 - [[#ai][AI]]
@@ -31,7 +31,7 @@
 - [[#evil-mode][EVIL MODE]]
 - [[#eww][EWW]]
 - [[#env][ENV]]
-- [[#flycheck][FLYCHECK]]
+- [[#flymake][FLYMAKE]]
 - [[#git][GIT]]
 - [[#hungry-delete][HUNGRY-DELETE]]
 - [[#irc][IRC]]
@@ -48,21 +48,19 @@
 - [[#diminish][DIMINISH]]
 - [[#whichkey][WHICHKEY]]
 - [[#org-mode][ORG-MODE]]
-  - [[#markdown-mode][Markdown mode]]
-  - [[#enote][Enote]]
+  - [[#markdown-mode][MARKDOWN MODE]]
 - [[#popper][POPPER]]
-- [[#file-browser][FILE BROWSER]]
+- [[#file-browser--projects][FILE BROWSER & PROJECTS]]
   - [[#dired][DIRED]]
   - [[#projectile][PROJECTILE]]
   - [[#treemacs][TREEMACS]]
+  - [[#perspective][PERSPECTIVE]]
+  - [[#dirvish][DIRVISH]]
 - [[#terminal][TERMINAL]]
   - [[#vterm][VTERM]]
   - [[#vterm-toggle][VTERM TOGGLE]]
 - [[#remote][REMOTE]]
 - [[#snippets][SNIPPETS]]
-- [[#rainbow][RAINBOW]]
-  - [[#rainbow-1][RAINBOW]]
-  - [[#selected-window][selected-window]]
 - [[#sudo-edit][SUDO EDIT]]
 - [[#tldr][TlDR]]
 - [[#heighlight-todo-list][HEIGHLIGHT TODO LIST]]
@@ -75,9 +73,8 @@
   - [[#page-break-lines][PAGE BREAK LINES]]
   - [[#fonts][FONTS]]
   - [[#indent][INDENT]]
-  - [[#pluntuml][PluntUML]]
   - [[#indent-guides][INDENT-GUIDES]]
-  - [[#perspective][PERSPECTIVE]]
+  - [[#rainbow][RAINBOW]]
 - [[#visual-stuff][VISUAL STUFF]]
 - [[#web][WEB]]
   - [[#chrome-emacs][CHROME-EMACS]]
@@ -92,14 +89,13 @@
       (scroll-bar-mode -1)
       (save-place-mode 1)
 
-
       (display-battery-mode t)
       (electric-pair-mode 1) ;; auto paire
       (global-subword-mode 1) ;; global line number
+      (global-hl-line-mode 1) ;; heighlight current line
       (global-display-line-numbers-mode 1)
       (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
       (blink-cursor-mode -1)
-      (global-hl-line-mode 1)
 
       (setq-default truncate-lines t)
 
@@ -130,10 +126,8 @@
 
    ;; Increase for lsp batter performance.
    (setq read-process-output-max (* 3 1024 1024))
-
    ;; default 800
    (setq max-lisp-eval-depth 10000)
-
    (setq package-enable-at-startup nil)
 
 
@@ -143,7 +137,7 @@
    (setq custom-file (concat user-emacs-directory "custom.el"))
    (load custom-file 'noerror)
 #+END_SRC
-*** locale
+*** LOCALE
 #+begin_src elisp
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
@@ -151,19 +145,32 @@
 (prefer-coding-system 'utf-8)
 #+end_src
 * PACKAGES MANAGER AND OTHER SCRIPT
-** IMPORT LISP DIRECTORY
+** PACKAGE MANAGER BOOTSTRAP
 #+BEGIN_SRC elisp
-(defvar scripts-dir (expand-file-name "lisp" user-emacs-directory))
-(add-to-list 'load-path scripts-dir)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'org)
+
+(setq straight-use-package-by-default t)
 #+end_src
 ** REQUIRE LISP
 #+begin_src emacs-lisp
-;;(require 'elpaca-setup)
-(require 'straight)
+(defvar scripts-dir (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path scripts-dir)
 (require 'buffer_move)
 (require 'hide-mode-line)
 #+END_SRC
-
 * ASYNC SAVEHIST REPEAT
 #+begin_src emacs-lisp
 ;;; Emacs look SIGNIFICANTLY less often which is a good thing.
@@ -175,7 +182,6 @@
   (dired-async-mode 1))
 
 (use-package savehist
-  :straight nil
   :defer 2
   :init
   (savehist-mode t)
@@ -183,13 +189,11 @@
   (add-to-list 'savehist-additional-variables 'global-mark-ring))
 
 (use-package repeat
-  :straight nil
   :defer 10
   :init
   (repeat-mode +1))
 
 #+end_src
-
 * AI
 ** Gptel
 #+begin_src emacs-lisp
@@ -227,6 +231,7 @@
 ** COMPANY MODE
 #+begin_src emacs-lisp
 (use-package company
+  :disabled t
   :defer 2
   :diminish
   :custom
@@ -266,12 +271,12 @@ Code Completion
          ("S-TAB" . corfu-previous)
          ([backtab] . corfu-previous)
          ("RET" . corfu-insert))
+  :config
+  (setq read-extended-command-predicate #'command-completion-default-include-p)
   :init
   (corfu-history-mode)
   (corfu-popupinfo-mode)
   (global-corfu-mode))
-
-(setq read-extended-command-predicate #'command-completion-default-include-p)
 
 (use-package nerd-icons-corfu
   :straight t
@@ -294,8 +299,8 @@ Cape has the super power to transform Company backends into Capfs and merge mult
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block))
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  (add-to-list 'completion-at-point-functions #'cape-keyword))
 
 #+end_src
 ** ELDOC
@@ -334,8 +339,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 ** EGLOT
 #+begin_src emacs-lisp
 (use-package eglot
-  :hook (('prog-mode  . 'eglot-ensure)
-         ('after-save-hook . 'eglot-format))
+  :hook (('prog-mode  . 'eglot-ensure))
   :bind (:map eglot-mode-map
               ("C-c C-a" . eglot-code-actions)
               ("C-c C-r" . eglot-rename)
@@ -375,11 +379,16 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 (use-package typescript-ts-mode
   :straight t
   :mode ("\\.ts\\'" . 'typescript-ts-mode)
-  :hook ('typescript-ts-mode . 'eglot-ensure)
+  :hook ( 'typescript-ts-mode . '(eglot-ensure npm-mode))
   :config
   (setq typescript-indent-level 2
 	typescript-lsp-extra-server-flags "--log-level=verbose"))
 #+end_src
+***  NPM
+    #+begin_src emacs-lisp
+    (use-package npm
+        :ensure t)
+    #+end_src
 *** Deno
 #+begin_src emacs-lisp
 ;; (use-package deno-ts-mode
@@ -444,6 +453,15 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 
 (use-package emmet-mode
   :straight t)
+#+end_src
+*** PluntUML
+#+begin_src emacs-lisp
+(use-package uniline
+  :defer t
+  :bind ("C-<insert>"     . uniline-mode)
+  :bind ("C-<insertchar>" . uniline-mode)
+  :config
+  (setq line-spacing nil))
 #+end_src
 ** TREE-SITTER
 #+begin_src emacs-lisp
@@ -549,14 +567,13 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :config
   (exec-path-from-shell-initialize))
 #+end_src
-* FLYCHECK
+* FLYMAKE
 #+begin_src emacs-lisp
-(use-package flycheck
-  :bind (:map flycheck-mode-map
-              ("M-n" . flycheck-previous-error)
-              ("M-p" . flycheck-next-error))
-  :custom (flycheck-display-errors-delay .2)
-  :init (global-flycheck-mode))
+(use-package flymake 
+  :bind (:map flymake-mode-map 
+              ("M-g f" . flymake-menu)
+              ("M-n" . 'flymake-goto-next-error)
+              ("M-p" . 'flymake-goto-prev-error)))
 #+end_src
 * GIT
 #+begin_src emacs-lisp
@@ -718,7 +735,7 @@ or C-c C-k to abort.
 * DIMINISH
 This package implements hiding or abbreviation of the mode line displays (lighters) of minor-modes.
 #+begin_src emacs-lisp
-(use-package diminish)
+(use-package diminish )
 #+end_src
 * WHICHKEY
 #+begin_src emacs-lisp
@@ -743,22 +760,50 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 * ORG-MODE
 Otherwise, org-tempo is broken when you try to <s TAB...
 #+begin_src emacs-lisp
- ;; Hook to customize electric pair behavior in org-mode
-(add-hook 'org-mode-hook
-          (lambda ()
-            (setq visual-fill-column-mode t
-                  line-number-mode -1)))
-            
-#+end_src
+  (setq user-full-name "Azizul Islam"
+	user-mail-address "azizul7m@gmail.com")
 
+  (setq org-src-fontify-natively t
+	org-confirm-babel-evaluate nil)
+
+  ;; (org-babel-do-load-languages
+  ;;  'org-babel-load-languages
+  ;;  '((rust . t)
+  ;;    (typescript . t)))
+#+end_src
 *** BULLETS
 #+begin_src emacs-lisp
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
 #+end_src
-*** CUSTOMS FACE
-  #+begin_src emacs-lisp
+*** DENOTE
+#+begin_src emacs-lisp
+(use-package denote
+  :ensure t)
+#+end_src
+*** ORG-ROAM
+#+begin_src emacs-lisp
+#+end_src
+*** ORG-MODERN
+#+begin_src emacs-lisp
+(use-package org-modern
+  :ensure t
+  :config
+  (with-eval-after-load 'org (global-org-modern-mode)))
+#+end_src
+*** ORG NOTION
+#+begin_src emacs-lisp
+#+end_src
+*** SNIPPET
+#+begin_src emacs-lisp
+(require 'org-tempo)
+#+end_src
+*** TOC
+#+begin_src emacs-lisp
+(use-package toc-org
+    :commands toc-org-enable
+    :init
+    (add-hook 'org-mode-hook 'toc-org-enable))
     (custom-set-faces
      '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
      '(org-level-2 ((t (:inherit outline-2 :height 1.25))))
@@ -768,52 +813,15 @@ Otherwise, org-tempo is broken when you try to <s TAB...
      '(org-level-6 ((t (:inherit outline-5 :height 1.125))))
      '(org-level-7 ((t (:inherit outline-5 :height 1.1)))))
   #+end_src
-*** DENOTE
-#+begin_src emacs-lisp
-(use-package denote
-  :ensure t)
-#+end_src
-*** ORG-ROAM
-#+begin_src emacs-lisp
-#+end_src
-*** ORG-ROAM-UI
-#+begin_src emacs-lisp
-#+end_src
 
-*** Org-modern
-#+begin_src emacs-lisp
-(use-package org-modern
-  :straight t
-  :config
-  (with-eval-after-load 'org (global-org-modern-mode)))
-#+end_src
+  #+RESULTS:
 
-*** Org Notion
-#+begin_src emacs-lisp
-#+end_src
-*** SNIPPET
-#+begin_src emacs-lisp
-(require 'org-tempo)
-#+end_src
-*** TOC
-#+begin_src emacs-lisp
-(setq user-full-name "Azizul Islam"
-      user-mail-address "azizul7m@gmail.com")
-
-(use-package toc-org
-    :commands toc-org-enable
-    :init
-    (add-hook 'org-mode-hook 'toc-org-enable))
-  #+end_src
-** Markdown mode
+** MARKDOWN MODE
 #+begin_src elisp
 (use-package markdown-mode
   :straight t
   :config
   (setq markdown-fontify-code-blocks-natively t))
-#+end_src
-** Enote
-#+begin_src emacs-lisp
 #+end_src
 * POPPER
 #+begin_src emacs-lisp
@@ -845,7 +853,7 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   (popper-mode +1)
   (popper-echo-mode +1))                ; For echo area hints
 #+end_src
-* FILE BROWSER
+* FILE BROWSER & PROJECTS
 ** DIRED
 #+begin_src emacs-lisp
 (use-package dired-open
@@ -913,11 +921,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   (with-eval-after-load 'treemacs
     (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 
-(use-package treemacs-all-the-icons
-  :after (treemacs all-the-icons)
-  :config
-  (treemacs-load-theme "all-the-icons"))
-
 
 (use-package treemacs-projectile
   :after (treemacs projectile)
@@ -934,6 +937,10 @@ Otherwise, org-tempo is broken when you try to <s TAB...
 (add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-toggle)
 
 
+ (use-package treemacs-nerd-icons
+        :config
+        (treemacs-load-theme "nerd-icons"))
+
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once)
   :straight t)
@@ -943,6 +950,66 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :straight t
   :config (treemacs-set-scope-type 'Perspectives))
 
+#+end_src
+** PERSPECTIVE
+#+begin_src emacs-lisp
+(use-package perspective
+  :straight t
+  :custom
+  (persp-mode-prefix-key (kbd "C-c M-p"))
+  :init
+  (persp-mode)
+  :config
+  ;; Sets a file to write to when we save states
+  (setq persp-state-default-file "~/.config/emacs/sessions"))
+;; This will group buffers by persp-name in ibuffer.
+(add-hook 'ibuffer-hook
+          (lambda ()
+            (persp-ibuffer-set-filter-groups)
+            (unless (eq ibuffer-sorting-mode 'alphabetic)
+              (ibuffer-do-sort-by-alphabetic))))
+;; Automatically save perspective states to file when Emacs exits.
+(add-hook 'kill-emacs-hook #'persp-state-save)
+#+end_src
+** DIRVISH
+#+begin_src emacs-lisp
+(use-package dirvish
+  :init
+  (dirvish-override-dired-mode)
+  :custom
+  (dirvish-quick-access-entries ; It's a custom option, `setq' won't work
+   '(("h" "~/"                          "Home")
+     ("d" "~/Downloads/"                "Downloads")))
+  :config
+  ;; (dirvish-peek-mode) ; Preview files in minibuffer
+  ;; (dirvish-side-follow-mode) ; similar to `treemacs-follow-mode'
+  (setq dirvish-mode-line-format
+        '(:left (sort symlink) :right (omit yank index)))
+  (setq dirvish-attributes
+        '(nerd-icons file-time file-size collapse subtree-state vc-state git-msg))
+  (setq delete-by-moving-to-trash t)
+  (setq dired-listing-switches
+        "-l --almost-all --human-readable --group-directories-first --no-group")
+  :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
+  (("C-c f" . dirvish-fd)
+   :map dirvish-mode-map ; Dirvish inherits `dired-mode-map'
+   ("a"   . dirvish-quick-access)
+   ("f"   . dirvish-file-info-menu)
+   ("y"   . dirvish-yank-menu)
+   ("N"   . dirvish-narrow)
+   ("^"   . dirvish-history-last)
+   ("h"   . dirvish-history-jump) ; remapped `describe-mode'
+   ("s"   . dirvish-quicksort)    ; remapped `dired-sort-toggle-or-edit'
+   ("v"   . dirvish-vc-menu)      ; remapped `dired-view-file'
+   ("TAB" . dirvish-subtree-toggle)
+   ("M-f" . dirvish-history-go-forward)
+   ("M-b" . dirvish-history-go-backward)
+   ("M-l" . dirvish-ls-switches-menu)
+   ("M-m" . dirvish-mark-menu)
+   ("M-t" . dirvish-layout-toggle)
+   ("M-s" . dirvish-setup-menu)
+   ("M-e" . dirvish-emerge-menu)
+   ("M-j" . dirvish-fd-jump)))
 #+end_src
 * TERMINAL
 ** VTERM
@@ -1011,16 +1078,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
                       completion-at-point-functions)))
   (push 'yasnippet-capf completion-at-point-functions))
 #+end_src
-* RAINBOW
-** RAINBOW
-#+begin_src emacs-lisp
-(use-package rainbow-delimiters
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-#+end_src
-** selected-window
-#+begin_src emacs-lisp
-#+end_src
 * SUDO EDIT
 #+begin_src emacs-lisp
 (use-package sudo-edit)
@@ -1055,28 +1112,26 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 ** POSFRAME
 #+begin_src emacs-lisp
 (use-package posframe
-  :straight t
-  :after dashboard)
+  :straight t)
 #+end_src
 ** ICONS
 #+begin_src emacs-lisp
 (use-package all-the-icons
-  :straight t
+    :straight t)
+(use-package nerd-icons
+ :straight t)
+
+(use-package nerd-icons-completion
+  :after marginalia
   :config
-  (setq inhibit-compacting-font-caches t))
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
-(use-package all-the-icons-dired
-  :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+(use-package nerd-icons-ibuffer
+  :ensure t
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
-(use-package all-the-icons-ibuffer
-  :straight t
-  :hook (ibuffer-mode . all-the-icons-ibuffer-mode))
-
-(use-package all-the-icons-completion
-  :after (marginalia all-the-icons)
-  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
-  :init
-  (all-the-icons-completion-mode))
+(add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
 
 #+end_src
 ** THEME
@@ -1111,6 +1166,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 #+begin_src emacs-lisp
 (use-package dashboard
   :straight t
+  :diminish t
   :init
   (setq initial-buffer-choice 'dashboard-open)
   (setq dashboard-set-heading-icons t)
@@ -1120,13 +1176,12 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   (setq dashboard-center-content t) ;; set to 't' for centered content
   (setq dashboard-vertically-center-content t)
   (setq dashboard-display-icons-p t)     ; display icons on both GUI and terminal
-  (setq dashboard-icon-type 'nerd-icons)  ; use `all-the-icons' package
-  (setq dashboard-items '((recents . 5)
+  (setq dashboard-icon-type 'nerd-icons)  ; use  package
+  (setq dashboard-items '((projects . 3)
+                          (recents . 5)
                           (agenda . 5 )
                           (bookmarks . 3)
-                          (projects . 3)
                           (registers . 3)))
-  :config
   (dashboard-setup-startup-hook))
 #+end_src
 ** PAGE BREAK LINES
@@ -1134,8 +1189,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 (use-package page-break-lines
   :straight t
   :init
-  (global-page-break-lines-mode)
-)
+  (global-page-break-lines-mode))
 #+end_src
 ** FONTS
 #+begin_src emacs-lisp
@@ -1154,16 +1208,6 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 (add-hook 'org-mode-hook 'org-indent-mode)
 (setq org-edit-src-content-indentation 0)
 #+end_src
-
-** PluntUML
-#+begin_src emacs-lisp
-(use-package uniline
-  :defer t
-  :bind ("C-<insert>"     . uniline-mode)
-  :bind ("C-<insertchar>" . uniline-mode)
-  :config
-  (setq line-spacing nil))
-#+end_src
 ** INDENT-GUIDES
 #+begin_src emacs-lisp
 (use-package indent-bars
@@ -1173,34 +1217,19 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   (setq indent-bars-prefer-character "|"))
   (setopt indent-bars-ts-color '(inherit unspecified :blend 0.15))
 #+end_src
-** PERSPECTIVE
+** RAINBOW
 #+begin_src emacs-lisp
-(use-package perspective
-   :straight t
-  :custom
-  (persp-mode-prefix-key (kbd "C-c M-p"))
-  :init
-  (persp-mode)
+(use-package rainbow-delimiters
   :config
-  ;; Sets a file to write to when we save states
-  (setq persp-state-default-file "~/.config/emacs/sessions"))
-;; This will group buffers by persp-name in ibuffer.
-(add-hook 'ibuffer-hook
-          (lambda ()
-            (persp-ibuffer-set-filter-groups)
-            (unless (eq ibuffer-sorting-mode 'alphabetic)
-              (ibuffer-do-sort-by-alphabetic))))
-;; Automatically save perspective states to file when Emacs exits.
-(add-hook 'kill-emacs-hook #'persp-state-save)
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+end_src
+
 * VISUAL STUFF
 #+begin_src emacs-lisp
 (use-package visual-fill-column
   :straight t
   :config
   (setq-default visual-fill-column-center-text t))
-
-
 (use-package writeroom-mode
   :straight t)
 

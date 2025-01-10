@@ -1,7 +1,8 @@
 { config, pkgs, var, ... }: {
   imports = [
-    ./packages.nix
     ./xdg.nix
+    ./packages.nix
+    ../modules/ui/gtk.nix
     ../modules/programs/hyprland.nix
     ../modules/shells/shell.nix
     ../modules/programs/zellij.nix
@@ -16,8 +17,6 @@
     ../modules/programs/alacritty.nix
     ../modules/programs/vscode.nix
     ../modules/services/mpd.nix
-    ../modules/services/lorri.nix
-    ../modules/ui/gtk.nix
   ];
   home.username = "${var.user}";
   home.homeDirectory = "/home/${var.user}";
@@ -63,7 +62,15 @@
     # QT_IM_MODULES = "wayland;fcitx;ibus";
     # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
-  programs = { home-manager.enable = true; };
+  programs = {
+    home-manager.enable = true;
+    git = {
+      enable = true;
+      userName = "${var.user}";
+      userEmail = "${var.userEmail}";
+      diff-highlight.enable = true;
+    };
+  };
   nix = {
     package = pkgs.nix;
     settings.experimental-features = [ "nix-command" "flakes" ];

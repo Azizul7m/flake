@@ -39,7 +39,6 @@
 
       # Rust
       trunk
-      dioxus-cli
       cargo-leptos
       leptosfmt
       rustup
@@ -55,8 +54,6 @@
       dockfmt # docker format
       docker-compose
 
-      emacs-lsp-booster
-
       #utils
       starship
       eza # ls alternative
@@ -69,6 +66,12 @@
       docker-compose-language-service
       yaml-language-server
       nodePackages_latest.typescript-language-server
+      bash-language-server
+      vscode-langservers-extracted
+      yaml-language-server
+      tailwindcss-language-server
+      nginx-language-server
+      superhtml
 
       yt-dlp
       jellyfin-ffmpeg

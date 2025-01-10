@@ -1,6 +1,7 @@
-{ config, var, ... }: {
+{ config, var, ... }:
+with var.pkgs; {
   environment = {
-    systemPackages = with var.pkgs; [
+    systemPackages = [
       xterm
       git
       gh
@@ -19,6 +20,10 @@
       gdb
       sshfs
       nmap
+      wayvnc
+      wlprop
+      wlr-randr # Screen Settings
+      wlroots_0_18
 
       libusb1
       usbutils
@@ -34,9 +39,9 @@
       xdg-utils # Environment integration
       cups # A standards-based printing system for UNIX
       fontconfig # root font config
+
     ];
   };
-
   stylix.enable = true;
   programs = {
     dconf.enable = true;
@@ -46,7 +51,8 @@
     kdeconnect.enable = true;
     gnome-disks.enable = true;
     command-not-found.enable = true;
-    hyprland.portalPackage = var.pkgs.xdg-desktop-portal-hyprland;
+    hyprland.portalPackage = xdg-desktop-portal-hyprland;
+    xwayland.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;

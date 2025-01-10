@@ -1,11 +1,12 @@
-{ inputs, config, var, ... }: {
+{ inputs, config, var, ... }:
+with var.pkgs; {
 
   imports = [
     ../services/hypridle.nix
     #  ../services/hyprpaper.nix
   ];
 
-  home.packages = with var.pkgs; [
+  home.packages = [
     qt5.qtwayland
     qt5.qtbase
     qt5.qttools
@@ -18,15 +19,14 @@
     nwg-look
     nwg-launchers
     wlogout
-    wlr-randr # Screen Settings
 
-    wlprop
     waypaper # wallpaper selector
     swaybg # wallpaper
     wf-recorder
     wayland-protocols
+    wlr-layout-ui
+    wlr-which-key
     hyprshot
-    hyprnotify
     wl-clipboard
     grim
     slurp
@@ -53,17 +53,18 @@
         env = [
           "HYPRLAND_LOG_WLR,1"
           "HYPRLAND_TRACE1,1" # Corrected variable name
-          "XDG_SESSION_TYPE,wayland"
-          "XDG_CURRENT_DESKTOP,Hyprland"
           "GDK_BACKEND,wayland,x11,*"
           "QT_QPA_PLATFORM,wayland;xcb"
           "SDL_VIDEODRIVER,wayland"
           "CLUTTER_BACKEND,wayland"
+          "MOZ_ENABLE_WAYLAND,1"
+          "MOZ_WEBRENDER,1"
+          "XDG_SESSION_TYPE,wayland"
+          "XDG_CURRENT_DESKTOP,Hyprland"
           "XDG_CURRENT_DESKTOP,Hyprland"
           "XDG_SESSION_TYPE,wayland"
           "XDG_SESSION_DESKTOP,Hyprland"
-          "MOZ_ENABLE_WAYLAND,1"
-          "MOZ_WEBRENDER,1"
+          "XDG_PORTAL_BACKEND,xdg-desktop-portal-hyprland"
         ];
         scriptsDir = "$HOME/.config/hypr/scripts";
         terminal = "alacritty";
@@ -96,6 +97,11 @@
         #master= {
         #new_is_master = true;
         #};
+        monitor = [
+          "LVDS-1, 1366x768, 0x0, 1"
+          "DP-1, 1366x768, 0x-768, 1"
+          ", preferred, auto, 1"
+        ];
         env = env;
         general = {
           gaps_in = 3;

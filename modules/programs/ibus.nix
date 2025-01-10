@@ -14,12 +14,12 @@
   };
   environment = {
     variables = {
-      GTK_IM_MODULE = "fcitx";
+      GTK_IM_MODULE = "wayland;fcitx;ibus";
       XMODIFIERS = "@im=fcitx";
       INPUT_METHOD = "fcitx";
       SDL_IM_MODULE = "fcitx";
-#      QT_IM_MODULES = "wayland;fcitx;ibus";
-      QT_IM_MODULE = "fcitx";
+      QT_IM_MODULES = "wayland;fcitx;ibus";
+      # QT_IM_MODULE = "fcitx";
       GLFW_IM_MODULE = "fcitx";
       IMSETTINGS_MODULE = "fcitx";
     };
