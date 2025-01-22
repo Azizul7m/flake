@@ -47,7 +47,8 @@
   - [[#marginalia][MARGINALIA]]
 - [[#diminish][DIMINISH]]
 - [[#whichkey][WHICHKEY]]
-- [[#org-mode][ORG-MODE]]
+- [[#writing][WRITING]]
+  - [[#org-mode][ORG-MODE]]
   - [[#markdown-mode][MARKDOWN MODE]]
 - [[#popper][POPPER]]
 - [[#file-browser--projects][FILE BROWSER & PROJECTS]]
@@ -331,7 +332,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :config
   (setq eglot-sync-connect 1
         eglot-autoshutdown t ;; auto shutdowns server of close the buffer 
-        eglot-autoreconnect 1)
+        )
   (add-to-list 'eglot-server-programs
                '((tsx-ts-mode typescript-ts-mode javascript-mode) . ("typescript-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
@@ -746,19 +747,18 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 	  which-key-allow-imprecise-window-fit nil
 	  which-key-separator " → " ))
 #+end_src
-* ORG-MODE
-Otherwise, org-tempo is broken when you try to <s TAB...
+* WRITING
+** ORG-MODE
+*** ORG_OPTION
 #+begin_src emacs-lisp
-  (setq user-full-name "Azizul Islam"
-	user-mail-address "azizul7m@gmail.com")
-
-  (setq org-src-fontify-natively t
-	org-confirm-babel-evaluate nil)
-
-  ;; (org-babel-do-load-languages
-  ;;  'org-babel-load-languages
-  ;;  '((rust . t)
-  ;;    (typescript . t)))
+(setq user-full-name "Azizul Islam"
+user-mail-address "azizul7m@gmail.com")
+(setq org-src-fontify-natively t
+org-confirm-babel-evaluate nil)
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '((rust . t)
+;;    (typescript . t)))
 #+end_src
 *** BULLETS
 #+begin_src emacs-lisp
@@ -779,9 +779,6 @@ Otherwise, org-tempo is broken when you try to <s TAB...
   :ensure t
   :config
   (with-eval-after-load 'org (global-org-modern-mode)))
-#+end_src
-*** ORG NOTION
-#+begin_src emacs-lisp
 #+end_src
 *** SNIPPET
 #+begin_src emacs-lisp
@@ -1225,16 +1222,16 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 * WEB
 ** CHROME-EMACS
 #+begin_src emacs-lisp
-;; (use-package atomic-chrome
-;;   :demand t
-;;   :straight (atomic-chrome
-;;              :repo "KarimAziev/atomic-chrome"
-;;              :type git
-;;              :host github)
-;;   :commands (atomic-chrome-start-server)
-;;   :config
-;;   (setq-default atomic-chrome-extension-type-list '(atomic-chrome))
-;;   (atomic-chrome-start-server))
+(use-package atomic-chrome
+  :demand t
+  :straight (atomic-chrome
+             :repo "KarimAziev/atomic-chrome"
+             :type git
+             :host github)
+  :commands (atomic-chrome-start-server)
+  :config
+  (setq-default atomic-chrome-extension-type-list '(atomic-chrome))
+  (atomic-chrome-start-server))
 #+end_src
 * VM
 #+begin_src emacs-lisp

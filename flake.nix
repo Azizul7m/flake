@@ -11,6 +11,11 @@
     stylix.url = "github:danth/stylix";
     nur.url = "github:nix-community/NUR";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+
+    hyprpanel = {
+      url = "github:Jas-SinghFSU/HyprPanel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, ... }:
@@ -19,12 +24,16 @@
         system = "x86_64-linux";
         host = "nixos";
         user = "anower";
-        userName = "Azizul Islam";
+        fullName = "Azizul Islam";
         userEmail = "azizul7m@gmail.com";
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
-          overlays = [ inputs.nur.overlay inputs.emacs-overlay.overlay ];
+          overlays = [
+            inputs.nur.overlay
+            inputs.emacs-overlay.overlay
+            inputs.hyprpanel.overlay
+          ];
         };
         pkgs-stable = import inputs.nixpkgs-stable {
           inherit system;

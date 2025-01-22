@@ -35,6 +35,7 @@
       # Media
       vlc
       sxiv
+      scrcpy
 
       # TUI
       lazygit

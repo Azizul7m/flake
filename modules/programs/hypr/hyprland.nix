@@ -2,7 +2,8 @@
 with var.pkgs; {
 
   imports = [
-    ../services/hypridle.nix
+    ../../services/hypridle.nix
+    #    ../hypr/hyprpanel.nix
     #  ../services/hyprpaper.nix
   ];
 
@@ -19,15 +20,21 @@ with var.pkgs; {
     nwg-look
     nwg-launchers
     wlogout
+    wireplumber
 
     waypaper # wallpaper selector
     swaybg # wallpaper
     wf-recorder
+    brightnessctl
     wayland-protocols
     wlr-layout-ui
     wlr-which-key
+    hyprsunset
     hyprshot
+    hyprpicker
+    hyprpanel
     wl-clipboard
+    grimblast
     grim
     slurp
     bemenu
@@ -251,7 +258,7 @@ with var.pkgs; {
           "$mod SHIFT, SPACE, exec, pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'"
           "$mod, V, exec, pkill wofi || cliphist list | wofi -dmenu | cliphist decode | wl-copy"
           "$mod, p, exec, pkill rofi || rofi -show filebrowser"
-          "ALT, f4, exec, wlogout "
+          "ALT, l, exec, wlogout "
         ];
 
         #Describe a bind

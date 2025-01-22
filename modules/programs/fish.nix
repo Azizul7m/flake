@@ -34,8 +34,7 @@
         alias file='superfile'
 
 
-        alias tas='zellij attach -c'
-        alias tmux='zellij'
+        alias tas='tmux new-session -A -s default'
 
         alias df='df -h'
         alias free='free -m'

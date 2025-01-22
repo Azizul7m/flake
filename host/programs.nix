@@ -50,8 +50,8 @@ with var.pkgs; {
     fish.enable = true;
     kdeconnect.enable = true;
     gnome-disks.enable = true;
-    command-not-found.enable = true;
     hyprland.portalPackage = xdg-desktop-portal-hyprland;
+    command-not-found.enable = true;
     xwayland.enable = true;
     gnupg.agent = {
       enable = true;

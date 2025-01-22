@@ -3,17 +3,17 @@
     ./xdg.nix
     ./packages.nix
     ../modules/ui/gtk.nix
-    ../modules/programs/hyprland.nix
+    ../modules/programs/hypr/hyprland.nix
     ../modules/shells/shell.nix
-    ../modules/programs/zellij.nix
+    ../modules/programs/tmux.nix
     ../modules/programs/zoxide.nix
     ../modules/programs/rofi.nix
     ../modules/programs/emacs.nix
     ../modules/programs/nvim/nvim.nix
     ../modules/programs/wofi.nix
     ../modules/programs/fish.nix
-    ../modules/programs/waybar.nix
-    ../modules/programs/swaync.nix
+    ../modules/programs/hypr/waybar.nix
+    ../modules/programs/hypr/swaync.nix
     ../modules/programs/alacritty.nix
     ../modules/programs/vscode.nix
     ../modules/services/mpd.nix
@@ -50,17 +50,6 @@
     NIXPKGS_ALLOW_UNFREE = 1;
     NIXPKGS_ALLOW_INSECURE = 1;
     NIX_CONF_PATH = "~/flake";
-
-    # MOZ_ENABLE_WAYLAND = "1";
-    # MOZ_WEBRENDER = "1";
-    # CLUTTER_BACKEND = "wayland";
-    # SDL_VIDEODRIVER = "wayland";
-    # XDG_PORTAL_BACKEND = "xdg-desktop-portal-hyprland";
-    # GDK_BACKEND = "wayland";
-    # QT_QPA_PLATFORMTHEME = "kde";
-    # QT_QPA_PLATFORM = "wayland;xcb";
-    # QT_IM_MODULES = "wayland;fcitx;ibus";
-    # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
   programs = {
     home-manager.enable = true;

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs = {
@@ -6,14 +6,17 @@
       enable = true;
       settings = {
         general.live_config_reload = true;
+        selection.save_to_clipboard = true;
+        font.size = 9;
+        mouse = { hide_when_typing = true; };
         keyboard.bindings = [
           {
-            key = "V";
+            key = "v";
             mods = "Control";
             action = "Paste";
           }
           {
-            key = "Y";
+            key = "C";
             mods = "Control";
             action = "Copy";
           }
@@ -67,8 +70,8 @@
           }
           {
             key = "PageDown";
-            action = "ScrollPageDown";
             mode = "Alt";
+            action = "ScrollPageDown";
           }
           {
             key = "Home";
@@ -93,6 +96,7 @@
             mods = "Shift";
             action = "ToggleViMode";
           }
+
         ];
       };
     };

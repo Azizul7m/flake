@@ -4,6 +4,7 @@
       "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
     image = ../../src/colors/bike.jpg;
     polarity = "dark";
+
     fonts = {
       serif = {
         package = pkgs.iosevka;

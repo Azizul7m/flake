@@ -36,6 +36,8 @@
       nixfmt-classic
       nixd
       nixdoc
+      nix-prefetch-github
+      nix-prefetch-git
 
       # Rust
       trunk
@@ -60,6 +62,8 @@
       grc # text colored
       hunspell
       typioca
+      gping # Ping
+      genact # feel like all you do in the terminal
 
       #LSP
       docker-ls

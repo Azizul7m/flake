@@ -51,9 +51,9 @@
   nix = {
     settings = {
       experimental-features = [
-        "nix-command"
         "flakes"
         "auto-allocate-uids"
+        "nix-command"
         # "configurable-impure-env"
       ];
       auto-optimise-store = true; # Optimise syslinks
@@ -67,7 +67,7 @@
   };
   security = {
     rtkit.enable = true;
-    # polkit.enable = true;
+    polkit.enable = true;
     sudo.wheelNeedsPassword = false;
     pam.services.swaylock.text = ''
       auth include login
