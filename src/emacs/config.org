@@ -338,7 +338,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   (add-to-list 'eglot-server-programs
                '((css-mode scss-mode html-mode) . ("tailwindcss-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
-               '((rust-mode rustic-mode) . ("~/.cargo/bin/rust-analyzer" :initializationOptions
+               '(rustic-mode . ("~/.cargo/bin/rust-analyzer" :initializationOptions
                                             (:procMacro (:enable t
                                                                  :ignored (:leptos_macro (:server)))
                                                          :cargo (:buildScripts (:enable t)
@@ -374,7 +374,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   (setq typescript-indent-level 2
 	typescript-lsp-extra-server-flags "--log-level=verbose"))
 #+end_src
-***  NPM
+*** NPM
     #+begin_src emacs-lisp
     (use-package npm
         :ensure t)
@@ -401,6 +401,9 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :init
   (setq rustic-lsp-server-extra-args "--debug")
   (setq rustic-lsp-client 'eglot))
+
+(use-package ob-rust
+  :straight t)
 
 (use-package cargo-mode
   :hook
@@ -570,7 +573,12 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 (use-package git-link
   :straight t)
 
-(use-package magit)
+(use-package magit
+  :straight t)
+
+(use-package magit-section
+  :straight t)
+
 (use-package git-gutter 
     :straight t
     :config
@@ -755,10 +763,6 @@ This package implements hiding or abbreviation of the mode line displays (lighte
 user-mail-address "azizul7m@gmail.com")
 (setq org-src-fontify-natively t
 org-confirm-babel-evaluate nil)
-;; (org-babel-do-load-languages
-;;  'org-babel-load-languages
-;;  '((rust . t)
-;;    (typescript . t)))
 #+end_src
 *** BULLETS
 #+begin_src emacs-lisp
@@ -772,6 +776,32 @@ org-confirm-babel-evaluate nil)
 #+end_src
 *** ORG-ROAM
 #+begin_src emacs-lisp
+(use-package org-roam
+  :straight (org-roam :type git :files (:defaults "extensions/*" "org-roam-pkg.el") :host github :repo "org-roam/org-roam")
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/.notes/org/roam/")
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         :map org-mode-map
+         ("C-M-i" . completion-at-point))
+  :config
+  (org-roam-setup))
+
+(use-package websocket
+  :straight t
+    :after org-roam)
+
+(use-package org-roam-ui
+  :straight (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+    :after org-roam
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 #+end_src
 *** ORG-MODERN
 #+begin_src emacs-lisp

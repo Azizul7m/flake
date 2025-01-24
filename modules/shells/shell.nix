@@ -63,7 +63,9 @@
       hunspell
       typioca
       gping # Ping
-      genact # feel like all you do in the terminal
+      httpie # https cleint for *GET,POST,PUT*
+      asciinema # Record terminal
+      dog # — A command-line DNS client.
 
       #LSP
       docker-ls
