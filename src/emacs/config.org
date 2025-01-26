@@ -51,6 +51,7 @@
   - [[#org-mode][ORG-MODE]]
   - [[#markdown-mode][MARKDOWN MODE]]
 - [[#popper][POPPER]]
+- [[#prog-mode][PROG-MODE]]
 - [[#file-browser--projects][FILE BROWSER & PROJECTS]]
   - [[#dired][DIRED]]
   - [[#projectile][PROJECTILE]]
@@ -83,60 +84,60 @@
 
 * VANILA *EMACS* CONFIG
  #+BEGIN_SRC elisp
-      (menu-bar-mode -1)
-      (tool-bar-mode -1)
-      (fringe-mode -1)
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (fringe-mode -1)
 
-      (scroll-bar-mode -1)
-      (save-place-mode 1)
+    (scroll-bar-mode -1)
+    (save-place-mode 1)
 
-      (display-battery-mode t)
-      (electric-pair-mode 1) ;; auto paire
-      (global-subword-mode 1) ;; global line number
-      (global-hl-line-mode 1) ;; heighlight current line
-      (global-display-line-numbers-mode 1)
-      (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
-      (blink-cursor-mode -1)
+    (display-battery-mode t)
+    (electric-pair-mode 1) ;; auto paire
+    (global-subword-mode 1) ;; global line number
+    (global-hl-line-mode 1) ;; heighlight current line
+    (global-display-line-numbers-mode 1)
+    (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
+    (blink-cursor-mode -1)
 
-      (setq-default truncate-lines t)
+    (setq-default truncate-lines t)
 
-      (setq scroll-margin 8)
-      (setq use-dialog-box nil)
-      (setq use-file-dialog nil)
-      (setq make-backup-files nil)
-      (setq auto-save-default nil)
-      (setq locale-coding-system 'utf-8)
-      (defalias 'yes-or-no-p 'y-or-n-p)
-      ;;; improve scrolling exprience
-      (setq scroll-step 1)
-      (setq scroll-conservatively 10000)
-      (setq auto-window-vscroll nil)
+    (setq scroll-margin 8)
+    (setq use-dialog-box nil)
+    (setq use-file-dialog nil)
+    (setq make-backup-files nil)
+    (setq auto-save-default nil)
+    (setq locale-coding-system 'utf-8)
+    (defalias 'yes-or-no-p 'y-or-n-p)
+    ;;; improve scrolling exprience
+    (setq scroll-step 1)
+    (setq scroll-conservatively 10000)
+    (setq auto-window-vscroll nil)
 
-     (global-set-key [escape] 'keyboard-escape-quit)
-     (global-set-key (kbd "C-=") 'text-scale-increase)
-     (global-set-key (kbd "C--") 'text-scale-decrease)
-     (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-     (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
-     (global-set-key (kbd "M-j") 'consult-buffer)
+   (global-set-key [escape] 'keyboard-escape-quit)
+   (global-set-key (kbd "C-=") 'text-scale-increase)
+   (global-set-key (kbd "C--") 'text-scale-decrease)
+   (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+   (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+   (global-set-key (kbd "M-j") 'consult-buffer)
 
-     ;; Faster loading
-      (setq gc-cons-threshold (* 384 1024 1024)
-         gc-cons-percentage 1.6)
-       ;; Do not load outdeted bytecode files;
-       (setq load-prefer-newer t)
+   ;; Faster loading
+    (setq gc-cons-threshold (* 384 1024 1024)
+       gc-cons-percentage 1.6)
+     ;; Do not load outdeted bytecode files;
+     (setq load-prefer-newer t)
 
-   ;; Increase for lsp batter performance.
-   (setq read-process-output-max (* 3 1024 1024))
-   ;; default 800
-   (setq max-lisp-eval-depth 10000)
-   (setq package-enable-at-startup nil)
+ ;; Increase for lsp batter performance.
+ (setq read-process-output-max (* 3 1024 1024))
+ ;; default 800
+ (setq max-lisp-eval-depth 10000)
+ (setq package-enable-at-startup nil)
 
 
-    (setq visual-fill-column-width 160
-          visual-fill-column-center-text t) ;; ;; Configure fill width
-   ;; set custom file for emacs internal variables
-   (setq custom-file (concat user-emacs-directory "custom.el"))
-   (load custom-file 'noerror)
+  (setq visual-fill-column-width 160
+        visual-fill-column-center-text t) ;; ;; Configure fill width
+ ;; set custom file for emacs internal variables
+ (setq custom-file (concat user-emacs-directory "custom.el"))
+ (load custom-file 'noerror)
 #+END_SRC
 *** LOCALE
 #+begin_src elisp
@@ -330,22 +331,21 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
               ("C-c C-r" . eglot-rename)
               ("C-c C-d" . eglot-menu))
   :config
+  (with-eval-after-load 'evil
+    (evil-define-key 'normal eglot-mode-map  
+      "K" 'eldoc-box-help-at-point))
   (setq eglot-sync-connect 1
-        eglot-autoshutdown t ;; auto shutdowns server of close the buffer 
-        )
+        eglot-autoshutdown t)
   (add-to-list 'eglot-server-programs
                '((tsx-ts-mode typescript-ts-mode javascript-mode) . ("typescript-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
                '((css-mode scss-mode html-mode) . ("tailwindcss-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
-               '(rustic-mode . ("~/.cargo/bin/rust-analyzer" :initializationOptions
+               '(rustic-mode . ("rust-analyzer" :initializationOptions
                                             (:procMacro (:enable t
                                                                  :ignored (:leptos_macro (:server)))
                                                          :cargo (:buildScripts (:enable t)
                                                                                 :features "all"))))))
-
-
-
 (fset #'jsonrpc--log-event #'ignore)
 (setq eglot-server-json-parser #'json-parse-string-no-itaewc)
 #+end_src
@@ -390,21 +390,35 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 *** Nix
 #+begin_src emacs-lisp
 (use-package nix-mode
- :mode ("\\.nix\\'")
- :hook ('nix-mode . 'eglot-ensure)
- :straight t)
+ :straight t
+ :mode ("\\.nix\\'" "\\.nix.in\\'")
+ :hook ('nix-mode . 'eglot-ensure))
+
+(use-package nix-drv-mode
+  :straight nix-mode
+  :mode "\\.drv\\'")
+
+(use-package nix-shell
+  :straight nix-mode
+  :commands (nix-shell-unpack nix-shell-configure nix-shell-build))
+
 #+end_src
 *** Rust
 #+begin_src emacs-lisp
+;; Ensure rustic-mode is loaded for .rs files
 (use-package rustic
   :straight t
   :init
   (setq rustic-lsp-server-extra-args "--debug")
-  (setq rustic-lsp-client 'eglot))
+  (setq rustic-lsp-client 'eglot)
+  ;; Ensure rustic-mode is used instead of rust-mode
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rustic-mode)))
 
+;; Enable Rust support for Org Babel
 (use-package ob-rust
   :straight t)
 
+;; Integrate Cargo minor mode with rustic-mode
 (use-package cargo-mode
   :hook
   (rustic-mode . cargo-minor-mode)
@@ -586,7 +600,8 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
     :init
     (global-git-gutter-mode))
 
-  (use-package git-timemachine)
+(use-package git-timemachine)
+
 
 #+end_src
 * HUNGRY-DELETE
@@ -868,6 +883,21 @@ org-confirm-babel-evaluate nil)
           compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1))                ; For echo area hints
+#+end_src
+* PROG-MODE
+#+begin_src emacs-lisp
+(use-package prog-mode
+  :straight nil ;; prog-mode is built-in, so we don't need to install it
+  :hook ((prog-mode . display-line-numbers-mode) ;; Enable line numbers
+         (prog-mode . show-paren-mode)          ;; Highlight matching parentheses
+         (prog-mode . electric-pair-mode)      ;; Automatically insert matching braces/quotes
+        ;; (prog-mode . flyspell-prog-mode)      ;; Enable spell-checking in comments/strings
+         (prog-mode . hs-minor-mode))          ;; Enable code folding
+  :config
+  ;; Additional custom settings for prog-mode
+  (setq-default display-line-numbers 'relative) ;; Use relative line numbers
+  (setq show-paren-delay 0)                     ;; No delay for showing matching paren
+  (message "prog-mode customizations loaded"))
 #+end_src
 * FILE BROWSER & PROJECTS
 ** DIRED

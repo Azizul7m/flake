@@ -66,6 +66,7 @@
       httpie # https cleint for *GET,POST,PUT*
       asciinema # Record terminal
       dog # — A command-line DNS client.
+      imgurbash2
 
       #LSP
       docker-ls
@@ -78,6 +79,7 @@
       tailwindcss-language-server
       nginx-language-server
       superhtml
+      texlab # LaTex
 
       yt-dlp
       jellyfin-ffmpeg

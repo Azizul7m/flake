@@ -9,7 +9,7 @@
     ../modules/programs/zoxide.nix
     ../modules/programs/rofi.nix
     ../modules/programs/emacs.nix
-    ../modules/programs/nvim/nvim.nix
+    # ../modules/programs/nvim/nvim.nix
     ../modules/programs/wofi.nix
     ../modules/programs/fish.nix
     ../modules/programs/hypr/waybar.nix

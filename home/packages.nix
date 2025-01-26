@@ -19,8 +19,8 @@
       #Graphics
       figma-linux
       inkscape
-      gimp
       sxiv
+      krita
       scribus
       # blender
 
