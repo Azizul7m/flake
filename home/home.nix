@@ -9,7 +9,7 @@
     ../modules/programs/zoxide.nix
     ../modules/programs/rofi.nix
     ../modules/programs/emacs.nix
-    # ../modules/programs/nvim/nvim.nix
+    #../modules/programs/nvim/nvim.nix
     ../modules/programs/wofi.nix
     ../modules/programs/fish.nix
     ../modules/programs/hypr/waybar.nix
@@ -21,19 +21,10 @@
   home.username = "${var.user}";
   home.homeDirectory = "/home/${var.user}";
   home.stateVersion = "23.05"; # Please read the comment before changing.
-  home.packages = [
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-  ];
+  home.packages = [ ];
 
   home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+    # # Bulding this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
@@ -42,7 +33,7 @@
   home.sessionVariables = {
     TERMINAL = "alacritty";
     VISUAL = "nvim";
-    BROWSER = "brave";
+    BROWSER = "google-chrome-stable";
     RUSTUP_HOME = "$HOME/.local";
     CARGO_HOME = "$HOME/.local";
     NODE_PATH = "$HOME/.local";
@@ -60,6 +51,7 @@
       diff-highlight.enable = true;
     };
   };
+
   nix = {
     package = pkgs.nix;
     settings.experimental-features = [ "nix-command" "flakes" ];

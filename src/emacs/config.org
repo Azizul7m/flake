@@ -80,6 +80,7 @@
 - [[#visual-stuff][VISUAL STUFF]]
 - [[#web][WEB]]
   - [[#chrome-emacs][CHROME-EMACS]]
+  - [[#elfeed][ELFEED]]
 - [[#vm][VM]]
 
 * VANILA *EMACS* CONFIG
@@ -90,16 +91,7 @@
 
     (scroll-bar-mode -1)
     (save-place-mode 1)
-
-    (display-battery-mode t)
-    (electric-pair-mode 1) ;; auto paire
-    (global-subword-mode 1) ;; global line number
-    (global-hl-line-mode 1) ;; heighlight current line
-    (global-display-line-numbers-mode 1)
-    (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
     (blink-cursor-mode -1)
-
-    (setq-default truncate-lines t)
 
     (setq scroll-margin 8)
     (setq use-dialog-box nil)
@@ -107,11 +99,21 @@
     (setq make-backup-files nil)
     (setq auto-save-default nil)
     (setq locale-coding-system 'utf-8)
-    (defalias 'yes-or-no-p 'y-or-n-p)
+
+    (display-battery-mode t)
+    (electric-pair-mode 1) ;; auto paire
+    (global-subword-mode 1) ;; global line number
+    (global-hl-line-mode 1) ;; heighlight current line
+    (global-display-line-numbers-mode 1)
+    (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
+
     ;;; improve scrolling exprience
     (setq scroll-step 1)
     (setq scroll-conservatively 10000)
     (setq auto-window-vscroll nil)
+
+    (defalias 'yes-or-no-p 'y-or-n-p)
+    (setq-default truncate-lines t)
 
    (global-set-key [escape] 'keyboard-escape-quit)
    (global-set-key (kbd "C-=") 'text-scale-increase)
@@ -131,7 +133,6 @@
  ;; default 800
  (setq max-lisp-eval-depth 10000)
  (setq package-enable-at-startup nil)
-
 
   (setq visual-fill-column-width 160
         visual-fill-column-center-text t) ;; ;; Configure fill width
@@ -1292,6 +1293,19 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   :config
   (setq-default atomic-chrome-extension-type-list '(atomic-chrome))
   (atomic-chrome-start-server))
+#+end_src
+** ELFEED 
+#+begin_src emacs-lisp
+(use-package elfeed
+  :straight (elfeed :type git :files (:defaults "README.md" "elfeed-pkg.el") :host github :repo "skeeto/elfeed")
+  )
+
+(use-package elfeed-webkit
+  :straight (elfeed-webkit :type git :host github :repo "fritzgrabo/elfeed-webkit"))
+
+(use-package elfeed-dashboard
+  :straight (elfeed-dashboard :type git :host github :repo "manojm321/elfeed-dashboard"))
+
 #+end_src
 * VM
 #+begin_src emacs-lisp

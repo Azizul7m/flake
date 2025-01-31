@@ -2,7 +2,14 @@
   programs = { fish.enable = true; };
   home = with var.pkgs; {
     packages = ([
-      # C STUFF
+      # Build essential
+      stdenv
+      subversion
+      cmake
+      libepoxy
+      wayland-protocols
+      libxkbcommon
+      libdecor
       libtool
       libclang
       gnumake
@@ -13,6 +20,7 @@
       pkg-config
       systemd # Some core packages are bundle with systemd
 
+      #android
       android-tools
       adb-sync
       adbfs-rootless
@@ -67,6 +75,14 @@
       asciinema # Record terminal
       dog # — A command-line DNS client.
       imgurbash2
+      shell-gpt
+      hunspell
+      hunspellDicts.en_US
+
+      metasploit
+      nikto
+      proxychains-ng
+      ghostscript
 
       #LSP
       docker-ls

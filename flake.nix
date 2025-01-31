@@ -30,6 +30,7 @@
         user = "anower";
         fullName = "Azizul Islam";
         userEmail = "azizul7m@gmail.com";
+        languages = [ "en_US" "en_GB" ];
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;

@@ -5,8 +5,8 @@ with var.pkgs; {
       xterm
       git
       gh
+      vim
       nushell
-      neovim
       wget
       joshuto
       nitch
@@ -39,7 +39,6 @@ with var.pkgs; {
       xdg-utils # Environment integration
       cups # A standards-based printing system for UNIX
       fontconfig # root font config
-
     ];
   };
   stylix.enable = true;

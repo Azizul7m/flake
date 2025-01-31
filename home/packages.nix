@@ -2,6 +2,8 @@
   home = {
     packages = (with pkgs; [
       nautilus
+      nautilus-open-in-blackbox
+      nautilus-open-any-terminal
       baobab # disk analizer
       google-chrome
       firefox
@@ -25,6 +27,7 @@
       # blender
 
       # Social
+      zulip
       telegram-desktop
 
       #Utils
@@ -47,14 +50,11 @@
 
       #Utils
       playerctl
+      cliphist # clipboard manager
       screenkey
       wineWowPackages.waylandFull
       winetricks
       #zenity # Diolog
-      ghostscript
-      cliphist # clipboard manager
-      cointop
-      coinlive
 
       # Dev
       gdbgui
@@ -64,6 +64,7 @@
 
       insomnia
       #jetbrains.datagrip
+
     ]);
   };
 }

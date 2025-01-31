@@ -76,7 +76,7 @@ with var.pkgs; {
         scriptsDir = "$HOME/.config/hypr/scripts";
         terminal = "alacritty";
         browser = "brave";
-        fileManager = "pcmanfm";
+        fileManager = "nautilus";
         menu = "pkill wofi || wofi --show drun -I";
         emacsTerminal = "emacsclient  -c";
         fctix =
@@ -167,7 +167,7 @@ with var.pkgs; {
           "$mod, i, exec, $menu"
           "$mod, V, exec, roficlip"
           "$mod, E, exec, ${fileManager}"
-          "$mod SHIFT, E, exec, nautilus"
+          "$mod SHIFT, E, exec, pcmanfm"
           "$mod SHIFT, N, exec, waypaper --random"
 
           # Notifications

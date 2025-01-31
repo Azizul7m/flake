@@ -13,9 +13,10 @@
     lorri.enable = true;
     gvfs.enable = true; # trash  "Heavy"
     udisks2.enable = true; # auto mount drive  "Heavy"
-    xserver = { 
+    languagetool.enable = true;
+    xserver = {
       enable = true;
-      displayManager.gdm.enable= true;
-  };
+      displayManager.gdm.enable = true;
+    };
   };
 }
