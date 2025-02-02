@@ -29,12 +29,10 @@
   - [[#formating][FORMATING]]
 - [[#emacs-application-framework][EMACS APPLICATION FRAMEWORK]]
 - [[#evil-mode][EVIL MODE]]
-- [[#eww][EWW]]
 - [[#env][ENV]]
 - [[#flymake][FLYMAKE]]
 - [[#git][GIT]]
 - [[#hungry-delete][HUNGRY-DELETE]]
-- [[#irc][IRC]]
 - [[#keybinding][KEYBINDING]]
 - [[#ligature][LIGATURE]]
 - [[#search-engine][SEARCH ENGINE]]
@@ -79,8 +77,10 @@
   - [[#rainbow][RAINBOW]]
 - [[#visual-stuff][VISUAL STUFF]]
 - [[#web][WEB]]
+  - [[#eww][EWW]]
   - [[#chrome-emacs][CHROME-EMACS]]
   - [[#elfeed][ELFEED]]
+  - [[#irc][IRC]]
 - [[#vm][VM]]
 
 * VANILA *EMACS* CONFIG
@@ -335,7 +335,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   (with-eval-after-load 'evil
     (evil-define-key 'normal eglot-mode-map  
       "K" 'eldoc-box-help-at-point))
-  (setq eglot-sync-connect 1
+  (setq eglot-sync-connect 0
         eglot-autoshutdown t)
   (add-to-list 'eglot-server-programs
                '((tsx-ts-mode typescript-ts-mode javascript-mode) . ("typescript-language-server" "--stdio")))
@@ -490,15 +490,16 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 (use-package apheleia
   :straight t
   :config
-  (setq apheleia-global-mode 1)
   (setq apheleia-remote-algorithm 'remote)
-  ;;   ;; Define leptosfmt as a formatter
-  ;; (add-to-list 'apheleia-formatters
-  ;;              '(leptosfmt . ("leptosfmt")))
-  ;; ;; Associate leptosfmt with rustic-mode or rust-mode
-  ;; (add-to-list 'apheleia-mode-alist
-  ;;              '(rustic-mode . leptosfmt))
   (apheleia-global-mode +1))
+
+(with-eval-after-load 'apheleia
+  (setf (alist-get 'rustfmt apheleia-formatters)
+        '("rustfmt" "--edition" "2021")))
+;;  Use Apheleia on Org Source Blocks
+(add-hook 'org-src-mode-hook (lambda () (add-hook 'before-save-hook #'apheleia-format-buffer nil t)))
+
+
 #+end_src
 
 *** Combobulate
@@ -554,19 +555,6 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :config
   (global-evil-surround-mode 1))
 #+end_src
-* EWW
-#+begin_src emacs-lisp
-(use-package eww
-    :straight t
-    :config
-    (setq eww-enable-experimental-features t)
-    (setq eww-enable-javascript t))
-
-    (add-hook 'eww-mode-hook
-              (lambda ()
-                (visual-fill-column-mode t)
-                (display-line-numbers-mode nil)))
-#+end_src
 * ENV
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
@@ -612,25 +600,6 @@ Hungry Delete is a minor-mode that causes deletion to delete all whitespace in t
    :straight t
    :defer t
    :config (global-hungry-delete-mode))
-#+end_src
-* IRC
-#+begin_src emacs-lisp
-(setq erc-autojoin-mode t
-   erc-server "irc.libera.chat"
-   erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs" "#rust"))
-   erc-nick "Azizul7m"
-   erc-user-full-name "Azizul Islam"  ; And this!
-   erc-track-shorten-start 8
-   erc-interpret-mirc-color t
-   erc-query-display 'buffer
-   erc-kill-buffer-on-part t
-   ;; messages
-   erc-hide-list '("JOIN" "PART" "QUIT")
-   ;; tracking -----------------------------------------------------------
-   erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
-                             "324" "329" "332" "333" "353" "477")
-   erc-auto-query 'bury)
-;;(erc-spelling-mode 1)
 #+end_src
 * KEYBINDING
 Goto this file -> [[file:./keybinding.el][KEYBINDING]]
@@ -1229,6 +1198,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
                           (bookmarks . 3)
                           (registers . 3)))
   (dashboard-setup-startup-hook))
+
 #+end_src
 ** PAGE BREAK LINES
 #+begin_src emacs-lisp
@@ -1281,6 +1251,19 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 
 #+end_src
 * WEB
+** EWW
+#+begin_src emacs-lisp
+(use-package eww
+    :straight t
+    :config
+    (setq eww-enable-experimental-features t)
+    (setq eww-enable-javascript t))
+
+    (add-hook 'eww-mode-hook
+              (lambda ()
+                (visual-fill-column-mode t)
+                (display-line-numbers-mode nil)))
+#+end_src
 ** CHROME-EMACS
 #+begin_src emacs-lisp
 (use-package atomic-chrome
@@ -1298,18 +1281,37 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 #+begin_src emacs-lisp
 (use-package elfeed
   :straight (elfeed :type git :files (:defaults "README.md" "elfeed-pkg.el") :host github :repo "skeeto/elfeed")
-  )
+  :config
+  (setq elfeed-feeds
+      '("http://nullprogram.com/feed/"
+        "https://planet.emacslife.com/atom.xml")))
 
-(use-package elfeed-webkit
-  :straight (elfeed-webkit :type git :host github :repo "fritzgrabo/elfeed-webkit"))
+(use-package  elfeed-dashboard
+  :straight (elfeed-dashboard :type git :host github :repo "manojm321/elfeed-dashboard")) 
 
-(use-package elfeed-dashboard
-  :straight (elfeed-dashboard :type git :host github :repo "manojm321/elfeed-dashboard"))
-
+#+end_src
+** IRC
+#+begin_src emacs-lisp
+(setq erc-autojoin-mode t
+   erc-server "irc.libera.chat"
+   erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs" "#rust"))
+   erc-nick "Azizul7m"
+   erc-user-full-name "Azizul Islam"  ; And this!
+   erc-track-shorten-start 8
+   erc-interpret-mirc-color t
+   erc-query-display 'buffer
+   erc-kill-buffer-on-part t
+   ;; messages
+   erc-hide-list '("JOIN" "PART" "QUIT")
+   ;; tracking -----------------------------------------------------------
+   erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
+                             "324" "329" "332" "333" "353" "477")
+   erc-auto-query 'bury)
+;;(erc-spelling-mode 1)
 #+end_src
 * VM
 #+begin_src emacs-lisp
-(use-package vagrant
-  :straight t)
-(setq tramp-remote-tramp-use-rsync t)
+;; (use-package vagrant
+;;   :straight t)
+;; (setq tramp-remote-tramp-use-rsync t)
 #+end_src

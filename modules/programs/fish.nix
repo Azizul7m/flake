@@ -85,8 +85,9 @@
         alias hotspot='nmcli dev wifi hotspot'
         alias wpassword='nmcli dev wifi show-password'
 
-        alias nix_rebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
         alias hm_rebuild='home-manager switch --flake ~/flake#nixos'
+        alias hm_news='home-manager news --flake ~/flake#nixos'
+        alias nix_rebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
         alias nix_cleanup='sudo nix-collect-garbage -d'
         alias nix_oldgen='sudo nix-env -p /nix/var/nix/profiles/system --delete-generations old'
 
@@ -94,7 +95,6 @@
       # Add npm path to PATH
       shellInit = ''
         set -gx PATH $HOME/.npm_global/bin $HOME/.deno/bin $HOME/.bun/bin $HOME/.avm/bin  $HOME/.config/hypr/scripts $HOME/.local/share/solana/install/active_release/bin $HOME/.local/toolchains/nightly-x86_64-unknown-linux-gnu/bin $HOME/.cargo/bin $HOME/.local/bin $PATH
-
                  zoxide init --cmd cd fish | source
                  starship init fish | source
       '';
