@@ -190,22 +190,27 @@
  ;;(setq gptel-default-mode 'org-mode)
  (gptel-make-gemini "Gemini" :key "AIzaSyCZ8KNE1MiGPK_av8GC7QSfX0gkFHFaAUk" :stream t)
  ;; Together.ai offers an OpenAI compatible API
-(setq gptel-model   "mistralai/Mixtral-8x7B-Instruct-v0.1"
- gptel-backend
- (gptel-make-openai "TogetherAI"
-   :host "api.together.xyz"
-   :key "034dc79db5eb2889e37553de64645e3fb3e7b9261d80e1dcf6c6c5f11acd909c"
-   :stream t
-   :models '(;; has many more, check together.ai
-             "mistralai/Mixtral-8x7B-Instruct-v0.1"
-             "codellama/CodeLlama-13b-Instruct-hf"
-             "codellama/CodeLlama-34b-Instruct-hf")))
+(setq
+ gptel-model 'deepseek-r1:1.5b
+ gptel-backend (gptel-make-ollama "Ollama"
+                 :host "localhost:11434"
+                 :stream t
+                 :models '(deepseek-r1:1.5b)))
 
  (gptel-make-openai "Anyscale"
    :host "api.endpoints.anyscale.com"
    :key "esecret_5ct3wfyw2njvs7pkrkqh1g2zrx"
    :models '(
             "mistralai/Mixtral-8x7B-Instruct-v0.1")))
+
+(gptel-make-openai "TogetherAI"         ;Any name you want
+  :host "api.together.xyz"
+  :key "034dc79db5eb2889e37553de64645e3fb3e7b9261d80e1dcf6c6c5f11acd909c"                   ;can be a function that returns the key
+  :stream t
+  :models '(;; has many more, check together.ai
+            mistralai/Mixtral-8x7B-Instruct-v0.1
+            codellama/CodeLlama-13b-Instruct-hf
+            codellama/CodeLlama-34b-Instruct-hf))
 
 (global-set-key (kbd "C-c <return>") 'gptel-send)
 (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
@@ -470,6 +475,18 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :bind ("C-<insertchar>" . uniline-mode)
   :config
   (setq line-spacing nil))
+#+end_src
+*** Sqlite
+#+begin_src emacs-lisp
+(use-package  sql
+  :ensure nil
+  :defer
+  :init
+  (setq sql-postgres-login-params '((user :default "admin")
+                                   (database :default "test")
+                                   (server :default "localhost")
+                                   (port :default 5432))))
+
 #+end_src
 ** TREE-SITTER
 #+begin_src emacs-lisp
@@ -1284,6 +1301,7 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   :config
   (setq elfeed-feeds
       '("http://nullprogram.com/feed/"
+        "https://itsfoss.com/rss/"
         "https://planet.emacslife.com/atom.xml")))
 
 (use-package  elfeed-dashboard
