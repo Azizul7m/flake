@@ -20,6 +20,8 @@
       pkg-config
       systemd # Some core packages are bundle with systemd
 
+      #AI
+
       #android
       android-tools
       adb-sync
@@ -49,10 +51,8 @@
 
       # Rust
       trunk
-      cargo-leptos
       leptosfmt
       rustup
-      cargo-watch
 
       # Web3
       solc
@@ -66,7 +66,7 @@
 
       #utils
       starship
-      eza # ls alternative
+      lsd # ls alternative
       grc # text colored
       hunspell
       typioca
@@ -85,20 +85,20 @@
       ghostscript
 
       #LSP
+      bash-language-server
       docker-ls
       docker-compose-language-service
+      jellyfin-ffmpeg
       yaml-language-server
       nodePackages_latest.typescript-language-server
-      bash-language-server
-      vscode-langservers-extracted
-      yaml-language-server
-      tailwindcss-language-server
       nginx-language-server
       superhtml
+      sqls
       texlab # LaTex
-
+      tailwindcss-language-server
+      vscode-langservers-extracted
+      yaml-language-server
       yt-dlp
-      jellyfin-ffmpeg
     ]);
     sessionVariables = {
       LIBCLANG_PATH = "${libclang.lib}/lib";

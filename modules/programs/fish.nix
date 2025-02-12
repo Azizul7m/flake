@@ -18,9 +18,10 @@
         alias .4='cd ../../../..'
         alias .5='cd ../../../../..'
 
-        alias ls='exa --icons'
-        alias la='exa -a --icons'
-        alias ll='exa -la --icons'
+        alias ls='lsd'
+        alias l='lsd -ll'
+        alias la='lsd -a'
+        alias ll='lsd -la'
         alias cls='clear'
 
 
