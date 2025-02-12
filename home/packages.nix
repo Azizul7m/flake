@@ -2,15 +2,11 @@
   home = {
     packages = (with pkgs; [
       nautilus
-      nautilus-open-in-blackbox
-      nautilus-open-any-terminal
       baobab # disk analizer
       google-chrome
       firefox
       brave
-      dropbox
       pcmanfm
-      anydesk
 
       #Office
       sioyek
@@ -31,10 +27,14 @@
       telegram-desktop
 
       #Utils
+      dropbox
       qbittorrent
       appimage-run
       bleachbit
       # boxbuddy # Distrobox container manage
+      anydesk
+      gnome-connections
+
       # Media
       vlc
       sxiv
