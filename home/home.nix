@@ -44,6 +44,7 @@
   };
   programs = {
     home-manager.enable = true;
+    freetube.enable = true;
     git = {
       enable = true;
       userName = "${var.user}";
@@ -51,9 +52,8 @@
       diff-highlight.enable = true;
     };
   };
-
   nix = {
     package = pkgs.nix;
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings = { experimental-features = [ "nix-command" "flakes" ]; };
   };
 }
