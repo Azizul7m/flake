@@ -1,4 +1,4 @@
-{ pkgs, var, ... }: {
+{ config, pkgs, var, ... }: {
   services = {
     pipewire = { # Sound settings
       enable = true;
@@ -18,5 +18,6 @@
       enable = true;
       displayManager.gdm.enable = true;
     };
+    ollama = { enable = true; };
   };
 }
