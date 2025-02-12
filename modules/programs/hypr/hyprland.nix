@@ -46,7 +46,6 @@ with var.pkgs; {
     wob # volume gui progress bar
     wev # key cast
   ];
-  programs = { freetube.enable = true; };
   wayland.windowManager = {
     hyprland = {
       enable = true;
@@ -81,7 +80,7 @@ with var.pkgs; {
         emacsTerminal = "emacsclient  -c";
         fctix =
           "fcitx5 -9;sleep 1;fcitx5 -d --replace; sleep 1;fcitx5-remote -r";
-        screenshot = "hyprshot -m region";
+        screenshot = "hyprshot -m region -o ~/Pictures/Screenshots";
       in {
         decoration = {
           shadow_ignore_window = true;
@@ -166,8 +165,8 @@ with var.pkgs; {
           "$mod ALT, B, exec, firefox"
           "$mod, i, exec, $menu"
           "$mod, V, exec, roficlip"
-          "$mod, E, exec, ${fileManager}"
-          "$mod SHIFT, E, exec, pcmanfm"
+          "$mod, E, exec, alacritty -e superfile"
+          "$mod SHIFT, E, exec, ${fileManager}"
           "$mod SHIFT, N, exec, waypaper --random"
 
           # Notifications
