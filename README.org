@@ -23,7 +23,6 @@ nixos-rebuild switch --flake .
 
 Make sure you have `nix` installed and flakes enabled.
 
----
 ** Configuration
 
 *🖥️ Hyprland Configuration*
@@ -43,14 +42,13 @@ Hyprland is configured with a balance of aesthetics and performance.
 | SUPER + F           | Toggle fullscreen                |
 | SUPER + SHIFT + R   | Reload Hyprland config           |
 
----
 
 *📝 Emacs Configuration*
 
 This is a *Vanilla Emacs* setup using the *Doom One* colorscheme. Key features include:
 
 - 🧛‍♂️ *Evil Mode* for Vim-like navigation.
-- 📒 *Org-mode* for notes and productivity.
+- 📒 *Org-Roam* for notes and productivity.
 - 🛠 *LSP Support* for smooth coding experience in multiple languages.
 - 🎯 *Custom Keybindings* for an optimized workflow.
 - 🎨 *Doom One Theme* for a consistent and pleasant look.
@@ -58,7 +56,6 @@ This is a *Vanilla Emacs* setup using the *Doom One* colorscheme. Key features i
 - 🔎 *Vertico & Consult* for better search and navigation.
 - 📝 *Which-Key* for an interactive keybinding menu.
 
----
 
 *🖥️ Alacritty Terminal*
 
@@ -73,7 +70,6 @@ Alacritty is set up as the primary terminal with the following configurations:
 | CTRL + SHIFT + Minus | Decrease font size          |
 | CTRL + SHIFT + Space | Toggle fullscreen           |
 
----
 
 *🖥️ Tmux Configuration*
 
@@ -91,7 +87,6 @@ Tmux is used to manage multiple terminal sessions efficiently.
 | ALT + i, Z      | Toggle pane zoom        |
 | ALT + k         | Sessions Manager        |
 
----
 
 *🐟 Fish Shell Configuration*
 
@@ -110,7 +105,6 @@ Fish is configured with helpful aliases for convenience:
 | ...      | cd ../..   |
 | grep     | rg         |
 
----
 
 ** 📦 Additional Utilities
 
@@ -121,13 +115,11 @@ Fish is configured with helpful aliases for convenience:
 - 🌟 *Starship*: A fast, customizable shell prompt.
 - 🎨 *Stylix*: Manages system-wide theming with a consistent color scheme.
 
----
 
 ** 📜 License
 
 This configuration is released under the MIT License.
 
----
 
 ** 📬 Contact
 
