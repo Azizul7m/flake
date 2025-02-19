@@ -358,6 +358,8 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 
 ** LSP
 #+begin_src emacs-lisp
+(use-package lsp-mode
+  :straight t)
 #+end_src
 ** LANGUAGE
 *** DevOop
@@ -408,6 +410,11 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :straight nix-mode
   :commands (nix-shell-unpack nix-shell-configure nix-shell-build))
 
+#+end_src
+*** Python
+#+begin_src emacs-lisp
+(use-package poetry
+ :ensure t)
 #+end_src
 *** Rust
 #+begin_src emacs-lisp
@@ -488,14 +495,21 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
                                    (port :default 5432))))
 
 #+end_src
+*** Vue
+#+begin_src emacs-lisp
+(use-package vue-mode
+  :straight t)
+
+(straight-use-package
+ '(lsp-volar :type git :host github :repo "jadestrong/lsp-volar"))
+#+end_src
 ** TREE-SITTER
 #+begin_src emacs-lisp
 (use-package treesit-auto
   :custom
   (treesit-auto-install 'prompt)
   :config
-  (setq treesit-auto-langs '(javascript typescript tsx css html rustic))
-  (treesit-auto-add-to-auto-mode-alist '(javascript typescript tsx css html rustic))
+  (setq treesit-auto-langs '(javascript typescript tsx vue css html rustic))
   (global-treesit-auto-mode))
 
 #+end_src
