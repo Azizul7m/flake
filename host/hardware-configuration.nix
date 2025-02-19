@@ -54,6 +54,10 @@
     #enable = true;
     #enable32Bit = true;
     #};
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
     cpu.intel.updateMicrocode =
       lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
