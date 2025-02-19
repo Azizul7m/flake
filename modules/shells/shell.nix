@@ -28,13 +28,12 @@
       adbfs-rootless
 
       #JS
-      deno
       nodejs
 
       #PY
-      python310
-      python310Packages.pip
-      pipenv
+      python3Full
+      poetry
+      pyright
 
       # BASH
       shfmt
