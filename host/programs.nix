@@ -52,6 +52,10 @@ with var.pkgs; {
     hyprland.portalPackage = xdg-desktop-portal-hyprland;
     command-not-found.enable = true;
     xwayland.enable = true;
+    localsend = {
+      enable = true;
+      openFirewall = true;
+    };
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
