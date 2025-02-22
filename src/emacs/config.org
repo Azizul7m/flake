@@ -276,7 +276,9 @@ Code Completion
     (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package corfu-terminal
-  :straight t)
+  :straight t
+  :config
+  (corfu-terminal-mode)) ;;
 #+end_src
 ** CAPE
 Cape has the super power to transform Company backends into Capfs and merge multiple Capfs into a Super-Capf! These transformers allow you to still take advantage of Company backends even if you are not using Company as frontend.
@@ -352,6 +354,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
                                                                  :ignored (:leptos_macro (:server)))
                                                          :cargo (:buildScripts (:enable t)
                                                                                 :features "all"))))))
+(setq eglot-completion-style 'flex)  ;; Improve Corfu + Eglot completion
 (fset #'jsonrpc--log-event #'ignore)
 (setq eglot-server-json-parser #'json-parse-string-no-itaewc)
 #+end_src
@@ -409,6 +412,31 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 (use-package nix-shell
   :straight nix-mode
   :commands (nix-shell-unpack nix-shell-configure nix-shell-build))
+
+#+end_src
+*** LaTeX
+#+begin_src emacs-lisp
+(use-package auctex
+  :ensure t
+  :defer t
+  :config
+  (setq TeX-auto-save t)      ;; Auto-save document parsing
+  (setq TeX-parse-self t)      ;; Enable auto-parsing
+  (setq-default TeX-master nil) ;; Don't assume a main file
+  (setq TeX-PDF-mode t))       ;; Compile to PDF by default
+
+(use-package reftex
+  :ensure t
+  :hook (LaTeX-mode . reftex-mode)
+  :config
+  (setq reftex-plug-into-AUCTeX t)) ;; Integrate with AUCTeX
+
+(use-package latex-preview-pane
+  :straight t) 
+
+(setq TeX-save-query nil)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+
 
 #+end_src
 *** Python
