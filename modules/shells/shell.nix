@@ -34,6 +34,7 @@
       python3Full
       poetry
       pyright
+      jython # python interpreter for java
 
       # BASH
       shfmt
@@ -69,8 +70,6 @@
       grc # text colored
       hunspell
       typioca
-      gping # Ping
-      httpie # https cleint for *GET,POST,PUT*
       asciinema # Record terminal
       dog # — A command-line DNS client.
       imgurbash2
@@ -78,8 +77,12 @@
       hunspell
       hunspellDicts.en_US
 
+      # Bypass
+      gping # Ping
+      httpie # https cleint for *GET,POST,PUT*
       metasploit
       nikto
+      burpsuite
       proxychains-ng
       ghostscript
 
