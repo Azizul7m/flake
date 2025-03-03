@@ -27,6 +27,7 @@
   - [[#tree-sitter][TREE-SITTER]]
   - [[#debug][DEBUG]]
   - [[#formating][FORMATING]]
+- [[#diminish][DIMINISH]]
 - [[#emacs-application-framework][EMACS APPLICATION FRAMEWORK]]
 - [[#evil-mode][EVIL MODE]]
 - [[#env][ENV]]
@@ -43,7 +44,6 @@
   - [[#embark][EMBARK]]
   - [[#wgrep][WGREP]]
   - [[#marginalia][MARGINALIA]]
-- [[#diminish][DIMINISH]]
 - [[#whichkey][WHICHKEY]]
 - [[#writing][WRITING]]
   - [[#org-mode][ORG-MODE]]
@@ -305,6 +305,10 @@ Cape has the super power to transform Company backends into Capfs and merge mult
         eldoc-box-max-pixel-width 600
         eldoc-box-show-help-tooltip t
         eldoc-box-tooltip-delay 500))
+
+(setq eldoc-echo-area-use-multiline-p t) ;; Allow multi-line messages
+(setq eldoc-documentation-strategy 'eldoc-documentation-compose) ;; Show LSP progress dynamically
+
 #+end_src
 ** CONSULT
 #+begin_src emacs-lisp
@@ -333,7 +337,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 ** EGLOT
 #+begin_src emacs-lisp
 (use-package eglot
-  :hook (('prog-mode  . 'eglot-ensure))
+  :hook (prog-mode . eglot-ensure)
   :bind (:map eglot-mode-map
               ("C-c C-a" . eglot-code-actions)
               ("C-c C-r" . eglot-rename)
@@ -342,21 +346,30 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   (with-eval-after-load 'evil
     (evil-define-key 'normal eglot-mode-map  
       "K" 'eldoc-box-help-at-point))
-  (setq eglot-sync-connect 0
-        eglot-autoshutdown t)
-  (add-to-list 'eglot-server-programs
-               '((tsx-ts-mode typescript-ts-mode javascript-mode) . ("typescript-language-server" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '((css-mode scss-mode html-mode) . ("tailwindcss-language-server" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '(rustic-mode . ("rust-analyzer" :initializationOptions
-                                            (:procMacro (:enable t
-                                                                 :ignored (:leptos_macro (:server)))
-                                                         :cargo (:buildScripts (:enable t)
-                                                                                :features "all"))))))
-(setq eglot-completion-style 'flex)  ;; Improve Corfu + Eglot completion
-(fset #'jsonrpc--log-event #'ignore)
-(setq eglot-server-json-parser #'json-parse-string-no-itaewc)
+
+  (setq-default eglot-sync-connect 0
+                eglot-autoshutdown t
+                eglot-completion-style 'flex  ;; Improve Corfu + Eglot completion
+                eglot-send-changes-idle-time 0.3
+                eglot-events-buffer-config nil)
+
+  (fset #'jsonrpc--log-event #'ignore)
+
+  (require 'cl-lib)
+  (cl-pushnew '(rustic-mode . ("rust-analyzer" "--stdio"
+                               :initializationOptions
+                               (:procMacro (:enable :json-false)
+                                           :cargo (:buildScripts (:enable :json-false)))))
+              eglot-server-programs :test #'equal)
+
+  (cl-pushnew '((tsx-ts-mode typescript-ts-mode javascript-mode) . ("typescript-language-server" "--stdio"))
+              eglot-server-programs :test #'equal)
+
+  (cl-pushnew '((css-mode scss-mode html-mode) . ("tailwindcss-language-server" "--stdio"))
+              eglot-server-programs :test #'equal)
+
+  (with-eval-after-load 'doom-modeline
+    (add-to-list 'doom-modeline-mode-alist '(eglot-mode . " [Eglot]"))))
 #+end_src
 
 ** LSP
@@ -563,6 +576,12 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 
 *** Combobulate
 #+begin_src emacs-lisp
+#+end_src
+* DIMINISH
+This package implements hiding or abbreviation of the mode line displays (lighters) of minor-modes.
+#+begin_src emacs-lisp
+(use-package diminish
+  :straight t)
 #+end_src
 * EMACS APPLICATION FRAMEWORK
 #+begin_src emacs-lisp
@@ -774,11 +793,6 @@ or C-c C-k to abort.
   :init
   (marginalia-mode 1))
 #+end_src
-* DIMINISH
-This package implements hiding or abbreviation of the mode line displays (lighters) of minor-modes.
-#+begin_src emacs-lisp
-(use-package diminish )
-#+end_src
 * WHICHKEY
 #+begin_src emacs-lisp
 (use-package which-key
@@ -955,10 +969,11 @@ org-confirm-babel-evaluate nil)
 #+begin_src emacs-lisp
 (use-package projectile
    :straight t
-   :defer t
    :config
-         (setq projectile-enable-caching t
-               projectile-file-exists-remote-cache-expire nil)
+         (setq projectile-indexing-method 'alien
+               projectile-globally-ignored-directories '("target" "node_modules")
+            projectile-enable-caching t
+            projectile-file-exists-remote-cache-expire nil)
    :init
    (projectile-mode 1))
 #+end_src
@@ -1221,19 +1236,19 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 
 (use-package doom-modeline
   :straight t
+  :init
+  (doom-modeline-mode 1)
   :config
-    (setq doom-modeline-height 17)
-    (setq  doom-modeline-hud t)
-    (setq doom-modeline-icon t)
-    (setq doom-modeline-lsp-icon t)
-    (setq doom-modeline-height 1)
-    (setq doom-modeline-buffer-encoding nil)
-    (setq doom-modeline-project-name t)
-    (setq doom-modeline-irc t)
-    (set-face-attribute 'mode-line nil :height 100)
-    (set-face-attribute 'mode-line-inactive nil :height 100)
-   :init
-   (doom-modeline-mode 1))
+  (setq doom-modeline-height 17) ;; Ensure visibility
+  (setq doom-modeline-hud t)
+  (setq doom-modeline-lsp t) ;; Enables LSP status
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-github t)
+  (setq doom-modeline-buffer-encoding nil)
+  (setq doom-modeline-project-name t)
+  (setq doom-modeline-irc t)
+  (set-face-attribute 'mode-line nil :height 100)
+  (set-face-attribute 'mode-line-inactive nil :height 100))
 
 #+END_SRC
 ** DASHBOARD
@@ -1298,7 +1313,6 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+end_src
-
 * VISUAL STUFF
 #+begin_src emacs-lisp
 (use-package visual-fill-column
