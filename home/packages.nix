@@ -32,8 +32,7 @@
       appimage-run
       bleachbit
       # boxbuddy # Distrobox container manage
-      anydesk
-      gnome-connections
+      rustdesk
 
       # Media
       vlc
