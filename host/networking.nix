@@ -3,10 +3,6 @@
     hostName = "${var.host}"; # Define your hostname.
     useDHCP = false;
     networkmanager.enable = true;
-    # stevenblack = {
-    #   enable = true;
-    #   block = [ "fakenews" "gambling" "porn" ];
-    # };
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 67 68 80 443 5900 ];
@@ -17,7 +13,4 @@
     };
   };
   services.openssh = { enable = true; };
-  # systemd.packages = [ var.pkgs.cloudflare-warp ];
-  # systemd.services."warp-svc".wantedBy = [ "multi-user.target" ];
-  # environment.systemPackages = [ var.pkgs.cloudflare-warp ];
 }
