@@ -50,13 +50,9 @@
             tooltip-format = "{title}";
             on-click = "activate";
             on-click-middle = "close";
-            ignore-list = ''
-              [
-                                     Alacritty
-                                  ]'';
+            ignore-list = "[ Alacritty ]";
             "app_ids-mapping" = "{}";
           };
-
           clock = {
             tooltip-format = ''
               {:%Y %B}
@@ -105,8 +101,8 @@
             tooltip-format = "{volume}% {icon} {format_source}";
             format-icons = {
               headphone = "";
-              hands-free = "";
-              headset = "";
+              hands-free = " ";
+              headset = "";
               phone = "";
               portable = "";
               car = "";
@@ -172,7 +168,7 @@
             single-icons = { on = "1 "; };
             state-icons = {
               paused = "";
-              playing = "󰝚";
+              playing = "";
             };
             on-click = "pkill ncmpcpp || alacritty -e ncmpcpp";
             tooltip-format = "MPD (connected)";
