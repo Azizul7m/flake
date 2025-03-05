@@ -58,7 +58,7 @@
       solc
 
       #anchor
-      solana-validator
+      solana-cli
 
       # DEVOPS
       dockfmt # docker format
@@ -71,7 +71,6 @@
       hunspell
       typioca
       asciinema # Record terminal
-      dog # — A command-line DNS client.
       imgurbash2
       shell-gpt
       hunspell

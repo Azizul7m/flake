@@ -9,7 +9,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix.url = "github:danth/stylix";
-    nur.url = "github:nix-community/NUR";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
 
     nixvim = {
@@ -34,11 +33,7 @@
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
-          overlays = [
-            inputs.nur.overlay
-            inputs.emacs-overlay.overlay
-            inputs.hyprpanel.overlay
-          ];
+          overlays = [ inputs.emacs-overlay.overlay inputs.hyprpanel.overlay ];
         };
         pkgs-stable = import inputs.nixpkgs-stable {
           inherit system;

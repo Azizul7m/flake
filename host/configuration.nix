@@ -73,7 +73,6 @@
       auth include login
     '';
   };
-  hardware.pulseaudio.enable = false;
   nixpkgs.config.allowUnfree = true; # Allow unfree packages
   system.stateVersion = "24.05"; # Did you read the comment?
 }

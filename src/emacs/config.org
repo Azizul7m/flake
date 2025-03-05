@@ -350,7 +350,7 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   (setq-default eglot-sync-connect 0
                 eglot-autoshutdown t
                 eglot-completion-style 'flex  ;; Improve Corfu + Eglot completion
-                eglot-send-changes-idle-time 0.3
+                eglot-send-changes-idle-time 0.2
                 eglot-events-buffer-config nil)
 
   (fset #'jsonrpc--log-event #'ignore)

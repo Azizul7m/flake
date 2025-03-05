@@ -6,10 +6,8 @@
       noto-fonts-cjk-sans
       noto-fonts-emoji
       iosevka-comfy.comfy-motion
-      (nerdfonts.override {
-        fonts = [ "Iosevka" ];
-      }) # fonts name can get in ``https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/data/fonts/nerdfonts/shas.nix`
       twemoji-color-font
+      nerd-fonts.fira-code
     ];
     fontconfig = {
       localConf = ''

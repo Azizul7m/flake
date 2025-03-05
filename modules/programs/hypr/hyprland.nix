@@ -75,7 +75,7 @@ with var.pkgs; {
         scriptsDir = "$HOME/.config/hypr/scripts";
         terminal = "alacritty";
         browser = "brave";
-        fileManager = "nautilus";
+        fileManager = "pcmanfm";
         menu = "pkill wofi || wofi --show drun -I";
         emacsTerminal = "emacsclient  -c";
         fctix =
@@ -83,19 +83,12 @@ with var.pkgs; {
         screenshot = "hyprshot -m region -o ~/Pictures/Screenshots";
       in {
         decoration = {
-          shadow_ignore_window = true;
-          shadow_offset = "0 15";
-          shadow_range = "100";
-          shadow_render_power = "2";
-          shadow_scale = "0.97";
           rounding = 5;
-          drop_shadow = "no";
-          "col.shadow" = "rgba(eaeaeaee)";
           blur = {
             enabled = true;
             size = 2;
             passes = 4;
-            vibrancy = 0.1696;
+            vibrancy = 0 j1696;
             popups = true;
           };
         };
