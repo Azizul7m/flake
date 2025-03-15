@@ -2,8 +2,8 @@
   environment.systemPackages = with pkgs; [ twemoji-color-font ];
   fonts = {
     packages = with pkgs; [
+      roboto
       noto-fonts
-      noto-fonts-cjk-sans
       noto-fonts-emoji
       iosevka-comfy.comfy-motion
       twemoji-color-font
