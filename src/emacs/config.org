@@ -827,11 +827,6 @@ org-confirm-babel-evaluate nil)
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
-*** DENOTE
-#+begin_src emacs-lisp
-(use-package denote
-  :ensure t)
-#+end_src
 *** ORG-ROAM
 #+begin_src emacs-lisp
 (use-package org-roam
@@ -867,6 +862,21 @@ org-confirm-babel-evaluate nil)
   :ensure t
   :config
   (with-eval-after-load 'org (global-org-modern-mode)))
+#+end_src
+*** pandoc
+#+begin_src emacs-lisp
+(use-package ox-pandoc
+  :straight t
+  :config
+  (require 'ox-pandoc) ;; Ensure it's loaded
+  (setq org-pandoc-options
+        '((pdf-engine . "xelatex")))
+
+  ;; Ensure Bangla fonts are applied in LaTeX exports
+  (setq org-pandoc-options-for-latex-pdf
+        '((pdf-engine . "xelatex")
+          (variable . "true"))) ;; Allows custom fonts in LaTeX
+)
 #+end_src
 *** SNIPPET
 #+begin_src emacs-lisp

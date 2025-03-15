@@ -88,7 +88,7 @@ with var.pkgs; {
             enabled = true;
             size = 2;
             passes = 4;
-            vibrancy = 0 j1696;
+            vibrancy = 0;
             popups = true;
           };
         };

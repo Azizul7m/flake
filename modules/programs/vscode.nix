@@ -1,13 +1,7 @@
-{config, pkgs , ...}: {
+{ config, pkgs, ... }: {
   programs.vscode = {
     enable = true;
-    package= pkgs.vscodium;
-    enableUpdateCheck = true;
-    extensions= with pkgs.vscode-extensions; [
-      vscodevim.vim     
-      bbenoist.nix
-      rust-lang.rust-analyzer
-    ];
+    package = pkgs.vscodium;
     # userSettings = {
     #     "editor.tabSize"= 2;
     #     "editor.fontSize"= 15;

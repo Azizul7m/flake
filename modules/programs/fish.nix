@@ -44,12 +44,11 @@
         # get error messages from journalctl
         alias jctl="journalctl -p 3 -xb"
 
-
         alias gap='git add -u'
         alias gaa='git add .'
         alias gco='git checkout'
         alias gc='git clone'
-        alias gp='git pull origin'
+        alias gp='git push origin'
         alias gm='git commit -m'
         alias gb='git branch'
         alias gs='git status'

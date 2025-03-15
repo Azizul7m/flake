@@ -1,4 +1,5 @@
 { var, ... }: {
+  imports = [ ./react_native.nix ];
   programs = { fish.enable = true; };
   home = with var.pkgs; {
     packages = ([
