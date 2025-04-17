@@ -38,6 +38,7 @@
     CARGO_HOME = "$HOME/.local";
     NODE_PATH = "$HOME/.local";
     PIP_PREFIX = "$HOME/.local/bin";
+    ANCHOR_HOME = "$HOME/.anchor";
     NIXPKGS_ALLOW_UNFREE = 1;
     NIXPKGS_ALLOW_INSECURE = 1;
     NIX_CONF_PATH = "~/flake";
@@ -45,6 +46,16 @@
   programs = {
     home-manager.enable = true;
     freetube.enable = true;
+    zed-editor.enable = true;
+    ghostty = {
+      enable = true;
+      installVimSyntax = true;
+      settings = {
+        theme = "catppuccin-mocha";
+        font-size = 9;
+        keybind = [ "ctrl+h=goto_split:left" "ctrl+l=goto_split:right" ];
+      };
+    };
     git = {
       enable = true;
       userName = "${var.user}";
