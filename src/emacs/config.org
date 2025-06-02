@@ -27,6 +27,7 @@
   - [[#tree-sitter][TREE-SITTER]]
   - [[#debug][DEBUG]]
   - [[#formating][FORMATING]]
+  - [[#restclient][RestClient]]
 - [[#diminish][DIMINISH]]
 - [[#emacs-application-framework][EMACS APPLICATION FRAMEWORK]]
 - [[#evil-mode][EVIL MODE]]
@@ -64,17 +65,17 @@
 - [[#sudo-edit][SUDO EDIT]]
 - [[#tldr][TlDR]]
 - [[#heighlight-todo-list][HEIGHLIGHT TODO LIST]]
-- [[#transparency][TRANSPARENCY]]
 - [[#ui-stuff][UI STUFF]]
+  - [[#fonts][FONTS]]
   - [[#posframe][POSFRAME]]
   - [[#icons][ICONS]]
   - [[#theme][THEME]]
   - [[#dashboard][DASHBOARD]]
   - [[#page-break-lines][PAGE BREAK LINES]]
-  - [[#fonts][FONTS]]
   - [[#indent][INDENT]]
   - [[#indent-guides][INDENT-GUIDES]]
   - [[#rainbow][RAINBOW]]
+  - [[#transparency][TRANSPARENCY]]
 - [[#visual-stuff][VISUAL STUFF]]
 - [[#web][WEB]]
   - [[#eww][EWW]]
@@ -390,19 +391,35 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
 #+end_src
 *** JS/TS
 #+begin_src emacs-lisp
+;; TypeScript and TSX support with Eglot, npm, ESLint, and Apheleia
 (use-package typescript-ts-mode
   :straight t
-  :mode ("\\.ts\\'" . 'typescript-ts-mode)
-  :hook ( 'typescript-ts-mode . '(eglot-ensure npm-mode))
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)) ;; For TSX files
+  :hook ((typescript-ts-mode . eglot-ensure)
+         (typescript-ts-mode . npm-mode)
+         (typescript-ts-mode . apheleia-mode))
   :config
   (setq typescript-indent-level 2
-	typescript-lsp-extra-server-flags "--log-level=verbose"))
+        typescript-ts-mode-indent-offset 2
+        typescript-lsp-extra-server-flags '("--log-level=verbose")))
+
+;; JavaScript support
+(use-package js
+  :mode ("\\.js\\'" . js-ts-mode)
+  :hook ((js-ts-mode . eglot-ensure)
+         (js-ts-mode . npm-mode)
+         (js-ts-mode . apheleia-mode))
+  :config
+  (setq js-indent-level 2))
+
+;; npm-mode: useful npm commands in Emacs
+(use-package npm-mode
+  :straight t
+  :hook ((typescript-ts-mode . npm-mode)
+         (js-ts-mode . npm-mode)))
+
 #+end_src
-*** NPM
-    #+begin_src emacs-lisp
-    (use-package npm
-        :ensure t)
-    #+end_src
 *** Deno
 #+begin_src emacs-lisp
 ;; (use-package deno-ts-mode
@@ -563,19 +580,69 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   :straight t
   :config
   (setq apheleia-remote-algorithm 'remote)
-  (apheleia-global-mode +1))
 
-(with-eval-after-load 'apheleia
-  (setf (alist-get 'rustfmt apheleia-formatters)
-        '("rustfmt" "--edition" "2021")))
-;;  Use Apheleia on Org Source Blocks
-(add-hook 'org-src-mode-hook (lambda () (add-hook 'before-save-hook #'apheleia-format-buffer nil t)))
+  ;; Define formatters
+  (setf
+   ;; Use Prettier from local project (via npx)
+   (alist-get 'prettier apheleia-formatters)
+   '("npx" "prettier" "--stdin-filepath" filepath)
+
+   ;; ESLint with --fix (optional formatter)
+   (alist-get 'eslint-fix apheleia-formatters)
+   '("npx" "eslint" "--fix" "--stdin" "--stdin-filename" filepath)
+
+   ;; Rust (as example)
+   (alist-get 'rustfmt apheleia-formatters)
+   '("rustfmt" "--edition" "2021"))
+
+  ;; Associate major modes with formatters
+  (setq apheleia-mode-alist
+        '((typescript-ts-mode . prettier)
+          (typescript-mode . prettier)
+          (tsx-ts-mode . eslint-fix)
+          (js-mode . prettier)
+          (js-ts-mode . prettier)
+          (rjsx-mode . prettier)
+          (html-mode . prettier)
+          (web-mode . prettier)
+          (css-mode . prettier)
+          (scss-mode . prettier)))
+
+  ;; Enable globally
+  (apheleia-global-mode +1)
+
+  ;; Format Org source blocks
+  (add-hook 'org-src-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook #'apheleia-format-buffer nil t))))
 
 
 #+end_src
 
 *** Combobulate
 #+begin_src emacs-lisp
+(use-package combobulate 
+  :straight (:type git :host github :repo "mickeynp/combobulate" :files (:defaults))
+  :custom (combobulate-key-prefix "C-c o")
+  :hook ((prog-mode . combobulate-mode)))
+#+end_src
+** RestClient 
+#+begin_src emacs-lisp
+(use-package verb
+  :straight ( :type git :host github :repo "federicotdn/verb")
+  :config
+  (setq verb-enable-log nil
+        verb-auto-kill-response-buffers t)
+  (setq verb-base-headers '(("User-Agent" . "Emacs29"))))
+
+(with-eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((verb . t))))
+
+
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 #+end_src
 * DIMINISH
 This package implements hiding or abbreviation of the mode line displays (lighters) of minor-modes.
@@ -815,6 +882,8 @@ or C-c C-k to abort.
 #+end_src
 * WRITING
 ** ORG-MODE
+#+begin_src emacs-lisp
+#+end_src
 *** ORG_OPTION
 #+begin_src emacs-lisp
 (setq user-full-name "Azizul Islam"
@@ -1201,13 +1270,13 @@ org-confirm-babel-evaluate nil)
           ("NOTE"       success bold)
           ("DEPRECATED" font-lock-doc-face bold))))
 #+end_src
-* TRANSPARENCY
-With Emacs version 29, true transparency has been added.  I have turned transparency off by setting the alpha to ‘100’.  If you want some slight transparency, try setting alpha to ‘90’.  Of course, if you set alpha to ‘0’, the background of Emacs would completely transparent.
-#+begin_src emacs-lisp
-(set-frame-parameter nil 'alpha-background 90) ; For current frame
-(add-to-list 'default-frame-alist '(alpha-background . 90)) ; For all new frames henceforth
-#+end_src
 * UI STUFF
+** FONTS
+#+begin_src emacs-lisp
+(set-face-attribute 'default nil
+    :font "Iosevka"
+    :height 102)
+#+end_src
 ** POSFRAME
 #+begin_src emacs-lisp
 (use-package posframe
@@ -1291,14 +1360,6 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
   :init
   (global-page-break-lines-mode))
 #+end_src
-** FONTS
-#+begin_src emacs-lisp
-(set-face-attribute 'default nil
-    :font "Iosevka"
-    :height 102
-    :weight 'regular)
-
-#+end_src
 ** INDENT
 #+begin_src emacs-lisp
 (setq-default tab-width 2)
@@ -1322,6 +1383,12 @@ With Emacs version 29, true transparency has been added.  I have turned transpar
 (use-package rainbow-delimiters
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+end_src
+** TRANSPARENCY
+With Emacs version 29, true transparency has been added.  I have turned transparency off by setting the alpha to ‘100’.  If you want some slight transparency, try setting alpha to ‘90’.  Of course, if you set alpha to ‘0’, the background of Emacs would completely transparent.
+#+begin_src emacs-lisp
+(set-frame-parameter nil 'alpha-background 99) ; For current frame
+(add-to-list 'default-frame-alist '(alpha-background . 99)) ; For all new frames henceforth
 #+end_src
 * VISUAL STUFF
 #+begin_src emacs-lisp
