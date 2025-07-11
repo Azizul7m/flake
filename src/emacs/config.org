@@ -403,6 +403,9 @@ This package provides support for connecting to GitHub Codespaces in Emacs via T
   (cl-pushnew '((latex-mode) . ("texlab"))
               eglot-server-programs :test #'equal)
 
+  (cl-pushnew '((nix-mode) . ("nixd"))
+              eglot-server-programs :test #'equal)
+
   (cl-pushnew '((sql-mode) . ("sqls" "stdio"))
               eglot-server-programs :test #'equal)
 

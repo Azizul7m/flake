@@ -17,7 +17,7 @@
     emacs-gtk
   ];
   services.emacs = {
-    package = pkgs.emacs-gtk;
+    package = pkgs.emacs;
     enable = true;
     defaultEditor = true;
     client.enable = true;

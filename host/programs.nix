@@ -43,7 +43,6 @@ with pkgs;
     tldr
     joshuto # Terminal file manager
     nitch # System fetch/status tool
-    ix # Command-line pastebin
     fd # Fast find
     ripgrep # Fast grep
     fzf # Fuzzy finder
