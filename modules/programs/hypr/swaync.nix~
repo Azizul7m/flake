@@ -44,12 +44,13 @@
           };
         };
       };
+
       style = ''
         * {
         all: unset;
         transition: 200ms ease-out;
         font-size: 8px;
-        font-family: "Iosevka", "Fira Sans";
+        font-family: "Roboto", "Fira Sans", sans-serif;
 
         /* Base Colors */
         --bg-primary: rgba(30, 30, 30, 0.8);
@@ -129,7 +130,6 @@
         color: var(--text-primary);
         }
       '';
-
     };
   };
 }

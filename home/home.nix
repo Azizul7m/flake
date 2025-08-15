@@ -30,36 +30,27 @@
     # ".screenrc".source = dotfiles/screenrc;
 
   };
-
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin"
+  ];
   home.sessionVariables = {
     TERMINAL = "alacritty";
     VISUAL = "nvim";
     BROWSER = "google-chrome-stable";
-    RUSTUP_HOME = "$HOME/.local";
-    CARGO_HOME = "$HOME/.local";
-    NODE_PATH = "$HOME/.local";
-    PIP_PREFIX = "$HOME/.local/bin";
     ANCHOR_HOME = "$HOME/.anchor";
     NIXPKGS_ALLOW_UNFREE = "1";
     NIXPKGS_ALLOW_INSECURE = "1";
     FLAKE = "~/flake";
-    # GITHUB_API_KEY = builtins.readFile ../.secrets/github_api_key;
-    # TOGETERAI_API_KEY = builtins.readFile ../.secrets/togeterai_api_key;
+    # Critical development environment variables
+    LIBCLANG_PATH = "${pkgs.libclang.lib}/lib"; # Rust bindings
+    PKG_CONFIG_PATH = "${pkgs.openssl.out}/lib/pkgconfig"; # Library discovery
+    CC = "clang";
+    CXX = "clang++";
+    RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=lld";
   };
 
   programs = {
     home-manager.enable = true;
-    freetube.enable = true;
-    zed-editor.enable = true;
-    ghostty = {
-      enable = true;
-      installVimSyntax = true;
-      settings = {
-        theme = "catppuccin-mocha";
-        font-size = 9;
-        keybind = [ "ctrl+h=goto_split:left" "ctrl+l=goto_split:right" ];
-      };
-    };
     git = {
       enable = true;
       userName = "${user}";

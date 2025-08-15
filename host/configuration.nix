@@ -10,7 +10,6 @@
     ./fonts.nix
     ../modules/programs/ibus.nix
     ../modules/ui/stylix.nix
-    ../modules/services/postgress.nix
   ];
   # Bootloader.
   boot.loader = {

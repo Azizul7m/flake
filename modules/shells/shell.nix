@@ -1,8 +1,8 @@
-{ pkgs, ... }: {
-  # Enable fish shell
-  programs = { fish.enable = true; };
+{ pkgs, config,  ... }: {
+  programs = { fish.enable = true;};
   home = with pkgs; {
     packages = ([
+      # gdbgui
 
       ### SYSTEM LIBRARIES ###
       libepoxy # OpenGL function manager
@@ -16,16 +16,16 @@
 
       # Python
       python3Full
+      python3Packages.pip
       poetry # Package management
       pyright # Static type checker
       jython # Python for JVM
 
       # Rust
-      rustup # Toolchain manager
+      rustup
       trunk # WASM bundler
-      leptosfmt # Leptos formatter
 
-      # Solidity (Web3)
+      # (Web3)
       solc # Solidity compiler
       solana-cli # Solana CLI
 
@@ -36,8 +36,6 @@
       nixfmt-classic # Formatter
       nixd # Language server
       nixdoc # Documentation
-      nix-prefetch-github
-      nix-prefetch-git
 
       ### MOBILE DEVELOPMENT ###
       android-tools # ADB/fastboot
@@ -51,20 +49,16 @@
       docker-compose-language-service
 
       ### SECURITY TOOLS ###
-      burpsuite # Web security testing
-      metasploit # Penetration framework
-      nikto # Web scanner
-      ghostscript # PDF processor (security research)
-      hey # test webserver
+      #burpsuite # Web security testing
+      # metasploit # Penetration framework
+      # nikto # Web scanner
+      # ghostscript # PDF processor (security research)
+      # hey # test webserver
 
       ### PRODUCTIVITY TOOLS ###
       # Shell Enhancements
-      starship # Prompt
-      fish # Friendly shell
 
       # CLI Utilities
-      lsd # Better ls
-      grc # Output colorizer
       yt-dlp # Media downloader
       asciinema # Terminal recorder
       imgurbash2 # Image uploader
@@ -81,24 +75,17 @@
       bash-language-server
       yaml-language-server
       nginx-language-server
-      superhtml # HTML
+      prettier
       sqls # SQL
-      texlab # LaTeX
+      #texlab # LaTeX
       tailwindcss-language-server
       vscode-langservers-extracted
+      superhtml
       jellyfin-ffmpeg # Media support
 
       ### AI/ML TOOLS ###
       n8n # Workflow automation
     ]);
 
-    # Critical development environment variables
-    sessionVariables = {
-      LIBCLANG_PATH = "${libclang.lib}/lib"; # Rust bindings
-      PKG_CONFIG_PATH = "${openssl.out}/lib/pkgconfig"; # Library discovery
-      CC = "clang";
-      CXX = "clang++";
-      RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=lld";
-    };
   };
 }

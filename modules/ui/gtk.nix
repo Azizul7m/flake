@@ -1,22 +1,23 @@
 { pkgs, ... }: {
-  gtk = {
+  gtk = with pkgs; {
     enable = true;
     theme = {
-      # name = "Dracula";
-      # package = var.pkgs.dracula-theme ;
-      name = "Lavanda-Dark";
-      package = pkgs.lavanda-gtk-theme;
-      # name = "Adwaita";
-      # package = var.pkgs.gnome-themes-extra;
+      name = "Vimix-dark-doder";
+      package = vimix-gtk-themes;
     };
-    # cursorTheme = {
-    #   name = "Vanilla-DMZ";
-    #   package = var.pkgs.vanilla-dmz;
-    #   size = 16;
-    # };
+    cursorTheme = {
+      name = "Vimix Cursors";
+      package = vimix-cursors;
+      size = 16;
+    };
     iconTheme = {
-      name = "Vimix-Black";
-      package = pkgs.vimix-icon-theme;
+      name = "Vimix-dark";
+      package = vimix-icon-theme;
+    };
+    font = {
+      package = roboto;
+      name = "Roboto";
+      size = 10;
     };
   };
 }

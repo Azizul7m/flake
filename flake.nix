@@ -8,6 +8,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+
     stylix.url = "github:danth/stylix";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
 

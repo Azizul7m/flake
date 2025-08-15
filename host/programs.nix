@@ -20,6 +20,7 @@ with pkgs;
     libtool # Portable library builder
     cpio # Extracts RPMs and initramfs
     systemd # For system libraries (not running daemon)
+    ags # GJS library
 
     ## ───────────────────────────────
     ## Version Control & Signing
@@ -32,14 +33,19 @@ with pkgs;
     ## ───────────────────────────────
     ## Terminal Tools & Shell
     ## ───────────────────────────────
-    nushell # Alternative shell
     xterm # Basic terminal (fallback)
     vim # Text editor
     wget # Simple downloader
+    starship
+    eza
+    lsd
+    bat
+    grc
 
     ## ───────────────────────────────
     ## Terminal Utilities
     ## ───────────────────────────────
+    htop
     tldr
     joshuto # Terminal file manager
     nitch # System fetch/status tool
@@ -86,6 +92,8 @@ with pkgs;
     unzip # Extract zip archives
     pulsemixer # Terminal audio control
     xdg-utils # Open files with default apps
+    desktop-file-utils
+
     cups # Printing system
     fontconfig # System-wide font config (optional but often useful)
   ];
@@ -103,19 +111,11 @@ with pkgs;
     mtr.enable = true; # Enables `mtr` system-wide
     nm-applet.enable = true; # NetworkManager applet in tray
     fish.enable = true; # Fish shell support
-    kdeconnect.enable = true; # Phone integration
-    gnome-disks.enable = true; # GUI disk partitioning and mounting
     command-not-found.enable =
       true; # Suggest missing packages on command failure
     xwayland.enable = true; # Run X apps on Wayland
-
     hyprland.portalPackage =
       xdg-desktop-portal-hyprland; # Required for portal integration
-
-    localsend = {
-      enable = true; # Simple cross-platform file sharing
-      openFirewall = true;
-    };
 
     gnupg.agent = {
       enable = true; # GPG agent for signing

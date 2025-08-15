@@ -5,9 +5,7 @@
       roboto
       noto-fonts
       noto-fonts-emoji
-      iosevka-comfy.comfy-motion
       twemoji-color-font
-      nerd-fonts.fira-code
     ];
     fontconfig = {
       localConf = ''

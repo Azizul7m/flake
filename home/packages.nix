@@ -4,25 +4,24 @@
       nautilus
       baobab # disk analizer
       google-chrome
-      firefox
+      #firefox
       brave
       pcmanfm
 
       #Office
       sioyek
-      foliate
       onlyoffice-bin_latest
 
       #Graphics
       figma-linux
-      inkscape
+      #inkscape
       sxiv
-      scribus
-      # blender
-      lightworks
+      #scribus
+      #blender
+      #lightworks
 
       # Social
-      zulip
+      #zulip
 
       #Utils
       dropbox
@@ -30,7 +29,7 @@
       appimage-run
       bleachbit
       # boxbuddy # Distrobox container manage
-      rustdesk
+      #rustdesk
 
       # Media
       vlc
@@ -38,26 +37,14 @@
       scrcpy
 
       # TUI
-      lazygit
-      yewtube # youtube
-      htop
-      neofetch
-      btop
+      # yewtube # youtube
+
 
       #Utils
       playerctl
       cliphist # clipboard manager
       screenkey
       #zenity # Diolog
-
-      # Dev
-      gdbgui
-      ags # GJS library
-      gnome-builder
-      # mongodb-compass
-
-      insomnia
-      #jetbrains.datagrip
     ]);
   };
 }

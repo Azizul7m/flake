@@ -2,9 +2,7 @@
 with pkgs; {
 
   imports = [
-    ../../services/hypridle.nix
-    #    ../hypr/hyprpanel.nix
-    #  ../services/hyprpaper.nix
+    ##../hypr/hyprpanel.nix
   ];
 
   home.packages = [
@@ -14,13 +12,12 @@ with pkgs; {
     qt6Packages.qt6ct
     libsForQt5.qt5.qtwayland
 
-    kitty
     libnotify
     wofi
     wlogout
     wireplumber
 
-    waypaper # wallpaper selector
+    waypaper
     swaybg # wallpaper
     wf-recorder
     brightnessctl
@@ -30,11 +27,13 @@ with pkgs; {
     hyprsunset
     hyprshot
     hyprpicker
+    nwg-launchers
+    nwg-displays
+    nwg-look
     wl-clipboard
     grimblast
     grim
     slurp
-    bemenu
     scrot # screenshot utils
     maim # screenshot utils
     wayland-scanner
@@ -57,6 +56,8 @@ with pkgs; {
         env = [
           "HYPRLAND_LOG_WLR,1"
           "HYPRLAND_TRACE1,1" # Corrected variable name
+          "HYPRCURSOR_SIZE,16"
+          "XCURSOR_SIZE,16"
           "GDK_BACKEND,wayland,x11,*"
           "QT_QPA_PLATFORM,wayland;xcb"
           "SDL_VIDEODRIVER,wayland"
@@ -73,7 +74,7 @@ with pkgs; {
         scriptsDir = "$HOME/.config/hypr/scripts";
         terminal = "alacritty";
         browser = "brave";
-        fileManager = "pcmanfm";
+        fileManager = "nautilus";
         menu = "pkill wofi || wofi --show drun -I";
         emacsTerminal = "emacsclient  -c";
         fctix =
@@ -100,6 +101,7 @@ with pkgs; {
           ", preferred, auto, 1"
         ];
         env = env;
+        cursor = { enable_hyprcursor = true; };
         general = {
           gaps_in = 3;
           gaps_out = 5;
@@ -107,6 +109,10 @@ with pkgs; {
           "col.active_border" = "rgba(1affffee)";
           "col.inactive_border" = "rgba(595959aa)";
           layout = "dwindle";
+        };
+        dwindle = {
+          pseudotile = true;
+          preserve_split = true;
         };
         exec-once = [
           "waybar"
@@ -157,7 +163,7 @@ with pkgs; {
           "$mod ALT, B, exec, firefox"
           "$mod, i, exec, $menu"
           "$mod, V, exec, roficlip"
-          "$mod, E, exec, alacritty -e superfile"
+          "$mod, E, exec,  pcmanfm"
           "$mod SHIFT, E, exec, ${fileManager}"
           "$mod SHIFT, N, exec, waypaper --random"
 
