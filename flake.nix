@@ -8,9 +8,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    agenix.url = "github:ryantm/agenix";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
 
     stylix.url = "github:danth/stylix";
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    catppuccin.url = "github:catppuccin/nix";
 
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -51,12 +53,16 @@
           pkgs = import nixpkgs {
             inherit system;
             config.allowUnfree = true;
-            overlays = [ inputs.emacs-overlay.overlay ];
+            overlays = [ 
+              inputs.emacs-overlay.overlay ];
           };
           extraSpecialArgs = {
             inherit flake-utils host user userEmail fullName inputs pkgs;
           };
-          modules = [ ./home/home.nix ];
+          modules = [
+            inputs.agenix.homeManagerModules.default
+            inputs.catppuccin.homeModules.catppuccin
+            ./home/home.nix ];
         };
     };
 }
