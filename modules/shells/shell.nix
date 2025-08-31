@@ -62,6 +62,7 @@
       yt-dlp # Media downloader
       asciinema # Terminal recorder
       imgurbash2 # Image uploader
+      ragenix
 
       # Text Processing
       hunspell # Spell checker
@@ -84,6 +85,7 @@
       jellyfin-ffmpeg # Media support
 
       ### AI/ML TOOLS ###
+      gemini-cli
       n8n # Workflow automation
     ]);
 
