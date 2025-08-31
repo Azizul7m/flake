@@ -685,10 +685,6 @@
 * UI
 ** FONTS AND THEME
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil
-    :font "Iosevka"
-    :height 94)
-
   (use-package doom-themes
     :config (load-theme 'doom-one t))
 
