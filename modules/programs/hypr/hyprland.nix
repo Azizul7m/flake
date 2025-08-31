@@ -163,8 +163,8 @@ with pkgs; {
           "$mod ALT, B, exec, firefox"
           "$mod, i, exec, $menu"
           "$mod, V, exec, roficlip"
-          "$mod, E, exec,  pcmanfm"
-          "$mod SHIFT, E, exec, ${fileManager}"
+          "$mod, E, exec,  ${fileManager}"
+          "$mod SHIFT, E, exec, pcmanfm"
           "$mod SHIFT, N, exec, waypaper --random"
 
           # Notifications
