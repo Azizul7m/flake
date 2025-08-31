@@ -88,6 +88,13 @@ servers = {
  # Python
  # pylsp.enable = true;
 
+  #Rust
+  rust_analyzer = {
+    enable = true;
+    installCargo= true;
+    installRustc = true;
+  };
+
   # Others
   ccls.enable = true; # C/C++
   nushell.enable = true; # Nushell

@@ -99,7 +99,7 @@
   {
     mode = "n";
     key = "<leader>tn";
-    action = "<cmd>Neotree toggle<CR>";
+    action = "<cmd>NvimTreeToggle<CR>";
     options = { desc = "File browser"; };
   }
   {

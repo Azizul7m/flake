@@ -7,7 +7,13 @@
   fidget.enable = true;             # LSP progress
   lspkind.enable = true;            # Completion pictograms
 
+  #Spasific language stuff
+  #Rust
+  crates.enable = true;          # Show crate versions
 
+
+
+  # AI-assisted coding
   avante = {
     enable = true;
     settings = import ./avante.nix;
@@ -64,6 +70,7 @@
   # ─────────────────────────────
   telescope = import ./telescope.nix;
   oil.enable = true;                # File explorer
+  nvim-tree.enable = true;         # File explorer alternative
 
   # ─────────────────────────────
   # Project Management
