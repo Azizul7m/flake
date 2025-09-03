@@ -1,7 +1,7 @@
 {
   enable = true;
   settings = {
-    provider = "gemini";
+    provider = "copilot";
     providers = {
        gemini = {
         model = "gemini-2.0-flash";

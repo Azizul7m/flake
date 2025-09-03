@@ -3,7 +3,7 @@
   programs.nixvim = {
     enable = true;
     luaLoader.enable = true;
-    colorschemes.gruvbox.enable = true;
+    colorschemes.catppuccin.enable = true;
     globals = {
       mapleader = " ";
       maplocalleader = " ";

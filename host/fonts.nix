@@ -6,6 +6,8 @@
       noto-fonts
       noto-fonts-emoji
       twemoji-color-font
+      mononoki
+      iosevka
     ];
     fontconfig = {
       localConf = ''

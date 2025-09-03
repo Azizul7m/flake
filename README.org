@@ -1,6 +1,6 @@
 * 🎯 My Personal NixOS Dotfiles with Nix Flakes
 
-Welcome to my personal NixOS dotfiles repository, managed using *Nix Flakes*. This setup is tailored for my workflow, featuring *Hyprland* as the window manager, a fine-tuned *vanilla Emacs* configuration, and various essential tools like *Fish shell, Alacritty terminal, and Tmux*.
+Welcome to my personal NixOS dotfiles repository, managed using *Nix Flakes*. This setup is tailored for my workflow, featuring *Hyprland* as the window manager, a fine-tuned *vanilla Emacs* configuration, *Nixvim* for Neovim configuration, and various essential tools like *Fish shell, Alacritty terminal, and Tmux*.
 
 ** 📌 Overview
 
@@ -55,6 +55,16 @@ This is a *Vanilla Emacs* setup using the *Doom One* colorscheme. Key features i
 - 📂 *Projectile* for project management.
 - 🔎 *Vertico & Consult* for better search and navigation.
 - 📝 *Which-Key* for an interactive keybinding menu.
+
+
+*🧠 Nixvim Configuration*
+
+Nixvim is used to manage Neovim configuration declaratively. Key features include:
+
+- 🔌 *Plugin Management*: Using `nixvim` for managing Neovim plugins.
+- ⌨️ *Custom Keybindings*: Optimized keybindings for efficient editing.
+- 💡 *LSP Support*: Integrated Language Server Protocol for various languages.
+- 🎨 *Themes*: Consistent theming with the rest of the system.
 
 
 *🖥️ Alacritty Terminal*

@@ -19,6 +19,12 @@
   }
   # Telescope bindings
   {
+    mode = [ "n" "v" "i" "t"];
+    action = "<cmd>Telescope<CR>";
+    key = "<M-p>";
+    options ={ desc = "Telescope"; };
+  }
+  {
     mode = [ "n" "v" ];
     action = "<cmd>Telescope live_grep<CR>";
     key = "<leader>fw";

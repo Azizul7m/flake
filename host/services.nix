@@ -1,5 +1,6 @@
 { config, pkgs, user, ... }: {
   services = {
+    
     pipewire = {
       # Sound settings
       enable = true;
@@ -21,10 +22,7 @@
     #    defaultEditor = true;
     #    startWithGraphical = true;
     #  };
-    xserver = {
-      enable = true;
-      displayManager.gdm.enable = true;
-    };
+    displayManager.gdm.enable = true;
     ollama = { enable = true; };
   };
 }

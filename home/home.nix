@@ -67,16 +67,43 @@
 
   programs = {
     home-manager.enable = true;
+    gitui.enable = true;
     git = {
       enable = true;
       userName = "${user}";
       userEmail = "${userEmail}";
       diff-highlight.enable = true;
+      extraConfig = {
+        core.edtior = "nvim";
+        init  = {
+          defaultBranch = "main";
+        };
+        aliases = {
+          lg = "log --oneline --graph --all --decorate";
+          lga = "log --oneline --graph --all --decorate --stat";
+          lgt = "log --oneline --graph --all --decorate --stat --patch";
+          co = "checkout";
+          br = "branch";
+          ci = "commit";
+          st = "status";
+          last = "log -1 HEAD";
+          unstage = "reset HEAD --";
+        };
+      };
+    };
+  };
+  services = {
+    wayvnc= {
+      enable = true;
+      settings = {
+        address="0.0.0.0";
+        port=9000;
+      };
     };
   };
   catppuccin = {
     flavor = "mocha"; # latte, frappe, macchiato, mocha
-    accent = "rosewater"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
+    accent = "sky"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
       alacritty.enable = true;
       hyprland.enable = true;
       wlogout.enable = true;

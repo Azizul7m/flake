@@ -10,7 +10,9 @@ with pkgs;
     clang # C compiler
     lld # LLVM linker (lld)
     zlib # Often needed for linking
-    gcc # C/C++ compiler
+    gcc # C/C++ compiler (added for compilation support)
+    libgcc # GCC runtime libraries (fixes missing Scrt1.o, crti.o)
+    glibc # GNU C Library (fixes missing libc and related files)
     libclang # Needed for Rust/C FFI (e.g., bindgen)
     gnumake # Classic Make build system
     cmake # Cross-platform C/C++ project builder

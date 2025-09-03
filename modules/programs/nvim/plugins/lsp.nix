@@ -7,26 +7,16 @@ keymaps = {
     "<M-n>" = "goto_prev";
     "<M-p>" = "goto_next";
   };
-
-  lspBuf = {
-    gd = "definition";
-    gD = "references";
-    gt = "type_definition";
-    gi = "implementation";
-    K = "hover";
-    re = "rename";
-  };
 };
 servers = {
   # General
   bashls.enable = true;
   dockerls.enable = true;
-  jsonls.enable = true;
   lua_ls.enable = true;
   nixd = {
     enable = true;
     settings = {
-      formatting.command = [ "nixpkgs-fmt" ];
+      formatting.command = [ "nixfmt" ];
       nixpkgs.expr = "import <nixpkgs> {}";
     };
   };
@@ -76,10 +66,6 @@ servers = {
   # DevOps / Infra
   #earthlyls.enable = true;
  # terraformls.enable = true;
-  helm_ls = {
-    enable = true;
-    filetypes = [ "helm" ];
-  };
 
   # Go
  # gopls.enable = true;
@@ -89,11 +75,15 @@ servers = {
  # pylsp.enable = true;
 
   #Rust
-  rust_analyzer = {
+ rust_analyzer = {
     enable = true;
     installCargo= true;
     installRustc = true;
-  };
+    settings = {
+      # Enable procedural macro support
+      procMacro.enable = true;
+    };
+ };
 
   # Others
   ccls.enable = true; # C/C++
