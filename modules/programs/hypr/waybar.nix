@@ -181,65 +181,6 @@
           };
         };
       };
-      style = ''
-        * {
-            border: none;
-            border-radius: 0;
-            padding: 0;
-            margin: 0;
-            font-size: 12px;
-            color: #eee;
-        }
-        window#waybar{
-            padding: 0;
-            background-color: rgba(43, 48, 59, 0.4);
-        }
-        #window #waybar #workspaces{
-           padding: 0;
-        }
-        #workspaces button {
-            color: #eee;
-        }
-        #clock,
-        #battery,
-        #cpu,
-        #memory,
-        #disk,
-        #temperature,
-        #backlight,
-        #network,
-        #pulseaudio,
-        #wireplumber,
-        #custom-media,
-        #tray,
-        #mode,
-        #idle_inhibitor,
-        #scratchpad,
-        #custom,
-        #custom-crypto,
-        #custom-notification,
-        #mpd {
-            padding: 0 5px;
-            background: transparent;
-        }
-        #battery.critical:not(.charging) {
-            animation-name: blink;
-            animation-duration: 0.5s;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-            animation-direction: alternate;
-        }
-
-        #workspaces button.urgent {
-            background-color: #eb4d4b;
-        }
-        #tray > .active {
-            color: rgba(43, 48, 59, 0.6);
-        }
-        #custom-crypto{
-            background: transparent;
-        }
-      '';
     };
   };
 }
