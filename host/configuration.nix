@@ -9,7 +9,6 @@
     ./services.nix
     ./fonts.nix
     ../modules/programs/ibus.nix
-    ../modules/ui/stylix.nix
   ];
   # Bootloader.
   boot.loader = {

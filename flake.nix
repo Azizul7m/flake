@@ -8,18 +8,27 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    agenix.url = "github:ryantm/agenix";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
 
-    stylix.url = "github:danth/stylix";
-    catppuccin.url = "github:catppuccin/nix";
+    agenix = {
+      url="github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
@@ -45,7 +54,7 @@
             inherit flake-utils host user userEmail fullName inputs pkgs;
           };
           modules =
-            [ inputs.stylix.nixosModules.stylix ./host/configuration.nix ];
+            [ ./host/configuration.nix ];
         };
       };
       homeConfigurations."${host}" =
