@@ -15,8 +15,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    #     catppuccin = {
-    #     url = "github:catppuccin/nix";
+    #  catppuccin = {
+    #  url = "github:catppuccin/nix";
     #  inputs.nixpkgs.follows = "nixpkgs";
     #  };
 
@@ -66,7 +66,7 @@
                    useGlobalPkgs = true; 
                    useUserPackages = true;
                    extraSpecialArgs = { inherit flake-utils host user userEmail fullName inputs; };
-                   modules = [ ./home/home.nix ]; # Defined later
+                   users."${user}" = import ./home/home.nix;
                  };
                }
             ];

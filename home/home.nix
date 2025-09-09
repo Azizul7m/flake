@@ -117,12 +117,12 @@
   #    cache.enable = true;
   #    bat.enable = true;
   #};
-  nix = {
-    package = pkgs.nix;
-    settings = { 
-      experimental-features = [ "nix-command" "flakes" ];
-      connect-timeout = 30; # Increase connection timeout to 30 seconds
-      stalled-download-timeout = 60; # Increase stalled download timeout to 60 seconds
-    };
-  };
+  # nix = {
+  #    package = pkgs.nix;
+  #   settings = { 
+  #     experimental-features = [ "nix-command" "flakes" ];
+  #     connect-timeout = 30; # Increase connection timeout to 30 seconds
+  #      stalled-download-timeout = 60; # Increase stalled download timeout to 60 seconds
+  #   };
+  #   };
 }
