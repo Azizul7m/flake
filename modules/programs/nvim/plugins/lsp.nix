@@ -10,7 +10,6 @@ keymaps = {
 };
 servers = {
   # General
-  bashls.enable = true;
   dockerls.enable = true;
   lua_ls.enable = true;
   nixd = {

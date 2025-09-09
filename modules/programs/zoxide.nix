@@ -4,7 +4,6 @@
     package = pkgs.zoxide;
     enableZshIntegration = true;
     enableFishIntegration = true;
-    enableBashIntegration = true;
     # options = ["--cmd cd"];     # 
   };
 }

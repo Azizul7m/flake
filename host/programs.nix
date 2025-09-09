@@ -43,13 +43,13 @@ with pkgs;
     lsd
     bat
     grc
+    bemenu
 
     ## ───────────────────────────────
     ## Terminal Utilities
     ## ───────────────────────────────
     htop
     tldr
-    joshuto # Terminal file manager
     nitch # System fetch/status tool
     fd # Fast find
     ripgrep # Fast grep
@@ -59,6 +59,13 @@ with pkgs;
     ncdu # Disk usage viewer
     gdb # Debugger
     killall # Kill processes by name
+
+
+    ### MOBILE DEVELOPMENT ###
+    android-tools # ADB/fastboot
+    adb-sync # File sync
+    adbfs-rootless # FUSE filesystem
+
 
     ## ───────────────────────────────
     ## Networking & Remote Access
@@ -103,7 +110,6 @@ with pkgs;
   ## ───────────────────────────────
   ## Theming
   ## ───────────────────────────────
-  stylix.enable = true;
 
   ## ───────────────────────────────
   ## Programs and Services

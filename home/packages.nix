@@ -4,7 +4,6 @@
       nautilus
       baobab # disk analizer
       google-chrome
-      #firefox
       brave
       pcmanfm
 

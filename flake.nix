@@ -15,10 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    catppuccin = {
-      url = "github:catppuccin/nix";
+     catppuccin = {
+       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
+      };
 
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -44,8 +44,14 @@
       userEmail = "azizul7m@gmail.com";
       pkgs = import nixpkgs {
         inherit system;
-        config.allowUnfree = true;
+        config = {
+          allowUnfree = true;
+        };
+        overlays = [
+          inputs.emacs-overlay.overlay
+        ];
       };
+
     in {
       nixosConfigurations = {
         "${host}" = nixpkgs.lib.nixosSystem {
@@ -54,24 +60,27 @@
             inherit flake-utils host user userEmail fullName inputs pkgs;
           };
           modules =
-            [ ./host/configuration.nix ];
+            [ ./host/configuration.nix
+              # inputs.home-manager.nixosModules.home-manager {
+              #   home-manager = {
+               #    useGlobalPkgs = true; 
+               #    useUserPackages = true;
+               #    extraSpecialArgs = { inherit flake-utils host user userEmail fullName inputs; };
+               #    users."${user}" = import ./home/home.nix;
+              #   };
+             #  }
+            ];
         };
       };
-      homeConfigurations."${host}" =
-        inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [ 
-              inputs.emacs-overlay.overlay ];
-          };
+       homeConfigurations."${host}" = inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
           extraSpecialArgs = {
-            inherit flake-utils host user userEmail fullName inputs pkgs;
+            inherit flake-utils host user userEmail fullName inputs;
           };
           modules = [
             inputs.agenix.homeManagerModules.default
             inputs.catppuccin.homeModules.catppuccin
-            ./home/home.nix ];
-        };
+          ./home/home.nix ];
+         };
     };
 }

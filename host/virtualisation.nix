@@ -2,6 +2,7 @@
   environment.systemPackages = with pkgs; [
     distrobox
     toolbox
+    docker-compose
     # lxd-lts # Ensure lxd is explicitly listed
   ];
   virtualisation = {

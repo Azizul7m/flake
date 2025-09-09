@@ -48,13 +48,15 @@
   };
   nix = {
     settings = {
+      connect-timeout = 30; # Increase connection timeout to 30 seconds
+      stalled-download-timeout = 60; # Increase stalled download timeout to 60 seconds
+      auto-optimise-store = true; # Optimise syslinks
       experimental-features = [
         "flakes"
         "auto-allocate-uids"
         "nix-command"
         # "configurable-impure-env"
       ];
-      auto-optimise-store = true; # Optimise syslinks
     };
     gc = {
       automatic = true; # Automatic garbage collection

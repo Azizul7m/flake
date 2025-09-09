@@ -1,4 +1,4 @@
-{ config, pkgs, user, userEmail, ... }: {
+{ config, pkgs, user, userEmail, inputs, ... }: {
   imports = [
     ./xdg.nix
     ./packages.nix
@@ -7,7 +7,6 @@
     ../modules/shells/shell.nix
     ../modules/programs/tmux.nix
     ../modules/programs/zoxide.nix
-    ../modules/programs/rofi.nix
     ../modules/programs/emacs.nix
     ../modules/programs/nvim/nvim.nix
     ../modules/programs/wofi.nix
@@ -19,27 +18,28 @@
     ../modules/services/mpd.nix
   ];
 
-  age = {
-    identityPaths = ["${config.home.homeDirectory}/.ssh/id_ed25519"];
-    secrets = {
-      openai = {
-         file = ../secrets/openai.age;
-      };
-      groq = {
-         file = ../secrets/groq.age;
-      };
-      gemini = {
-        file = ../secrets/gemini.age;
-      };
-    };
-  };
+
+  # 
+  # age = {
+  #   identityPaths = ["${config.home.homeDirectory}/.ssh/id_ed25519"];
+  #   secrets = {
+  #     openai = {
+  #        file = ../secrets/openai.age;
+  #     };
+  #     groq = {
+  #        file = ../secrets/groq.age;
+  #     };
+  #     gemini = {
+  #       file = ../secrets/gemini.age;
+  #     };
+  #   };
+  # };
 
 
   home = {
       username = "${user}";
       homeDirectory = "/home/${user}";
       stateVersion = "23.05"; # Please read the comment before changing.
-      packages = [ ];
       sessionPath = [
          "${config.home.homeDirectory}/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin"
      ];
@@ -53,15 +53,13 @@
       NIXPKGS_ALLOW_INSECURE = "1";
       FLAKE = "~/flake";
       # Critical development environment variables
-      LIBCLANG_PATH = "${pkgs.libclang.lib}/lib"; # Rust bindings
-      PKG_CONFIG_PATH = "${pkgs.openssl.out}/lib/pkgconfig"; # Library discovery
       CC = "clang";
       CXX = "clang++";
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=lld";
-      # Api environment variables
-      OPENAI_API_KEY_FILE = "$(cat ${config.age.secrets.openai.file})";
-      GORGON_API_KEY_FILE = "$(cat ${config.age.secrets.groq.file})";
-      GEMINI_API_KEY_FILE = "$(cat ${config.age.secrets.gemini.file})";
+#      # Api environment variables
+#      OPENAI_API_KEY_FILE = "$(cat ${config.age.secrets.openai.file})";
+#      GORGON_API_KEY_FILE = "$(cat ${config.age.secrets.groq.file})";
+#      GEMINI_API_KEY_FILE = "$(cat ${config.age.secrets.gemini.file})";
     };
   };
 
@@ -101,27 +99,30 @@
       };
     };
   };
-  catppuccin = {
-    flavor = "mocha"; # latte, frappe, macchiato, mocha
-    accent = "sky"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
-      alacritty.enable = true;
-      hyprland.enable = true;
-      wlogout.enable = true;
-      rofi.enable = true;
-      swaync.enable = true;
-      waybar.enable = true;
-      cursors.enable = true;
-      fish.enable = true;
-      lsd.enable = true;
-      fzf.enable = true;
-      starship.enable = true;
-      sioyek.enable = true;
-      fcitx5.enable = true;
-      cache.enable = true;
-      bat.enable = true;
-  };
+  #  catppuccin = {
+  #  flavor = "mocha"; # latte, frappe, macchiato, mocha
+  #  accent = "sky"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
+  #    alacritty.enable = true;
+  #    hyprland.enable = true;
+  #    wlogout.enable = true;
+  #    swaync.enable = true;
+  #    waybar.enable = true;
+  #    cursors.enable = true;
+  #    fish.enable = true;
+  #    lsd.enable = true;
+  #    fzf.enable = true;
+  #    starship.enable = true;
+  #    sioyek.enable = true;
+  #    fcitx5.enable = true;
+  #    cache.enable = true;
+  #    bat.enable = true;
+  #};
   nix = {
     package = pkgs.nix;
-    settings = { experimental-features = [ "nix-command" "flakes" ]; };
+    settings = { 
+      experimental-features = [ "nix-command" "flakes" ];
+      connect-timeout = 30; # Increase connection timeout to 30 seconds
+      stalled-download-timeout = 60; # Increase stalled download timeout to 60 seconds
+    };
   };
 }

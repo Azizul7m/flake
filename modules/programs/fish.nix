@@ -86,8 +86,9 @@
         alias hotspot='nmcli dev wifi hotspot'
         alias wpassword='nmcli dev wifi show-password'
 
-        alias hm_rebuild='home-manager switch --flake ~/flake#nixos'
-        alias hm_news='home-manager news --flake ~/flake#nixos'
+      #  alias hm_rebuild='home-manager switch --flake ~/flake#nixos'
+      #  alias hm_news='home-manager news --flake ~/flake#nixos'
+
         alias nix_rebuild='sudo nixos-rebuild switch --flake ~/flake#nixos'
         alias nix_cleanup='sudo nix-collect-garbage -d'
         alias nix_oldgen='sudo nix-env -p /nix/var/nix/profiles/system --delete-generations old'

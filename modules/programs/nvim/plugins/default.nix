@@ -42,7 +42,9 @@
   transparent.enable = true;        # Optional
   nvim-ufo.enable = true;           # Code folding
   wilder.enable = true;             # Command-line completion enhancements
-  snacks.enable = true;             # Extra text objects
+  snacks = {
+    enable = true;                  # Extra text objects
+  };
   colorful-menu.enable= true;       # Enhanced popup menu with colors
   indent-blankline.enable = true;   # Indent guides
 

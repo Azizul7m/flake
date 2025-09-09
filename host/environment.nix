@@ -5,7 +5,7 @@ in {
     variables = { NIXPKGS_ALLOW_UNFREE = "1"; };
     loginShellInit = ''
       if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-          ${exec}
+	echo "Auto login secript try to running"
       fi
     '';
   };

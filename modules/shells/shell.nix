@@ -19,15 +19,12 @@
       python3Packages.pip
       poetry # Package management
       pyright # Static type checker
-      jython # Python for JVM
 
       # Rust
       rustup
       trunk # WASM bundler
 
       # (Web3)
-      solc # Solidity compiler
-      solana-cli # Solana CLI
 
       ### NIX ECOSYSTEM ###
       devbox # Dev environments
@@ -37,10 +34,6 @@
       nixd # Language server
       nixdoc # Documentation
 
-      ### MOBILE DEVELOPMENT ###
-      android-tools # ADB/fastboot
-      adb-sync # File sync
-      adbfs-rootless # FUSE filesystem
 
       ### DEVOPS & CONTAINERS ###
       docker-compose
@@ -61,7 +54,6 @@
       # CLI Utilities
       yt-dlp # Media downloader
       asciinema # Terminal recorder
-      imgurbash2 # Image uploader
       ragenix
 
       # Text Processing
@@ -72,8 +64,6 @@
 
       ### LANGUAGE SERVERS (LSPs) ###
       nil # nix
-      copilot-language-server
-      bash-language-server
       yaml-language-server
       nginx-language-server
       prettier
@@ -82,6 +72,7 @@
       tailwindcss-language-server
       vscode-langservers-extracted
       superhtml
+
       jellyfin-ffmpeg # Media support
 
       ### AI/ML TOOLS ###
