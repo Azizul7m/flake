@@ -15,10 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-     catppuccin = {
-       url = "github:catppuccin/nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      };
+    #     catppuccin = {
+    #     url = "github:catppuccin/nix";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #  };
 
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -61,26 +61,26 @@
           };
           modules =
             [ ./host/configuration.nix
-              # inputs.home-manager.nixosModules.home-manager {
-              #   home-manager = {
-               #    useGlobalPkgs = true; 
-               #    useUserPackages = true;
-               #    extraSpecialArgs = { inherit flake-utils host user userEmail fullName inputs; };
-               #    users."${user}" = import ./home/home.nix;
-              #   };
-             #  }
+               inputs.home-manager.nixosModules.home-manager {
+                 home-manager = {
+                   useGlobalPkgs = true; 
+                   useUserPackages = true;
+                   extraSpecialArgs = { inherit flake-utils host user userEmail fullName inputs; };
+                   modules = [ ./home/home.nix ]; # Defined later
+                 };
+               }
             ];
         };
       };
-       homeConfigurations."${host}" = inputs.home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = {
-            inherit flake-utils host user userEmail fullName inputs;
-          };
-          modules = [
-            inputs.agenix.homeManagerModules.default
-            inputs.catppuccin.homeModules.catppuccin
-          ./home/home.nix ];
-         };
+      #  homeConfigurations."${host}" = inputs.home-manager.lib.homeManagerConfiguration {
+      #    inherit pkgs;
+      #    extraSpecialArgs = {
+      #      inherit flake-utils host user userEmail fullName inputs;
+      #    };
+      #    modules = [
+      #      inputs.agenix.homeManagerModules.default
+        #      inputs.catppuccin.homeModules.catppuccin
+      #  ./home/home.nix ];
+      #   };
     };
 }
