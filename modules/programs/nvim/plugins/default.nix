@@ -6,17 +6,14 @@
   lspsaga.enable = true;            # LSP UI enhancements
   fidget.enable = true;             # LSP progress
   lspkind.enable = true;            # Completion pictograms
-
   trouble.enable = true;            # Diagnostics list
 
-  #NOTE:Spasific language stuff
+  #NOTE: Spasific language stuff
   #JavaScript/TypeScript
   typescript-tools.enable = true;    # TS utilities
 
   #Rust
   crates.enable = true;          # Show crate versions
-
-
 
   #NOTE: AI-assisted coding
   avante = {
@@ -26,7 +23,7 @@
   copilot-lua.enable = true;
 
   # Completion framework
-  cmp = import ./cmp.nix;                     # Completion framework
+  cmp = import ./cmp.nix;                    # Completion framework
   copilot-cmp.enable = true;                 # GitHub Copilot integration for completion
   cmp-nvim-lsp.enable = true;                # LSP source for nvim-cmp
   cmp-buffer.enable = true;                  # Buffer completion source
@@ -37,21 +34,38 @@
   # UI / Aesthetics
   # ─────────────────────────────
   web-devicons.enable = true;       # Filetype icons
+  mini-icons = {
+    enable = true;
+    mockDevIcons = true;
+  };
   which-key.enable = true;          # Keybinding hints
   neoscroll.enable = true;          # Smooth scrolling
   transparent.enable = true;        # Optional
   nvim-ufo.enable = true;           # Code folding
-  wilder.enable = true;             # Command-line completion enhancements
   snacks = {
     enable = true;                  # Extra text objects
   };
   colorful-menu.enable= true;       # Enhanced popup menu with colors
-  indent-blankline.enable = true;   # Indent guides
-
+  indent-blankline = {
+    enable = true;   # Indent guides
+    settings = {
+      scope.enabled = false;
+    };
+  };
+  # wilder = import ./wilder.nix;
   # ─────────────────────────────
   # Editing / Text Manipulation
   # ─────────────────────────────
-  nvim-autopairs.enable = true;     # Auto close pairs
+  mini-pairs = 
+    {enable = true;
+      settings = {
+        modes = {
+          command = true;
+          insert = true;
+          terminal = false;
+        };
+      };
+  };
   nvim-surround.enable = true;      # Easy surrounding chars
   commentary.enable = true;         # Comment toggling
   sleuth.enable = true;             # Detect indentation
@@ -81,21 +95,29 @@
   # File Navigation
   # ─────────────────────────────
   telescope = import ./telescope.nix;
-  oil.enable = true;                # File explorer
+  oil = {
+    enable = true;                # File explorer
+    settings = {
+      default_file_explorer = true;
+      delete_to_trash = true;
+      lsp_file_methods = {
+        enabled = true;
+      };
+    };
+  };
   nvim-tree.enable = true;         # File explorer alternative
 
 
   # ─────────────────────────────
   # Project Management
   # ─────────────────────────────
-  project-nvim.enable = true;       # Project root detection
   project-nvim.enableTelescope = true;
 
     # ─────────────────────────────
   # Misc Dev Tools
   # ─────────────────────────────
+  conform-nvim = import formater.nix; # Formater
   direnv.enable = true;             # Direnv integration
-  earthly.enable = true;            # Earthly build system
   nix.enable = true;                # Nix syntax
   hmts.enable = true;               # Tree-sitter for HCL/Nix
   helm.enable = true;               # Helm charts
@@ -103,5 +125,7 @@
   markdown-preview.enable = true;   # Live Markdown preview
   render-markdown.enable = true;    # Render markdown inline
   helpview.enable = true;           # Better help buffer
+
+  neorg.enable = true;
 }
 
