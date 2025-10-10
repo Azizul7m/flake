@@ -1,6 +1,6 @@
 { config, pkgs, user, ... }: {
   services = {
-   # getty.autologinUser = "${user}";
+    getty.autologinUser = "${user}";
     dbus.enable = true; # inter-process communication (IPC)
     libinput.enable = true; # LibInput
     devmon.enable = true; # monitoring drive "Heavy"
@@ -9,7 +9,7 @@
     udisks2.enable = true; # auto mount drive  "Heavy"
     languagetool.enable = true;
     blueman.enable = true;
-    displayManager.gdm.enable = true;
+    # displayManager.gdm.enable = true;
     ollama = { enable = true; };
     #  emacs = {
     #    enable = true;

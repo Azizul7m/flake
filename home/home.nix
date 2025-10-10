@@ -1,5 +1,7 @@
 { config, pkgs, user, userEmail, inputs, ... }: {
   imports = [
+    inputs.catppuccin.homeModules.catppuccin
+    inputs.agenix.homeManagerModules.default
     ./xdg.nix
     ./packages.nix
     ../modules/ui/gtk.nix
@@ -18,37 +20,27 @@
     ../modules/services/mpd.nix
   ];
 
-
   # 
-  # age = {
-  #   identityPaths = ["${config.home.homeDirectory}/.ssh/id_ed25519"];
-  #   secrets = {
-  #     openai = {
-  #        file = ../secrets/openai.age;
-  #     };
-  #     groq = {
-  #        file = ../secrets/groq.age;
-  #     };
-  #     gemini = {
-  #       file = ../secrets/gemini.age;
-  #     };
-  #   };
-  # };
-
+  age = {
+    secrets = {
+      gemini = { file = ../secrets/gemini.age; };
+      syncthing = { file = ../secrets/syncthing.age; };
+    };
+  };
 
   home = {
-      username = "${user}";
-      homeDirectory = "/home/${user}";
-      stateVersion = "23.05"; # Please read the comment before changing.
-      sessionPath = [
-         "${config.home.homeDirectory}/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin"
-     ];
+    username = "${user}";
+    homeDirectory = "/home/${user}";
+    stateVersion = "23.05"; # Please read the comment before changing.
+    sessionPath = [
+      "${config.home.homeDirectory}/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin"
+    ];
     sessionVariables = {
-      MANPAGER = "less right";
       TERMINAL = "alacritty";
       VISUAL = "nvim";
       BROWSER = "google-chrome-stable";
       ANCHOR_HOME = "$HOME/.anchor";
+      MANPAGER = "less -R"; # To display
       NIXPKGS_ALLOW_UNFREE = "1";
       NIXPKGS_ALLOW_INSECURE = "1";
       FLAKE = "~/flake";
@@ -56,10 +48,10 @@
       CC = "clang";
       CXX = "clang++";
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=lld";
-#      # Api environment variables
-#      OPENAI_API_KEY_FILE = "$(cat ${config.age.secrets.openai.file})";
-#      GORGON_API_KEY_FILE = "$(cat ${config.age.secrets.groq.file})";
-#      GEMINI_API_KEY_FILE = "$(cat ${config.age.secrets.gemini.file})";
+      #      # Api environment variables
+      #      OPENAI_API_KEY_FILE = "$(cat ${config.age.secrets.openai.file})";
+      #      GORGON_API_KEY_FILE = "$(cat ${config.age.secrets.groq.file})";
+      #      GEMINI_API_KEY_FILE = "$(cat ${config.age.secrets.gemini.file})";
     };
   };
 
@@ -73,9 +65,7 @@
       diff-highlight.enable = true;
       extraConfig = {
         core.edtior = "nvim";
-        init  = {
-          defaultBranch = "main";
-        };
+        init = { defaultBranch = "main"; };
         aliases = {
           lg = "log --oneline --graph --all --decorate";
           lga = "log --oneline --graph --all --decorate --stat";
@@ -91,32 +81,53 @@
     };
   };
   services = {
-    wayvnc= {
+    syncthing = {
       enable = true;
       settings = {
-        address="0.0.0.0";
-        port=9000;
+        user = "${user}";
+        passwordFile = "${config.age.secrets.syncthing.path}";
+        tray = true;
+        folders = {
+          "~/Dropbox" = {
+            id = "dropbox";
+            path = "~/Dropbox";
+            rescanIntervalS = 3600; # Rescan every hour
+            ignorePerms = true;
+            params = {
+              maxVersions = "5"; # Keep last 5 versions
+            };
+          };
+        };
+      };
+    };
+    wayvnc = {
+      enable = true;
+      settings = {
+        address = "0.0.0.0";
+        port = 9000;
       };
     };
   };
-  #  catppuccin = {
-  #  flavor = "mocha"; # latte, frappe, macchiato, mocha
-  #  accent = "sky"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
-  #    alacritty.enable = true;
-  #    hyprland.enable = true;
-  #    wlogout.enable = true;
-  #    swaync.enable = true;
-  #    waybar.enable = true;
-  #    cursors.enable = true;
-  #    fish.enable = true;
-  #    lsd.enable = true;
-  #    fzf.enable = true;
-  #    starship.enable = true;
-  #    sioyek.enable = true;
-  #    fcitx5.enable = true;
-  #    cache.enable = true;
-  #    bat.enable = true;
-  #};
+  catppuccin = {
+    flavor = "mocha"; # latte, frappe, macchiato, mocha
+    accent =
+      "sky"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
+    alacritty.enable = true;
+    atuin.enable = true;
+    hyprland.enable = true;
+    wlogout.enable = true;
+    swaync.enable = true;
+    # waybar.enable = true;
+    cursors.enable = true;
+    fish.enable = true;
+    lsd.enable = true;
+    fzf.enable = true;
+    starship.enable = true;
+    sioyek.enable = true;
+    fcitx5.enable = true;
+    cache.enable = true;
+    bat.enable = true;
+  };
   # nix = {
   #    package = pkgs.nix;
   #   settings = { 
