@@ -16,4 +16,5 @@
     flavor= "mocha";
     enableRounded = true;
  };
+};
 }
