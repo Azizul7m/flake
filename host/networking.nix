@@ -5,11 +5,18 @@
     networkmanager.enable = true;
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 67 68 80 443 5900 ];
-      allowedUDPPortRanges = [{
-        from = 3000;
-        to = 3007;
-      }];
+      allowedTCPPorts = [
+        22 # SSH
+        67 # DHCP
+        68 # DHCP
+        80 # HTTP
+        443 # HTTPS
+        5900 # VNC
+        3000 # Next app
+        22000 # Syncthing
+        8384 # Syncthing GUI
+      ];
+      allowedUDPPorts = [ 21027 ]; # Syncthing discovery
     };
   };
   services.openssh = { enable = true; };
