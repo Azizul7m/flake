@@ -7,6 +7,8 @@ with pkgs;
     ## ───────────────────────────────
     ## Core Development Tools
     ## ───────────────────────────────
+    cacert # SSL certificates
+    openssl # SSL libraries
     clang # C compiler
     lld # LLVM linker (lld)
     zlib # Often needed for linking
@@ -18,7 +20,6 @@ with pkgs;
     cmake # Cross-platform C/C++ project builder
     meson # Fast build system
     pkg-config # Metadata for compiling/linking
-    openssl # Needed by many dev tools (e.g., Rust TLS)
     libtool # Portable library builder
     cpio # Extracts RPMs and initramfs
     systemd # For system libraries (not running daemon)
@@ -60,12 +61,10 @@ with pkgs;
     gdb # Debugger
     killall # Kill processes by name
 
-
     ### MOBILE DEVELOPMENT ###
     android-tools # ADB/fastboot
     adb-sync # File sync
     adbfs-rootless # FUSE filesystem
-
 
     ## ───────────────────────────────
     ## Networking & Remote Access
@@ -122,9 +121,11 @@ with pkgs;
     command-not-found.enable =
       true; # Suggest missing packages on command failure
     xwayland.enable = true; # Run X apps on Wayland
-    hyprland.portalPackage =
-      xdg-desktop-portal-hyprland; # Required for portal integration
-
+    hyprland = {
+      enable = true;
+      portalPackage =
+        xdg-desktop-portal-hyprland; # Required for portal integration
+    };
     gnupg.agent = {
       enable = true; # GPG agent for signing
       enableSSHSupport = true; # Use GPG for SSH authentication
