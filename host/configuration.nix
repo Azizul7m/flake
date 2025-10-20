@@ -49,8 +49,14 @@
   nix = {
     settings = {
       connect-timeout = 30; # Increase connection timeout to 30 seconds
-      stalled-download-timeout = 60; # Increase stalled download timeout to 60 seconds
+      stalled-download-timeout =
+        60; # Increase stalled download timeout to 60 seconds
       auto-optimise-store = true; # Optimise syslinks
+      substituters = [ "https://cache.nixos.org/" ];
+      extra-substituters = [
+        "https://ftp.gnu.org/gnu/"
+        "https://mirror.sjtu.edu.cn/nix-channels/store"
+      ];
       experimental-features = [
         "flakes"
         "auto-allocate-uids"
