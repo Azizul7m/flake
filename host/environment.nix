@@ -6,6 +6,7 @@ in {
     loginShellInit = ''
       if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
 	echo "Auto login secript try to running"
+	${exec}
       fi
     '';
   };
