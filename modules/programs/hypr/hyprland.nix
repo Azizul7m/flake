@@ -7,38 +7,38 @@ with pkgs; {
 
   home.packages = [
     qt5.qtwayland
-    qt5.qtbase
-    qt5.qttools
-    qt6Packages.qt6ct
-    libsForQt5.qt5.qtwayland
+    qt5.qtbase # for qt apps
+    qt5.qttools # for qt apps
+    qt6Packages.qt6ct # qt6 config tool
+    libsForQt5.qt5.qtwayland # for qt5 apps
 
-    libnotify
-    wofi
-    wlogout
-    wireplumber
+    libnotify # notification library
+    wofi # application launcher
+    wlogout # logout screen
+    wireplumber # audio router for pipewire
+    brightnessctl # brightness control
 
-    waypaper
+    wayland-protocols # wayland protocols
+    wlr-layout-ui # layout switcher
+    wf-recorder # screen recorder
+    wl-clipboard # clipboard utils
+
+    waypaper # wallpaper utils
     swaybg # wallpaper
-    wf-recorder
-    brightnessctl
-    wayland-protocols
-    wlr-layout-ui
-    wlr-which-key
-    hyprsunset
-    hyprshot
-    hyprpicker
-    nwg-launchers
-    nwg-displays
-    nwg-look
-    wl-clipboard
-    grimblast
-    grim
-    slurp
+    hyprsunset # wallpaper based on time of day
+    hyprshot # screenshot tool
+    hyprpicker # color picker
+    nwg-launchers # app launcher
+    nwg-displays # display manager
+    nwg-look # theme manager
+    grimblast # screenshot utils
+    grim # screenshot utils
+    slurp # screenshot utils
     scrot # screenshot utils
     maim # screenshot utils
-    wayland-scanner
-    wtype
-    wlay
+    wayland-scanner # wayland protocol compiler
+    wtype # virtual keyboard
+    wlay # window layer tool
     wob # volume gui progress bar
     wev # key cast
   ];
@@ -73,7 +73,7 @@ with pkgs; {
         ];
         scriptsDir = "$HOME/.config/hypr/scripts";
         terminal = "alacritty";
-        browser = "brave";
+        browser = "google-chrome";
         fileManager = "nautilus";
         menu = "pkill wofi || wofi --show drun -I";
         emacsTerminal = "emacsclient  -c";
