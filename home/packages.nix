@@ -3,20 +3,19 @@
     packages = (with pkgs; [
       nautilus
       baobab # disk analizer
-      google-chrome
-      brave
-      pcmanfm
+      gnome-disk-utility # disk utility
+      google-chrome # web browser
+      pcmanfm # file manager
 
       #Office
-      sioyek
-      onlyoffice-bin_latest
+      onlyoffice-bin_latest # office suite
 
       #Graphics
-      figma-linux
+      figma-linux # figma client
       #inkscape
       sxiv
       #scribus
-      #blender
+      blender
       #lightworks
 
       # Social
@@ -25,15 +24,15 @@
       #Utils
       dropbox
       qbittorrent
-      appimage-run
-      bleachbit
+      appimage-run # AppImage
+      bleachbit # system
       # boxbuddy # Distrobox container manage
       #rustdesk
 
       # Media
       vlc
       sxiv
-      scrcpy
+      scrcpy # android screen mirror
 
       # TUI
       # yewtube # youtube
@@ -42,7 +41,7 @@
       #Utils
       playerctl
       cliphist # clipboard manager
-      screenkey
+      screenkey # show keys pressed on screen
       #zenity # Diolog
     ]);
   };
