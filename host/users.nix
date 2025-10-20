@@ -10,6 +10,7 @@
       "docker"
       "libvirtd"
       "qemu-libvirtd"
+      "syncthing"
     ];
     shell = pkgs.fish; # Default shell
   };
