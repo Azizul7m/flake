@@ -8,21 +8,26 @@
     mode = [ "x" "n" "t" ];
     key = "<leader>w";
     action = "<C-w>";
+    options = { desc = "Window management"; };
+  }
+  {
+    mode = [ "x" "n" "t" ];
+    key = "<leader>b[";
+    action = "<cmd>bprevious<CR>";
     options = { desc = "window management"; };
   }
-  # Commentary bindings
   {
-    mode = [ "v" "n" ];
-    action = "<cmd>Commentary<CR>";
-    key = "<M-;>";
-    options = { desc = "Comments"; };
+    mode = [ "x" "n" "t" ];
+    key = "<leader>b]";
+    action = "<cmd>bnext<CR>";
+    options = { desc = "window management"; };
   }
   # Telescope bindings
   {
-    mode = [ "n" "v" "i" "t"];
+    mode = [ "n" "v" "i" "t" ];
     action = "<cmd>Telescope<CR>";
     key = "<M-p>";
-    options ={ desc = "Telescope"; };
+    options = { desc = "Telescope"; };
   }
   {
     mode = [ "n" "v" ];
@@ -48,11 +53,6 @@
   }
   {
     mode = "n";
-    key = "<M-n>";
-    action = "<cmd>Telescope diagnostics<cr>";
-  }
-  {
-    mode = "n";
     key = "<leader>p";
     action = "<cmd>Telescope projects<cr>";
   }
@@ -65,6 +65,55 @@
     mode = [ "n" "t" ];
     key = "<M-j>";
     action = "<cmd>Telescope buffers<cr>";
+  }
+  # LSP bindings
+  {
+    mode = "n";
+    key = "gd";
+    action = "<cmd>Lspsaga goto_definition<CR>";
+    options.desc = "Go to definition";
+  }
+  {
+    mode = "n";
+    key = "<leader>cd";
+    action = "<cmd>Lspsaga goto_definition<CR>";
+    options.desc = "Go to definition";
+  }
+  {
+    mode = "n";
+    key = "gD";
+    action = "<cmd>lua vim.lsp.buf.declaration()<CR>";
+    options.desc = "Go to declaration";
+  }
+  {
+    mode = "n";
+    key = "gi";
+    action = "<cmd>Lspsaga goto_implementation<CR>";
+    options.desc = "Go to implementation";
+  }
+  {
+    mode = "n";
+    key = "<leader>cD";
+    action = "<cmd>lua vim.lsp.buf.declaration()<CR>";
+    options.desc = "Go to declaration";
+  }
+  {
+    mode = "n";
+    key = "leader>ci";
+    action = "<cmd>Lspsaga goto_implementation<CR>";
+    options.desc = "Go to implementation";
+  }
+  {
+    mode = "n";
+    key = "gr";
+    action = "<cmd>Lspsaga lsp_finder<CR>";
+    options.desc = "Show references";
+  }
+  {
+    mode = "n";
+    key = "<leader>cr";
+    action = "<cmd>Lspsaga rename<CR>";
+    options.desc = "Rename symbol";
   }
   {
     mode = "n";
@@ -80,27 +129,21 @@
   }
   {
     mode = [ "n" "v" ];
-    key = "<C-a>";
+    key = "<leader>ca";
+    action = "<cmd>Lspsaga code_action<CR>";
+    options = { desc = "lsp code action"; };
+  }
+  {
+    mode = [ "n" "v" ];
+    key = "<M-Enter>";
     action = "<cmd>Lspsaga code_action<CR>";
     options = { desc = "lsp code action"; };
   }
   {
     mode = "n";
-    key = "<M-n>";
-    action = "<cmd>Lspsaga diagnostic_jump_next<CR>";
-    options = { desc = "Oil file browser"; };
-  }
-  {
-    mode = "n";
-    key = "<M-p>";
-    action = "<cmd>Lspsaga diagnostic_jump_prev<CR>";
-    options = { desc = "Oil file browser"; };
-  }
-  {
-    mode = "n";
-    key = "<leader>op";
-    action = "<cmd>Oil<CR>";
-    options = { desc = "Oil file browser"; };
+    key = "-";
+    action = "<cmd>Oil --float<CR>";
+    options = { desc = "Open parent directory"; };
   }
   {
     mode = "n";
@@ -113,7 +156,54 @@
     key = "<leader>ot";
     action = "<cmd>terminal<CR>";
   }
+  # Obsidian
+  {
+    mode = "n";
+    key = "<leader>noq";
+    action = "<cmd>Obsidian quick_switch<CR>";
+    options = { desc = "Obsidian: Quick switch"; };
+  }
+  {
+    mode = "n";
+    key = "<leader>nos";
+    action = "<cmd>Obsidian search<CR>";
+    options = { desc = "Obsidian: Search"; };
+  }
+  {
+    mode = "n";
+    key = "<leader>nof";
+    action = "<cmd>Obsidian follow_link<CR>";
+    options = { desc = "Obsidian: Follow link"; };
+  }
+  {
+    mode = "n";
+    key = "<leader>non";
+    action = "<cmd>Obsidian new<CR>";
+    options = { desc = "Obsidian: New note"; };
+  }
+  {
+    mode = "n";
+    key = "<leader>nol";
+    action = "<cmd>Obsidian links<CR>";
+    options = { desc = "Obsidian: Link"; };
+  }
+  {
+    mode = "n";
+    key = "<leader>not";
+    action = "<cmd>Obsidian tags<CR>";
+    options = { desc = "Obsidian: Tags"; };
+  }
+  {
+    mode = "n";
+    key = "<leader>nop";
+    action = "<cmd>Obsidian open<CR>";
+    options = { desc = "Obsidian: Open"; };
+  }
+  {
+    mode = "n";
+    key = "<leader>now";
+    action = "<cmd>Obsidian workspace<CR>";
+    options = { desc = "Obsidian: Workspace"; };
+  }
 ]
-
-
 

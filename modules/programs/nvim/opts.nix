@@ -1,11 +1,11 @@
 # opts.nix
 {
   # System clipboard support, needs xclip/wl-clipboard
-#  clipboard = {
-#        # Use system clipboard
-#        register = "unnamedplus";
-#        providers.wl-copy.enable = true;
-#  };
+  clipboard = {
+    # Use system clipboard
+    register = "unnamedplus";
+    providers.wl-copy.enable = true;
+  };
   number = true;
   relativenumber = false;
   shiftwidth = 2;

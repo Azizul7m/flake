@@ -3,7 +3,9 @@
   programs.nixvim = {
     enable = true;
     luaLoader.enable = true;
-    colorschemes.catppuccin.enable = true;
+    extraConfigLua = builtins.readFile ./native_config.lua;
+    colorschemes.catppuccin = { enable = true; };
+
     globals = {
       mapleader = " ";
       maplocalleader = " ";
@@ -13,5 +15,4 @@
     keymaps = import ./keys.nix;
   };
 }
-
 
