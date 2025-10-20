@@ -11,14 +11,14 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
 
     agenix = {
-      url="github:ryantm/agenix";
+      url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    #  catppuccin = {
-    #  url = "github:catppuccin/nix";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #  };
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -44,12 +44,8 @@
       userEmail = "azizul7m@gmail.com";
       pkgs = import nixpkgs {
         inherit system;
-        config = {
-          allowUnfree = true;
-        };
-        overlays = [
-          inputs.emacs-overlay.overlay
-        ];
+        config = { allowUnfree = true; };
+        overlays = [ inputs.emacs-overlay.overlay ];
       };
 
     in {
@@ -57,30 +53,25 @@
         "${host}" = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit flake-utils host user userEmail fullName inputs pkgs;
+            inherit flake-utils host user userEmail fullName inputs;
           };
-          modules =
-            [ ./host/configuration.nix
-               inputs.home-manager.nixosModules.home-manager {
-                 home-manager = {
-                   useGlobalPkgs = true; 
-                   useUserPackages = true;
-                   extraSpecialArgs = { inherit flake-utils host user userEmail fullName inputs; };
-                   users."${user}" = import ./home/home.nix;
-                 };
-               }
-            ];
+          modules = [
+            ./host/configuration.nix
+            inputs.catppuccin.nixosModules.catppuccin
+            inputs.agenix.nixosModules.default
+            inputs.home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = {
+                  inherit flake-utils host user userEmail fullName inputs;
+                };
+                users."${user}" = import ./home/home.nix;
+              };
+            }
+          ];
         };
       };
-      #  homeConfigurations."${host}" = inputs.home-manager.lib.homeManagerConfiguration {
-      #    inherit pkgs;
-      #    extraSpecialArgs = {
-      #      inherit flake-utils host user userEmail fullName inputs;
-      #    };
-      #    modules = [
-      #      inputs.agenix.homeManagerModules.default
-        #      inputs.catppuccin.homeModules.catppuccin
-      #  ./home/home.nix ];
-      #   };
     };
 }
