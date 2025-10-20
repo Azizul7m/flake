@@ -81,25 +81,7 @@
     };
   };
   services = {
-    syncthing = {
-      enable = true;
-      settings = {
-        user = "${user}";
-        passwordFile = "${config.age.secrets.syncthing.path}";
-        tray = true;
-        folders = {
-          "~/Dropbox" = {
-            id = "dropbox";
-            path = "~/Dropbox";
-            rescanIntervalS = 3600; # Rescan every hour
-            ignorePerms = true;
-            params = {
-              maxVersions = "5"; # Keep last 5 versions
-            };
-          };
-        };
-      };
-    };
+    syncthing = { enable = true; };
     wayvnc = {
       enable = true;
       settings = {
