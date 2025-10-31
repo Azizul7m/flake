@@ -26,11 +26,31 @@ map("n", "<M-Enter>", vim.lsp.buf.code_action, { desc = "Code actions" })
 map("n", "<M-p>", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
 map("n", "<M-n>", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 
--- File management
-map({ "n", "v", "t" }, "_", "<cmd>Neotree toggle<CR>", { desc = "Neotree file manager" })
-map({ "n", "v", "t" }, "-", "<cmd>Oil --float --preview<CR>", { desc = "Oil file manager" })
-
 -- Find
 map({ "n" }, "<leader>fc", "<cmd>Oil --float --preview ~/.config/nvim<CR>", { desc = "Edit Neovim config" })
 map({ "n", "v" }, "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Live grep" })
 map("n", "<leader>fp", "<cmd>Telescope projects<CR>", { desc = "Find projects" })
+
+-- File management
+map({ "n", "v", "t" }, "<M-->", "<cmd>Neotree toggle<CR>", { desc = "Neotree file manager" })
+map({ "n", "v" }, "-", "<cmd>Oil --float --preview<CR>", { desc = "Oil file manager" })
+
+-- add toggle bindings
+map("n", "<leader>tt", "<cmd>terminal<CR>", { desc = "Terminal" })
+--please add vimix terminal bindings
+map("n", "<leader>tv", "<cmd>VimuxTogglePane<CR>", { desc = "Toggle Vimix terminal" })
+map("n", "<leader>tl", "<cmd>Lazy<CR>", { desc = "Toggle Lazy.nvim" })
+map("n", "<leader>td", "<cmd>DiffviewOpen<CR>", { desc = "Toggle Diffview" })
+
+-- add Gitsigns toggle
+map("n", "<leader>gd", "<cmd>Gitsigns diffthis<CR>", { desc = "Git diff this" })
+map("n", "<leader>gh", "<cmd>Gitsigns preview_hunk<CR>", { desc = "Preview Git hunk" })
+map("n", "<leader>gb", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Toggle Gitsigns deleted" })
+map("n", "<leader>gl", "<cmd>Gitsigns setloclist<CR>", { desc = "Set Gitsigns loclist" })
+map("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<CR>", { desc = "Preview Git hunk" })
+map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<CR>", { desc = "Reset Git hunk" })
+map("n", "<leader>gs", "<cmd>Gitsigns stage_hunk<CR>", { desc = "Stage Git hunk" })
+map("n", "<leader>gu", "<cmd>Gitsigns undo_stage_hunk<CR>", { desc = "Undo stage Git hunk" })
+map("n", "<leader>gg", "<cmd>Neogit<CR>", { desc = "Neogit Status" })
+map("n", "<leader>gc", "<cmd>Gitsigns commit<CR>", { desc = "Git commit" })
+map("n", "<leader>gf", "<cmd>Gitsigns fetch<CR>", { desc = "Git fetch" })
