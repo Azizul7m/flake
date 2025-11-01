@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }: {
+{ config, user, pkgs, inputs, ... }: {
   imports = [
     ./hardware-configuration.nix
     ./environment.nix
@@ -10,12 +10,13 @@
     ./fonts.nix
     ../modules/programs/ibus.nix
   ];
-  # Bootloader.
+  # Bootloader settings
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
     timeout = 1;
   };
+  #NOTE: system settings
   boot = {
     supportedFilesystems = [ "ntfs" ];
     kernelParams = [ "quiet" "splash" ];
@@ -34,43 +35,11 @@
     };
   };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
-  i18n = {
-    inputMethod = { enable = true; };
-    defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings = {
-      LC_ADDRESS = "en_US.UTF-8";
-      LC_IDENTIFICATION = "bn_BD";
-      LC_MEASUREMENT = "bn_BD";
-      LC_MONETARY = "bn_BD";
-      LC_PAPER = "bn_BD";
-      LC_TIME = "en_US.UTF-8";
-    };
-  };
-  nix = {
-    settings = {
-      connect-timeout = 30; # Increase connection timeout to 30 seconds
-      stalled-download-timeout =
-        60; # Increase stalled download timeout to 60 seconds
-      auto-optimise-store = true; # Optimise syslinks
-      substituters = [ "https://cache.nixos.org/" ];
-      extra-substituters = [
-        "https://ftp.gnu.org/gnu/"
-        "https://mirror.sjtu.edu.cn/nix-channels/store"
-      ];
-      experimental-features = [
-        "flakes"
-        "auto-allocate-uids"
-        "nix-command"
-        # "configurable-impure-env"
-      ];
-    };
-    gc = {
-      automatic = true; # Automatic garbage collection
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-    package = pkgs.nixVersions.latest;
-  };
+
+  #NOTE: nix settings are moved to a separate file for better organization.
+  nix = import ./nix_conf.nix;
+
+  #NOTE: secqurity settings
   security = {
     rtkit.enable = true;
     polkit.enable = true;
@@ -79,6 +48,7 @@
       auth include login
     '';
   };
+  #NOTE: other settings
   nixpkgs.config.allowUnfree = true; # Allow unfree packages
   system.stateVersion = "24.05"; # Did you read the comment?
 }
