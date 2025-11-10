@@ -5,7 +5,9 @@ return {
 		"rachartier/tiny-inline-diagnostic.nvim",
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
+		"j-hui/fidget.nvim",
 		"folke/neodev.nvim",
+		"nvimdev/lspsaga.nvim",
 	},
 	opts = { diagnostics = { virtual_text = false } },
 	config = function()
@@ -37,7 +39,8 @@ return {
 				use_icons_from_diagnostic = true,
 			},
 		})
-
+		require("fidget").setup({})
+		require("lspsaga").setup({})
 		-- Initialize mason and mason-lspconfig
 		require("mason").setup()
 		require("mason-lspconfig").setup({

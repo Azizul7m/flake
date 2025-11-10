@@ -6,12 +6,12 @@ return {
 		},
 		cmd = "Copilot",
 		event = "InsertEnter",
-		config = function()
+		--[[ config = function()
 			require("copilot").setup({
 				suggestion = { enabled = true },
 				panel = { enabled = false },
 			})
-		end,
+		end, ]]
 	},
 	{
 		"zbirenbaum/copilot-cmp",

@@ -6,31 +6,20 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			rust = { "rustfmt" },
-			javascript = { "prettierd", "prettier" },
-			typescript = { "prettierd", "prettier" },
-			json = { "prettierd", "prettier" },
-			yaml = { "prettierd", "prettier" },
+			json = { "prettier" },
+			yaml = { "prettier" },
 			nix = { "nixfmt" },
 			bash = { "shfmt" },
-			markdown = { "prettierd", "prettier" },
 		},
-		format_on_save = function(bufnr)
-			local ft = vim.bo[bufnr].filetype
-			local allow_auto = {
-				lua = true,
-				rust = true,
-				javascript = true,
-				typescript = true,
-				json = true,
-				nix = true,
-				yaml = true,
-				bash = true,
-			}
-			-- Only auto-format whitelisted filetypes
-			if allow_auto[ft] then
-				return { timeout_ms = 3000, lsp_fallback = true }
-			end
-		end,
+		default_format_opts = {
+			lsp_format = "fallback",
+		},
+		format_on_save = {
+			-- I recommend these options. See :help conform.format for details.
+			lsp_format = "fallback",
+			timeout_ms = 500,
+		},
+		notify_on_error = true,
 	},
 	config = function(_, opts)
 		local conform = require("conform")

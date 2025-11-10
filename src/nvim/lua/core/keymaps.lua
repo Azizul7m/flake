@@ -1,4 +1,8 @@
 local map = vim.keymap.set
+local utils = require("core.utils")
+
+local nvim_config = utils.find_directory("~/.config/nvim", "Neovim Config")
+local find_notes = utils.find_directory("~/.notes", "Notes")
 
 -- Quick escape from insert mode
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
@@ -18,22 +22,24 @@ map("n", "<leader>.", "<cmd>Telescope file_browser<CR>", { desc = "File browser"
 map("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 map("n", "gr", vim.lsp.buf.references, { desc = "Go to references" })
 map("n", "K", vim.lsp.buf.hover, { desc = "Show hover documentation" })
-map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
+map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
 map("n", "<M-Enter>", vim.lsp.buf.code_action, { desc = "Code actions" })
 
 -- Diagnostic mappings
 map("n", "<M-p>", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
 map("n", "<M-n>", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+map("n", "<M-N>", "<cmd>Lspsaga show_workspace_diagnostics<CR>", { desc = "Workspace Diagnostic" })
 
 -- Find
-map({ "n" }, "<leader>fc", "<cmd>Oil --float --preview ~/.config/nvim<CR>", { desc = "Edit Neovim config" })
+map({ "n" }, "<leader>fc", nvim_config, { desc = "Edit Neovim config" })
+map({ "n" }, "<leader>fn", find_notes, { desc = "Find Notes" })
 map({ "n", "v" }, "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Live grep" })
 map("n", "<leader>fp", "<cmd>Telescope projects<CR>", { desc = "Find projects" })
 
 -- File management
 map({ "n", "v", "t" }, "<M-->", "<cmd>Neotree toggle<CR>", { desc = "Neotree file manager" })
-map({ "n", "v" }, "-", "<cmd>Oil --float --preview<CR>", { desc = "Oil file manager" })
+map({ "n", "v" }, "-", "<cmd>lua MiniFiles.open()<CR>", { desc = "Oil file manager" })
 
 -- add toggle bindings
 map("n", "<leader>tt", "<cmd>terminal<CR>", { desc = "Terminal" })
