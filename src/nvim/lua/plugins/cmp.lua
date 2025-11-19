@@ -66,7 +66,6 @@ return {
 			sources = cmp.config.sources({
 				{ name = "copilot" },
 				{ name = "nvim_lsp" },
-				{ name = "nvim_lua" },
 				{ name = "luasnip" },
 				{ name = "path" },
 				{ name = "emoji", option = { insert = true } },
@@ -97,6 +96,25 @@ return {
 				ghost_text = false,
 			},
 		})
+
+		cmp.setup.filetype({ "sql" }, {
+			sources = {
+				{ name = "nvim_lsp" },
+				{ name = "vim-dadbod-completion" },
+				{ name = "buffer" },
+			},
+		})
+
+		cmp.setup.filetype({ "lua" }, {
+			sources = {
+				{ name = "copilot" },
+				{ name = "nvim_lsp" },
+				{ name = "nvim_lua" },
+				{ name = "luasnip" },
+				{ name = "path" },
+			},
+		})
+
 		cmp.setup.cmdline("/", {
 			mapping = cmp.mapping.preset.cmdline(),
 			sources = {

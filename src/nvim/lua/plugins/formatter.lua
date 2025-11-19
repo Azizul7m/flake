@@ -9,6 +9,7 @@ return {
 			json = { "prettier" },
 			yaml = { "prettier" },
 			nix = { "nixfmt" },
+			sql = { "sqlfmt" },
 			bash = { "shfmt" },
 		},
 		default_format_opts = {

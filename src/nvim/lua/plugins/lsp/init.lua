@@ -51,13 +51,12 @@ return {
 		local handlers = require("plugins.lsp.handlers")
 		local on_attach = handlers.on_attach
 		local capabilities = handlers.capabilities
+		local lsp = vim.lsp
 
-		-- Configure lua_ls separately to use the system-installed language server,
-		-- which is required on NixOS.
-		vim.lsp.config["luals"] = {
+		lsp.config["luals"] = {
 			cmd = { "lua-language-server" },
 			filetypes = { "lua" },
 		}
-		vim.lsp.enable("luals")
+		lsp.enable("luals")
 	end,
 }

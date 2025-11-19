@@ -8,9 +8,11 @@ return {
 		ft = { "markdown" },
 	},
 	{
-		"folke/twilight.nvim",
-		cmd = "Twilight",
-		opts = { context = 10 },
+		"OXY2DEV/markview.nvim",
+		lazy = false,
+
+		-- Completion for `blink.cmp`
+		-- dependencies = { "saghen/blink.cmp" },
 	},
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
