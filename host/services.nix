@@ -4,7 +4,6 @@
     dbus.enable = true; # inter-process communication (IPC)
     libinput.enable = true; # LibInput
     devmon.enable = true; # monitoring drive "Heavy"
-    lorri.enable = true;
     gvfs.enable = true; # trash  "Heavy"
     udisks2.enable = true; # auto mount drive  "Heavy"
     languagetool.enable = true;

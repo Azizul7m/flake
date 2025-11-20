@@ -11,16 +11,6 @@
         mouse = { hide_when_typing = true; };
         keyboard.bindings = [
           {
-            key = "v";
-            mods = "Control";
-            action = "Paste";
-          }
-          {
-            key = "C";
-            mods = "Control";
-            action = "Copy";
-          }
-          {
             key = "Insert";
             mods = "Shift";
             action = "PasteSelection";

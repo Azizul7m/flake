@@ -1,8 +1,11 @@
-{ config, host, ... }: {
+{ config, host, ... }:
+
+{
   networking = {
-    hostName = "${host}"; # Define your hostname.
+    hostName = "${host}";
     useDHCP = false;
     networkmanager.enable = true;
+
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -16,8 +19,20 @@
         22000 # Syncthing
         8384 # Syncthing GUI
       ];
-      allowedUDPPorts = [ 21027 ]; # Syncthing discovery
+      allowedUDPPorts = [
+        21027 # Syncthing discovery
+      ];
+      allowedTCPPortRanges = [{
+        from = 1714;
+        to = 1764;
+      }];
+      allowedUDPPortRanges = [{
+        from = 1714;
+        to = 1764;
+      }];
     };
   };
-  services.openssh = { enable = true; };
+
+  services.openssh.enable = true;
 }
+

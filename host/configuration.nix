@@ -8,6 +8,7 @@
     ./networking.nix
     ./services.nix
     ./fonts.nix
+    ./nix_conf.nix
     ../modules/programs/ibus.nix
   ];
   # Bootloader settings
@@ -35,9 +36,6 @@
     };
   };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
-
-  #NOTE: nix settings are moved to a separate file for better organization.
-  nix = import ./nix_conf.nix;
 
   #NOTE: secqurity settings
   security = {

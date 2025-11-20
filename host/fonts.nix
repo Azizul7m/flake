@@ -1,13 +1,11 @@
 { pkgs, ... }: {
-  environment.systemPackages = with pkgs; [
-    twemoji-color-font
-  ];
+  environment.systemPackages = with pkgs; [ twemoji-color-font ];
 
   fonts = {
     packages = with pkgs; [
       roboto
       noto-fonts
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       lohit-fonts.bengali
       twemoji-color-font
       mononoki

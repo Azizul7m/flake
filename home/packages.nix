@@ -8,14 +8,14 @@
       pcmanfm # file manager
 
       #Office
-      onlyoffice-bin_latest # office suite
+      onlyoffice-desktopeditors # office suite
 
       #Graphics
       figma-linux # figma client
       #inkscape
       sxiv
-      #scribus
-      blender
+      #      scribus
+      # blender
       #lightworks
 
       # Social
@@ -36,7 +36,6 @@
 
       # TUI
       # yewtube # youtube
-
 
       #Utils
       playerctl

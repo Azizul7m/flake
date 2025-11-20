@@ -29,12 +29,19 @@ with pkgs; {
           alias emds='emacs --daemon'
           alias emd='emacsclient -tty'
 
+
           alias vim='nvim'
           alias c='code'
           alias code='code'
 
-
-          alias tas='tmux new-session -A -s default'
+          #docker
+          alias d='docker'
+          alias dps='docker ps'
+          alias di='docker images'
+          alias dui='lazydocker'
+          alias dc='docker-compose'
+          
+          alias t='tmux attach -t default || tmux new -s default'
 
           alias df='df -h'
           alias free='free -m'
@@ -98,7 +105,6 @@ with pkgs; {
         set -gx PATH $HOME/.npm_global/bin $HOME/.deno/bin $HOME/.cargo/bin $HOME/.bun/bin $HOME/.avm/bin $HOME/.local/share/solana/install/active_release/bin $HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin $HOME/.cargo/bin $HOME/.local/bin $PATH
                  zoxide init --cmd cd fish | source
                  starship init fish | source
-                 atuin init fish | source
       '';
     };
   };

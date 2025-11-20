@@ -37,7 +37,7 @@ with pkgs;
     ## Terminal Tools & Shell
     ## ───────────────────────────────
     xterm # Basic terminal (fallback)
-    vim # Text editor
+    neovim #
     wget # Simple downloader
     starship
     eza

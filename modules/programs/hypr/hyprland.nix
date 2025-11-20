@@ -1,6 +1,5 @@
 { inputs, config, pkgs, ... }:
 with pkgs; {
-
   imports = [
     ##../hypr/hyprpanel.nix
   ];
@@ -70,12 +69,12 @@ with pkgs; {
           "XDG_SESSION_TYPE,wayland"
           "XDG_SESSION_DESKTOP,Hyprland"
           "XDG_PORTAL_BACKEND,xdg-desktop-portal-hyprland"
+          "ELECTRON_OZONE_PLATFORM_HINT,auto"
         ];
         scriptsDir = "$HOME/.config/hypr/scripts";
         terminal = "alacritty";
         browser = "google-chrome";
         fileManager = "nautilus";
-        menu = "pkill wofi || wofi --show drun -I";
         emacsTerminal = "emacsclient  -c";
         fctix =
           "fcitx5 -9;sleep 1;fcitx5 -d --replace; sleep 1;fcitx5-remote -r";
@@ -91,7 +90,7 @@ with pkgs; {
             popups = true;
           };
         };
-        gestures = { workspace_swipe = "yes"; };
+        gesture = [ "3, down, scale: 1.5, float" ];
         #master= {
         #new_is_master = true;
         #};
@@ -102,6 +101,11 @@ with pkgs; {
         ];
         env = env;
         cursor = { enable_hyprcursor = true; };
+        input = {
+          special_fallthrough =
+            true; # having only floating windows in the special workspace will not block focusing windows in the regular workspace.
+          focus_on_close = 1; # focus will shift to the window under the cursor.
+        };
         general = {
           gaps_in = 3;
           gaps_out = 5;
@@ -128,6 +132,15 @@ with pkgs; {
           "../../../src/hypr/scripts/startup"
         ];
         # window rules
+        windowrule = [
+          "noblur, class:kando"
+          "opaque, class:kando"
+          "size 100% 100%, class:kando"
+          "noborder, class:kando"
+          "noanim, class:kando"
+          "float, class:kando"
+          "pin, class:kando"
+        ];
         windowrulev2 = [
           #Opacity
           "opacity 0.9 0.9, class:^(Emacs|Alacritty|VSCodium)$"
@@ -156,21 +169,22 @@ with pkgs; {
         "$mod" = "SUPER";
         bind = [
           # mouse movements
-          "$mod, RETURN, exec, emacsclient -cnq"
-          "ALT, RETURN, exec, ${terminal}"
+          "$mod SHIFT, RETURN, exec, emacsclient -cnq"
+          "$mod, RETURN, exec, ${terminal}"
           "$mod CONTROL, RETURN, exec, xterm"
           "$mod, B, exec, ${browser}"
           "$mod ALT, B, exec, firefox"
-          "$mod, i, exec, $menu"
+
           "$mod, V, exec, roficlip"
           "$mod, E, exec,  ${fileManager}"
           "$mod SHIFT, E, exec, pcmanfm"
           "$mod SHIFT, N, exec, waypaper --random"
-
           # Notifications
           "$mod, n, exec, swaync-client -t -sw"
           "$mod CONTROL, u, exec, ${fctix}"
-
+          #pie menu
+          "ALT, ;, exec, kando -m menu"
+          "CONTROL, mouse:273, exec, kando -m menu"
           # Hyprland Control
           "$mod CONTROL, R, exec, hyprctl reload"
           "$mod SHIFT, RETUR, layoutmsg, addmaster"
@@ -179,29 +193,24 @@ with pkgs; {
           "$mod CONTROL, Q, exit,"
           "$mod, Q, killactive,"
           #Layout
-          "$mod, SPACE, togglefloating,"
+          "$mod, f, togglefloating,"
           "$mod SHIFT, P, pseudo, "
           "$mod SHIFT, J, togglesplit, "
           "$mod, M, fullscreen"
           "$mod SHIFT, o, pin"
           "$mod,Tab,cyclenext" # change focus to another window
-
           # Special workspace
           "$mod SHIFT, U, movetoworkspace, special"
           "$mod, U, togglespecialworkspace,"
-
           #"$mod, ., ${pkgs.ibus-layout-toggle}"
-
           # Scroll through existing workspaces with mainMod + scroll
           "$mod, mouse_down, workspace, e+1"
           "$mod, mouse_up, workspace, e-1"
-
           # Move focus with mainMod + arrow keys
           "$mod, left, movefocus, l"
           "$mod, right, movefocus, r"
           "$mod, up, movefocus, u"
           "$mod, down, movefocus, d"
-
           # Move focus with mainMod + arrow keys
           "$mod, H, movefocus, l"
           "$mod, L, movefocus, r"
@@ -251,17 +260,17 @@ with pkgs; {
         #Start wofi opens wofi on first press, closes it on second
         bindr = [
           # Launcher
-          "ALT, SPACE, exec, pkill wofi || wofi --show drun -I"
-          "$mod SHIFT, SPACE, exec, pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'"
+          "$mod, SPACE, exec, pkill wofi || wofi --show drun -I"
+          "$mod, i, exec, pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'"
           "$mod, V, exec, pkill wofi || cliphist list | wofi -dmenu | cliphist decode | wl-copy"
           "$mod, p, exec, pkill rofi || rofi -show filebrowser"
           "ALT, F4, exec, wlogout "
         ];
-
         #Describe a bind
         bindd = [ ];
         #mouse binds; key: 272, 273
-        bindm = [ "$mod,mouse:272,movewindow" "$mod, mouse:273, resizewindow" ];
+        bindm =
+          [ "$mod,mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
       };
     };
   };

@@ -1,6 +1,5 @@
-{ pkgs, user, ... }:
-{
-  home.packages = with pkgs; [ mpd mpc-cli ncmpcpp ];
+{ pkgs, user, ... }: {
+  home.packages = with pkgs; [ mpd mpc ncmpcpp ];
   services = {
     mpd = {
       enable = true;

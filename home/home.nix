@@ -10,7 +10,6 @@
     ../modules/programs/tmux.nix
     ../modules/programs/zoxide.nix
     ../modules/programs/emacs.nix
-    ../modules/programs/nvim/nvim.nix
     ../modules/programs/wofi.nix
     ../modules/programs/fish.nix
     ../modules/programs/hypr/waybar.nix
@@ -38,7 +37,7 @@
     sessionVariables = {
       TERMINAL = "alacritty";
       VISUAL = "nvim";
-      BROWSER = "google-chrome-stable";
+      BROWSER = "$HOME/Applications/zen-x86_64.AppImage";
       ANCHOR_HOME = "$HOME/.anchor";
       MANPAGER = "less -R"; # To display
       NIXPKGS_ALLOW_UNFREE = "1";
@@ -48,46 +47,40 @@
       CC = "clang";
       CXX = "clang++";
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=lld";
+      GEMINI_API_KEY = "$(cat ${config.age.secrets.gemini.file})";
       #      # Api environment variables
       #      OPENAI_API_KEY_FILE = "$(cat ${config.age.secrets.openai.file})";
       #      GORGON_API_KEY_FILE = "$(cat ${config.age.secrets.groq.file})";
-      #      GEMINI_API_KEY_FILE = "$(cat ${config.age.secrets.gemini.file})";
     };
   };
 
   programs = {
     home-manager.enable = true;
     gitui.enable = true;
-    git = {
-      enable = true;
-      userName = "${user}";
-      userEmail = "${userEmail}";
-      diff-highlight.enable = true;
-      extraConfig = {
-        core.edtior = "nvim";
-        init = { defaultBranch = "main"; };
-        aliases = {
-          lg = "log --oneline --graph --all --decorate";
-          lga = "log --oneline --graph --all --decorate --stat";
-          lgt = "log --oneline --graph --all --decorate --stat --patch";
-          co = "checkout";
-          br = "branch";
-          ci = "commit";
-          st = "status";
-          last = "log -1 HEAD";
-          unstage = "reset HEAD --";
-        };
-      };
-    };
+    diff-highlight.enable = true;
   };
   services = {
-    syncthing = { enable = true; };
-    wayvnc = {
+    lorri = {
       enable = true;
+      enableNotifications = true;
+    };
+    syncthing = { enable = true; }; # Enable Syncthing service
+    kdeconnect = {
+      enable = true; # Enable KDE Connect service
+      indicator = true;
+    };
+    wayvnc = {
+      enable = true; # Enable WayVNC service
       settings = {
         address = "0.0.0.0";
         port = 9000;
       };
+    };
+    emacs = {
+      enable = true;
+      client.enable = true;
+      defaultEditor = true;
+      socketActivation.enable = true;
     };
   };
   catppuccin = {
@@ -95,7 +88,6 @@
     accent =
       "sky"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
     alacritty.enable = true;
-    atuin.enable = true;
     hyprland.enable = true;
     wlogout.enable = true;
     swaync.enable = true;
@@ -106,7 +98,6 @@
     fzf.enable = true;
     starship.enable = true;
     sioyek.enable = true;
-    fcitx5.enable = true;
     cache.enable = true;
     bat.enable = true;
   };

@@ -15,11 +15,11 @@
     gnuplot
     emacs-lsp-booster
     emacs-gtk
-    eask # Elisp package manager
+    eask-cli # Elisp package manager
     emacsPackages.epc
-    python3Packages.epc 
-    python3Packages.orjson 
-    python3Packages.sexpdata 
+    python3Packages.epc
+    python3Packages.orjson
+    python3Packages.sexpdata
     python3Packages.six
   ];
 }

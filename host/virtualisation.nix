@@ -1,8 +1,11 @@
 { pkgs, ... }: {
   environment.systemPackages = with pkgs; [
     distrobox
-    toolbox
     docker-compose
+    docker-buildx
+    dockfmt # Dockerfile formatter
+    docker-ls # Language server
+    lazydocker # Docker UI
     # lxd-lts # Ensure lxd is explicitly listed
   ];
   virtualisation = {

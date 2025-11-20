@@ -1,7 +1,11 @@
 { pkgs, ... }: {
   gtk = with pkgs; {
     enable = true;
-    colorScheme = "dark";
+    gtk4 = {
+      enable = true;
+      colorScheme = "dark";
+
+    };
     theme = {
       name = "Vimix-dark-doder";
       package = vimix-gtk-themes;

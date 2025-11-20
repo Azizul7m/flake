@@ -1,8 +1,17 @@
-{ pkgs, config,  ... }: {
-  programs = { fish.enable = true;};
+{ pkgs, config, ... }: {
+  programs = {
+    fish.enable = true;
+    nushell.enable = true;
+  };
   home = with pkgs; {
     packages = ([
-      # gdbgui
+
+      # For building dependencies
+      pkg-config
+      openssl
+      clang
+      glibc
+      glibc.static
 
       ### SYSTEM LIBRARIES ###
       libepoxy # OpenGL function manager
@@ -14,8 +23,13 @@
       nodejs
       nodePackages_latest.typescript-language-server
 
+      # go
+      go # The Go compiler and tools
+      delve # Go debugger (optional)
+      gopls # Go LSP server (optional)
+
       # Python
-      python3Full
+      python3
       python3Packages.pip
       poetry # Package management
       pyright # Static type checker
@@ -34,23 +48,14 @@
       nixd # Language server
       nixdoc # Documentation
 
-
-      ### DEVOPS & CONTAINERS ###
-      docker-compose
-      dockfmt # Dockerfile formatter
-      docker-ls # Language server
-      docker-compose-language-service
-
       ### SECURITY TOOLS ###
-      #burpsuite # Web security testing
+      # burpsuite # Web security testing
       # metasploit # Penetration framework
       # nikto # Web scanner
       # ghostscript # PDF processor (security research)
       # hey # test webserver
 
       ### PRODUCTIVITY TOOLS ###
-      # Shell Enhancements
-
       # CLI Utilities
       yt-dlp # Media downloader
       asciinema # Terminal recorder
@@ -62,8 +67,11 @@
       shfmt # Shell formatter
       typioca # Typing test
 
+      ### Lua
+      lua-language-server # Language server
+      stylua # Formatter
+
       ### LANGUAGE SERVERS (LSPs) ###
-      nil # nix
       yaml-language-server
       nginx-language-server
       prettier
@@ -79,6 +87,10 @@
       gemini-cli
       n8n # Workflow automation
     ]);
-
+    sessionVariables = {
+      OPENSSL_DIR = "${pkgs.openssl.dev}";
+      OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
+      OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
+    };
   };
 }

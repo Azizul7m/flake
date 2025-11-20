@@ -1,17 +1,4 @@
-{ config, pkgs, ... }:
-let
-  tmux-which-key = pkgs.tmuxPlugins.mkTmuxPlugin {
-    pluginName = "tmux-which-key";
-    version = "2024-01-10";
-    src = pkgs.fetchFromGitHub {
-      owner = "alexwforsythe";
-      repo = "tmux-which-key";
-      rev = "main";
-      sha256 = "sha256-X7FunHrAexDgAlZfN+JOUJvXFZeyVj9yu6WRnxMEA8E=";
-    };
-    rtpFilePath = "plugin.sh.tmux";
-  };
-in {
+{ config, pkgs, ... }: {
   xdg.configFile = {
     "tmux/plugins/tmux-which-key/config.yaml".text =
       pkgs.lib.generators.toYAML { } {
@@ -34,12 +21,8 @@ in {
         extrakto
         tmux-thumbs
         sidebar
-        {
-          plugin = tmux-which-key;
-          extraConfig = ''
-            set -g @tmux-which-key-xdg-enable 1;
-          '';
-        }
+        vim-tmux-navigator
+        tmux-fzf
         {
           plugin = tmux-floax;
           extraConfig = ''
@@ -59,14 +42,22 @@ in {
             set -g @session-wizard 'T M-k' # for multiple key bindings
           '';
         }
-        {
-          plugin = catppuccin;
-          extraConfig = ''
-            set -g @catppuccin_flavor 'mocha' # latte, frappe, macchiato or mocha
-          '';
-        }
+        # {
+        #   plugin = catppuccin;
+        #   extraConfig = ''
+        #     set -g @catppuccin_flavor 'mocha' # latte, frappe, macchiato or mocha
+        #   '';
+        # }
       ];
       extraConfig = ''
+        # Force tmux to support truecolor
+        set -g default-terminal "tmux-256color"
+        set-option -ga terminal-overrides ",xterm-256color:RGB"
+        set-option -ga terminal-overrides ",alacritty:RGB"
+        set-option -ga terminal-overrides ",foot:RGB"
+        set-option -ga terminal-overrides ",wezterm:RGB"
+        set-option -ga terminal-overrides ",*colorterm:truecolor"
+
         set -g mouse on 
         set -g base-index 1
         setw -g pane-base-index 1
@@ -88,6 +79,15 @@ in {
         bind j select-pane -D
         bind k select-pane -U
         bind l select-pane -R
+
+        # Vim tmux navigator settings
+        set -g @vim_navigator_mapping_left "C-Left C-h"  # use C-h and C-Left
+        set -g @vim_navigator_mapping_right "C-Right C-l"
+        set -g @vim_navigator_mapping_up "C-k"
+        set -g @vim_navigator_mapping_down "C-j"
+        set -g @vim_navigator_mapping_prev ""  # removes the C-\ binding
+
+        set -g @vim_navigator_prefix_mapping_clear_screen ""
       '';
     };
   };
