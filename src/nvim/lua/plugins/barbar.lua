@@ -8,9 +8,11 @@ return {
 		vim.g.barbar_auto_setup = false
 	end,
 	opts = {
+		tabpages = true,
+		hide = { extensions = true, inactive = true },
 		sidebar_filetypes = {
 			-- Use the default values: {event = 'BufWinLeave', text = '', align = 'left'}
-			Neotree = true,
+			Explorar = true,
 			-- Or, specify the text used for the offset:
 			undotree = {
 				text = "undotree",

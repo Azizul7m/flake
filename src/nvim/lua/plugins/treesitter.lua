@@ -1,16 +1,26 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	branch = "main",
+	build = ":TSUpdate",
 	lazy = false,
 	opts = {
-		ensure_installed = {},
-		sync_install = true,
-		auto_install = true,
+		ensure_installed = { "http", "rust", "toml", "json", "tsx" },
+		auto_install = false,
+		sync_install = false,
+
 		highlight = { enable = true },
 		indent = { enable = true },
-		parser_install_dir = vim.fn.stdpath("data") .. "/parsers",
 	},
+
 	config = function(_, opts)
+		-- Set parser install directory (persistent)
+		local parser_dir = vim.fn.stdpath("cache") .. "/treesitter"
+		vim.fn.mkdir(parser_dir, "p")
+
+		-- MUST SET: runtimepath entry so TS finds installed parsers
+		vim.opt.runtimepath:append(parser_dir)
+
+		opts.parser_install_dir = parser_dir
+
 		require("nvim-treesitter.configs").setup(opts)
 	end,
 }

@@ -4,6 +4,10 @@ return {
 		"mrcjkb/rustaceanvim",
 		version = "^6",
 		lazy = false,
+		config = function()
+			-- You might want to add some specific configuration for rustaceanvim here
+			-- require("rustaceanvim").setup({})
+		end,
 	},
 	{
 		"saecki/crates.nvim",
@@ -12,11 +16,4 @@ return {
 			require("crates").setup()
 		end,
 	},
-	-- {
-	-- 	"cordx56/rustowl",
-	-- 	version = "*", -- Latest stable version
-	-- 	build = "cargo install rustowl",
-	-- 	lazy = false, -- This plugin is already lazy
-	-- 	opts = {},
-	-- },
 }

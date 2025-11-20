@@ -1,7 +1,6 @@
 local map = vim.keymap.set
 local utils = require("core.utils")
 
-local nvim_config = utils.find_directory("~/.config/nvim", "Neovim Config")
 local find_notes = utils.find_directory("~/.notes", "Notes")
 
 -- Quick escape from insert mode
@@ -9,6 +8,7 @@ map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 
 -- Terminal
 map("t", "jk", "<C-\\><C-n>", { desc = "Normal mode in Terminal" })
+map({ "t", "n", "v" }, "<M-t>", "<cmd>lua Snacks.terminal.toggle()<CR>", { desc = "Toggle Terminal" })
 map("t", "<M-n>", "<cmd>lua Snacks.terminal.open()<CR>", { desc = "Open new Snacks Terminal" })
 
 -- Window management
@@ -25,19 +25,17 @@ map("n", "<M-N>", "<cmd>Lspsaga show_workspace_diagnostics<CR>", { desc = "Works
 map({ "n" }, "<leader>fn", find_notes, { desc = "Find Notes" })
 
 -- Toggle
-map({ "n", "v" }, "-", "<cmd>lua Snacks.explorer()<CR>", { desc = "Neotree file manager" })
-map("t", "<M-->", "<cmd>lua Snacks.explorer()<CR>", { desc = "Neotree file manager" })
-map("t", "<M-t>", "<cmd>lua Snacks.explorer()<CR>", { desc = "Neotree file manager" })
-map({ "t", "n", "v", "t" }, "<M-t>", "<cmd>lua Snacks.terminal.toggle()<CR>", { desc = "Toggle Terminal" })
+map({ "n", "v", "t" }, "-", "<cmd>lua Snacks.explorer()<CR>", { desc = "Neotree file manager" })
 map({ "i", "n", "t" }, "<M-x>", "<cmd>lua Snacks.picker()<CR>", { desc = "Snacks picker" })
 map("n", "<leader>tl", "<cmd>Lazy<CR>", { desc = "Lazy.nvim" })
 map("n", "<leader>td", "<cmd>DBUIToggle<CR>", { desc = "DBUIToggle" })
+map("n", "<leader>to", "<cmd>DBUIFindBuffer<CR>", { desc = "DBUIFindBuffer" })
+map("n", "<leader>ta", "<cmd>DBUIAddConnection<CR>", { desc = "DBUIAddConnection" })
 map({ "n", "t", "x" }, "<leader>gg", "<cmd>Neogit<CR>", { desc = "Neogit" })
 map({ "n", "t", "x" }, "<leader>tf", "<cmd>Feed<CR>", { desc = "Rss Feed" })
 
 -- LSP
 local lsp = vim.lsp
-map("n", "<leader>ca", lsp.buf.code_action, { desc = "Lsp Code action" })
 map("n", "<leader>ca", lsp.buf.code_action, { desc = "Lsp Code action" })
 map("n", "<leader>cd", lsp.buf.definition, { desc = "Lsp Definition" })
 map("n", "<leader>cD", lsp.buf.declaration, { desc = "Lsp Declaration" })

@@ -22,8 +22,14 @@ return {
 				-- lua = false, -- to disable a format, set to `false`
 			},
 		},
+		
+		skip = function(event) -- skip notifications from mini and snacks
+			if event.kind == "notify" and (event.plugin == "mini.nvim" or event.plugin == "snacks.nvim") then
+				return true
+			end
+		end,
 	},
-	config = function()
+	config = function(_, opts)
 		require("noice").setup(opts)
 	end,
 }

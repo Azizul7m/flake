@@ -8,10 +8,11 @@ g.maplocalleader = " "
 -- Editor
 opt.number = true
 opt.relativenumber = false
-opt.cursorline = true
+--opt.cursorline = true
 opt.signcolumn = "yes"
 opt.wrap = false
-opt.scrolloff = 5
+opt.scrolloff = 8
+opt.sidescrolloff = 0
 opt.termguicolors = true
 
 -- Indentation
@@ -32,15 +33,15 @@ opt.splitbelow = true
 
 opt.swapfile = false
 opt.backup = false
-opt.undodir = os.getenv("HOME") .. "/.cache/nvim"
 opt.undofile = true
+opt.undodir = os.getenv("HOME") .. "/.cache/nvim"
 
 -- Misc
 opt.clipboard = "unnamedplus"
 opt.undofile = true
 opt.updatetime = 250
 opt.timeoutlen = 300
-opt.completeopt = "menu,menuone,noselect,noinsert"
+opt.completeopt = "menu,menuone,noselect"
 opt.pumheight = 10
 
 opt.hlsearch = false
