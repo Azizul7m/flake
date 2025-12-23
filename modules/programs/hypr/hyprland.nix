@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }:
+{ pkgs, ... }:
 with pkgs; {
   imports = [
     ##../hypr/hyprpanel.nix
@@ -53,31 +53,28 @@ with pkgs; {
       plugins = [ ];
       settings = let
         env = [
-          "HYPRLAND_LOG_WLR,1"
-          "HYPRLAND_TRACE1,1" # Corrected variable name
-          "HYPRCURSOR_SIZE,16"
-          "XCURSOR_SIZE,16"
-          "GDK_BACKEND,wayland,x11,*"
+          # "GTK_IM_MODULE,fcitx"
+          "QT_IM_MODULE,fcitx"
+          "XMODIFIERS,@im=fcitx"
+          #"IBUS_USE_PORTAL,1"
+
+          "XDG_SESSION_TYPE,wayland"
+          "XDG_CURRENT_DESKTOP,Hyprland"
+          "XDG_SESSION_DESKTOP,Hyprland"
+
+          "GDK_BACKEND,wayland,x11"
           "QT_QPA_PLATFORM,wayland;xcb"
           "SDL_VIDEODRIVER,wayland"
           "CLUTTER_BACKEND,wayland"
-          "MOZ_ENABLE_WAYLAND,1"
-          "MOZ_WEBRENDER,1"
-          "XDG_SESSION_TYPE,wayland"
-          "XDG_CURRENT_DESKTOP,Hyprland"
-          "XDG_CURRENT_DESKTOP,Hyprland"
-          "XDG_SESSION_TYPE,wayland"
-          "XDG_SESSION_DESKTOP,Hyprland"
-          "XDG_PORTAL_BACKEND,xdg-desktop-portal-hyprland"
-          "ELECTRON_OZONE_PLATFORM_HINT,auto"
+
+          # "MOZ_ENABLE_WAYLAND,1"
+          # "ELECTRON_OZONE_PLATFORM_HINT,auto"
         ];
-        scriptsDir = "$HOME/.config/hypr/scripts";
         terminal = "alacritty";
         browser = "google-chrome";
         fileManager = "nautilus";
         emacsTerminal = "emacsclient  -c";
-        fctix =
-          "fcitx5 -9;sleep 1;fcitx5 -d --replace; sleep 1;fcitx5-remote -r";
+        next_input = "fcitx5-remote -t"; # "ibus engine next";
         screenshot = "hyprshot -m region -o ~/Pictures/Screenshots";
       in {
         decoration = {
@@ -127,6 +124,7 @@ with pkgs; {
           "blueman-applet"
           "fcitx5 -d"
           "openbangla-gui --tray --dark"
+          #"ibus-daemon -drx"
           "wl-paste --type text --watch cliphist store"
           "wl-paste --type image --watch cliphist store"
           "../../../src/hypr/scripts/startup"
@@ -140,22 +138,23 @@ with pkgs; {
           "noanim, class:kando"
           "float, class:kando"
           "pin, class:kando"
+          "float, title:^(ibus-ui-gtk3|ibus-ui-gtk4)"
         ];
         windowrulev2 = [
           #Opacity
-          "opacity 0.9 0.9, class:^(Emacs|Alacritty|VSCodium)$"
+          "opacity 0.9 0.9, class:^(Emacs|Alacritty|vscode|ibus-ui-gtk3|ibus-ui-gtk4)$"
 
-          # telegram media viewer
-          "float, title:^(Waypaper|bemenu|Telegram|yed|rofi|screenkey)$"
-          "size 340 480, class:^(Waypaper|Telegram|Alacritty)$"
+          # IBus candidate / popup windows
+          "noblur, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
+          "nodim, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
+          "noanim, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
+          #          "opacity 1.0 1.0, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
+
+          "float, title:^(Waypaper|bemenu|Telegram|yed|rofi|screenkey|ibus-ui-gtk3|ibus-ui-gtk4)$"
 
           # make Firefox PiP window floating and sticky
-          "float, title:^(Picture-in-Picture)$"
+          "float, title:^(Picture-in-Picture|qBittorrent)$"
           "pin, title:^(Picture-in-Picture)$"
-
-          # throw sharing indicators away
-          "workspace special silent, title:^(Firefox — Sharing Indicator)$"
-          "workspace special silent, title:^(.*is sharing (your screen|a window).)$"
 
           # idle inhibit while watching videos
           "idleinhibit focus, class:^(mpv|.+exe|celluloid)$"
@@ -181,7 +180,7 @@ with pkgs; {
           "$mod SHIFT, N, exec, waypaper --random"
           # Notifications
           "$mod, n, exec, swaync-client -t -sw"
-          "$mod CONTROL, u, exec, ${fctix}"
+          "$mod, ;, exec, ${next_input}"
           #pie menu
           "ALT, ;, exec, kando -m menu"
           "CONTROL, mouse:273, exec, kando -m menu"

@@ -9,7 +9,7 @@
     ./services.nix
     ./fonts.nix
     ./nix_conf.nix
-    ../modules/programs/ibus.nix
+    ./type_inputs.nix
   ];
   # Bootloader settings
   boot.loader = {
