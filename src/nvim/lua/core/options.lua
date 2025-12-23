@@ -8,17 +8,24 @@ g.maplocalleader = " "
 -- Editor
 opt.number = true
 opt.relativenumber = false
---opt.cursorline = true
+opt.cursorline = true
+opt.numberwidth = 1
+
 opt.signcolumn = "yes"
-opt.wrap = false
 opt.scrolloff = 8
+
 opt.sidescrolloff = 0
 opt.termguicolors = true
 
+-- Optional: Customize the vertical line color
+opt.wrap = true
+opt.linebreak = true
+opt.breakindent = true
+
 -- Indentation
 opt.expandtab = true
-opt.shiftwidth = 4
-opt.tabstop = 4
+opt.shiftwidth = 2
+opt.tabstop = 2
 opt.smartindent = true
 
 -- Search

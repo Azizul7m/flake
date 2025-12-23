@@ -12,7 +12,6 @@ return {
 		"L3MON4D3/LuaSnip",
 		"rafamadriz/friendly-snippets",
 		"echasnovski/mini.icons", -- for nice symbols
-		"hrsh7th/cmp-cmdline",
 	},
 	config = function()
 		local cmp = require("cmp")
@@ -114,20 +113,6 @@ return {
 				{ name = "nvim_lua" },
 				{ name = "luasnip" },
 				{ name = "path" },
-			},
-		})
-
-		cmp.setup.cmdline("/", {
-			mapping = cmp.mapping.preset.cmdline(),
-			sources = {
-				{ name = "buffer" },
-			},
-		})
-
-		cmp.setup.cmdline(":", {
-			mapping = cmp.mapping.preset.cmdline(),
-			sources = {
-				{ name = "cmdline" },
 			},
 		})
 	end,

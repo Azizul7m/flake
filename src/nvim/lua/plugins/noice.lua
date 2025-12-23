@@ -6,6 +6,7 @@ return {
 		"rcarriga/nvim-notify",
 	},
 	opts = {
+		enabled = true, -- Temporarily disable noice.nvim to debug cmp-cmdline
 		cmdline = {
 			enabled = true, -- enables the Noice cmdline UI
 			view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
@@ -19,10 +20,8 @@ return {
 				lua = { pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" }, icon = "", lang = "lua" },
 				help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
 				input = { view = "cmdline_input", icon = "󰥻 " }, -- Used by input()
-				-- lua = false, -- to disable a format, set to `false`
 			},
 		},
-		
 		skip = function(event) -- skip notifications from mini and snacks
 			if event.kind == "notify" and (event.plugin == "mini.nvim" or event.plugin == "snacks.nvim") then
 				return true
