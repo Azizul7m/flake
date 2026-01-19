@@ -1,4 +1,4 @@
-{ config, pkgs, user, userEmail, inputs, ... }: {
+{ config, user, inputs, ... }: {
   imports = [
     inputs.catppuccin.homeModules.catppuccin
     inputs.agenix.homeManagerModules.default
@@ -15,6 +15,7 @@
     ../modules/programs/hypr/waybar.nix
     ../modules/programs/hypr/swaync.nix
     ../modules/programs/alacritty.nix
+    ../modules/programs/kitty.nix
     ../modules/programs/vscode.nix
     ../modules/services/mpd.nix
   ];

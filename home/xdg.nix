@@ -4,7 +4,7 @@
     userDirs.enable = true;
     mime.enable = true;
     mimeApps.defaultApplications = {
-      "application/pdf" = [ "sioyek.desktop" "zen.desktop" "firefox.desktop" ];
+      "application/pdf" = [ "pdf" "zen.desktop" "firefox.desktop" ];
       "image/png" = [ "sxiv.desktop" ];
       # Set the default browser for web content
       "text/html" = "zen.desktop";

@@ -2,6 +2,7 @@
   environment.systemPackages = with pkgs; [ twemoji-color-font ];
 
   fonts = {
+    enableDefaultPackages = true;
     packages = with pkgs; [
       roboto
       noto-fonts
@@ -10,6 +11,10 @@
       twemoji-color-font
       mononoki
       iosevka
+      corefonts
+      xorg.fontmiscmisc
+      xorg.fontadobe75dpi
+      xorg.fontadobe100dpi
     ];
 
     fontconfig = {

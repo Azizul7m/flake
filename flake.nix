@@ -19,6 +19,14 @@
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    quickshell = {
+      # add ?ref=<tag> to track a tag
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+
+      # THIS IS IMPORTANT
+      # Mismatched system dependencies will lead to crashes and other issues.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -35,7 +43,7 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, ... }:
+  outputs = inputs@{ self, nixpkgs, flake-utils, quickshell, ... }:
     let
       system = "x86_64-linux";
       host = "nixos";
@@ -69,6 +77,10 @@
                 };
                 users."${user}" = import ./home/home.nix;
               };
+            }
+            {
+              environment.systemPackages =
+                [ quickshell.packages.${system}.default ];
             }
           ];
         };

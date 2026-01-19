@@ -70,7 +70,7 @@ with pkgs; {
           # "MOZ_ENABLE_WAYLAND,1"
           # "ELECTRON_OZONE_PLATFORM_HINT,auto"
         ];
-        terminal = "alacritty";
+        terminal = "kitty";
         browser = "google-chrome";
         fileManager = "nautilus";
         emacsTerminal = "emacsclient  -c";
@@ -124,6 +124,7 @@ with pkgs; {
           "blueman-applet"
           "fcitx5 -d"
           "openbangla-gui --tray --dark"
+          "qbittorrent"
           #"ibus-daemon -drx"
           "wl-paste --type text --watch cliphist store"
           "wl-paste --type image --watch cliphist store"
@@ -142,7 +143,7 @@ with pkgs; {
         ];
         windowrulev2 = [
           #Opacity
-          "opacity 0.9 0.9, class:^(Emacs|Alacritty|vscode|ibus-ui-gtk3|ibus-ui-gtk4)$"
+          "opacity 0.9 0.9, class:^(Emacs|Alacritty|Kitty|vscode|ibus-ui-gtk3|ibus-ui-gtk4)$"
 
           # IBus candidate / popup windows
           "noblur, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
@@ -154,7 +155,19 @@ with pkgs; {
 
           # make Firefox PiP window floating and sticky
           "float, title:^(Picture-in-Picture|qBittorrent)$"
+          "workspace silent, title:^(qBittorrent)$"
           "pin, title:^(Picture-in-Picture)$"
+
+          # Zoom window rules
+          "float, class:^(zoom|zoom_client)$"
+          "float, title:^(Zoom Meeting)$"
+          "float, title:^(Zoom)$"
+          "float, title:^(Zoom - Licensed|Zoom - Basic)$"
+          "float, title:^(Meeting)$"
+          "float, title:^(Share Content)$"
+          "float, title:^(Participants)$"
+          "float, title:^(Chat)$"
+          "noblur, class:^(zoom|zoom_client)$"
 
           # idle inhibit while watching videos
           "idleinhibit focus, class:^(mpv|.+exe|celluloid)$"

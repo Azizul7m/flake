@@ -3,7 +3,12 @@
 {
   programs.kitty = {
     enable = true;
-
+    font = {
+      package = pkgs.iosevka;
+      name = "Iosevka Term";
+      size = 8;
+    };
+    themeFile = "Catppuccin-Mocha";
     settings = {
       ## General
       allow_remote_control = "yes";

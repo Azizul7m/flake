@@ -8,7 +8,33 @@
         general.live_config_reload = true;
         selection.save_to_clipboard = true;
         font.size = 9;
-        mouse = { hide_when_typing = true; };
+        mouse = {
+          bindings = [
+            {
+              mouse = "Left";
+              action = "Copy";
+            }
+            {
+              mouse = "Right";
+              action = "Paste";
+            }
+            {
+              mouse = "Left";
+              mods = "Control";
+              action = "Open";
+            }
+            {
+              mouse = "Right";
+              mods = "Control";
+              action = "ExpandSelection";
+            }
+            {
+              mouse = "Middle";
+              mode = "~Vi";
+              action = "PasteSelection";
+            }
+          ];
+        };
         keyboard.bindings = [
           {
             key = "Insert";

@@ -1,22 +1,20 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, ... }: {
   home = {
     packages = (with pkgs; [
       nautilus
-      baobab # disk analizer
+      baobab # disk analyzer
       gnome-disk-utility # disk utility
       google-chrome # web browser
       pcmanfm # file manager
 
       #Office
       onlyoffice-desktopeditors # office suite
+      zoom-us
 
       #Graphics
       figma-linux # figma client
-      #inkscape
+      gimp
       sxiv
-      #      scribus
-      # blender
-      #lightworks
 
       # Social
       #zulip
@@ -25,7 +23,7 @@
       dropbox
       qbittorrent
       appimage-run # AppImage
-      bleachbit # system
+      bleachbit # System
       # boxbuddy # Distrobox container manage
       #rustdesk
 
@@ -35,13 +33,13 @@
       scrcpy # android screen mirror
 
       # TUI
-      # yewtube # youtube
+      # yewtube # YouTube
 
       #Utils
       playerctl
       cliphist # clipboard manager
-      screenkey # show keys pressed on screen
-      #zenity # Diolog
+      screenkey # Show keys pressed on screen
+      #zenity # Dialog
     ]);
   };
 }

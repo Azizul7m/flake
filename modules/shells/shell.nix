@@ -41,9 +41,9 @@
       # (Web3)
 
       ### NIX ECOSYSTEM ###
-      devbox # Dev environments
       direnv # Environment switcher
       nix-direnv # Nix integration
+      devbox # Dev environments
       nixfmt-classic # Formatter
       nixd # Language server
       nixdoc # Documentation

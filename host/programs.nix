@@ -1,12 +1,14 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 with pkgs;
 
 {
   environment.systemPackages = [
+
     ## ───────────────────────────────
     ## Core Development Tools
     ## ───────────────────────────────
+
     cacert # SSL certificates
     openssl # SSL libraries
     clang # C compiler
@@ -37,7 +39,7 @@ with pkgs;
     ## Terminal Tools & Shell
     ## ───────────────────────────────
     xterm # Basic terminal (fallback)
-    neovim #
+    neovim
     wget # Simple downloader
     starship
     eza
