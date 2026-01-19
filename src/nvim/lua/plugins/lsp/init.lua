@@ -58,5 +58,10 @@ return {
 			filetypes = { "lua" },
 		}
 		lsp.enable("luals")
+		lsp.config["harper-ls"] = {
+			cmd = { "~/.nix-profile/bin/harper-ls" },
+			filetypes = { "md" },
+		}
+		lsp.enable("harper_ls")
 	end,
 }
