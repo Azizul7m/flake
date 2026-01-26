@@ -1,5 +1,6 @@
 { pkgs, ... }: {
   environment.systemPackages = with pkgs; [
+    freerdp
     distrobox
     docker-compose
     docker-buildx
@@ -17,6 +18,19 @@
     #     ovmf.packages = [ var.pkgs.OVMFFull.fd ];
     #   };
     # };
+
+oci-containers.containers."windows" = {
+    image = "dockur/windows";
+    autoStart = true;
+    ports = [ "8006:8006" "3389:3389" ];
+    volumes = [ "/var/lib/windows:/storage" ];
+    environment = {
+      DISK_IO = "sata"; # This fixes the drive detection issue
+      RAM_SIZE = "4G";
+      CPU_CORES = "2";
+    };
+    extraOptions = [ "--device=/dev/kvm" "--cap-add=NET_ADMIN" ];
+  };
     docker = {
       enable = true;
       rootless = {
@@ -27,6 +41,13 @@
       enableOnBoot = true;
       autoPrune.enable = true;
       extraPackages = with pkgs; [ criu ];
+      daemon.settings = {
+        log-driver = "json-file";
+        log-opts = {
+          "max-size" = "100m";
+          "max-file" = "3";
+        };
+      };
     };
     spiceUSBRedirection.enable = true;
   };

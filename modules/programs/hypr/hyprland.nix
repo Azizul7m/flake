@@ -131,24 +131,12 @@ with pkgs; {
           "../../../src/hypr/scripts/startup"
         ];
         # window rules
-        windowrule = [
-          "noblur, class:kando"
-          "opaque, class:kando"
-          "size 100% 100%, class:kando"
-          "noborder, class:kando"
-          "noanim, class:kando"
-          "float, class:kando"
-          "pin, class:kando"
-          "float, title:^(ibus-ui-gtk3|ibus-ui-gtk4)"
-        ];
+        windowrule = [ ];
         windowrulev2 = [
-          #Opacity
           "opacity 0.9 0.9, class:^(Emacs|Alacritty|Kitty|vscode|ibus-ui-gtk3|ibus-ui-gtk4)$"
-
           # IBus candidate / popup windows
           "noblur, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
           "nodim, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
-          "noanim, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
           #          "opacity 1.0 1.0, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
 
           "float, title:^(Waypaper|bemenu|Telegram|yed|rofi|screenkey|ibus-ui-gtk3|ibus-ui-gtk4)$"
@@ -168,6 +156,11 @@ with pkgs; {
           "float, title:^(Participants)$"
           "float, title:^(Chat)$"
           "noblur, class:^(zoom|zoom_client)$"
+
+          # Adobe Illustrator / Winboat fixes
+          "noblur, class:^(illustrator.exe)$"
+          "float, class:^(illustrator.exe)$, title:^(^$)$"
+          "noborder, class:^(illustrator.exe)$, title:^(^$)$"
 
           # idle inhibit while watching videos
           "idleinhibit focus, class:^(mpv|.+exe|celluloid)$"
