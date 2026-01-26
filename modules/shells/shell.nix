@@ -5,7 +5,6 @@
   };
   home = with pkgs; {
     packages = ([
-
       # For building dependencies
       pkg-config
       openssl
@@ -31,7 +30,7 @@
       # Python
       python3
       python3Packages.pip
-      poetry # Package management
+      # poetry # Package management
       pyright # Static type checker
 
       # Rust
@@ -44,7 +43,6 @@
       direnv # Environment switcher
       nix-direnv # Nix integration
       devbox # Dev environments
-      nixfmt-classic # Formatter
       nixd # Language server
       nixdoc # Documentation
 
@@ -52,7 +50,7 @@
       # burpsuite # Web security testing
       # metasploit # Penetration framework
       # nikto # Web scanner
-      # ghostscript # PDF processor (security research)
+      ghostscript # PDF processor (security research)
       # hey # test webserver
 
       ### PRODUCTIVITY TOOLS ###
