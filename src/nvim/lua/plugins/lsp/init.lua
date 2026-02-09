@@ -40,7 +40,11 @@ return {
 			},
 		})
 		require("fidget").setup({})
-		require("lspsaga").setup({})
+		require("lspsaga").setup({
+			lightbulb = {
+				enable = false,
+			},
+		})
 		-- Initialize mason and mason-lspconfig
 		require("mason").setup()
 		require("mason-lspconfig").setup({

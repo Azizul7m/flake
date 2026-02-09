@@ -19,6 +19,16 @@ return {
 		scroll = { enabled = true },
 		statuscolumn = { enabled = true },
 		words = { enabled = true },
+		image = {
+			enabled = true,
+			doc = {
+				enabled = true,
+				inline = true,
+				float = true,
+				max_width = 60,
+				max_height = 30,
+			},
+		},
 	},
 	keys = {
 		-- Top Pickers & Explorer

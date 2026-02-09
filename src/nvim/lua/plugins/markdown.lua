@@ -7,15 +7,20 @@ return {
 			file_types = { "markdown", "Avante" },
 		},
 		ft = { "markdown", "Avante" },
+		config = function()
+			require("render-markdown").setup({
+				completions = { lsp = { enabled = true } },
+			})
+		end,
 	},
 	{
 		"iamcco/markdown-preview.nvim",
 		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		build = "cd app && npm install",
-		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-		end,
 		ft = { "markdown" },
+		build = "cd app && npm install",
+		config = function()
+			vim.g.mkdp_auto_start = 0 -- Don't auto-start preview
+		end,
 	},
 	{
 		"yousefhadder/markdown-plus.nvim",
@@ -25,6 +30,11 @@ return {
 				-- Your custom configuration here
 			})
 		end,
+	},
+	{
+		"jbuck95/nvim-sioyek-highlights",
+		dependencies = { "nvim-telescope/telescope.nvim" },
+		config = true,
 	},
 	{
 		"alexxGmZ/Md2Pdf",

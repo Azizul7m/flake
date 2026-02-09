@@ -17,7 +17,7 @@ return {
 	config = function(_, opts)
 		local obsidian = require("obsidian")
 		obsidian.setup(opts)
-
+		ui = { enable = false }
 		-- Keymaps
 		local map = vim.keymap.set
 		local opts = { noremap = true, silent = true, desc = "Obsidian" }
