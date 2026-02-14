@@ -19,16 +19,8 @@ return {
 		config = function()
 			require("smartcolumn").setup({
 				disabled_filetypes = { "help", "text", "Dashboard" },
+				transparent_background = true,
 			})
-		end,
-	},
-	-- Colorscheme
-	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-		config = function()
-			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
 }

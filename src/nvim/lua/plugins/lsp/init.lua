@@ -22,7 +22,7 @@ return {
 		-- Setup tiny-inline-diagnostic
 		require("tiny-inline-diagnostic").setup({
 			preset = "modern",
-			transparent_bg = false,
+			transparent_bg = true,
 			transparent_cursorline = true,
 			options = {
 				add_messages = {
