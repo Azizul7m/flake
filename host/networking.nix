@@ -1,4 +1,4 @@
-{ config, host, ... }:
+{ host, ... }:
 
 {
   networking = {
@@ -14,12 +14,15 @@
         68 # DHCP
         80 # HTTP
         443 # HTTPS
+        4747 # Doris cam
         5900 # VNC
         3000 # Next app
         22000 # Syncthing
         8384 # Syncthing GUI
       ];
       allowedUDPPorts = [
+        4747 # Doris cam
+        8384 # Syncthing GUI
         21027 # Syncthing discovery
       ];
       allowedTCPPortRanges = [{
