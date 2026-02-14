@@ -76,7 +76,8 @@
   :if (memq window-system '(mac ns x))
   :ensure t
   :config
-  (exec-path-from-shell-initialize))
+  ;; (exec-path-from-shell-initialize)
+  )
 #+end_src
 
 #+begin_src emacs-lisp
@@ -278,7 +279,7 @@
   :custom
   (treesit-auto-install 'prompt)
   :config
-  (setq treesit-auto-langs '(javascript typescript tsx json toml css html rustic))
+  (setq treesit-auto-langs '(javascript typescript tsx json toml css html))
   (global-treesit-auto-mode))
 #+end_src
 ** LANGUAGES
@@ -287,7 +288,7 @@
   (use-package emmet-mode
     :defer t
     :ensure t
-  :mode "\\.html\\'")
+    :hook (html-mode . emmet-mode))
 #+end_src
 *** Html
 #+begin_src emacs-lisp
@@ -296,6 +297,11 @@
   :defer t
   :mode "\\.html\\'")
 #+end_src
+*** Go
+#+BEGIN_SRC emacs-lisp
+  (use-package go-mode
+    :ensure t)
+#+END_SRC
 *** Json
 #+begin_src emacs-lisp
 (use-package json-mode
@@ -361,18 +367,6 @@
     (use-package nix-mode
      :defer t
      :mode ("\\.nix\\'" "\\.nix.in\\'"))
-#+end_src
-*** Rust
-#+begin_src emacs-lisp
-  ;; (use-package rust-mode
-  ;;   :ensure (:package "rust-mode" :source nil :protocol https :inherit t :depth treeless :repo "rust-lang/rust-mode" :fetcher github :files ("*.el" "*.el.in" "dir" "*.info" "*.texi" "*.texinfo" "doc/dir" "doc/*.info" "doc/*.texi" "doc/*.texinfo" "lisp/*.el" "docs/dir" "docs/*.info" "docs/*.texi" "docs/*.texinfo" (:exclude ".dir-locals.el" "test.el" "tests.el" "*-test.el" "*-tests.el" "LICENSE" "README*" "*-pkg.el")))
-  ;;   :config
-  ;;   (setq rust-format-on-save nil)) 
-
-  ;; (use-package rustic
-  ;;   :ensure t
-  ;;   :config
-  ;; (setq rustic-lsp-client 'eglot))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -726,8 +720,8 @@
   :defer 10
   :hook (prog-mode . indent-bars-mode)
   :config
-  (setq indent-bars-prefer-character "|"))
-  (setopt indent-bars-ts-color '(inherit unspecified :blend 0.15))
+  (setq indent-bars-prefer-character "|")
+  (setopt indent-bars-ts-color '(inherit unspecified :blend 0.15)))
 #+end_src
 ** ICONS
 #+begin_src emacs-lisp
