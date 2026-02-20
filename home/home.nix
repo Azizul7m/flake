@@ -1,10 +1,10 @@
-{ config, user, inputs, ... }: {
+{ config, user, inputs, pkgs, ... }: {
   imports = [
     inputs.catppuccin.homeModules.catppuccin
     inputs.agenix.homeManagerModules.default
     ./xdg.nix
+    ./gtk.nix
     ./packages.nix
-    ../modules/ui/gtk.nix
     ../modules/programs/hypr/hyprland.nix
     ../modules/shells/shell.nix
     ../modules/programs/tmux.nix
@@ -12,8 +12,9 @@
     ../modules/programs/emacs.nix
     ../modules/programs/wofi.nix
     ../modules/programs/fish.nix
-    ../modules/programs/hypr/waybar.nix
-    ../modules/programs/hypr/swaync.nix
+#    ../modules/programs/niri.nix
+#    ../modules/programs/hypr/waybar.nix
+#    ../modules/programs/hypr/swaync.nix
     ../modules/programs/alacritty.nix
     ../modules/programs/kitty.nix
     ../modules/programs/vscode.nix
@@ -37,7 +38,6 @@
     ];
     sessionVariables = {
       TERMINAL = "alacritty";
-      VISUAL = "nvim";
       BROWSER = "$HOME/Applications/zen-x86_64.AppImage";
       ANCHOR_HOME = "$HOME/.anchor";
       MANPAGER = "less -R"; # To display
@@ -55,6 +55,7 @@
     };
   };
 
+  #  gtk = { enable = true; };
   programs = {
     home-manager.enable = true;
     gitui.enable = true;
@@ -84,24 +85,24 @@
       socketActivation.enable = true;
     };
   };
-  catppuccin = {
-    flavor = "mocha"; # latte, frappe, macchiato, mocha
-    accent =
-      "sky"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
-    alacritty.enable = true;
-    hyprland.enable = true;
-    wlogout.enable = true;
-    swaync.enable = true;
-    # waybar.enable = true;
-    cursors.enable = true;
-    fish.enable = true;
-    lsd.enable = true;
-    fzf.enable = true;
-    starship.enable = true;
-    sioyek.enable = true;
-    cache.enable = true;
-    bat.enable = true;
-  };
+  # catppuccin = {
+  #   flavor = "mocha"; # latte, frappe, macchiato, mocha
+  #   accent =
+  #     "sky"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
+  #   alacritty.enable = true;
+  #   hyprland.enable = true;
+  #   wlogout.enable = true;
+  #   swaync.enable = true;
+  #   # waybar.enable = true;
+  #   cursors.enable = true;
+  #   fish.enable = true;
+  #   lsd.enable = true;
+  #   fzf.enable = true;
+  #   starship.enable = true;
+  #   sioyek.enable = true;
+  #   cache.enable = true;
+  #   bat.enable = true;
+  # };
   # nix = {
   #    package = pkgs.nix;
   #   settings = { 

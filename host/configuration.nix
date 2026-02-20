@@ -1,5 +1,9 @@
-{ config, user, pkgs, inputs, ... }: {
+{ config, pkgs, inputs, ... }: {
   imports = [
+    inputs.dms.nixosModules.dank-material-shell
+    inputs.catppuccin.nixosModules.catppuccin
+    inputs.agenix.nixosModules.default
+    inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
     ./environment.nix
     ./virtualisation.nix
@@ -11,7 +15,7 @@
     ./nix_conf.nix
     ./type_inputs.nix
   ];
-  # Bootloader settings
+  # Boot loader settings
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
@@ -19,6 +23,8 @@
   };
   #NOTE: system settings
   boot = {
+    kernelModules = [ "v4l2loopback" ];
+    extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
     supportedFilesystems = [ "ntfs" ];
     kernelParams = [ "quiet" "splash" ];
     consoleLogLevel = 0;
@@ -37,16 +43,23 @@
   };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
 
-  #NOTE: secqurity settings
+  #NOTE: security settings
   security = {
     rtkit.enable = true;
-    polkit.enable = true;
+    polkit.enable = true; # PolicyKit for privilege management
     sudo.wheelNeedsPassword = false;
     pam.services.swaylock.text = ''
       auth include login
     '';
   };
+  # PipeWire is enabled in services.nix; keep legacy PulseAudio disabled.
+  services.pulseaudio.enable = false;
   #NOTE: other settings
+  hardware.bluetooth.settings = {
+    General = {
+      Experimental = true;
+    };
+  };
   nixpkgs.config.allowUnfree = true; # Allow unfree packages
   system.stateVersion = "24.05"; # Did you read the comment?
 }

@@ -29,10 +29,10 @@
 
       # Python
       python3
-      python3Packages.pip
       # poetry # Package management
       pyright # Static type checker
-
+      python313Packages.pip
+      pipx
       # Rust
       rustup
       trunk # WASM bundler

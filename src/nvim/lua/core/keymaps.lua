@@ -29,11 +29,10 @@ map({ "n", "v", "t" }, "-", "<cmd>lua Snacks.explorer()<CR>", { desc = "Snacks f
 map({ "n", "v", "t" }, "_", "<cmd>lua MiniFiles.open()<CR>", { desc = "MiniFiles file manager" })
 map({ "i", "n", "t" }, "<M-x>", "<cmd>lua Snacks.picker()<CR>", { desc = "Snacks picker" })
 map("n", "<leader>tl", "<cmd>Lazy<CR>", { desc = "Lazy.nvim" })
-map("n", "<leader>td", "<cmd>DBUIToggle<CR>", { desc = "DBUIToggle" })
-map("n", "<leader>to", "<cmd>DBUIFindBuffer<CR>", { desc = "DBUIFindBuffer" })
-map("n", "<leader>ta", "<cmd>DBUIAddConnection<CR>", { desc = "DBUIAddConnection" })
+map("n", "<leader>tbd", "<cmd>DBUIToggle<CR>", { desc = "DBUIToggle" })
+map("n", "<leader>tbo", "<cmd>DBUIFindBuffer<CR>", { desc = "DBUIFindBuffer" })
+map("n", "<leader>tba", "<cmd>DBUIAddConnection<CR>", { desc = "DBUIAddConnection" })
 map({ "n", "t", "x" }, "<leader>gg", "<cmd>Neogit<CR>", { desc = "Neogit" })
-map({ "n", "t", "x" }, "<leader>tf", "<cmd>Feed<CR>", { desc = "Rss Feed" })
 
 -- LSP
 local lsp = vim.lsp

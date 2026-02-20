@@ -7,6 +7,8 @@ return {
 		require("mini.comment").setup()
 		require("mini.align").setup()
 		require("mini.pick").setup()
+		require("mini.surround").setup()
+		require("mini.sessions").setup()
 		require("mini.files").setup({
 			mappings = {
 				close = "q",

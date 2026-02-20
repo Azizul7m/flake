@@ -71,7 +71,7 @@ with pkgs; {
           # "ELECTRON_OZONE_PLATFORM_HINT,auto"
         ];
         terminal = "kitty";
-        browser = "google-chrome";
+        browser = "~/Applications/zen-x86_64.AppImage";
         fileManager = "nautilus";
         emacsTerminal = "emacsclient  -c";
         next_input = "fcitx5-remote -t"; # "ibus engine next";
@@ -97,7 +97,7 @@ with pkgs; {
           ", preferred, auto, 1"
         ];
         env = env;
-        cursor = { enable_hyprcursor = true; };
+        #cursor = { enable_hyprcursor = true; };
         input = {
           special_fallthrough =
             true; # having only floating windows in the special workspace will not block focusing windows in the regular workspace.
@@ -116,16 +116,16 @@ with pkgs; {
           preserve_split = true;
         };
         exec-once = [
-          "waybar"
-          "swaync"
-          "waypaper --restore"
-          "kdeconnect-indicator"
-          "nm-applet"
+          #  "waybar"
+          #  "swaync"
+          #  "waypaper --restore"
+          # "nm-applet"
+          "dms run &"
+          "kdeconnect-indicator &"
           "blueman-applet"
           "fcitx5 -d"
           "openbangla-gui --tray --dark"
-          "qbittorrent"
-          #"ibus-daemon -drx"
+          # "qbittorrent"
           "wl-paste --type text --watch cliphist store"
           "wl-paste --type image --watch cliphist store"
           "../../../src/hypr/scripts/startup"
@@ -133,13 +133,8 @@ with pkgs; {
         # window rules
         windowrule = [ ];
         windowrulev2 = [
-          "opacity 0.9 0.9, class:^(Emacs|Alacritty|Kitty|vscode|ibus-ui-gtk3|ibus-ui-gtk4)$"
-          # IBus candidate / popup windows
-          "noblur, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
-          "nodim, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
-          #          "opacity 1.0 1.0, class:^(ibus-ui-gtk3|ibus-ui-gtk4)$"
-
-          "float, title:^(Waypaper|bemenu|Telegram|yed|rofi|screenkey|ibus-ui-gtk3|ibus-ui-gtk4)$"
+          "opacity 0.9 0.9, class:^(Emacs|Alacritty|Kitty|vscode)$"
+          "float, title:^(Waypaper|bemenu|Telegram|yed|rofi|screenkey)$"
 
           # make Firefox PiP window floating and sticky
           "float, title:^(Picture-in-Picture|qBittorrent)$"
@@ -174,22 +169,16 @@ with pkgs; {
         "$mod" = "SUPER";
         bind = [
           # mouse movements
-          "$mod SHIFT, RETURN, exec, emacsclient -cnq"
           "$mod, RETURN, exec, ${terminal}"
           "$mod CONTROL, RETURN, exec, xterm"
-          "$mod, B, exec, ${browser}"
-          "$mod ALT, B, exec, firefox"
+          "$mod, b, exec, ${browser}"
+          "$mod SHIFT, B, exec, google-chrome-stable"
 
           "$mod, V, exec, roficlip"
           "$mod, E, exec,  ${fileManager}"
           "$mod SHIFT, E, exec, pcmanfm"
           "$mod SHIFT, N, exec, waypaper --random"
-          # Notifications
-          "$mod, n, exec, swaync-client -t -sw"
           "$mod, ;, exec, ${next_input}"
-          #pie menu
-          "ALT, ;, exec, kando -m menu"
-          "CONTROL, mouse:273, exec, kando -m menu"
           # Hyprland Control
           "$mod CONTROL, R, exec, hyprctl reload"
           "$mod SHIFT, RETUR, layoutmsg, addmaster"
@@ -239,11 +228,11 @@ with pkgs; {
             ]) 10));
         #volume button that allows press and hold, volume limited to 150%
         binde = [
-          ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          ", XF86AudioRaiseVolume, exec, dms ipc call audio increment '5'"
+          ", XF86AudioLowerVolume, exec, dms ipc call audio decrement '5'"
 
-          ", XF86AudioNext, exec, mpc next"
-          ", XF86AudioPrev, exec, mpc prev"
+          ", XF86AudioNext, exec, dms ipc call mpris next"
+          ", XF86AudioPrev, exec, dms ipc call mpris previous"
 
           "$mod  SHIFT, H, resizeactive,-50 0"
           "$mod  SHIFT, L, resizeactive,50 0"
@@ -258,19 +247,25 @@ with pkgs; {
         #volume button that will activate even while an input inhibitor is active
         bindl = [
           ", print, exec, ${screenshot}"
-          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          ", XF86AudioPlay, exec, mpc toggle"
-          ", pause, exec, mpc stop"
+          ", pause, exec, dms ipc call mpris pause"
+          ", XF86AudioPlay, exec, dms ipc call mpris playPause"
+          ", XF86AudioMute, exec, dms ipc call audio mute"
+          "$mod, XF86AudioMute, exec, dms ipc call audio micmute"
         ];
         #Start wofi opens wofi on first press, closes it on second
         bindr = [
           # Launcher
           "$mod, SPACE, exec, pkill wofi || wofi --show drun -I"
           "$mod, i, exec, pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'"
-          "$mod, V, exec, pkill wofi || cliphist list | wofi -dmenu | cliphist decode | wl-copy"
-          "$mod, p, exec, pkill rofi || rofi -show filebrowser"
-          "ALT, F4, exec, wlogout "
+
+          "ALT, F4, exec, dms ipc call powermenu toggle"
+          "$mod, p, exec, dms ipc call spotlight toggle"
+          "$mod, V, exec, dms ipc call clipboard toggle"
+          "$mod, t, exec, dms ipc call notepad toggle"
+          "$mod, n, exec, dms ipc call notifications toggle"
+          "$mod SHIFT, b, exec, dms ipc call hypr toggleBinds"
         ];
+
         #Describe a bind
         bindd = [ ];
         #mouse binds; key: 272, 273

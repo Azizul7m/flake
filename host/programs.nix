@@ -62,6 +62,10 @@ with pkgs;
     ncdu # Disk usage viewer
     gdb # Debugger
     killall # Kill processes by name
+    khal # Terminal calendar
+    cava # Audio visualizer
+    fprintd # D-Bus interprocess communication bus
+    polkit # Privilege management
 
     ### MOBILE DEVELOPMENT ###
     android-tools # ADB/fastboot
@@ -99,6 +103,7 @@ with pkgs;
     ## System Utilities (missing by default or enhanced)
     ## ───────────────────────────────
     home-manager # User-level config management
+    tuigreet
     unzip # Extract zip archives
     pulsemixer # Terminal audio control
     xdg-utils # Open files with default apps
@@ -128,9 +133,35 @@ with pkgs;
       portalPackage =
         xdg-desktop-portal-hyprland; # Required for portal integration
     };
+    #   niri.enable = true;
     gnupg.agent = {
       enable = true; # GPG agent for signing
       enableSSHSupport = true; # Use GPG for SSH authentication
+    };
+    obs-studio = {
+      enable = true;
+      enableVirtualCamera = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        input-overlay
+        wlrobs
+        waveform
+        droidcam-obs
+        obs-backgroundremoval
+        obs-composite-blur
+      ];
+    };
+    dms-shell = {
+      enable = true;
+      systemd = {
+        enable = true; # Systemd service for auto-start
+        restartIfChanged =
+          true; # Auto-restart dms.service when dms-shell changes
+      };
+      # Core features
+      enableSystemMonitoring = true; # System monitoring widgets (dgop)
+      enableDynamicTheming = true; # Wallpaper-based theming (matugen)
+      enableAudioWavelength = true; # Audio visualizer (cava)
+      enableCalendarEvents = true; # Calendar integration (khal)
     };
   };
 }
