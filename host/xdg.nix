@@ -2,6 +2,7 @@
   xdg = {
     enable = true;
     sounds.enable = true;
+    force = true;
     portal = {
       enable = true;
       extraPortals = [ "xdg-desktop-portal-gtk" ];

@@ -12,9 +12,9 @@
       mononoki
       iosevka
       corefonts
-      xorg.fontmiscmisc
-      xorg.fontadobe75dpi
-      xorg.fontadobe100dpi
+      fontmiscmisc
+      fontadobe75dpi
+      fontadobe100dpi
     ];
 
     fontconfig = {

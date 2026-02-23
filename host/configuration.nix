@@ -1,4 +1,10 @@
-{ config, pkgs, inputs, ... }: {
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
+{
   imports = [
     inputs.dms.nixosModules.dank-material-shell
     inputs.catppuccin.nixosModules.catppuccin
@@ -26,12 +32,16 @@
     kernelModules = [ "v4l2loopback" ];
     extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
     supportedFilesystems = [ "ntfs" ];
-    kernelParams = [ "quiet" "splash" ];
+    kernelParams = [
+      "quiet"
+      "splash"
+    ];
     consoleLogLevel = 0;
     initrd = {
       systemd.enable = true;
       verbose = true;
     };
+
     binfmt.registrations.appimage = {
       wrapInterpreterInShell = false;
       interpreter = "${pkgs.appimage-run}/bin/appimage-run";

@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 with pkgs; {
   imports = [
     ##../hypr/hyprpanel.nix
   ];
-
   home.packages = [
+    inputs.dms.packages.${pkgs.system}.default
     qt5.qtwayland
     qt5.qtbase # for qt apps
     qt5.qttools # for qt apps
@@ -27,9 +27,7 @@ with pkgs; {
     hyprsunset # wallpaper based on time of day
     hyprshot # screenshot tool
     hyprpicker # color picker
-    nwg-launchers # app launcher
     nwg-displays # display manager
-    nwg-look # theme manager
     grimblast # screenshot utils
     grim # screenshot utils
     slurp # screenshot utils
@@ -120,51 +118,16 @@ with pkgs; {
           #  "swaync"
           #  "waypaper --restore"
           # "nm-applet"
-          "dms run &"
-          "kdeconnect-indicator &"
-          "blueman-applet"
-          "fcitx5 -d"
-          "openbangla-gui --tray --dark"
+          # Start DMS through systemd user service (single instance + working IPC)
+          # "kdeconnect-indicator &"
           # "qbittorrent"
+          "blueman-applet &"
+          "fcitx5 -d &"
+          "openbangla-gui --tray --dark"
           "wl-paste --type text --watch cliphist store"
           "wl-paste --type image --watch cliphist store"
+          "systemctl --user is-active --quiet dms.service || systemctl --user start dms.service"
           "../../../src/hypr/scripts/startup"
-        ];
-        # window rules
-        windowrule = [ ];
-        windowrulev2 = [
-          "opacity 0.9 0.9, class:^(Emacs|Alacritty|Kitty|vscode)$"
-          "float, title:^(Waypaper|bemenu|Telegram|yed|rofi|screenkey)$"
-
-          # make Firefox PiP window floating and sticky
-          "float, title:^(Picture-in-Picture|qBittorrent)$"
-          "workspace silent, title:^(qBittorrent)$"
-          "pin, title:^(Picture-in-Picture)$"
-
-          # Zoom window rules
-          "float, class:^(zoom|zoom_client)$"
-          "float, title:^(Zoom Meeting)$"
-          "float, title:^(Zoom)$"
-          "float, title:^(Zoom - Licensed|Zoom - Basic)$"
-          "float, title:^(Meeting)$"
-          "float, title:^(Share Content)$"
-          "float, title:^(Participants)$"
-          "float, title:^(Chat)$"
-          "noblur, class:^(zoom|zoom_client)$"
-
-          # Adobe Illustrator / Winboat fixes
-          "noblur, class:^(illustrator.exe)$"
-          "float, class:^(illustrator.exe)$, title:^(^$)$"
-          "noborder, class:^(illustrator.exe)$, title:^(^$)$"
-
-          # idle inhibit while watching videos
-          "idleinhibit focus, class:^(mpv|.+exe|celluloid)$"
-          "idleinhibit focus, class:^(firefox)$, title:^(.*YouTube.*)$"
-          "idleinhibit fullscreen, class:^(firefox)$"
-
-          "dimaround, class:^(gcr-prompter)$"
-          "dimaround, class:^(xdg-desktop-portal-gtk)$"
-          "dimaround, class:^(polkit-gnome-authentication-agent-1)$"
         ];
         "$mod" = "SUPER";
         bind = [
@@ -243,14 +206,11 @@ with pkgs; {
           "$mod SHIFT, right, resizeactive,50 0"
           "$mod SHIFT, up, resizeactive,0 -50"
           "$mod SHIFT, down, resizeactive,0 50"
+
         ];
         #volume button that will activate even while an input inhibitor is active
         bindl = [
           ", print, exec, ${screenshot}"
-          ", pause, exec, dms ipc call mpris pause"
-          ", XF86AudioPlay, exec, dms ipc call mpris playPause"
-          ", XF86AudioMute, exec, dms ipc call audio mute"
-          "$mod, XF86AudioMute, exec, dms ipc call audio micmute"
         ];
         #Start wofi opens wofi on first press, closes it on second
         bindr = [
@@ -263,7 +223,13 @@ with pkgs; {
           "$mod, V, exec, dms ipc call clipboard toggle"
           "$mod, t, exec, dms ipc call notepad toggle"
           "$mod, n, exec, dms ipc call notifications toggle"
-          "$mod SHIFT, b, exec, dms ipc call hypr toggleBinds"
+          "$mod CONTROL, b, exec, dms ipc call hypr toggleBinds"
+
+          ", pause, exec, dms ipc call mpris pause"
+          ", XF86AudioPlay, exec, dms ipc call mpris playPause"
+          ", XF86AudioMute, exec, dms ipc call audio mute"
+          "$mod, XF86AudioMute, exec, dms ipc call audio micmute"
+
         ];
 
         #Describe a bind
@@ -275,4 +241,3 @@ with pkgs; {
     };
   };
 }
-

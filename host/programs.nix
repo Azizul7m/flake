@@ -1,16 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 with pkgs;
 
 {
   environment.systemPackages = [
-
+    inputs.dms.packages.${pkgs.system}.default
     ## ───────────────────────────────
     ## Core Development Tools
     ## ───────────────────────────────
 
     cacert # SSL certificates
-    openssl # SSL libraries
     clang # C compiler
     lld # LLVM linker (lld)
     zlib # Often needed for linking
@@ -25,6 +24,7 @@ with pkgs;
     libtool # Portable library builder
     cpio # Extracts RPMs and initramfs
     systemd # For system libraries (not running daemon)
+    systemdUkify
     ags # GJS library
 
     ## ───────────────────────────────
@@ -79,6 +79,9 @@ with pkgs;
     sshfs # Mount remote FS via SSH
     nmap # Network scanner
     mtr # Network traceroute tool
+    openssl # SSL libraries
+    openvpn # VPN client
+    networkmanager-openvpn
     networkmanagerapplet # System tray Wi-Fi manager
     wayvnc # VNC for Wayland
     speechd # Text-to-speech daemon
@@ -125,18 +128,19 @@ with pkgs;
     mtr.enable = true; # Enables `mtr` system-wide
     nm-applet.enable = true; # NetworkManager applet in tray
     fish.enable = true; # Fish shell support
-    command-not-found.enable =
-      true; # Suggest missing packages on command failure
+    command-not-found.enable = true; # Suggest missing packages on command failure
     xwayland.enable = true; # Run X apps on Wayland
     hyprland = {
       enable = true;
-      portalPackage =
-        xdg-desktop-portal-hyprland; # Required for portal integration
+      portalPackage = xdg-desktop-portal-hyprland; # Required for portal integration
     };
     #   niri.enable = true;
     gnupg.agent = {
       enable = true; # GPG agent for signing
       enableSSHSupport = true; # Use GPG for SSH authentication
+    };
+    openvpn3 = {
+      enable = true;
     };
     obs-studio = {
       enable = true;
@@ -152,16 +156,17 @@ with pkgs;
     };
     dms-shell = {
       enable = true;
-      systemd = {
-        enable = true; # Systemd service for auto-start
-        restartIfChanged =
-          true; # Auto-restart dms.service when dms-shell changes
-      };
+      package = inputs.dms.packages.${pkgs.system}.default;
       # Core features
       enableSystemMonitoring = true; # System monitoring widgets (dgop)
       enableDynamicTheming = true; # Wallpaper-based theming (matugen)
       enableAudioWavelength = true; # Audio visualizer (cava)
       enableCalendarEvents = true; # Calendar integration (khal)
+      enableClipboardPaste = true;
+    };
+    dsearch = {
+      enable = true;
+      systemd.enable = true; # Enable dsearch systemd service
     };
   };
 }

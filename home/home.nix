@@ -39,6 +39,8 @@
     sessionVariables = {
       TERMINAL = "alacritty";
       BROWSER = "$HOME/Applications/zen-x86_64.AppImage";
+      EDITOR = "nvim";
+      VISUAL = "nvim";
       ANCHOR_HOME = "$HOME/.anchor";
       MANPAGER = "less -R"; # To display
       NIXPKGS_ALLOW_UNFREE = "1";
@@ -81,7 +83,7 @@
     emacs = {
       enable = true;
       client.enable = true;
-      defaultEditor = true;
+      defaultEditor = false;
       socketActivation.enable = true;
     };
   };
