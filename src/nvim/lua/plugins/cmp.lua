@@ -11,6 +11,7 @@ return {
 		"saadparwaiz1/cmp_luasnip",
 		"L3MON4D3/LuaSnip",
 		"rafamadriz/friendly-snippets",
+		"yochem/cmp-htmx",
 		"echasnovski/mini.icons", -- for nice symbols
 	},
 	config = function()
@@ -65,6 +66,7 @@ return {
 			sources = cmp.config.sources({
 				{ name = "copilot" },
 				{ name = "nvim_lsp" },
+				{ name = "cmp-htmx" },
 				{ name = "nvim_lua" },
 				{ name = "luasnip" },
 				{ name = "buffer" },
