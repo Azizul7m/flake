@@ -8,7 +8,6 @@
   imports = [
     inputs.dms.nixosModules.dank-material-shell
     inputs.catppuccin.nixosModules.catppuccin
-    inputs.agenix.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
     ./environment.nix

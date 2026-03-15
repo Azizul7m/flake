@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # ... অন্যান্য কনফিগারেশন ...
   i18n.inputMethod = {
     enable = true;

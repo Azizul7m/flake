@@ -1,4 +1,10 @@
-{ user, pkgs, fullName, ... }: {
+{
+  user,
+  pkgs,
+  fullName,
+  ...
+}:
+{
   users.users.${user} = {
     isNormalUser = true;
     description = "${fullName}";

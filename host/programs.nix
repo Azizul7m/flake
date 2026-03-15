@@ -75,6 +75,8 @@ with pkgs;
     ## ───────────────────────────────
     ## Networking & Remote Access
     ## ───────────────────────────────
+    iproute2 # Required for WinApps
+    netcat # Required for WinApps
     wrk
     sshfs # Mount remote FS via SSH
     nmap # Network scanner

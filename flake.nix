@@ -10,11 +10,6 @@
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
 
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     catppuccin = {
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,7 +30,13 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      flake-utils,
+      ...
+    }:
     let
       system = "x86_64-linux";
       host = "nixos";
@@ -44,16 +45,26 @@
       userEmail = "azizul7m@gmail.com";
       pkgs = import nixpkgs {
         inherit system;
-        config = { allowUnfree = true; };
+        config = {
+          allowUnfree = true;
+        };
         overlays = [ inputs.emacs-overlay.overlay ];
       };
 
-    in {
+    in
+    {
       nixosConfigurations = {
         "${host}" = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit flake-utils host user userEmail fullName inputs;
+            inherit
+              flake-utils
+              host
+              user
+              userEmail
+              fullName
+              inputs
+              ;
           };
           modules = [
             ./host/configuration.nix
@@ -62,7 +73,14 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 extraSpecialArgs = {
-                  inherit flake-utils host user userEmail fullName inputs;
+                  inherit
+                    flake-utils
+                    host
+                    user
+                    userEmail
+                    fullName
+                    inputs
+                    ;
                 };
                 users."${user}" = import ./home/home.nix;
               };

@@ -25,17 +25,20 @@
         8384 # Syncthing GUI
         21027 # Syncthing discovery
       ];
-      allowedTCPPortRanges = [{
-        from = 1714;
-        to = 1764;
-      }];
-      allowedUDPPortRanges = [{
-        from = 1714;
-        to = 1764;
-      }];
+      allowedTCPPortRanges = [
+        {
+          from = 1714;
+          to = 1764;
+        }
+      ];
+      allowedUDPPortRanges = [
+        {
+          from = 1714;
+          to = 1764;
+        }
+      ];
     };
   };
 
   services.openssh.enable = true;
 }
-

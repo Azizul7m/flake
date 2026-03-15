@@ -1,6 +1,14 @@
-{ pkgs, ... }: {
+{
+  pkgs,
+  inputs,
+  system ? pkgs.system,
+  ...
+}:
+{
   environment.systemPackages = with pkgs; [
     freerdp
+    virt-manager
+    virt-viewer
     distrobox
     docker-compose
     docker-buildx
@@ -12,25 +20,11 @@
   virtualisation = {
     # libvirtd = {
     #   enable = true;
-    #   qemu.swtpm.enable = true;
     #   qemu = {
-    #     ovmf.enable = true;
-    #     ovmf.packages = [ var.pkgs.OVMFFull.fd ];
+    #     package = pkgs.qemu_kvm;
+    #     runAsRoot = true;
     #   };
     # };
-
-oci-containers.containers."windows" = {
-    image = "dockur/windows";
-    autoStart = true;
-    ports = [ "8006:8006" "3389:3389" ];
-    volumes = [ "/var/lib/windows:/storage" ];
-    environment = {
-      DISK_IO = "sata"; # This fixes the drive detection issue
-      RAM_SIZE = "4G";
-      CPU_CORES = "2";
-    };
-    extraOptions = [ "--device=/dev/kvm" "--cap-add=NET_ADMIN" ];
-  };
     docker = {
       enable = true;
       rootless = {
@@ -51,7 +45,9 @@ oci-containers.containers."windows" = {
     };
     spiceUSBRedirection.enable = true;
   };
-  services = { dockerRegistry.enable = true; };
+  services = {
+    dockerRegistry.enable = true;
+  };
   # environment.variables = { VAGRANT_DEFAULT_PROVIDER = "libvirt"; };
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;

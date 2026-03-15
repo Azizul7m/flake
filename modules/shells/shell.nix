@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   programs = {
     fish.enable = true;
     nushell.enable = true;
@@ -6,6 +7,7 @@
   home = with pkgs; {
     packages = ([
       # For building dependencies
+      zlib # Compression library
       pkg-config
       openssl
       clang
@@ -57,7 +59,6 @@
       # CLI Utilities
       yt-dlp # Media downloader
       asciinema # Terminal recorder
-      ragenix
 
       # Text Processing
       hunspell # Spell checker

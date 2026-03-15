@@ -1,4 +1,10 @@
-{ config, pkgs, user, ... }: {
+{
+  config,
+  pkgs,
+  user,
+  ...
+}:
+{
   services = {
     getty.autologinUser = "${user}";
     # greetd = {
@@ -11,11 +17,14 @@
     #   };
     # };
     dbus.enable = true; # inter-process communication (IPC)
+    spice-vdagentd.enable = true;
     libinput.enable = true; # LibInput
     devmon.enable = true; # monitoring drive "Heavy"
     gvfs.enable = true; # trash "Heavy"
     udisks2.enable = true; # auto mount drive  "Heavy"
-    ollama = { enable = true; };
+    ollama = {
+      enable = true;
+    };
     blueman.enable = true;
     # displayManager.gdm.enable = true;
     #  emacs = {

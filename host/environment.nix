@@ -1,8 +1,12 @@
 { ... }:
-let exec = "exec dbus-launch Hyprland";
-in {
+let
+  exec = "exec dbus-launch Hyprland";
+in
+{
   environment = {
-    variables = { NIXPKGS_ALLOW_UNFREE = "1"; };
+    variables = {
+      NIXPKGS_ALLOW_UNFREE = "1";
+    };
     loginShellInit = ''
             if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
       	echo "Auto login secript try to running"

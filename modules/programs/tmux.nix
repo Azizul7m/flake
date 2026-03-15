@@ -1,10 +1,10 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   xdg.configFile = {
-    "tmux/plugins/tmux-which-key/config.yaml".text =
-      pkgs.lib.generators.toYAML { } {
-        command_alias_start_index = 200;
-        # rest of config here
-      };
+    "tmux/plugins/tmux-which-key/config.yaml".text = pkgs.lib.generators.toYAML { } {
+      command_alias_start_index = 200;
+      # rest of config here
+    };
   };
   programs = {
     tmux = {
@@ -36,18 +36,20 @@
             set -g @continuum-save-interval '60' # minutes
           '';
         }
-        {
-          plugin = session-wizard;
-          extraConfig = ''
-            set -g @session-wizard 'T M-k' # for multiple key bindings
-          '';
-        }
         # {
         #   plugin = catppuccin;
         #   extraConfig = ''
         #     set -g @catppuccin_flavor 'mocha' # latte, frappe, macchiato or mocha
         #   '';
         # }
+        {
+          plugin = minimal-tmux-status; # as now available in nixpkgs
+          extraConfig = ''
+            set -g @minimal-tmux-use-arrow true
+            set -g @minimal-tmux-right-arrow ""
+            set -g @minimal-tmux-left-arrow ""
+          '';
+        }
       ];
       extraConfig = ''
         # Force tmux to support truecolor
@@ -64,7 +66,7 @@
         set -g renumber-windows on
         set -g prefix M-i
         bind Space last-window
-        set -g status off
+        set -g status on
         bind s set-option -g status
 
         # resize window

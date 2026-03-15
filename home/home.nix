@@ -1,7 +1,13 @@
-{ config, user, inputs, pkgs, ... }: {
+{
+  config,
+  user,
+  inputs,
+  pkgs,
+  ...
+}:
+{
   imports = [
     inputs.catppuccin.homeModules.catppuccin
-    inputs.agenix.homeManagerModules.default
     ./xdg.nix
     ./gtk.nix
     ./packages.nix
@@ -12,22 +18,14 @@
     ../modules/programs/emacs.nix
     ../modules/programs/wofi.nix
     ../modules/programs/fish.nix
-#    ../modules/programs/niri.nix
-#    ../modules/programs/hypr/waybar.nix
-#    ../modules/programs/hypr/swaync.nix
+    #    ../modules/programs/niri.nix
+    #    ../modules/programs/hypr/waybar.nix
+    #    ../modules/programs/hypr/swaync.nix
     ../modules/programs/alacritty.nix
     ../modules/programs/kitty.nix
     ../modules/programs/vscode.nix
     ../modules/services/mpd.nix
   ];
-
-  # 
-  age = {
-    secrets = {
-      gemini = { file = ../secrets/gemini.age; };
-      syncthing = { file = ../secrets/syncthing.age; };
-    };
-  };
 
   home = {
     username = "${user}";
@@ -50,10 +48,6 @@
       CC = "clang";
       CXX = "clang++";
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=lld";
-      GEMINI_API_KEY = "$(cat ${config.age.secrets.gemini.file})";
-      #      # Api environment variables
-      #      OPENAI_API_KEY_FILE = "$(cat ${config.age.secrets.openai.file})";
-      #      GORGON_API_KEY_FILE = "$(cat ${config.age.secrets.groq.file})";
     };
   };
 
@@ -68,7 +62,9 @@
       enable = true;
       enableNotifications = true;
     };
-    syncthing = { enable = true; }; # Enable Syncthing service
+    syncthing = {
+      enable = true;
+    }; # Enable Syncthing service
     kdeconnect = {
       enable = true; # Enable KDE Connect service
       indicator = true;
@@ -87,30 +83,4 @@
       socketActivation.enable = true;
     };
   };
-  # catppuccin = {
-  #   flavor = "mocha"; # latte, frappe, macchiato, mocha
-  #   accent =
-  #     "sky"; # rosewater, flamingo, pink, mauve, red, maroon, peach, yellow, green, teal, sky, sapphire, blue, lavender
-  #   alacritty.enable = true;
-  #   hyprland.enable = true;
-  #   wlogout.enable = true;
-  #   swaync.enable = true;
-  #   # waybar.enable = true;
-  #   cursors.enable = true;
-  #   fish.enable = true;
-  #   lsd.enable = true;
-  #   fzf.enable = true;
-  #   starship.enable = true;
-  #   sioyek.enable = true;
-  #   cache.enable = true;
-  #   bat.enable = true;
-  # };
-  # nix = {
-  #    package = pkgs.nix;
-  #   settings = { 
-  #     experimental-features = [ "nix-command" "flakes" ];
-  #     connect-timeout = 30; # Increase connection timeout to 30 seconds
-  #      stalled-download-timeout = 60; # Increase stalled download timeout to 60 seconds
-  #   };
-  #   };
 }

@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   xdg = {
     enable = true;
     sounds.enable = true;
@@ -14,8 +15,14 @@
     mime = {
       enable = true;
       defaultApplications = {
-        "application/pdf" = [ "sioyek.desktop" "firefox.desktop" ];
-        "image/png" = [ "sxiv.desktop" "gimp.desktop" ];
+        "application/pdf" = [
+          "sioyek.desktop"
+          "firefox.desktop"
+        ];
+        "image/png" = [
+          "sxiv.desktop"
+          "gimp.desktop"
+        ];
       };
     };
   };
