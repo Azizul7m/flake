@@ -22,6 +22,12 @@ end
 
 -- Default capabilities including nvim-cmp LSP capabilities
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
-M.capabilities = require("cmp_nvim_lsp").default_capabilities(M.capabilities)
+M.get_capabilities = function()
+	local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+	if ok then
+		return cmp_nvim_lsp.default_capabilities(M.capabilities)
+	end
+	return M.capabilities
+end
 
 return M

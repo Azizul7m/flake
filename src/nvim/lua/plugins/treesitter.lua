@@ -1,13 +1,17 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
-	lazy = false,
+	event = { "BufReadPost", "BufNewFile" },
+	lazy = vim.fn.argc(-1) == 0, -- lazy load if no file is opened
 	opts = {
-		ensure_installed = { "http", "rust", "toml", "json", "tsx" },
+		ensure_installed = { "http", "rust", "toml", "json", "tsx", "go", "templ", "html", "css" },
 		auto_install = false,
 		sync_install = false,
 
-		highlight = { enable = true },
+		highlight = {
+			enable = true,
+			additional_vim_regex_highlighting = { "templ" },
+		},
 		indent = { enable = true },
 	},
 

@@ -1,6 +1,7 @@
 -- LSP Support
 return {
 	"neovim/nvim-lspconfig",
+	event = { "BufReadPost", "BufNewFile" },
 	dependencies = {
 		"rachartier/tiny-inline-diagnostic.nvim",
 		"williamboman/mason.nvim",
@@ -48,13 +49,13 @@ return {
 		-- Initialize mason and mason-lspconfig
 		require("mason").setup()
 		require("mason-lspconfig").setup({
-			ensure_installed = { "bashls" },
+			ensure_installed = { "bashls", "gopls", "templ", "html", "tailwindcss" },
 			automatic_installation = true,
 		})
 
 		local handlers = require("plugins.lsp.handlers")
 		local on_attach = handlers.on_attach
-		local capabilities = handlers.capabilities
+		local capabilities = handlers.get_capabilities()
 		local lsp = vim.lsp
 
 		lsp.config["luals"] = {
@@ -63,9 +64,64 @@ return {
 		}
 		lsp.enable("luals")
 		lsp.config["harper-ls"] = {
-			cmd = { "~/.nix-profile/bin/harper-ls" },
+			cmd = { "harper-ls", "--stdio" },
 			filetypes = { "md" },
 		}
-		lsp.enable("harper_ls")
+		lsp.enable("harper-ls")
+
+		lsp.config["gopls"] = {
+			cmd = { "gopls" },
+			filetypes = { "go", "gomod", "gowork", "gotmpl" },
+			root_markers = { "go.work", "go.mod", ".git" },
+			settings = {
+				gopls = {
+					completeUnimported = true,
+					usePlaceholders = true,
+					analyses = {
+						unusedparams = true,
+					},
+				},
+			},
+		}
+		lsp.enable("gopls")
+
+		lsp.config["templ"] = {
+			cmd = { "templ", "lsp" },
+			filetypes = { "templ" },
+			root_markers = { "go.mod", ".git" },
+		}
+		lsp.enable("templ")
+
+		lsp.config["html"] = {
+			cmd = { "vscode-html-language-server", "--stdio" },
+			filetypes = { "html", "templ" },
+		}
+		lsp.enable("html")
+
+		lsp.config["htmx"] = {
+			cmd = { "htmx-lsp" },
+			filetypes = { "html", "templ" },
+		}
+		lsp.enable("htmx")
+
+		lsp.config["tailwindcss"] = {
+			cmd = { "tailwindcss-language-server", "--stdio" },
+			filetypes = { "html", "templ", "javascript", "typescript", "react" },
+			root_markers = {
+				"tailwind.config.js",
+				"tailwind.config.ts",
+				"postcss.config.js",
+				"postcss.config.ts",
+				"package.json",
+				"node_modules",
+				".git",
+			},
+			init_options = {
+				userLanguages = {
+					templ = "html",
+				},
+			},
+		}
+		lsp.enable("tailwindcss")
 	end,
 }

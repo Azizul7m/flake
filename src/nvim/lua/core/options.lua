@@ -57,3 +57,12 @@ opt.incsearch = true
 opt.termguicolors = true
 opt.signcolumn = "yes"
 opt.isfname:append("@-@")
+
+vim.filetype.add({
+	extension = {
+		templ = "templ",
+	},
+	pattern = {
+		[".*%.templ"] = "templ",
+	},
+})
