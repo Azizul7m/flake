@@ -3,6 +3,7 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPost", "BufNewFile" },
 	dependencies = {
+		"hrsh7th/cmp-nvim-lsp",
 		"rachartier/tiny-inline-diagnostic.nvim",
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
@@ -58,11 +59,25 @@ return {
 		local capabilities = handlers.get_capabilities()
 		local lsp = vim.lsp
 
-		lsp.config["luals"] = {
+		lsp.config["lua_ls"] = {
 			cmd = { "lua-language-server" },
 			filetypes = { "lua" },
+			settings = {
+				Lua = {
+					diagnostics = {
+						globals = { "vim" },
+					},
+					workspace = {
+						checkThirdParty = false,
+					},
+					telemetry = {
+						enable = false,
+					},
+				},
+			},
 		}
-		lsp.enable("luals")
+		lsp.enable("lua_ls")
+
 		lsp.config["harper-ls"] = {
 			cmd = { "harper-ls", "--stdio" },
 			filetypes = { "md" },
@@ -123,5 +138,15 @@ return {
 			},
 		}
 		lsp.enable("tailwindcss")
+
+		-- Global config for all servers
+		vim.api.nvim_create_autocmd("LspAttach", {
+			callback = function(args)
+				local client = vim.lsp.get_client_by_id(args.data.client_id)
+				if client then
+					on_attach(client, args.buf)
+				end
+			end,
+		})
 	end,
 }
