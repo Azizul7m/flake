@@ -33,6 +33,7 @@ with pkgs; {
           alias vim='nvim'
           alias c='code'
           alias code='code'
+          alias scrcpy='scrcpy --no-audio --render-driver=opengl'
 
           #docker
           alias d='docker'
