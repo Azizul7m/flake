@@ -66,3 +66,6 @@ vim.filetype.add({
 		[".*%.templ"] = "templ",
 	},
 })
+
+vim.cmd("filetype plugin indent on")
+vim.cmd("syntax enable")
