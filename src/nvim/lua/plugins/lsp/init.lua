@@ -49,7 +49,7 @@ return {
 		-- Initialize mason and mason-lspconfig
 		require("mason").setup()
 		require("mason-lspconfig").setup({
-			ensure_installed = { "bashls", "gopls", "templ", "html", "tailwindcss" },
+			ensure_installed = { "bashls", "gopls", "templ", "html", "tailwindcss", "vtsls" },
 			automatic_installation = true,
 		})
 
@@ -63,6 +63,37 @@ return {
 				capabilities = capabilities,
 			}, config or {})
 		end
+
+		lsp.config["vtsls"] = with_defaults({
+			cmd = { "vtsls", "--stdio" },
+			filetypes = {
+				"javascript",
+				"javascriptreact",
+				"javascript.jsx",
+				"typescript",
+				"typescriptreact",
+				"typescript.tsx",
+			},
+			settings = {
+				complete_function_calls = true,
+				vtsls = {
+					enableMoveToFileCodeAction = true,
+					autoUseWorkspaceTsdk = true,
+					experimental = {
+						completion = {
+							enableServerSidePolyfills = true,
+						},
+					},
+				},
+				typescript = {
+					updateImportsOnPaste = true,
+					suggest = {
+						completeFunctionCalls = true,
+					},
+				},
+			},
+		})
+		lsp.enable("vtsls")
 
 		lsp.config["lua_ls"] = with_defaults({
 			cmd = { "lua-language-server" },
