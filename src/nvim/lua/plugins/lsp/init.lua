@@ -3,7 +3,6 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPost", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
 		"rachartier/tiny-inline-diagnostic.nvim",
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
@@ -59,7 +58,13 @@ return {
 		local capabilities = handlers.get_capabilities()
 		local lsp = vim.lsp
 
-		lsp.config["lua_ls"] = {
+		local function with_defaults(config)
+			return vim.tbl_deep_extend("force", {
+				capabilities = capabilities,
+			}, config or {})
+		end
+
+		lsp.config["lua_ls"] = with_defaults({
 			cmd = { "lua-language-server" },
 			filetypes = { "lua" },
 			settings = {
@@ -75,16 +80,16 @@ return {
 					},
 				},
 			},
-		}
+		})
 		lsp.enable("lua_ls")
 
-		lsp.config["harper-ls"] = {
+		lsp.config["harper-ls"] = with_defaults({
 			cmd = { "harper-ls", "--stdio" },
 			filetypes = { "md" },
-		}
+		})
 		lsp.enable("harper-ls")
 
-		lsp.config["gopls"] = {
+		lsp.config["gopls"] = with_defaults({
 			cmd = { "gopls" },
 			filetypes = { "go", "gomod", "gowork", "gotmpl" },
 			root_markers = { "go.work", "go.mod", ".git" },
@@ -97,29 +102,29 @@ return {
 					},
 				},
 			},
-		}
+		})
 		lsp.enable("gopls")
 
-		lsp.config["templ"] = {
+		lsp.config["templ"] = with_defaults({
 			cmd = { "templ", "lsp" },
 			filetypes = { "templ" },
 			root_markers = { "go.mod", ".git" },
-		}
+		})
 		lsp.enable("templ")
 
-		lsp.config["html"] = {
+		lsp.config["html"] = with_defaults({
 			cmd = { "vscode-html-language-server", "--stdio" },
 			filetypes = { "html", "templ" },
-		}
+		})
 		lsp.enable("html")
 
-		lsp.config["htmx"] = {
+		lsp.config["htmx"] = with_defaults({
 			cmd = { "htmx-lsp" },
 			filetypes = { "html", "templ" },
-		}
+		})
 		lsp.enable("htmx")
 
-		lsp.config["tailwindcss"] = {
+		lsp.config["tailwindcss"] = with_defaults({
 			cmd = { "tailwindcss-language-server", "--stdio" },
 			filetypes = { "html", "templ", "javascript", "typescript", "react" },
 			root_markers = {
@@ -136,7 +141,7 @@ return {
 					templ = "html",
 				},
 			},
-		}
+		})
 		lsp.enable("tailwindcss")
 
 		-- Global config for all servers

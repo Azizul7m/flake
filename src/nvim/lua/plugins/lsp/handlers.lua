@@ -20,12 +20,12 @@ M.on_attach = function(client, bufnr)
 	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 end
 
--- Default capabilities including nvim-cmp LSP capabilities
+-- Default capabilities including blink.cmp LSP capabilities
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 M.get_capabilities = function()
-	local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+	local ok, blink = pcall(require, "blink.cmp")
 	if ok then
-		return cmp_nvim_lsp.default_capabilities(M.capabilities)
+		return blink.get_lsp_capabilities(M.capabilities)
 	end
 	return M.capabilities
 end
