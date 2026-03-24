@@ -49,8 +49,8 @@ return {
 		-- Initialize mason and mason-lspconfig
 		require("mason").setup()
 		require("mason-lspconfig").setup({
-			ensure_installed = { "bashls", "gopls", "templ", "html", "tailwindcss", "vtsls" },
-			automatic_installation = true,
+			ensure_installed = { "bashls", "gopls", "templ", "html", "tailwindcss" },
+			automatic_installation = false,
 		})
 
 		local handlers = require("plugins.lsp.handlers")
@@ -64,8 +64,8 @@ return {
 			}, config or {})
 		end
 
-		lsp.config["vtsls"] = with_defaults({
-			cmd = { "vtsls", "--stdio" },
+		lsp.config["ts_ls"] = with_defaults({
+			cmd = { "typescript-language-server", "--stdio" },
 			filetypes = {
 				"javascript",
 				"javascriptreact",
@@ -74,49 +74,12 @@ return {
 				"typescriptreact",
 				"typescript.tsx",
 			},
-			settings = {
-				complete_function_calls = true,
-				vtsls = {
-					enableMoveToFileCodeAction = true,
-					autoUseWorkspaceTsdk = true,
-					experimental = {
-						completion = {
-							enableServerSidePolyfills = true,
-						},
-					},
-				},
-				typescript = {
-					updateImportsOnPaste = true,
-					suggest = {
-						completeFunctionCalls = true,
-					},
-				},
-			},
 		})
-		lsp.enable("vtsls")
-
-		lsp.config["lua_ls"] = with_defaults({
-			cmd = { "lua-language-server" },
-			filetypes = { "lua" },
-			settings = {
-				Lua = {
-					diagnostics = {
-						globals = { "vim" },
-					},
-					workspace = {
-						checkThirdParty = false,
-					},
-					telemetry = {
-						enable = false,
-					},
-				},
-			},
-		})
-		lsp.enable("lua_ls")
+		lsp.enable("ts_ls")
 
 		lsp.config["harper-ls"] = with_defaults({
 			cmd = { "harper-ls", "--stdio" },
-			filetypes = { "md" },
+			filetypes = { "md", "org", "txt" },
 		})
 		lsp.enable("harper-ls")
 
@@ -149,12 +112,6 @@ return {
 		})
 		lsp.enable("html")
 
-		lsp.config["htmx"] = with_defaults({
-			cmd = { "htmx-lsp" },
-			filetypes = { "html", "templ" },
-		})
-		lsp.enable("htmx")
-
 		lsp.config["tailwindcss"] = with_defaults({
 			cmd = { "tailwindcss-language-server", "--stdio" },
 			filetypes = { "html", "templ", "javascript", "typescript", "react" },
@@ -174,6 +131,34 @@ return {
 			},
 		})
 		lsp.enable("tailwindcss")
+
+		lsp.config["lua_ls"] = with_defaults({
+			cmd = { "lua-language-server" },
+			settings = {
+				Lua = {
+					runtime = {
+						version = "LuaJIT",
+					},
+					diagnostics = {
+						globals = { "vim" },
+					},
+					workspace = {
+						library = vim.api.nvim_get_runtime_file("", true),
+						checkThirdParty = false,
+					},
+					telemetry = {
+						enable = false,
+					},
+				},
+			},
+		})
+		lsp.enable("lua_ls")
+
+		lsp.config["ltex"] = with_defaults({
+			cmd = { "ltex-ls" },
+			filetypes = { "markdown", "tex", "bib", "plaintex", "rst", "context", "txt" },
+		})
+		lsp.enable("ltex")
 
 		-- Global config for all servers
 		vim.api.nvim_create_autocmd("LspAttach", {

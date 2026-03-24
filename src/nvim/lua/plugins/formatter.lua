@@ -13,6 +13,8 @@ return {
 			nix = { "nixfmt" },
 			sql = { "sqlfmt" },
 			bash = { "shfmt" },
+			bib = { "bibtex-tidy" },
+			markdown = { "prettier" },
 		},
 		default_format_opts = {
 			lsp_format = "fallback",

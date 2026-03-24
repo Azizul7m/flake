@@ -69,6 +69,7 @@
       ### Lua
       lua-language-server # Language server
       stylua # Formatter
+      ltex-ls
 
       ### LANGUAGE SERVERS (LSPs) ###
       yaml-language-server

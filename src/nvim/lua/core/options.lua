@@ -5,6 +5,9 @@ local g = vim.g
 g.mapleader = " "
 g.maplocalleader = " "
 
+-- Fix for NixOS: point to the correct sqlite library path
+g.sqlite_clib_path = "/nix/store/bn7m7qn8k7b27jy5lkq3bg4vcxnyjpq0-sqlite-3.51.2/lib/libsqlite3.so"
+
 -- Editor
 opt.number = true
 opt.relativenumber = false

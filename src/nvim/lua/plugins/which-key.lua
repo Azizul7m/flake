@@ -6,6 +6,15 @@ return {
     vim.o.timeoutlen = 300
   end,
   opts = {
-    -- your options here
-  }
+  },
+  config = function(_, opts)
+    local wk = require("which-key")
+
+    wk.setup(opts)
+    wk.add({
+      { "<leader>w", proxy = "<c-w>", group = "windows" },
+      { "<leader>wm", desc = "Toggle maximize window" },
+      { "<leader>wQ", desc = "Quit all" },
+    })
+  end,
 }

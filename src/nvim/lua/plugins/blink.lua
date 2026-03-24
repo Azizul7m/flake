@@ -1,11 +1,56 @@
+local bibliography_candidates = {
+	vim.fn.expand("~/references.bib"),
+	vim.fn.expand("~/.notes/references.bib"),
+}
+local bibliography_files = vim.tbl_filter(function(path)
+	return vim.fn.filereadable(path) == 1
+end, bibliography_candidates)
+
+local default_sources = { "lsp", "path", "snippets", "buffer", "copilot", "dadbod" }
+if #bibliography_files > 0 then
+	table.insert(default_sources, "bibtex")
+end
+
+local dependencies = {
+	"rafamadriz/friendly-snippets",
+	"giuxtaposition/blink-cmp-copilot",
+	{ "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
+}
+
+if #bibliography_files > 0 then
+	table.insert(dependencies, 3, {
+		"liamvdvyver/cmp-bibtex",
+		opts = {
+			files = bibliography_files,
+			filetypes = { "markdown", "pandoc", "quarto", "rmd", "tex", "plaintex", "bib" },
+		},
+	})
+end
+
+local providers = {
+	copilot = {
+		name = "copilot",
+		module = "blink-cmp-copilot",
+		score_offset = 100,
+		async = true,
+	},
+	dadbod = {
+		name = "Dadbod",
+		module = "blink.compat.source",
+	},
+}
+
+if #bibliography_files > 0 then
+	providers.bibtex = {
+		name = "bibtex",
+		module = "blink.compat.source",
+	}
+end
+
 return {
 	"saghen/blink.cmp",
 	event = { "InsertEnter", "CmdlineEnter" },
-	dependencies = {
-		"rafamadriz/friendly-snippets",
-		"giuxtaposition/blink-cmp-copilot",
-		{ "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
-	},
+	dependencies = dependencies,
 	version = "*",
 	opts = {
 		keymap = {
@@ -23,19 +68,8 @@ return {
 			nerd_font_variant = "mono",
 		},
 		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "copilot", "dadbod" },
-			providers = {
-				copilot = {
-					name = "copilot",
-					module = "blink-cmp-copilot",
-					score_offset = 100,
-					async = true,
-				},
-				dadbod = {
-					name = "Dadbod",
-					module = "blink.compat.source",
-				},
-			},
+			default = default_sources,
+			providers = providers,
 		},
 		cmdline = {
 			enabled = true,

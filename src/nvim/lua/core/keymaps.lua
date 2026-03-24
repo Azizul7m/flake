@@ -3,6 +3,23 @@ local utils = require("core.utils")
 
 local find_notes = utils.find_directory("~/.notes", "Notes")
 
+local function toggle_maximized_window()
+  local tab = vim.t
+  local current_win = vim.api.nvim_get_current_win()
+
+  if tab.maximized_window_layout and tab.maximized_window == current_win then
+    vim.cmd(tab.maximized_window_layout)
+    tab.maximized_window_layout = nil
+    tab.maximized_window = nil
+    return
+  end
+
+  tab.maximized_window_layout = vim.fn.winrestcmd()
+  tab.maximized_window = current_win
+  vim.cmd("wincmd |")
+  vim.cmd("wincmd _")
+end
+
 -- Quick escape from insert mode
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 
@@ -13,6 +30,8 @@ map("t", "<M-n>", "<cmd>lua Snacks.terminal.open()<CR>", { desc = "Open new Snac
 
 -- Window management
 map({ "n", "x", "t" }, "<leader>w", "<C-w>", { desc = "Window management" })
+map("n", "<leader>wm", toggle_maximized_window, { desc = "Toggle maximize window" })
+map("n", "<leader>wQ", "<cmd>qa<CR>", { desc = "Quit all" })
 map({ "n", "x", "t" }, "<leader>b[", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 map({ "n", "x", "t" }, "<leader>b]", "<cmd>bnext<CR>", { desc = "Next buffer" })
 
@@ -23,6 +42,7 @@ map("n", "<M-N>", "<cmd>Lspsaga show_workspace_diagnostics<CR>", { desc = "Works
 
 -- Find
 map({ "n" }, "<leader>fn", find_notes, { desc = "Find Notes" })
+map({ "n" }, "<leader>fb", "<cmd>Telescope bibtex<CR>", { desc = "Find BibTeX Citations" })
 
 -- Toggle
 map({ "n", "v", "t" }, "-", "<cmd>lua Snacks.explorer()<CR>", { desc = "Snacks file manager" })
