@@ -7,6 +7,11 @@ return {
 	},
 	opts = {
 		enabled = true, -- Temporarily disable noice.nvim to debug cmp-cmdline
+		lsp = {
+			progress = {
+				enabled = false,
+			},
+		},
 		cmdline = {
 			enabled = true, -- enables the Noice cmdline UI
 			view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom

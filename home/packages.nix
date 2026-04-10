@@ -19,10 +19,6 @@
         figma-linux # figma client
         scribus
         gimp-with-plugins
-        # gimp2Plugins.gmic
-        # gimp2Plugins.fourier
-        # gimp2Plugins.lightning
-        # gimp2Plugins.resynthesizer
 
         # Social
         #zulip

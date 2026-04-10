@@ -28,6 +28,7 @@
       go # The Go compiler and tools
       delve # Go debugger (optional)
       gopls # Go LSP server (optional)
+      templ # Go templ language support
 
       # Python
       python3
@@ -36,7 +37,10 @@
       python313Packages.pip
       pipx
       # Rust
-      rustup
+      #      rustup
+      # rustc
+      # cargo
+      # rust-analyzer
       trunk # WASM bundler
 
       # (Web3)
@@ -72,6 +76,7 @@
       ltex-ls
 
       ### LANGUAGE SERVERS (LSPs) ###
+      bash-language-server
       yaml-language-server
       nginx-language-server
       prettier

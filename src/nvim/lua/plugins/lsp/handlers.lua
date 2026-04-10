@@ -4,7 +4,13 @@ local M = {}
 M.on_attach = function(client, bufnr)
 	-- Enable inlay hints if available
 	if client.server_capabilities.inlayHintProvider then
-		vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+		vim.schedule(function()
+			if vim.api.nvim_buf_is_valid(bufnr) then
+				if vim.lsp.inlay_hint and not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }) then
+					vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+				end
+			end
+		end)
 	end
 
 	-- Set keybindings

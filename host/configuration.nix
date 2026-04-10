@@ -13,6 +13,7 @@
     ./environment.nix
     ./virtualisation.nix
     ./programs.nix
+    ./system_packages.nix
     ./users.nix
     ./networking.nix
     ./services.nix

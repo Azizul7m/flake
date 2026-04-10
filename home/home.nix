@@ -31,9 +31,6 @@
     username = "${user}";
     homeDirectory = "/home/${user}";
     stateVersion = "23.05"; # Please read the comment before changing.
-    sessionPath = [
-      "${config.home.homeDirectory}/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin"
-    ];
     sessionVariables = {
       TERMINAL = "alacritty";
       BROWSER = "$HOME/Applications/zen-x86_64.AppImage";

@@ -6,9 +6,9 @@
 }:
 {
   environment.systemPackages = with pkgs; [
-    freerdp
-    virt-manager
-    virt-viewer
+    #    freerdp
+    # virt-manager
+    # virt-viewer
     distrobox
     docker-compose
     docker-buildx

@@ -6,7 +6,6 @@ return {
 		"rachartier/tiny-inline-diagnostic.nvim",
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
-		"j-hui/fidget.nvim",
 		"folke/neodev.nvim",
 		"nvimdev/lspsaga.nvim",
 	},
@@ -40,7 +39,7 @@ return {
 				use_icons_from_diagnostic = true,
 			},
 		})
-		require("fidget").setup({})
+
 		require("lspsaga").setup({
 			lightbulb = {
 				enable = false,
@@ -114,19 +113,39 @@ return {
 
 		lsp.config["tailwindcss"] = with_defaults({
 			cmd = { "tailwindcss-language-server", "--stdio" },
-			filetypes = { "html", "templ", "javascript", "typescript", "react" },
+			filetypes = {
+				"html",
+				"css",
+				"scss",
+				"sass",
+				"javascript",
+				"javascriptreact",
+				"typescript",
+				"typescriptreact",
+				"templ",
+			},
 			root_markers = {
 				"tailwind.config.js",
+				"tailwind.config.cjs",
+				"tailwind.config.mjs",
 				"tailwind.config.ts",
+				"tailwind.config.cts",
+				"tailwind.config.mts",
 				"postcss.config.js",
+				"postcss.config.cjs",
+				"postcss.config.mjs",
 				"postcss.config.ts",
+				"postcss.config.cts",
+				"postcss.config.mts",
 				"package.json",
 				"node_modules",
 				".git",
 			},
-			init_options = {
-				userLanguages = {
-					templ = "html",
+			settings = {
+				tailwindCSS = {
+					includeLanguages = {
+						templ = "html",
+					},
 				},
 			},
 		})
