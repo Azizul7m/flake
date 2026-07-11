@@ -42,7 +42,7 @@ with pkgs;
     };
     dms-shell = {
       enable = true;
-      package = inputs.dms.packages.${pkgs.system}.default;
+      package = inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
       # Core features
       enableSystemMonitoring = true; # System monitoring widgets (dgop)
       enableDynamicTheming = true; # Wallpaper-based theming (matugen)

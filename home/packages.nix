@@ -9,6 +9,7 @@
         gnome-disk-utility # disk utility
         google-chrome # web browser
         pcmanfm # file manager
+        inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
 
         #Office
         onlyoffice-desktopeditors # office suite
@@ -24,12 +25,16 @@
         #zulip
 
         #Utils
+        kitty
         dropbox
         qbittorrent
         appimage-run # AppImage
         bleachbit # System
         # boxbuddy # Distrobox container manage
         #rustdesk
+
+        # Development
+        antigravity
 
         # Media
         vlc

@@ -18,7 +18,17 @@
       enable = true;
     };
     blueman.enable = true;
+    create_ap = {
+      enable = true;
+      settings = {
+        INTERNET_IFACE = "eno1"; # Replace with your internet-connected interface (e.g., enp3s0)
+        WIFI_IFACE = "wlp2s0"; # Replace with your Wi-Fi interface (e.g., wlp2s0)
+        SSID = "MyNixOSHotspot";
+        PASSPHRASE = "/11223344";
+      };
+    };
     # Sound settings
+
     pipewire = {
       enable = true;
       alsa.enable = true;

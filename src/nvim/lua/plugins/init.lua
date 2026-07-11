@@ -26,4 +26,6 @@ return {
 			})
 		end,
 	},
+	require("plugins.obsidian"),
+	require("plugins.markdown"),
 }

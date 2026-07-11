@@ -14,17 +14,17 @@ return {
 			},
 			indent = { enable = true },
 		},
-		config = function(_, opts)
-			-- Set parser install directory (persistent)
-			local parser_dir = vim.fn.stdpath("cache") .. "/treesitter"
-			vim.fn.mkdir(parser_dir, "p")
-
-			-- MUST SET: runtimepath entry so TS finds installed parsers
-			vim.opt.runtimepath:append(parser_dir)
-
-			opts.parser_install_dir = parser_dir
-
-			require("nvim-treesitter.configs").setup(opts)
-		end,
+		-- config = function(_, opts)
+		-- 	-- Set parser install directory (persistent)
+		-- 	local parser_dir = vim.fn.stdpath("cache") .. "/treesitter"
+		-- 	vim.fn.mkdir(parser_dir, "p")
+		--
+		-- 	-- MUST SET: runtimepath entry so TS finds installed parsers
+		-- 	vim.opt.runtimepath:append(parser_dir)
+		--
+		-- 	opts.parser_install_dir = parser_dir
+		--
+		-- 	require("nvim-treesitter.configs").setup(opts)
+		-- end,
 	},
 }

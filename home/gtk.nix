@@ -1,15 +1,7 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   gtk = with pkgs; {
     enable = true;
-    gtk4 = {
-      enable = true;
-      colorScheme = "dark";
-
-    };
-    theme = {
-      name = "Vimix-dark-doder";
-      package = vimix-gtk-themes;
-    };
+    gtk4.theme = config.gtk.theme;
     cursorTheme = {
       name = "Vimix Cursors";
       package = vimix-cursors;

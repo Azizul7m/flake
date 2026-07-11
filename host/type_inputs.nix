@@ -16,7 +16,7 @@
 
   # এনভায়রনমেন্ট ভেরিয়েবল সেট করা (এটি অ্যাপগুলোতে ইনপুট পেতে সাহায্য করবে)
   environment.sessionVariables = {
-    #    GTK_IM_MODULE = "fcitx";
+    GTK_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
   };

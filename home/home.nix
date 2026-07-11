@@ -1,8 +1,6 @@
 {
-  config,
   user,
   inputs,
-  pkgs,
   ...
 }:
 {
@@ -33,18 +31,31 @@
     stateVersion = "23.05"; # Please read the comment before changing.
     sessionVariables = {
       TERMINAL = "alacritty";
-      BROWSER = "$HOME/Applications/zen-x86_64.AppImage";
+      BROWSER = "zen";
       EDITOR = "nvim";
       VISUAL = "nvim";
-      ANCHOR_HOME = "$HOME/.anchor";
+      FLAKE = "~/flake";
       MANPAGER = "less -R"; # To display
+
       NIXPKGS_ALLOW_UNFREE = "1";
       NIXPKGS_ALLOW_INSECURE = "1";
-      FLAKE = "~/flake";
+
+      XDG_SESSION_TYPE = "wayland";
+      GDK_BACKEND = "wayland,x11";
+      CLUTTER_BACKEND = "wayland";
+      SDL_VIDEODRIVER = "wayland";
+
+      QT_QPA_PLATFORM = "wayland;xcb";
+      QT_QPA_PLATFORMTHEME = "gtk3";
+      QT_QPA_PLATFORMTHEME_QT6 = "gtk3";
+
+      ELECTRON_OZONE_PLATFORM_HINT = "auto";
+
       # Critical development environment variables
       CC = "clang";
       CXX = "clang++";
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=lld";
+      ANCHOR_HOME = "$HOME/.anchor";
     };
   };
 

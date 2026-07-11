@@ -22,7 +22,7 @@
       ### PROGRAMMING LANGUAGES ###
       # JavaScript/TypeScript
       nodejs
-      nodePackages_latest.typescript-language-server
+      typescript-language-server
 
       # go
       go # The Go compiler and tools
@@ -56,7 +56,7 @@
       # burpsuite # Web security testing
       # metasploit # Penetration framework
       # nikto # Web scanner
-      ghostscript # PDF processor (security research)
+      # ghostscript # PDF processor (security research)
       # hey # test webserver
 
       ### PRODUCTIVITY TOOLS ###
@@ -73,7 +73,7 @@
       ### Lua
       lua-language-server # Language server
       stylua # Formatter
-      ltex-ls
+      # ltex-ls
 
       ### LANGUAGE SERVERS (LSPs) ###
       bash-language-server
@@ -90,7 +90,7 @@
 
       ### AI/ML TOOLS ###
       gemini-cli
-      n8n # Workflow automation
+      # n8n # Workflow automation
     ]);
     sessionVariables = {
       OPENSSL_DIR = "${pkgs.openssl.dev}";

@@ -1,16 +1,20 @@
-{ pkgs, inputs, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 with pkgs;
 {
   imports = [
     ##../hypr/hyprpanel.nix
   ];
   home.packages = [
-    inputs.dms.packages.${pkgs.system}.default
+    inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default
     qt5.qtwayland
     qt5.qtbase # for qt apps
     qt5.qttools # for qt apps
     qt6Packages.qt6ct # qt6 config tool
-    libsForQt5.qt5.qtwayland # for qt5 apps
 
     libnotify # notification library
     wofi # application launcher
@@ -43,6 +47,7 @@ with pkgs;
   wayland.windowManager = {
     hyprland = {
       enable = true;
+      configType = "lua";
       xwayland.enable = true;
       systemd = {
         enable = true;
@@ -52,135 +57,264 @@ with pkgs;
       plugins = [ ];
       settings =
         let
+          lua = lib.generators.mkLuaInline;
+          mod = "mainMod";
+          exec = command: lua "hl.dsp.exec_cmd(${builtins.toJSON command})";
+          bind = keys: dispatcher: {
+            _args = [
+              keys
+              dispatcher
+            ];
+          };
+          bindWith = keys: dispatcher: opts: {
+            _args = [
+              keys
+              dispatcher
+              opts
+            ];
+          };
+          execBind = keys: command: bind keys (exec command);
+          execBindWith =
+            keys: command: opts:
+            bindWith keys (exec command) opts;
           env = [
-            # "GTK_IM_MODULE,fcitx"
-            "QT_IM_MODULE,fcitx"
-            "XMODIFIERS,@im=fcitx"
-            #"IBUS_USE_PORTAL,1"
-
-            "XDG_SESSION_TYPE,wayland"
-            "XDG_CURRENT_DESKTOP,Hyprland"
-            "XDG_SESSION_DESKTOP,Hyprland"
-
-            "GDK_BACKEND,wayland,x11"
-            "QT_QPA_PLATFORM,wayland;xcb"
-            "SDL_VIDEODRIVER,wayland"
-            "CLUTTER_BACKEND,wayland"
-
-            # "MOZ_ENABLE_WAYLAND,1"
-            # "ELECTRON_OZONE_PLATFORM_HINT,auto"
+            [
+              "GTK_IM_MODULE"
+              "fcitx"
+            ]
+            [
+              "QT_IM_MODULE"
+              "fcitx"
+            ]
+            [
+              "XMODIFIERS"
+              "@im=fcitx"
+            ]
+            [
+              "XDG_SESSION_TYPE"
+              "wayland"
+            ]
+            [
+              "XDG_CURRENT_DESKTOP"
+              "Hyprland"
+            ]
+            [
+              "XDG_SESSION_DESKTOP"
+              "Hyprland"
+            ]
+            [
+              "GDK_BACKEND"
+              "wayland,x11"
+            ]
+            [
+              "QT_QPA_PLATFORM"
+              "wayland;xcb"
+            ]
+            [
+              "QT_QPA_PLATFORMTHEME"
+              "gtk3"
+            ]
+            [
+              "QT_QPA_PLATFORMTHEME_QT6"
+              "gtk3"
+            ]
+            [
+              "ELECTRON_OZONE_PLATFORM_HINT"
+              "auto"
+            ]
+            [
+              "SDL_VIDEODRIVER"
+              "wayland"
+            ]
+            [
+              "CLUTTER_BACKEND"
+              "wayland"
+            ]
           ];
           terminal = "kitty";
-          browser = "~/Applications/zen-x86_64.AppImage";
+          browser = "zen";
           fileManager = "nautilus";
-          emacsTerminal = "emacsclient  -c";
           next_input = "fcitx5-remote -t"; # "ibus engine next";
           screenshot = "hyprshot -m region -o ~/Pictures/Screenshots";
         in
         {
-          decoration = {
-            rounding = 5;
-            blur = {
-              enabled = true;
-              size = 2;
-              passes = 4;
-              vibrancy = 0;
-              popups = true;
+          mainMod = {
+            _var = "SUPER";
+          };
+          config = {
+            decoration = {
+              rounding = 12;
+              active_opacity = 1.0;
+              inactive_opacity = 0.9;
+              blur = {
+                enabled = true;
+                size = 2;
+                passes = 4;
+                vibrancy = 0;
+                popups = true;
+              };
+              shadow = {
+                enabled = true;
+                range = 30;
+                render_power = 5;
+                offset = "0 5";
+                color = "rgba(00000070)";
+              };
+            };
+            input = {
+              special_fallthrough = true; # Floating-only special workspaces should not block normal focus.
+              focus_on_close = 1;
+            };
+            general = {
+              gaps_in = 5;
+              gaps_out = 5;
+              border_size = 0;
+              col = {
+                active_border = "rgba(707070ff)";
+                inactive_border = "rgba(d0d0d0ff)";
+              };
+              layout = "dwindle";
+            };
+            misc = {
+              disable_hyprland_logo = true;
+              disable_splash_rendering = true;
             };
           };
-          gesture = [ "3, down, scale: 1.5, float" ];
-          #master= {
-          #new_is_master = true;
-          #};
           monitor = [
-            "LVDS-1, 1366x768, 0x0, 1"
-            "DP-1, 1366x768, 0x-768, 1"
-            ", preferred, auto, 1"
+            {
+              output = "LVDS-1";
+              mode = "1366x768";
+              position = "0x0";
+              scale = 1;
+            }
+            {
+              output = "DP-1";
+              mode = "1366x768";
+              position = "0x-768";
+              scale = 1;
+            }
+            {
+              output = "";
+              mode = "preferred";
+              position = "auto";
+              scale = 1;
+            }
           ];
-          env = env;
-          #cursor = { enable_hyprcursor = true; };
-          input = {
-            special_fallthrough = true; # having only floating windows in the special workspace will not block focusing windows in the regular workspace.
-            focus_on_close = 1; # focus will shift to the window under the cursor.
+          env = map (value: { _args = value; }) env;
+          on = {
+            _args = [
+              "hyprland.start"
+              (lua ''
+                function()
+                  hl.exec_cmd("blueman-applet &")
+                  hl.exec_cmd("fcitx5 -d &")
+                  hl.exec_cmd("openbangla-gui --tray --dark")
+                  hl.exec_cmd("wl-paste --type text --watch cliphist store")
+                  hl.exec_cmd("wl-paste --type image --watch cliphist store")
+                  hl.exec_cmd("systemctl --user is-active --quiet dms.service || systemctl --user start dms.service")
+                  hl.exec_cmd("../../../src/hypr/scripts/startup")
+                end
+              '')
+            ];
           };
-          general = {
-            gaps_in = 3;
-            gaps_out = 5;
-            border_size = 0;
-            "col.active_border" = "rgba(1affffee)";
-            "col.inactive_border" = "rgba(595959aa)";
-            layout = "dwindle";
+          layer_rule = {
+            name = "dms-no-animation";
+            match.namespace = "^(dms)$";
+            no_anim = true;
           };
-          dwindle = {
-            pseudotile = true;
-            preserve_split = true;
-          };
-          exec-once = [
-            #  "waybar"
-            #  "swaync"
-            #  "waypaper --restore"
-            # "nm-applet"
-            # Start DMS through systemd user service (single instance + working IPC)
-            # "kdeconnect-indicator &"
-            # "qbittorrent"
-            "blueman-applet &"
-            "fcitx5 -d &"
-            "openbangla-gui --tray --dark"
-            "wl-paste --type text --watch cliphist store"
-            "wl-paste --type image --watch cliphist store"
-            "systemctl --user is-active --quiet dms.service || systemctl --user start dms.service"
-            "../../../src/hypr/scripts/startup"
+          window_rule = [
+            {
+              name = "inactive-window-opacity";
+              match = {
+                float = false;
+                focus = false;
+              };
+              opacity = "0.9 0.9";
+            }
+            {
+              name = "gnome-rounding";
+              match.class = "^(org\\.gnome\\.)";
+              rounding = 12;
+              border_size = 0;
+            }
+            {
+              name = "terminal-no-border";
+              match.class = "^(org\\.wezfurlong\\.wezterm|Alacritty|zen|com\\.mitchellh\\.ghostty|kitty)$";
+              border_size = 0;
+            }
+            {
+              name = "float-gnome-calculator";
+              match.class = "^(gnome-calculator)$";
+              float = true;
+            }
+            {
+              name = "float-blueman-manager";
+              match.class = "^(blueman-manager)$";
+              float = true;
+            }
+            {
+              name = "float-nautilus";
+              match.class = "^(org\\.gnome\\.Nautilus)$";
+              float = true;
+            }
+            {
+              name = "nomacs";
+              match.class = "^(nomacs)$";
+              float = true;
+            }
+            {
+              name = "float-dms-quickshell";
+              match.class = "^(org\\.quickshell)$";
+              float = true;
+            }
           ];
-          "$mod" = "SUPER";
           bind = [
-            # mouse movements
-            "$mod, RETURN, exec, ${terminal}"
-            "$mod CONTROL, RETURN, exec, xterm"
-            "$mod, b, exec, ${browser}"
-            "$mod SHIFT, B, exec, google-chrome-stable"
-
-            "$mod, V, exec, roficlip"
-            "$mod, E, exec,  ${fileManager}"
-            "$mod SHIFT, E, exec, pcmanfm"
-            "$mod SHIFT, N, exec, waypaper --random"
-            "$mod, ;, exec, ${next_input}"
-            # Hyprland Control
-            "$mod CONTROL, R, exec, hyprctl reload"
-            "$mod SHIFT, RETUR, layoutmsg, addmaster"
-            "$mod ALT, RETURN, layoutmsg, removemaster"
-            # Power
-            "$mod CONTROL, Q, exit,"
-            "$mod, Q, killactive,"
-            #Layout
-            "$mod, f, togglefloating,"
-            "$mod SHIFT, P, pseudo, "
-            "$mod SHIFT, J, togglesplit, "
-            "$mod, M, fullscreen"
-            "$mod SHIFT, o, pin"
-            "$mod,Tab,cyclenext" # change focus to another window
-            # Special workspace
-            "$mod SHIFT, U, movetoworkspace, special"
-            "$mod, U, togglespecialworkspace,"
-            #"$mod, ., ${pkgs.ibus-layout-toggle}"
-            # Scroll through existing workspaces with mainMod + scroll
-            "$mod, mouse_down, workspace, e+1"
-            "$mod, mouse_up, workspace, e-1"
-            # Move focus with mainMod + arrow keys
-            "$mod, left, movefocus, l"
-            "$mod, right, movefocus, r"
-            "$mod, up, movefocus, u"
-            "$mod, down, movefocus, d"
-            # Move focus with mainMod + arrow keys
-            "$mod, H, movefocus, l"
-            "$mod, L, movefocus, r"
-            "$mod, J, movefocus, u"
-            "$mod, K, movefocus, d"
-            # Move
-            "$mod CTRL, H, movewindow, l"
-            "$mod CTRL, L, movewindow, r"
-            "$mod CTRL, K, movewindow, u"
-            "$mod CTRL, J, movewindow, d"
-
+            (execBind (lua ''${mod} .. " + RETURN"'') terminal)
+            (execBind (lua ''${mod} .. " + CTRL + RETURN"'') "xterm")
+            (execBind (lua ''${mod} .. " + B"'') browser)
+            (execBind (lua ''${mod} .. " + SHIFT + B"'') "google-chrome-stable")
+            (execBind (lua ''${mod} .. " + E"'') fileManager)
+            (execBind (lua ''${mod} .. " + SHIFT + E"'') "pcmanfm")
+            (execBind (lua ''${mod} .. " + SHIFT + N"'') "waypaper --random")
+            (execBind (lua ''${mod} .. " + semicolon"'') next_input)
+            (execBind (lua ''${mod} .. " + CTRL + R"'') "hyprctl reload")
+            (bind (lua ''${mod} .. " + SHIFT + RETURN"'') (lua ''hl.dsp.layout("addmaster")''))
+            (bind (lua ''${mod} .. " + ALT + RETURN"'') (lua ''hl.dsp.layout("removemaster")''))
+            (bind (lua ''${mod} .. " + CTRL + Q"'') (lua "hl.dsp.exit()"))
+            (bind (lua ''${mod} .. " + Q"'') (lua "hl.dsp.window.close()"))
+            (bind (lua ''${mod} .. " + F"'') (lua ''hl.dsp.window.float({ action = "toggle" })''))
+            (bind (lua ''${mod} .. " + SHIFT + P"'') (lua "hl.dsp.window.pseudo()"))
+            (bind (lua ''${mod} .. " + SHIFT + J"'') (lua ''hl.dsp.layout("togglesplit")''))
+            (bind (lua ''${mod} .. " + M"'') (lua "hl.dsp.window.fullscreen()"))
+            (bind (lua ''${mod} .. " + SHIFT + O"'') (lua "hl.dsp.window.pin()"))
+            (bind (lua ''${mod} .. " + TAB"'') (lua "hl.dsp.window.cycle_next()"))
+            (bind (lua ''${mod} .. " + SHIFT + U"'') (lua ''hl.dsp.window.move({ workspace = "special" })''))
+            (bind (lua ''${mod} .. " + U"'') (lua "hl.dsp.workspace.toggle_special()"))
+            (bind (lua ''${mod} .. " + mouse_down"'') (lua ''hl.dsp.focus({ workspace = "e+1" })''))
+            (bind (lua ''${mod} .. " + mouse_up"'') (lua ''hl.dsp.focus({ workspace = "e-1" })''))
+            (bind (lua ''${mod} .. " + left"'') (lua ''hl.dsp.focus({ direction = "left" })''))
+            (bind (lua ''${mod} .. " + right"'') (lua ''hl.dsp.focus({ direction = "right" })''))
+            (bind (lua ''${mod} .. " + up"'') (lua ''hl.dsp.focus({ direction = "up" })''))
+            (bind (lua ''${mod} .. " + down"'') (lua ''hl.dsp.focus({ direction = "down" })''))
+            (bind (lua ''${mod} .. " + H"'') (lua ''hl.dsp.focus({ direction = "left" })''))
+            (bind (lua ''${mod} .. " + L"'') (lua ''hl.dsp.focus({ direction = "right" })''))
+            (bind (lua ''${mod} .. " + J"'') (lua ''hl.dsp.focus({ direction = "up" })''))
+            (bind (lua ''${mod} .. " + K"'') (lua ''hl.dsp.focus({ direction = "down" })''))
+            (bind (lua ''${mod} .. " + CTRL + H"'') (lua ''hl.dsp.window.move({ direction = "left" })''))
+            (bind (lua ''${mod} .. " + CTRL + L"'') (lua ''hl.dsp.window.move({ direction = "right" })''))
+            (bind (lua ''${mod} .. " + CTRL + K"'') (lua ''hl.dsp.window.move({ direction = "up" })''))
+            (bind (lua ''${mod} .. " + CTRL + J"'') (lua ''hl.dsp.window.move({ direction = "down" })''))
+            (execBind (lua ''${mod} .. " + I"'') "pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'")
+            (execBind (lua ''${mod} .. " + P"'') "pkill wofi || wofi --show drun -I")
+            (execBind "ALT + F4" "dms ipc call powermenu toggle")
+            (execBind (lua ''${mod} .. " + SPACE"'') "dms ipc call spotlight toggle")
+            (execBind (lua ''${mod} .. " + V"'') "dms ipc call clipboard toggle")
+            (execBind (lua ''${mod} .. " + T"'') "dms ipc call notepad toggle")
+            (execBind (lua ''${mod} .. " + N"'') "dms ipc call notifications toggle")
+            (execBind (lua ''${mod} .. " + COMMA"'') "dms ipc call settings focusOrToggle")
+            (execBind (lua ''${mod} .. " + Y"'') "dms ipc call dankdash wallpaper")
+            (execBind (lua ''${mod} .. " + CTRL + B"'') "dms ipc call hypr toggleBinds")
+            (execBind (lua ''${mod} .. " + ALT + L"'') "dms ipc call lock lock")
           ]
           ++ (
             # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
@@ -188,69 +322,78 @@ with pkgs;
               builtins.genList (
                 x:
                 let
-                  ws =
-                    let
-                      c = (x + 1) / 10;
-                    in
-                    builtins.toString (x + 1 - (c * 10));
+                  workspace = x + 1;
+                  ws = builtins.toString (workspace - (((x + 1) / 10) * 10));
                 in
                 [
-                  "$mod, ${ws}, workspace, ${toString (x + 1)}"
-                  "$mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
+                  (bind (lua ''${mod} .. " + ${ws}"'') (lua "hl.dsp.focus({ workspace = ${toString workspace} })"))
+                  (bind (lua ''${mod} .. " + SHIFT + ${ws}"'') (
+                    lua "hl.dsp.window.move({ workspace = ${toString workspace} })"
+                  ))
                 ]
               ) 10
             )
-          );
-          #volume button that allows press and hold, volume limited to 150%
-          binde = [
-            ", XF86AudioRaiseVolume, exec, dms ipc call audio increment '5'"
-            ", XF86AudioLowerVolume, exec, dms ipc call audio decrement '5'"
-
-            ", XF86AudioNext, exec, dms ipc call mpris next"
-            ", XF86AudioPrev, exec, dms ipc call mpris previous"
-
-            "$mod  SHIFT, H, resizeactive,-50 0"
-            "$mod  SHIFT, L, resizeactive,50 0"
-            "$mod  SHIFT, K, resizeactive,0 -50"
-            "$mod  SHIFT, J, resizeactive,0 50"
-
-            "$mod SHIFT, left, resizeactive,-50 0"
-            "$mod SHIFT, right, resizeactive,50 0"
-            "$mod SHIFT, up, resizeactive,0 -50"
-            "$mod SHIFT, down, resizeactive,0 50"
-
-          ];
-          #volume button that will activate even while an input inhibitor is active
-          bindl = [
-            ", print, exec, ${screenshot}"
-          ];
-          #Start wofi opens wofi on first press, closes it on second
-          bindr = [
-            # Launcher
-            "$mod, i, exec, pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'"
-            "$mod, p, exec, pkill wofi || wofi --show drun -I"
-
-            "ALT, F4, exec, dms ipc call powermenu toggle"
-
-            "$mod, SPACE, exec, dms ipc call spotlight toggle"
-            "$mod, V, exec, dms ipc call clipboard toggle"
-            "$mod, t, exec, dms ipc call notepad toggle"
-            "$mod, n, exec, dms ipc call notifications toggle"
-            "$mod CONTROL, b, exec, dms ipc call hypr toggleBinds"
-
-            ", pause, exec, dms ipc call mpris pause"
-            ", XF86AudioPlay, exec, dms ipc call mpris playPause"
-            ", XF86AudioMute, exec, dms ipc call audio mute"
-            "$mod, XF86AudioMute, exec, dms ipc call audio micmute"
-
-          ];
-
-          #Describe a bind
-          bindd = [ ];
-          #mouse binds; key: 272, 273
-          bindm = [
-            "$mod,mouse:272, movewindow"
-            "$mod, mouse:273, resizewindow"
+          )
+          ++ [
+            (execBindWith "XF86AudioRaiseVolume" "dms ipc call audio increment 5" {
+              locked = true;
+              repeating = true;
+            })
+            (execBindWith "XF86AudioLowerVolume" "dms ipc call audio decrement 5" {
+              locked = true;
+              repeating = true;
+            })
+            (execBindWith "XF86AudioNext" "dms ipc call mpris next" { locked = true; })
+            (execBindWith "XF86AudioPrev" "dms ipc call mpris previous" { locked = true; })
+            (execBindWith "pause" "dms ipc call mpris pause" { locked = true; })
+            (execBindWith "XF86AudioPlay" "dms ipc call mpris playPause" { locked = true; })
+            (execBindWith "XF86AudioMute" "dms ipc call audio mute" { locked = true; })
+            (execBindWith (lua ''${mod} .. " + XF86AudioMute"'') "dms ipc call audio micmute" {
+              locked = true;
+            })
+            (execBindWith "XF86MonBrightnessUp" "dms ipc call brightness increment 5" {
+              locked = true;
+              repeating = true;
+            })
+            (execBindWith "XF86MonBrightnessDown" "dms ipc call brightness decrement 5" {
+              locked = true;
+              repeating = true;
+            })
+            (bindWith (lua ''${mod} .. " + SHIFT + H"'')
+              (lua "hl.dsp.window.resize({ x = -50, y = 0, relative = true })")
+              { repeating = true; }
+            )
+            (bindWith (lua ''${mod} .. " + SHIFT + L"'')
+              (lua "hl.dsp.window.resize({ x = 50, y = 0, relative = true })")
+              { repeating = true; }
+            )
+            (bindWith (lua ''${mod} .. " + SHIFT + K"'')
+              (lua "hl.dsp.window.resize({ x = 0, y = -50, relative = true })")
+              { repeating = true; }
+            )
+            (bindWith (lua ''${mod} .. " + SHIFT + J"'')
+              (lua "hl.dsp.window.resize({ x = 0, y = 50, relative = true })")
+              { repeating = true; }
+            )
+            (bindWith (lua ''${mod} .. " + SHIFT + left"'')
+              (lua "hl.dsp.window.resize({ x = -50, y = 0, relative = true })")
+              { repeating = true; }
+            )
+            (bindWith (lua ''${mod} .. " + SHIFT + right"'')
+              (lua "hl.dsp.window.resize({ x = 50, y = 0, relative = true })")
+              { repeating = true; }
+            )
+            (bindWith (lua ''${mod} .. " + SHIFT + up"'')
+              (lua "hl.dsp.window.resize({ x = 0, y = -50, relative = true })")
+              { repeating = true; }
+            )
+            (bindWith (lua ''${mod} .. " + SHIFT + down"'')
+              (lua "hl.dsp.window.resize({ x = 0, y = 50, relative = true })")
+              { repeating = true; }
+            )
+            (execBindWith "print" screenshot { locked = true; })
+            (bindWith (lua ''${mod} .. " + mouse:272"'') (lua "hl.dsp.window.drag()") { mouse = true; })
+            (bindWith (lua ''${mod} .. " + mouse:273"'') (lua "hl.dsp.window.resize()") { mouse = true; })
           ];
         };
     };

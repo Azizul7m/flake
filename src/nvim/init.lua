@@ -21,5 +21,6 @@ require("core.diagnostics")
 
 -- Initialize plugins
 require("lazy").setup({
+	git = { timeout = 600 },
 	spec = { { import = "plugins" } },
 })

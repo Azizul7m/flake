@@ -2,7 +2,7 @@
 with pkgs;
 {
   environment.systemPackages = [
-    inputs.dms.packages.${pkgs.system}.default
+    inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default
     ## ───────────────────────────────
     ## Core Development Tools
     ## ───────────────────────────────
@@ -91,7 +91,6 @@ with pkgs;
     ## ───────────────────────────────
     wlprop # Inspect Wayland properties
     wlr-randr # RandR-like tool for wlroots
-    wlroots_0_18 # Wayland base libraries
     wayland-protocols # Wayland protocols
 
     ## ───────────────────────────────

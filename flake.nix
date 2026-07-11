@@ -9,7 +9,10 @@
     };
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     catppuccin = {
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
