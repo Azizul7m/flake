@@ -15,6 +15,7 @@ return {
       { "<leader>w", proxy = "<c-w>", group = "windows" },
       { "<leader>wm", desc = "Toggle maximize window" },
       { "<leader>wQ", desc = "Quit all" },
+      { "<leader>r", group = "REST / Kulala" },
     })
   end,
 }

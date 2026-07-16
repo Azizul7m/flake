@@ -1,13 +1,22 @@
 { pkgs, ... }:
-with pkgs; {
-  home.packages = [ zoxide atuin starship eza lsd ];
+with pkgs;
+{
+  home.packages = [
+    zoxide
+    atuin
+    starship
+    eza
+    lsd
+  ];
   programs = {
     fish = {
       enable = true;
-      plugins = [{
-        name = "grc";
-        src = pkgs.fishPlugins.grc.src;
-      }];
+      plugins = [
+        {
+          name = "grc";
+          src = pkgs.fishPlugins.grc.src;
+        }
+      ];
       interactiveShellInit = ''
           set fish_greeting # Disable greeting
 
@@ -37,10 +46,12 @@ with pkgs; {
 
           #docker
           alias d='docker'
-          alias dps='docker ps'
+          alias dca='docker ps -a'
           alias di='docker images'
           alias dui='lazydocker'
           alias dc='docker-compose'
+          alias dcu='docker compose up'
+          alias dcd='docker compose down'
           
           alias t='tmux attach -t default || tmux new -s default'
 

@@ -4,6 +4,7 @@ return {
 	cmd = { "ConformInfo" },
 	opts = {
 		formatters_by_ft = {
+			python = { "ruff_format" },
 			lua = { "stylua" },
 			rust = { "rustfmt" },
 			go = { "goimports-reviser", "gofumpt", "golines" },

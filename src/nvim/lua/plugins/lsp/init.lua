@@ -48,7 +48,7 @@ return {
 		-- Initialize mason and mason-lspconfig
 		require("mason").setup()
 		require("mason-lspconfig").setup({
-			ensure_installed = { "bashls", "gopls", "templ", "html", "tailwindcss" },
+			ensure_installed = { "pyright", "ruff", "bashls", "gopls", "templ", "html", "tailwindcss" },
 			automatic_installation = false,
 		})
 
@@ -62,6 +62,29 @@ return {
 				capabilities = capabilities,
 			}, config or {})
 		end
+
+		lsp.config["pyright"] = with_defaults({
+			cmd = { "pyright-langserver", "--stdio" },
+			filetypes = { "python" },
+			root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json", ".git" },
+			settings = {
+				python = {
+					analysis = {
+						autoSearchPaths = true,
+						useLibraryCodeForTypes = true,
+						diagnosticMode = "workspace",
+					},
+				},
+			},
+		})
+		lsp.enable("pyright")
+
+		lsp.config["ruff"] = with_defaults({
+			cmd = { "ruff", "server" },
+			filetypes = { "python" },
+			root_markers = { "pyproject.toml", "ruff.toml", ".git" },
+		})
+		lsp.enable("ruff")
 
 		lsp.config["ts_ls"] = with_defaults({
 			cmd = { "typescript-language-server", "--stdio" },

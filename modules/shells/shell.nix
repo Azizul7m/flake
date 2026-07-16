@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   programs = {
     fish.enable = true;
@@ -63,6 +63,7 @@
       # CLI Utilities
       yt-dlp # Media downloader
       asciinema # Terminal recorder
+      yazi
 
       # Text Processing
       hunspell # Spell checker

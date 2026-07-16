@@ -4,7 +4,7 @@ return {
 		build = ":TSUpdate",
 		lazy = false,
 		opts = {
-			ensure_installed = { "http", "rust", "toml", "json", "tsx", "go", "templ", "html", "css" },
+			ensure_installed = { "python", "http", "yaml", "rust", "toml", "json", "tsx", "go", "html", "css" },
 			auto_install = false,
 			sync_install = false,
 

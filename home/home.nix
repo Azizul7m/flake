@@ -59,6 +59,11 @@
     };
   };
 
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+  };
+
   #  gtk = { enable = true; };
   programs = {
     home-manager.enable = true;

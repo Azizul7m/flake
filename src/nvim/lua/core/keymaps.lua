@@ -4,40 +4,39 @@ local utils = require("core.utils")
 local find_notes = utils.find_directory("~/.notes", "Notes")
 
 local function toggle_maximized_window()
-  local tab = vim.t
-  local current_win = vim.api.nvim_get_current_win()
+	local tab = vim.t
+	local current_win = vim.api.nvim_get_current_win()
 
-  if tab.maximized_window_layout and tab.maximized_window == current_win then
-    vim.cmd(tab.maximized_window_layout)
-    tab.maximized_window_layout = nil
-    tab.maximized_window = nil
-    return
-  end
+	if tab.maximized_window_layout and tab.maximized_window == current_win then
+		vim.cmd(tab.maximized_window_layout)
+		tab.maximized_window_layout = nil
+		tab.maximized_window = nil
+		return
+	end
 
-  tab.maximized_window_layout = vim.fn.winrestcmd()
-  tab.maximized_window = current_win
-  vim.cmd("wincmd |")
-  vim.cmd("wincmd _")
+	tab.maximized_window_layout = vim.fn.winrestcmd()
+	tab.maximized_window = current_win
+	vim.cmd("wincmd |")
+	vim.cmd("wincmd _")
 end
 
 -- Quick escape from insert mode
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
+map("t", "jk", "<C-\\><C-n>", { desc = "Normal mode in Terminal" })
 
 -- Terminal
-map("t", "jk", "<C-\\><C-n>", { desc = "Normal mode in Terminal" })
 map({ "t", "n", "v" }, "<M-t>", "<cmd>lua Snacks.terminal.toggle()<CR>", { desc = "Toggle Terminal" })
 map("t", "<M-n>", "<cmd>lua Snacks.terminal.open()<CR>", { desc = "Open new Snacks Terminal" })
 
 -- Window management
 map({ "n", "x", "t" }, "<leader>w", "<C-w>", { desc = "Window management" })
 map("n", "<leader>wm", toggle_maximized_window, { desc = "Toggle maximize window" })
-map("n", "<leader>wQ", "<cmd>qa<CR>", { desc = "Quit all" })
+map("n", "<leader>wq", "<cmd>qa<CR>", { desc = "Quit all" })
 map({ "n", "x", "t" }, "<leader>b[", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 map({ "n", "x", "t" }, "<leader>b]", "<cmd>bnext<CR>", { desc = "Next buffer" })
 
 -- Diagnostic mappings
-map("n", "<M-p>", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-map("n", "<M-n>", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+map("n", "<M-n>", vim.diagnostic.jump, { desc = "Go to next diagnostic" })
 map("n", "<M-N>", "<cmd>Lspsaga show_workspace_diagnostics<CR>", { desc = "Workspace Diagnostic" })
 
 -- Find
@@ -45,14 +44,23 @@ map({ "n" }, "<leader>fn", find_notes, { desc = "Find Notes" })
 map({ "n" }, "<leader>fb", "<cmd>Telescope bibtex<CR>", { desc = "Find BibTeX Citations" })
 
 -- Toggle
-map({ "n", "v", "t" }, "-", "<cmd>lua Snacks.explorer()<CR>", { desc = "Snacks file manager" })
-map({ "n", "v", "t" }, "_", "<cmd>lua MiniFiles.open()<CR>", { desc = "MiniFiles file manager" })
+map({ "n", "v" }, "-", "<cmd>lua Snacks.explorer()<CR>", { desc = "Snacks file manager" })
+map({ "n", "v" }, "_", "<cmd>lua MiniFiles.open()<CR>", { desc = "MiniFiles file manager" })
 map({ "i", "n", "t" }, "<M-x>", "<cmd>lua Snacks.picker()<CR>", { desc = "Snacks picker" })
-map("n", "<leader>tl", "<cmd>Lazy<CR>", { desc = "Lazy.nvim" })
-map("n", "<leader>tbd", "<cmd>DBUIToggle<CR>", { desc = "DBUIToggle" })
-map("n", "<leader>tbo", "<cmd>DBUIFindBuffer<CR>", { desc = "DBUIFindBuffer" })
-map("n", "<leader>tba", "<cmd>DBUIAddConnection<CR>", { desc = "DBUIAddConnection" })
 map({ "n", "t", "x" }, "<leader>gg", "<cmd>Neogit<CR>", { desc = "Neogit" })
+map("n", "<leader>tl", "<cmd>Lazy<CR>", { desc = "Lazy.nvim" })
+
+-- Database client
+map("n", "<leader>tdd", "<cmd>DBUIToggle<CR>", { desc = "DBUIToggle" })
+map("n", "<leader>tdf", "<cmd>DBUIFindBuffer<CR>", { desc = "DBUIFindBuffer" })
+map("n", "<leader>tda", "<cmd>DBUIAddConnection<CR>", { desc = "DBUIAddConnection" })
+map("n", "<leader>tdc", "<cmd>DBUIClose<CR>", { desc = "DBUIClose" })
+
+-- Database client
+map("n", "<leader>dd", "<cmd>Dockyard<CR>", { desc = "Dockyard" })
+map("n", "<leader>df", "<cmd>DockyardFloat<CR>", { desc = "Dockyard Float" })
+map("n", "<leader>db", "<cmd>DockyardBuild<CR>", { desc = "Dockyard Build" })
+map("n", "<leader>dr", "<cmd>DockyardRun<CR>", { desc = "Dockyard Run" })
 
 -- LSP
 local lsp = vim.lsp

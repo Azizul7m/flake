@@ -6,7 +6,7 @@ local bibliography_files = vim.tbl_filter(function(path)
 	return vim.fn.filereadable(path) == 1
 end, bibliography_candidates)
 
-local default_sources = { "lsp", "path", "snippets", "buffer", "copilot", "dadbod" }
+local default_sources = { "lsp", "path", "snippets", "buffer", "copilot", "codecompanion", "dadbod" }
 if #bibliography_files > 0 then
 	table.insert(default_sources, "bibtex")
 end

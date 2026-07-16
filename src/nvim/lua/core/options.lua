@@ -64,6 +64,8 @@ opt.isfname:append("@-@")
 vim.filetype.add({
 	extension = {
 		templ = "templ",
+		http = "http",
+		rest = "http",
 	},
 	pattern = {
 		[".*%.templ"] = "templ",

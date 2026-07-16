@@ -7,10 +7,6 @@
       package = vimix-cursors;
       size = 16;
     };
-    iconTheme = {
-      name = "Vimix-dark";
-      package = vimix-icon-theme;
-    };
     font = {
       package = roboto;
       name = "Roboto";
