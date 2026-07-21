@@ -1,66 +1,75 @@
-local function slugify(title)
-	title = title:lower()
-	title = title:gsub("[^%w%s%-]", "")
-	title = title:gsub("%s+", "-")
-	return title
-end
-
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "markdown", "md", "obsidian" },
-	callback = function()
-		vim.opt_local.wrap = true
-		vim.opt_local.linebreak = true
-		vim.opt_local.breakindent = true
-		vim.opt_local.conceallevel = 2
-		vim.opt_local.spell = true
-		vim.opt_local.spelllang = "en_us"
-		vim.opt_local.shiftwidth = 2
-		vim.opt_local.tabstop = 2
-
-		vim.keymap.set("n", "<leader>mt", "<cmd>MarkdownToc<CR>", {
-			buffer = true,
-			noremap = true,
-			silent = true,
-			desc = "Insert markdown TOC",
-		})
-	end,
-})
-
-vim.api.nvim_create_user_command("MarkdownToc", function()
-	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-	local toc = {}
-
-	for _, line in ipairs(lines) do
-		local level, title = line:match("^(#{1,6})%s+(.-)%s*$")
-		if level and title then
-			local anchor = slugify(title)
-			table.insert(toc, string.rep("  ", #level - 1) .. "- [" .. title .. "](#" .. anchor .. ")")
-		end
-	end
-
-	if #toc == 0 then
-		vim.notify("No markdown headings found", vim.log.levels.INFO)
-		return
-	end
-
-	local cursor = vim.api.nvim_win_get_cursor(0)
-	local insert_lines = { "", "## Table of Contents", "" }
-	for _, item in ipairs(toc) do
-		table.insert(insert_lines, item)
-	end
-	table.insert(insert_lines, "")
-
-	vim.api.nvim_buf_set_lines(0, cursor[1] - 1, cursor[1] - 1, false, insert_lines)
-end, {
-	desc = "Insert a Markdown table of contents",
-})
-
 return {
-	"mzlogin/vim-markdown-toc",
-	ft = { "markdown", "md" },
-	config = function()
-		vim.g.vmt_list_item_char = "-"
-		vim.g.vmt_fence_text = "```"
-		vim.g.vmt_fence_closing_text = "```"
-	end,
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {
+			completions = { lsp = { enabled = true } },
+			heading = { enabled = false },
+			icons = { enabled = true },
+			indent = { enabled = true },
+			pipe_table = { enabled = true },
+		},
+		config = function(_, opts)
+			require("render-markdown").setup(opts)
+		end,
+	},
+
+	{
+		"hedyhli/markdown-toc.nvim",
+		ft = "markdown", -- Lazy load on markdown files
+		cmd = { "Mtoc" }, -- Lazy load on command
+		main = "mtoc", -- Ensures lazy loading points to the correct lua module
+		opts = {
+			fences = {
+				enabled = true, -- Required for auto-updating and removing
+				start_text = "start toc",
+				end_text = "end toc",
+			},
+			auto_update = {
+				enabled = true, -- Only update the TOC when explicitly requested
+				events = { "BufWritePre" },
+				pattern = "*.{md,mdown,mkd,mkdn,markdown,mdwn}",
+			},
+		},
+		config = function(_, opts)
+			require("mtoc").setup(opts)
+		end,
+	},
+
+	{
+		"arminveres/md-pdf.nvim",
+		branch = "main", -- you can assume that main is somewhat stable until releases will be made
+		lazy = true,
+		---@type md-pdf.config
+		opts = {
+			margins = "1.5cm",
+			highlight = "tango",
+			toc = false,
+			-- Render a dedicated title page (and keep ToC on a separate page)
+			title_page = false,
+			ignore_viewer_state = true,
+			fonts = {
+				main_font = "Noto Sans",
+				sans_font = "Noto Sans",
+				mono_font = "Iosevka",
+				math_font = nil,
+			},
+			-- Prevent document front matter from enabling Pandoc's generated TOC.
+			pandoc_user_args = { "--metadata", "toc:false" },
+		},
+		config = function(_, opts)
+			require("md-pdf").setup(opts)
+		end,
+		keys = {
+			{
+				"gp",
+				function()
+					require("md-pdf").convert_md_to_pdf()
+				end,
+				desc = "Markdown preview",
+			},
+		},
+	},
 }

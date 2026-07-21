@@ -6,8 +6,6 @@
     wl-clipboard # for emacs org-mode
     emacsPackages.jsonrpc
     grip
-    pandoc
-    texliveTeTeX
     libvterm
     tree-sitter
     wkhtmltopdf

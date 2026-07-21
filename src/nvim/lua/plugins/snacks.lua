@@ -10,7 +10,6 @@ return {
 		quickfile = { enabled = true },
 		scope = { enabled = true },
 		bigfile = { enabled = true },
-		dashboard = { enabled = true },
 		explorer = { enabled = true },
 		indent = { enabled = true },
 		input = { enabled = true },
@@ -25,11 +24,53 @@ return {
 				enabled = true,
 				inline = true,
 				float = true,
-				max_width = 60,
-				max_height = 30,
+				max_width = 45,
+				max_height = 22,
+			},
+		},
+		dashboard = {
+			enabled = true,
+			sections = {
+				{
+					gap = 1,
+					padding = 1,
+					header = [[
+              _     ________ ______   _ _    _____ __  __ 
+             / \   |__  /_ _|__  / | | | |  |___  |  \/  |
+            / _ \    / / | |  / /| | | | |     / /| |\/| |
+           / ___ \  / /_ | | / /_| |_| | |___ / / | |  | |
+          /_/   \_\/____|___/____|\___/|_____/_/  |_|  |_|
+        ]],
+				},
+				{ section = "keys", gap = 1, padding = 3 },
+				{
+					pane = 2,
+					icon = " ",
+					title = "Recent Files",
+					section = "recent_files",
+					indent = 2,
+					padding = 1,
+				},
+				{ pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+				{
+					pane = 2,
+					icon = " ",
+					title = "Git Status",
+					section = "terminal",
+					enabled = function()
+						return Snacks.git.get_root() ~= nil
+					end,
+					cmd = "git status --short --branch --renames",
+					height = 5,
+					padding = 1,
+					ttl = 5 * 60,
+					indent = 3,
+				},
+				{ section = "startup" },
 			},
 		},
 	},
+
 	keys = {
 		-- Top Pickers & Explorer
 		{

@@ -1,7 +1,15 @@
 return {
 	"3rd/diagram.nvim",
 	dependencies = {
-		{ "3rd/image.nvim", opts = { rocks = { enabled = false } } }, -- disable luarocks support when Lua 5.1 is unavailable
+		{
+			"3rd/image.nvim",
+			opts = {
+				rocks = { enabled = false }, -- disable luarocks support when Lua 5.1 is unavailable
+				integrations = {
+					markdown = { enabled = false }, -- Snacks.image handles Markdown images
+				},
+			},
+		},
 	},
 	opts = { -- you can just pass {}, defaults below
 		events = {
