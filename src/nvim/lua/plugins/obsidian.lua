@@ -78,5 +78,16 @@ return {
 	},
 	config = function(_, opts)
 		require("obsidian").setup(opts)
+		local group = vim.api.nvim_create_augroup("obsidian_conceallevel", { clear = true })
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = { "markdown", "obsidian" },
+			group = group,
+			callback = function()
+				vim.opt_local.conceallevel = 2
+			end,
+		})
+		if vim.tbl_contains({ "markdown", "obsidian" }, vim.bo.filetype) then
+			vim.opt_local.conceallevel = 2
+		end
 	end,
 }

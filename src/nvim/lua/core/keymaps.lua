@@ -1,7 +1,4 @@
 local map = vim.keymap.set
-local utils = require("core.utils")
-
-local find_notes = utils.find_directory("~/.notes", "Notes")
 
 local function toggle_maximized_window()
 	local tab = vim.t
@@ -39,10 +36,6 @@ map({ "n", "x", "t" }, "<leader>b]", "<cmd>bnext<CR>", { desc = "Next buffer" })
 map("n", "<M-n>", vim.diagnostic.jump, { desc = "Go to next diagnostic" })
 map("n", "<M-N>", "<cmd>Lspsaga show_workspace_diagnostics<CR>", { desc = "Workspace Diagnostic" })
 
--- Find
-map({ "n" }, "<leader>fn", find_notes, { desc = "Find Notes" })
-map({ "n" }, "<leader>fb", "<cmd>Telescope bibtex<CR>", { desc = "Find BibTeX Citations" })
-
 -- Toggle
 map({ "n", "v" }, "-", "<cmd>lua Snacks.explorer()<CR>", { desc = "Snacks file manager" })
 map({ "n", "v" }, "_", "<cmd>lua MiniFiles.open()<CR>", { desc = "MiniFiles file manager" })
@@ -57,10 +50,12 @@ map("n", "<leader>tda", "<cmd>DBUIAddConnection<CR>", { desc = "DBUIAddConnectio
 map("n", "<leader>tdc", "<cmd>DBUIClose<CR>", { desc = "DBUIClose" })
 
 -- Database client
-map("n", "<leader>dd", "<cmd>Dockyard<CR>", { desc = "Dockyard" })
-map("n", "<leader>df", "<cmd>DockyardFloat<CR>", { desc = "Dockyard Float" })
-map("n", "<leader>db", "<cmd>DockyardBuild<CR>", { desc = "Dockyard Build" })
-map("n", "<leader>dr", "<cmd>DockyardRun<CR>", { desc = "Dockyard Run" })
+map("n", "<leader>od", "<cmd>Dockyard<CR>", { desc = "Docker" })
+map("n", "<leader>odf", "<cmd>DockyardFloat<CR>", { desc = "Dockyard Float" })
+map("n", "<leader>odb", "<cmd>DockyardBuild<CR>", { desc = "Dockyard Build" })
+map("n", "<leader>odr", "<cmd>DockyardRun<CR>", { desc = "Dockyard Run" })
+
+-- Addons
 
 -- LSP
 local lsp = vim.lsp
