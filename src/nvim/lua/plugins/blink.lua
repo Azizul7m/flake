@@ -6,7 +6,7 @@ local bibliography_files = vim.tbl_filter(function(path)
 	return vim.fn.filereadable(path) == 1
 end, bibliography_candidates)
 
-local default_sources = { "lsp", "path", "snippets", "buffer", "copilot", "codecompanion", "dadbod" }
+local default_sources = { "lsp", "path", "snippets", "buffer", "copilot", "dadbod" }
 if #bibliography_files > 0 then
 	table.insert(default_sources, "bibtex")
 end
@@ -36,7 +36,7 @@ local providers = {
 	},
 	dadbod = {
 		name = "Dadbod",
-		module = "blink.compat.source",
+		module = "vim_dadbod_completion.blink",
 	},
 }
 

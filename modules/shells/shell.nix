@@ -35,6 +35,7 @@
       # poetry # Package management
       pyright # Static type checker
       python313Packages.pip
+      python314Packages.sqlfmt
       pipx
       # Rust
       #      rustup
@@ -64,12 +65,18 @@
       yt-dlp # Media downloader
       asciinema # Terminal recorder
       yazi
+      dwt1-shell-color-scripts
+      figlet
+      cowsay
+      bubblewrap # Unprivileged sandboxing
 
       # Text Processing
       hunspell # Spell checker
       hunspellDicts.en_US
       shfmt # Shell formatter
       typioca # Typing test
+      pandoc
+      texliveTeTeX
 
       ### Lua
       lua-language-server # Language server

@@ -58,6 +58,13 @@ opt.hlsearch = false
 opt.incsearch = true
 
 opt.termguicolors = true
+
+-- Neovide renders text as a GUI and can shape Bengali correctly. Keep
+-- Iosevka for Latin text and explicitly provide a Bengali fallback.
+if vim.g.neovide then
+	vim.opt.guifont = "Iosevka,Noto Sans Bengali:h10"
+end
+
 opt.signcolumn = "yes"
 opt.isfname:append("@-@")
 

@@ -63,10 +63,32 @@ return {
 			}, config or {})
 		end
 
+		lsp.config["sqls"] = with_defaults({
+			cmd = { "sqls" },
+			filetypes = { "sql" },
+			root_markers = { ".git", ".sqls.json" },
+		})
+		lsp.enable("sqls")
+
+		lsp.config["bashls"] = with_defaults({
+			cmd = { "bash-language-server", "start" },
+			filetypes = { "sh", "bash" },
+			root_markers = { ".git", ".bashrc", ".bash_profile" },
+		})
+		lsp.enable("bashls")
+
 		lsp.config["pyright"] = with_defaults({
 			cmd = { "pyright-langserver", "--stdio" },
 			filetypes = { "python" },
-			root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json", ".git" },
+			root_markers = {
+				"pyproject.toml",
+				"setup.py",
+				"setup.cfg",
+				"requirements.txt",
+				"Pipfile",
+				"pyrightconfig.json",
+				".git",
+			},
 			settings = {
 				python = {
 					analysis = {

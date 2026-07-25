@@ -1,7 +1,6 @@
 { ... }: {
   xdg = {
     enable = true;
-    #  userDirs.enable = true;
     #  mime.enable = true;
     # mimeApps.defaultApplications = {
     #   "application/pdf" = [ "pdf" "zen.desktop" "firefox.desktop" ];

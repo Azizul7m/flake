@@ -5,7 +5,7 @@
     enable = true;
     font = {
       package = pkgs.iosevka;
-      name = "Iosevka Term";
+      name = "Iosevka";
       size = 8;
     };
     themeFile = "Catppuccin-Mocha";
@@ -58,6 +58,10 @@
     };
 
     extraConfig = ''
+      # Iosevka does not contain Bengali glyphs. Use the Bengali font only
+      # for this script so mixed Bengali/Latin text remains readable.
+      symbol_map U+0980-U+09FF Lohit Bengali
+
       # Mouse bindings (closest match to Alacritty)
 
       # Left click copies selection

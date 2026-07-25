@@ -83,7 +83,6 @@ with pkgs;
     openvpn # VPN client
     networkmanager-openvpn
     networkmanagerapplet # System tray Wi-Fi manager
-    wayvnc # VNC for Wayland
     speechd # Text-to-speech daemon
 
     ## ───────────────────────────────

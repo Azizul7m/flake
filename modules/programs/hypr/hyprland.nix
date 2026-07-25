@@ -15,12 +15,14 @@ with pkgs;
     qt5.qtbase # for qt apps
     qt5.qttools # for qt apps
     qt6Packages.qt6ct # qt6 config tool
+    libsForQt5.qt5ct
 
     libnotify # notification library
     wofi # application launcher
     wlogout # logout screen
     wireplumber # audio router for pipewire
     brightnessctl # brightness control
+    cups-pk-helper
 
     wayland-protocols # wayland protocols
     wlr-layout-ui # layout switcher
@@ -267,6 +269,11 @@ with pkgs;
               match.class = "^(org\\.quickshell)$";
               float = true;
             }
+            {
+              name = "mpv";
+              match.class = "^(mpv)$";
+              float = true;
+            }
           ];
           bind = [
             (execBind (lua ''${mod} .. " + RETURN"'') terminal)
@@ -306,15 +313,16 @@ with pkgs;
             (bind (lua ''${mod} .. " + CTRL + J"'') (lua ''hl.dsp.window.move({ direction = "down" })''))
             (execBind (lua ''${mod} .. " + I"'') "pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'")
             (execBind (lua ''${mod} .. " + P"'') "pkill wofi || wofi --show drun -I")
-            (execBind "ALT + F4" "dms ipc call powermenu toggle")
+            (execBind "ALT + F4" "dms ipc call lock ")
             (execBind (lua ''${mod} .. " + SPACE"'') "dms ipc call spotlight toggle")
+            (execBind (lua ''${mod} .. " + TAB"'') "dms ipc spotlight toggleQuery '!'")
             (execBind (lua ''${mod} .. " + V"'') "dms ipc call clipboard toggle")
-            (execBind (lua ''${mod} .. " + T"'') "dms ipc call notepad toggle")
+            (execBind (lua ''${mod} .. " + T"'') "dms ipc mux toggle")
             (execBind (lua ''${mod} .. " + N"'') "dms ipc call notifications toggle")
-            (execBind (lua ''${mod} .. " + COMMA"'') "dms ipc call settings focusOrToggle")
             (execBind (lua ''${mod} .. " + Y"'') "dms ipc call dankdash wallpaper")
             (execBind (lua ''${mod} .. " + CTRL + B"'') "dms ipc call hypr toggleBinds")
-            (execBind (lua ''${mod} .. " + ALT + L"'') "dms ipc call lock lock")
+            (execBind (lua ''${mod} .. " + CTRL + D"'') "dms ipc welcome doctor")
+            (execBind (lua ''${mod} .. " + ALT + L"'') "dms ipc call powermenu toggle")
           ]
           ++ (
             # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}

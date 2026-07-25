@@ -21,7 +21,6 @@
     #    ../modules/programs/hypr/swaync.nix
     ../modules/programs/alacritty.nix
     ../modules/programs/kitty.nix
-    ../modules/programs/vscode.nix
     ../modules/services/mpd.nix
   ];
 
@@ -56,6 +55,7 @@
       CXX = "clang++";
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=lld";
       ANCHOR_HOME = "$HOME/.anchor";
+      POETRY_HOME = "$HOME/.local/share/pypoetry";
     };
   };
 
@@ -82,18 +82,29 @@
       enable = true; # Enable KDE Connect service
       indicator = true;
     };
-    wayvnc = {
-      enable = true; # Enable WayVNC service
-      settings = {
-        address = "0.0.0.0";
-        port = 9000;
-      };
-    };
     emacs = {
       enable = true;
       client.enable = true;
       defaultEditor = false;
       socketActivation.enable = true;
+    };
+  };
+
+  # User systemd service: hold a sleep inhibitor while the quickshell-based DMS runs
+  # This checks for a process named "quickshell" owned by the user and blocks suspend while it exists.
+  systemd.user.services.dms-inhibit = {
+    Unit = {
+      Description = "Hold sleep inhibitor while quickshell DMS runs";
+    };
+    Service = {
+      ExecStart = ''
+        /run/current-system/sw/bin/systemd-inhibit --what=sleep --why="DMS active" --mode=block \
+        /bin/sh -c "while /run/current-system/sw/bin/pgrep -u ${user} quickshell >/dev/null; do sleep 5; done"
+      '';
+      Restart = "no";
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
     };
   };
 }
