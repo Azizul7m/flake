@@ -21,6 +21,7 @@
     #    ../modules/programs/hypr/swaync.nix
     ../modules/programs/alacritty.nix
     ../modules/programs/kitty.nix
+    ../modules/programs/foot.nix
     ../modules/services/mpd.nix
   ];
 
@@ -29,7 +30,7 @@
     homeDirectory = "/home/${user}";
     stateVersion = "23.05"; # Please read the comment before changing.
     sessionVariables = {
-      TERMINAL = "alacritty";
+      TERMINAL = "foot";
       BROWSER = "zen";
       EDITOR = "nvim";
       VISUAL = "nvim";

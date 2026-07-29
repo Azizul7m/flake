@@ -28,6 +28,10 @@ if #bibliography_files > 0 then
 end
 
 local providers = {
+	task_metadata = {
+		name = "Task metadata",
+		module = "core.agenda",
+	},
 	copilot = {
 		name = "copilot",
 		module = "blink-cmp-copilot",
@@ -68,7 +72,7 @@ return {
 			nerd_font_variant = "mono",
 		},
 		sources = {
-			default = default_sources,
+			default = vim.list_extend(default_sources, { "task_metadata" }),
 			providers = providers,
 		},
 		cmdline = {

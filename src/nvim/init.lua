@@ -18,6 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 require("core.options")
 require("core.keymaps")
 require("core.diagnostics")
+require("core.agenda").setup()
 
 -- Initialize plugins
 require("lazy").setup({

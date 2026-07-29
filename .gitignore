@@ -1,1 +1,6 @@
 .env
+nvim.log
+.grok
+.agents
+.codex
+

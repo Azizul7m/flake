@@ -3,6 +3,12 @@ return {
 	version = "v3.16.5", -- use latest release, remove to use latest commit
 	cmd = { "Obsidian" }, -- Load the plugin when using :Obsidian directly
 	keys = {
+		{ "<leader>oa", "<cmd>AgendaToday<CR>", desc = "Agenda: today" },
+		{ "<leader>ow", "<cmd>AgendaWeek<CR>", desc = "Agenda: next 7 days" },
+		{ "<leader>oA", "<cmd>Agenda<CR>", desc = "Agenda: all open tasks" },
+		{ "<leader>os", "<cmd>TaskStart<CR>", desc = "Task: start timer" },
+		{ "<leader>oe", "<cmd>TaskStop<CR>", desc = "Task: stop timer" },
+		{ "<leader>oc", "<cmd>TaskSchedule<CR>", desc = "Task: set due date" },
 		{ "<leader>ooo", "<cmd>Obsidian quick_switch<CR>", desc = "Obsidian quick switch" },
 		{ "<leader>oon", "<cmd>Obsidian new<CR>", desc = "Obsidian new note" },
 		{ "<leader>oos", "<cmd>Obsidian search<CR>", desc = "Obsidian search" },

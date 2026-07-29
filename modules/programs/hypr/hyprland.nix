@@ -133,7 +133,7 @@ with pkgs;
               "wayland"
             ]
           ];
-          terminal = "kitty";
+          terminal = "foot";
           browser = "zen";
           fileManager = "nautilus";
           next_input = "fcitx5-remote -t"; # "ibus engine next";
@@ -285,8 +285,8 @@ with pkgs;
             (execBind (lua ''${mod} .. " + SHIFT + N"'') "waypaper --random")
             (execBind (lua ''${mod} .. " + semicolon"'') next_input)
             (execBind (lua ''${mod} .. " + CTRL + R"'') "hyprctl reload")
-            (bind (lua ''${mod} .. " + SHIFT + RETURN"'') (lua ''hl.dsp.layout("addmaster")''))
-            (bind (lua ''${mod} .. " + ALT + RETURN"'') (lua ''hl.dsp.layout("removemaster")''))
+            # (bind (lua ''${mod} .. " + SHIFT + RETURN"'') (lua ''hl.dsp.layout("addmaster")''))
+            # (bind (lua ''${mod} .. " + ALT + RETURN"'') (lua ''hl.dsp.layout("removemaster")''))
             (bind (lua ''${mod} .. " + CTRL + Q"'') (lua "hl.dsp.exit()"))
             (bind (lua ''${mod} .. " + Q"'') (lua "hl.dsp.window.close()"))
             (bind (lua ''${mod} .. " + F"'') (lua ''hl.dsp.window.float({ action = "toggle" })''))
@@ -314,8 +314,8 @@ with pkgs;
             (execBind (lua ''${mod} .. " + I"'') "pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'")
             (execBind (lua ''${mod} .. " + P"'') "pkill wofi || wofi --show drun -I")
             (execBind "ALT + F4" "dms ipc call lock ")
+            (execBind "ALT + TAB" "dms ipc spotlight toggleQuery '!'")
             (execBind (lua ''${mod} .. " + SPACE"'') "dms ipc call spotlight toggle")
-            (execBind (lua ''${mod} .. " + TAB"'') "dms ipc spotlight toggleQuery '!'")
             (execBind (lua ''${mod} .. " + V"'') "dms ipc call clipboard toggle")
             (execBind (lua ''${mod} .. " + T"'') "dms ipc mux toggle")
             (execBind (lua ''${mod} .. " + N"'') "dms ipc call notifications toggle")
