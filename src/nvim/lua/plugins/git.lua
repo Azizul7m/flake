@@ -4,12 +4,12 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		opts = {
 			signs = {
-				add = { text = "▏" },
-				change = { text = "|" },
-				delete = { text = "" },
-				topdelete = { text = "=" },
-				changedelete = { text = "!" },
-				untracked = { text = "┊" },
+				add = { text = "│" }, -- Thin solid vertical line
+				change = { text = "│" }, -- Thin solid vertical line
+				delete = { text = "├" }, -- Thin junction pointing right
+				topdelete = { text = "┬" }, -- Thin junction pointing down
+				changedelete = { text = "┥" }, -- Thin junction combined change/delete
+				untracked = { text = "┆" }, -- Thin dashed vertical line
 			},
 		},
 	},

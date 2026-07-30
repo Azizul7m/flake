@@ -22,6 +22,9 @@
           workers = 4;
           login-shell = "yes";
         };
+        colors = {
+          alpha = "0.95";
+        };
       }
     ];
   };
