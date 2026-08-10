@@ -29,7 +29,7 @@
       ## Mouse
       mouse_hide_wait = 3;
       focus_follows_mouse = "no";
-      background_opacity = 0.8;
+      background_opacity = 0.9;
     };
 
     keybindings = {
