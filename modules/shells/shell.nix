@@ -3,6 +3,7 @@
   programs = {
     fish.enable = true;
     nushell.enable = true;
+    browserpass.enable = true;
   };
   home = with pkgs; {
     packages = ([

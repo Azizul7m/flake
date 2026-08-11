@@ -24,6 +24,7 @@ with pkgs;
     gnupg.agent = {
       enable = true; # GPG agent for signing
       enableSSHSupport = true; # Use GPG for SSH authentication
+      pinentryPackage = pkgs.pinentry-gnome3;
     };
     openvpn3 = {
       enable = true;

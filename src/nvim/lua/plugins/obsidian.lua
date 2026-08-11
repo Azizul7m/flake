@@ -46,11 +46,11 @@ return {
 		workspaces = {
 			{
 				name = "personal",
-				path = "~/.notes",
+				path = "~/.notes/vaults",
 			},
 			{
 				name = "work",
-				path = "~/.notes/work",
+				path = "~/.notes/vaults/work",
 			},
 		},
 		templates = {

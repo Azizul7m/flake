@@ -133,7 +133,7 @@ with pkgs;
               "wayland"
             ]
           ];
-          terminal = "foot";
+          terminal = "footclient";
           browser = "zen";
           fileManager = "nautilus";
           next_input = "fcitx5-remote -t"; # "ibus engine next";
@@ -147,7 +147,7 @@ with pkgs;
             decoration = {
               rounding = 12;
               active_opacity = 1.0;
-              inactive_opacity = 0.9;
+              inactive_opacity = 1.0;
               blur = {
                 enabled = true;
                 size = 2;
@@ -159,7 +159,7 @@ with pkgs;
                 enabled = true;
                 range = 30;
                 render_power = 5;
-                offset = "0 5";
+                offset = "0 2";
                 color = "rgba(00000070)";
               };
             };
@@ -208,7 +208,6 @@ with pkgs;
               "hyprland.start"
               (lua ''
                 function()
-                  hl.exec_cmd("blueman-applet &")
                   hl.exec_cmd("fcitx5 -d &")
                   hl.exec_cmd("openbangla-gui --tray --dark")
                   hl.exec_cmd("wl-paste --type text --watch cliphist store")
@@ -231,7 +230,7 @@ with pkgs;
                 float = false;
                 focus = false;
               };
-              opacity = "0.9 0.9";
+              opacity = "1.0 1.0";
             }
             {
               name = "gnome-rounding";
@@ -241,13 +240,10 @@ with pkgs;
             }
             {
               name = "terminal-no-border";
-              match.class = "^(org\\.wezfurlong\\.wezterm|Alacritty|zen|com\\.mitchellh\\.ghostty|kitty)$";
+              match.class = "^(org\\.wezfurlong\\.wezterm|foot|footclient|Alacritty|com\\.mitchellh\\.ghostty|kitty)$";
               border_size = 0;
-            }
-            {
-              name = "float-gnome-calculator";
-              match.class = "^(gnome-calculator)$";
               float = true;
+              opacity= "0.9 0.9";
             }
             {
               name = "float-blueman-manager";
@@ -277,7 +273,7 @@ with pkgs;
           ];
           bind = [
             (execBind (lua ''${mod} .. " + RETURN"'') terminal)
-            (execBind (lua ''${mod} .. " + CTRL + RETURN"'') "xterm")
+            (execBind (lua ''${mod} .. " + CTRL + RETURN"'') "kitty")
             (execBind (lua ''${mod} .. " + B"'') browser)
             (execBind (lua ''${mod} .. " + SHIFT + B"'') "google-chrome-stable")
             (execBind (lua ''${mod} .. " + E"'') fileManager)
@@ -289,7 +285,7 @@ with pkgs;
             # (bind (lua ''${mod} .. " + ALT + RETURN"'') (lua ''hl.dsp.layout("removemaster")''))
             (bind (lua ''${mod} .. " + CTRL + Q"'') (lua "hl.dsp.exit()"))
             (bind (lua ''${mod} .. " + Q"'') (lua "hl.dsp.window.close()"))
-            (bind (lua ''${mod} .. " + F"'') (lua ''hl.dsp.window.float({ action = "toggle" })''))
+            (bind (lua ''${mod} .. " + A"'') (lua ''hl.dsp.window.float({ action = "toggle" })''))
             (bind (lua ''${mod} .. " + SHIFT + P"'') (lua "hl.dsp.window.pseudo()"))
             (bind (lua ''${mod} .. " + SHIFT + J"'') (lua ''hl.dsp.layout("togglesplit")''))
             (bind (lua ''${mod} .. " + M"'') (lua "hl.dsp.window.fullscreen()"))
@@ -313,12 +309,14 @@ with pkgs;
             (bind (lua ''${mod} .. " + CTRL + J"'') (lua ''hl.dsp.window.move({ direction = "down" })''))
             (execBind (lua ''${mod} .. " + I"'') "pkill bemenu || bemenu-run -cnwsl 30 -W .45 -p 'Run'")
             (execBind (lua ''${mod} .. " + P"'') "pkill wofi || wofi --show drun -I")
-            (execBind "ALT + F4" "dms ipc call lock ")
+            (execBind "ALT + F4" "dms ipc call lock lock")
             (execBind "ALT + TAB" "dms ipc spotlight toggleQuery '!'")
             (execBind (lua ''${mod} .. " + SPACE"'') "dms ipc call spotlight toggle")
             (execBind (lua ''${mod} .. " + V"'') "dms ipc call clipboard toggle")
             (execBind (lua ''${mod} .. " + T"'') "dms ipc mux toggle")
             (execBind (lua ''${mod} .. " + N"'') "dms ipc call notifications toggle")
+            (execBind (lua ''${mod} .. " + CTRL + N"'') "dms ipc call wallpaper next")
+            (execBind (lua ''${mod} .. " + CTRL + SHIFT + N"'') "dms ipc call wallpaper previous")
             (execBind (lua ''${mod} .. " + Y"'') "dms ipc call dankdash wallpaper")
             (execBind (lua ''${mod} .. " + CTRL + B"'') "dms ipc call hypr toggleBinds")
             (execBind (lua ''${mod} .. " + CTRL + D"'') "dms ipc welcome doctor")

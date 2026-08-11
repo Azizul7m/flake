@@ -25,6 +25,11 @@ with pkgs;
     systemdUkify
     ags # GJS library
 
+    browserpass
+    pass-wayland
+    passExtensions.pass-import
+    passExtensions.pass-otp
+
     ## ───────────────────────────────
     ## Version Control & Signing
     ## ───────────────────────────────

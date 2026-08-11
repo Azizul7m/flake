@@ -58,6 +58,7 @@
     rtkit.enable = true;
     polkit.enable = true; # PolicyKit for privilege management
     sudo.wheelNeedsPassword = false;
+    pam.services.login.enableGnomeKeyring = true;
     pam.services.swaylock.text = ''
       auth include login
     '';

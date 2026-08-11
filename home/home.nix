@@ -1,6 +1,7 @@
 {
   user,
   inputs,
+  config,
   ...
 }:
 {
@@ -57,11 +58,13 @@
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=lld";
       ANCHOR_HOME = "$HOME/.anchor";
       POETRY_HOME = "$HOME/.local/share/pypoetry";
+      PASSWORD_STORE_DIR = "${config.home.homeDirectory}/.password-store";
+
     };
   };
 
   catppuccin = {
-    enable = true;
+    autoEnable = true;
     flavor = "mocha";
   };
 

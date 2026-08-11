@@ -1,5 +1,5 @@
 return {
-	"echasnovski/mini.nvim",
+	"nvim-mini/mini.nvim",
 	event = "VeryLazy",
 	version = "*",
 	config = function()
@@ -14,7 +14,8 @@ return {
 					local diff = MiniStatusline.section_diff({ trunc_width = 75 })
 					local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
 					local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
-					local lsp_progress = MiniStatusline.is_truncated(120) and "" or require("core.lsp_progress").status()
+					local lsp_progress = MiniStatusline.is_truncated(120) and ""
+						or require("core.lsp_progress").status()
 					local filename = MiniStatusline.section_filename({ trunc_width = 140 })
 					local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
 					local location = MiniStatusline.section_location({ trunc_width = 75 })
@@ -22,7 +23,10 @@ return {
 
 					return MiniStatusline.combine_groups({
 						{ hl = mode_hl, strings = { mode } },
-						{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp_progress ~= "" and lsp_progress or lsp } },
+						{
+							hl = "MiniStatuslineDevinfo",
+							strings = { git, diff, diagnostics, lsp_progress ~= "" and lsp_progress or lsp },
+						},
 						"%<",
 						{ hl = "MiniStatuslineFilename", strings = { filename } },
 						"%=",

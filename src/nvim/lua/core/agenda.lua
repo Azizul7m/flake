@@ -156,7 +156,9 @@ end
 
 function M.start()
 	local line = task_line()
-	if not line then return end
+	if not line then
+		return
+	end
 	if line:match("@started%(") then
 		vim.notify("This task is already running", vim.log.levels.INFO)
 		return
@@ -167,7 +169,9 @@ end
 
 function M.stop()
 	local line = task_line()
-	if not line then return end
+	if not line then
+		return
+	end
 	local started = line:match("@started%(([^)]+)%)")
 	if not started then
 		vim.notify("This task has no active timer", vim.log.levels.WARN)
@@ -190,9 +194,13 @@ end
 
 function M.schedule()
 	local line = task_line()
-	if not line then return end
+	if not line then
+		return
+	end
 	vim.ui.input({ prompt = "Due date (YYYY-MM-DD): ", default = today() }, function(date)
-		if not date or date == "" then return end
+		if not date or date == "" then
+			return
+		end
 		line = line:gsub("%s*@due%([^)]*%)", "")
 		set_line(line .. " @due(" .. date .. ")")
 	end)
@@ -214,12 +222,36 @@ function M.completion_source()
 				is_incomplete_backward = false,
 				is_incomplete_forward = false,
 				items = {
-				{ label = "@due(" .. today_date .. ")", insertText = "@due(" .. today_date .. ")", kind = vim.lsp.protocol.CompletionItemKind.Value },
-				{ label = "@due(" .. tomorrow_date .. ")", insertText = "@due(" .. tomorrow_date .. ")", kind = vim.lsp.protocol.CompletionItemKind.Value },
-				{ label = "@due(YYYY-MM-DD)", insertText = "@due()", kind = vim.lsp.protocol.CompletionItemKind.Keyword },
-				{ label = "@priority(A)", insertText = "@priority()", kind = vim.lsp.protocol.CompletionItemKind.Keyword },
-				{ label = "@time(HH:MM)", insertText = "@time()", kind = vim.lsp.protocol.CompletionItemKind.Keyword },
-				{ label = "@context(work)", insertText = "@context()", kind = vim.lsp.protocol.CompletionItemKind.Keyword },
+					{
+						label = "@due(" .. today_date .. ")",
+						insertText = "@due(" .. today_date .. ")",
+						kind = vim.lsp.protocol.CompletionItemKind.Value,
+					},
+					{
+						label = "@due(" .. tomorrow_date .. ")",
+						insertText = "@due(" .. tomorrow_date .. ")",
+						kind = vim.lsp.protocol.CompletionItemKind.Value,
+					},
+					{
+						label = "@due(YYYY-MM-DD)",
+						insertText = "@due()",
+						kind = vim.lsp.protocol.CompletionItemKind.Keyword,
+					},
+					{
+						label = "@priority(A)",
+						insertText = "@priority()",
+						kind = vim.lsp.protocol.CompletionItemKind.Keyword,
+					},
+					{
+						label = "@time(HH:MM)",
+						insertText = "@time()",
+						kind = vim.lsp.protocol.CompletionItemKind.Keyword,
+					},
+					{
+						label = "@context(work)",
+						insertText = "@context()",
+						kind = vim.lsp.protocol.CompletionItemKind.Keyword,
+					},
 				},
 			})
 		end,

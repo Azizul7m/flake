@@ -7,6 +7,7 @@
         nautilus
         baobab # disk analyzer
         gnome-disk-utility # disk utility
+        authenticator # TOTP authenticator
         google-chrome # web browser
         pcmanfm # file manager
         inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default

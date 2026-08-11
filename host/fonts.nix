@@ -12,6 +12,8 @@
       twemoji-color-font
       mononoki
       iosevka
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.iosevka
       corefonts
       fontmiscmisc
       fontadobe75dpi
@@ -45,11 +47,20 @@
             </edit>
           </match>
 
-          <!-- Bangla language fallback -->
+            <!-- Bangla language fallback -->
           <match target="pattern">
             <test name="lang"><string>bn</string></test>
             <edit name="family" mode="prepend" binding="strong">
               <string>Lohit Bengali</string>
+            </edit>
+          </match>
+
+          <!-- Monospace fallback for icons/nerd fonts -->
+          <match target="pattern">
+            <test name="family"><string>monospace</string></test>
+            <edit name="family" mode="prepend" binding="strong">
+              <string>JetBrainsMono Nerd Font</string>
+              <string>Iosevka Nerd Font</string>
             </edit>
           </match>
 

@@ -20,6 +20,7 @@ end
 -- Quick escape from insert mode
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 map("t", "jk", "<C-\\><C-n>", { desc = "Normal mode in Terminal" })
+map({ "i", "n", "t", "v", "x" }, "<M-x>", ":", { desc = "cmdline" })
 
 -- Terminal
 map({ "t", "n", "v" }, "<M-t>", "<cmd>lua Snacks.terminal.toggle()<CR>", { desc = "Toggle Terminal" })
@@ -39,7 +40,6 @@ map("n", "<M-N>", "<cmd>Lspsaga show_workspace_diagnostics<CR>", { desc = "Works
 -- Toggle
 map({ "n", "v" }, "-", "<cmd>lua Snacks.explorer()<CR>", { desc = "Snacks file manager" })
 map({ "n", "v" }, "_", "<cmd>lua MiniFiles.open()<CR>", { desc = "MiniFiles file manager" })
-map({ "i", "n", "t" }, "<M-x>", "<cmd>lua Snacks.picker()<CR>", { desc = "Snacks picker" })
 map({ "n", "t", "x" }, "<leader>gg", "<cmd>Neogit<CR>", { desc = "Neogit" })
 map("n", "<leader>tl", "<cmd>Lazy<CR>", { desc = "Lazy.nvim" })
 

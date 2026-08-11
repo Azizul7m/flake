@@ -27,12 +27,21 @@ return {
 				setext = true,
 				sign = false,
 				left_pad = 1,
+				right_pad = 1,
 				render_modes = true,
 				position = "eol",
 			},
 			icons = { enabled = true },
 			indent = { enabled = true },
 			pipe_table = { enabled = true },
+			-- Add padding to the right of various icons so they don't touch text
+			bullet = {
+				right_pad = 1,
+			},
+			checkbox = {
+				left_pad = 0,
+				right_pad = 2,
+			},
 		},
 		config = function(_, opts)
 			require("render-markdown").setup(opts)

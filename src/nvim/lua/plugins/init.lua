@@ -2,10 +2,6 @@ return {
 	{
 		"uhs-robert/sshfs.nvim",
 		event = "VeryLazy",
-		opts = {
-			-- Refer to the configuration section below
-			-- or leave empty for defaults
-		},
 	},
 	{
 		"viniciusteixeiradias/todo.nvim",

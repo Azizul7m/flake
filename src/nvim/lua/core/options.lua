@@ -1,10 +1,6 @@
 local opt = vim.opt
 local g = vim.g
 
--- General
-g.mapleader = " "
-g.maplocalleader = " "
-
 -- Fix for NixOS: point to the correct sqlite library path
 g.sqlite_clib_path = "/nix/store/bn7m7qn8k7b27jy5lkq3bg4vcxnyjpq0-sqlite-3.51.2/lib/libsqlite3.so"
 
@@ -48,16 +44,10 @@ opt.undodir = os.getenv("HOME") .. "/.cache/nvim"
 
 -- Misc
 opt.clipboard = "unnamedplus"
-opt.undofile = true
 opt.updatetime = 250
 opt.timeoutlen = 300
 opt.completeopt = "menu,menuone,noselect"
 opt.pumheight = 10
-
-opt.hlsearch = false
-opt.incsearch = true
-
-opt.termguicolors = true
 
 -- Neovide renders text as a GUI and can shape Bengali correctly. Keep
 -- Iosevka for Latin text and explicitly provide a Bengali fallback.
@@ -65,7 +55,6 @@ if vim.g.neovide then
 	vim.opt.guifont = "Iosevka,Noto Sans Bengali:h10"
 end
 
-opt.signcolumn = "yes"
 opt.isfname:append("@-@")
 
 vim.filetype.add({
@@ -78,6 +67,3 @@ vim.filetype.add({
 		[".*%.templ"] = "templ",
 	},
 })
-
-vim.cmd("filetype plugin indent on")
-vim.cmd("syntax enable")

@@ -25,7 +25,22 @@ return {
 					TSFuncBuiltin = { fg = "#0059ff" },
 				},
 			})
-			require("onedark").load()
+			--			require("onedark").load()
 		end,
+	},
+	{
+		"Aejkatappaja/cendre",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("cendre").setup({
+				background = "hard", -- "hard" | "medium" | "soft"
+				italic_virtual_text = false,
+			})
+		end,
+	},
+	{
+		"LazyVim/LazyVim",
+		opts = { colorscheme = "cendre" },
 	},
 }

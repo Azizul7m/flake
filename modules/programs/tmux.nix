@@ -23,6 +23,7 @@
         sidebar
         vim-tmux-navigator
         tmux-fzf
+        pass
         {
           plugin = tmux-floax;
           extraConfig = ''

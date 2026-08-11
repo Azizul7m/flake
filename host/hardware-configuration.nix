@@ -4,8 +4,8 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
+  user,
   ...
 }:
 
@@ -35,6 +35,11 @@
       "fmask=0077"
       "dmask=0077"
     ];
+  };
+
+  fileSystems."/home/${user}/store_drive" = {
+    device = "/dev/disk/by-label/store_drive";
+    fsType = "ext4";
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/de6d6d67-ea8e-41ea-9672-9bbf7a010d3b"; } ];

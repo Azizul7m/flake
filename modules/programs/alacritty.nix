@@ -8,6 +8,7 @@
         general.live_config_reload = true;
         selection.save_to_clipboard = true;
         font.size = 9;
+       # font.family = "JetBrainsMono Nerd Font";
         mouse = {
           bindings = [
             {

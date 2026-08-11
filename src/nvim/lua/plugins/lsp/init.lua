@@ -4,8 +4,8 @@ return {
 	event = { "BufReadPost", "BufNewFile" },
 	dependencies = {
 		"rachartier/tiny-inline-diagnostic.nvim",
-		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason.nvim",
+		"mason-org/mason-lspconfig.nvim",
 		"folke/neodev.nvim",
 		"nvimdev/lspsaga.nvim",
 	},
@@ -108,8 +108,7 @@ return {
 		})
 		lsp.enable("ruff")
 
-		lsp.config["ts_ls"] = with_defaults({
-			cmd = { "typescript-language-server", "--stdio" },
+		lsp.config["vtsls"] = with_defaults({
 			filetypes = {
 				"javascript",
 				"javascriptreact",
@@ -118,8 +117,31 @@ return {
 				"typescriptreact",
 				"typescript.tsx",
 			},
+			settings = {
+				typescript = {
+					inlayHints = {
+						-- Modern VS Code / vtsls style naming convention
+						parameterNames = { enabled = "all" },
+						parameterTypes = { enabled = true },
+						variableTypes = { enabled = true },
+						propertyDeclarationTypes = { enabled = true },
+						functionLikeReturnTypes = { enabled = true },
+						enumMemberValues = { enabled = true },
+					},
+				},
+				javascript = {
+					inlayHints = {
+						parameterNames = { enabled = "all" },
+						parameterTypes = { enabled = true },
+						variableTypes = { enabled = true },
+						propertyDeclarationTypes = { enabled = true },
+						functionLikeReturnTypes = { enabled = true },
+						enumMemberValues = { enabled = true },
+					},
+				},
+			},
 		})
-		lsp.enable("ts_ls")
+		lsp.enable("vtsls")
 
 		lsp.config["harper-ls"] = with_defaults({
 			cmd = { "harper-ls", "--stdio" },
