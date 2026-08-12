@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  user,
   system ? pkgs.system,
   ...
 }:
@@ -36,6 +37,7 @@
       autoPrune.enable = true;
       extraPackages = with pkgs; [ criu ];
       daemon.settings = {
+        data-root = "/home/${user}/store_drive/.sys/docker";
         log-driver = "json-file";
         log-opts = {
           "max-size" = "100m";
@@ -48,6 +50,9 @@
   services = {
     dockerRegistry.enable = true;
   };
+  systemd.services.docker.serviceConfig.RequiresMountsFor = [
+    "/home/${user}/store_drive/.sys/docker-storage"
+  ];
   # environment.variables = { VAGRANT_DEFAULT_PROVIDER = "libvirt"; };
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;

@@ -15,17 +15,19 @@ Welcome to my personal NixOS dotfiles repository, managed using *Nix Flakes*. Th
 - 🧠 *Ollama*: Local LLM runner integrated into the system.
 - 🖥️ *Virtualization*: Support for Docker, Podman, Distrobox, and Libvirt/Virt-manager.
 
-** 🚀 Installation
+** 🚫 Personal-use notice
 
-# Head is not enoufh to feet
+This repository is highly personal and tailored to one machine, one user, and
+one workflow. It should not be cloned, installed, copied, or used by anyone
+else as-is. Paths, hardware settings, secrets, services, and preferences may
+be specific to the owner and may not work elsewhere.
 
-#+BEGIN_SRC bash
-git clone https://github.com/Azizul7m/flake.git
-cd flake
-nixos-rebuild switch --flake .
-#+END_SRC
+** Conflict status
 
-Make sure you have `nix` installed and flakes enabled.
+No unresolved merge conflict is present in the current checkout: Git reports
+no unmerged paths and no conflict markers. The current changes are in
+~flake.nix~, ~host/virtualisation.nix~, ~modules/programs/hypr/hyprland.nix~,
+and the Neovim files under ~src/nvim/~.
 
 ** Configuration
 

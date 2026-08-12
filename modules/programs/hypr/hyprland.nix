@@ -133,7 +133,7 @@ with pkgs;
               "wayland"
             ]
           ];
-          terminal = "footclient";
+          terminal = "footclient -w 960x500";
           browser = "zen";
           fileManager = "nautilus";
           next_input = "fcitx5-remote -t"; # "ibus engine next";
