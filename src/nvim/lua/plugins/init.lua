@@ -5,7 +5,6 @@ return {
 	},
 	{
 		"viniciusteixeiradias/todo.nvim",
-		-- version = "v1.0.0", -- optional: pin to a specific version
 		event = "VeryLazy",
 		dependencies = { "nvim-telescope/telescope.nvim" },
 		config = function()

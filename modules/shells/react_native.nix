@@ -21,13 +21,12 @@ in {
   home.sessionVariables = {
     ANDROID_HOME = "${android-sdk}/libexec/android-sdk";
     ANDROID_SDK_ROOT = "${android-sdk}/libexec/android-sdk";
-    PATH =
-      "$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH";
   };
-  programs.fish.interactiveShellInit = ''
-    set -x PATH $HOME/.config/yarn/global/node_modules/.bin $PATH
-  '';
-  programs.zsh.initExtra = ''
-    export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-  '';
+  home.sessionPath = [
+    "$HOME/.config/yarn/global/node_modules/.bin"
+    "${android-sdk}/libexec/android-sdk/emulator"
+    "${android-sdk}/libexec/android-sdk/tools"
+    "${android-sdk}/libexec/android-sdk/tools/bin"
+    "${android-sdk}/libexec/android-sdk/platform-tools"
+  ];
 }

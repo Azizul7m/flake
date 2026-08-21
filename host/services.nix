@@ -14,10 +14,10 @@
     udev.packages = [ pkgs.libusbgx ];
     gvfs.enable = true; # trash "Heavy"
     udisks2.enable = true; # auto mount drive  "Heavy"
-    ollama = {
-      enable = true;
-    };
     blueman.enable = true;
+    # ollama = {
+    #   enable = true;
+    # };
     # create_ap = { # wifi hotspot
     #   enable = true;
     #   settings = {

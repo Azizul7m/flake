@@ -113,9 +113,7 @@ with pkgs;
           alias nix_oldgen='sudo nix-env -p /nix/var/nix/profiles/system --delete-generations old'
 
       '';
-      # Add npm path to PATH
       shellInit = ''
-        set -gx PATH $HOME/.npm_global/bin $HOME/go/bin $HOME/.deno/bin $HOME/.cargo/bin $HOME/.bun/bin $HOME/.avm/bin $HOME/.local/share/solana/install/active_release/bin $HOME/.local/bin $PATH
           zoxide init --cmd cd fish | source
           starship init fish | source
           direnv hook fish | source

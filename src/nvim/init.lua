@@ -6,6 +6,9 @@ if not vim.loop.fs_stat(lazypath) then
 		"--filter=blob:none",
 		"https://github.com/folke/lazy.nvim.git",
 		"--branch=stable",
+
+
+
 		lazypath,
 	})
 end
@@ -21,6 +24,6 @@ require("lazy").setup({
 		{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
 		{ import = "plugins" },
 	},
-	checker = { enabled = true },
+	checker = { enabled = false },
 	change_detection = { enabled = false },
 })

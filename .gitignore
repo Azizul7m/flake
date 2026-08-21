@@ -4,3 +4,6 @@ nvim.log
 .agents
 .codex
 
+
+*.agents
+*.codex

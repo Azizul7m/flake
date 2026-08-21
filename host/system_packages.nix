@@ -37,6 +37,7 @@ with pkgs;
     gh # GitHub CLI
     subversion # SVN, rare but sometimes needed
     gnupg # Commit signing, SSH auth
+    paperkey # For recovering GPG keys from paper backups
 
     ## ───────────────────────────────
     ## Terminal Tools & Shell

@@ -14,7 +14,8 @@ return {
 		indent = { enabled = true },
 		input = { enabled = true },
 		picker = { enabled = true },
-		notifier = { enabled = true },
+		-- Noice owns notifications; enabling both produces competing UI handlers.
+		notifier = { enabled = false },
 		scroll = { enabled = true },
 		statuscolumn = { enabled = true },
 		words = { enabled = true },

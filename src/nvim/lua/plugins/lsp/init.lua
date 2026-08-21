@@ -6,19 +6,11 @@ return {
 		"rachartier/tiny-inline-diagnostic.nvim",
 		"mason-org/mason.nvim",
 		"mason-org/mason-lspconfig.nvim",
-		"folke/neodev.nvim",
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		"nvimdev/lspsaga.nvim",
 	},
 	opts = { diagnostics = { virtual_text = false } },
 	config = function()
-		-- Setup neodev first (for Neovim Lua development)
-		require("neodev").setup({
-			library = {
-				plugins = { "nvim-dap-ui" },
-				types = true,
-			},
-		})
-
 		-- Setup tiny-inline-diagnostic
 		require("tiny-inline-diagnostic").setup({
 			preset = "modern",
@@ -48,8 +40,22 @@ return {
 		-- Initialize mason and mason-lspconfig
 		require("mason").setup()
 		require("mason-lspconfig").setup({
-			ensure_installed = { "pyright", "ruff", "bashls", "gopls", "templ", "html", "tailwindcss" },
+			ensure_installed = { "pyright", "ruff", "bashls", "gopls", "templ", "html", "tailwindcss", "lua_ls" },
 			automatic_installation = false,
+		})
+
+		require("mason-tool-installer").setup({
+			ensure_installed = {
+				"stylua",
+				"ruff",
+				"prettierd",
+				"prettier",
+				"gofumpt",
+				"goimports-reviser",
+				"golines",
+				"shfmt",
+				"sql-formatter",
+			},
 		})
 
 		local handlers = require("plugins.lsp.handlers")
