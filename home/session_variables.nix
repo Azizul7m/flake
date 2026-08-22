@@ -7,9 +7,10 @@
       "$HOME/.cargo/bin"
       "$HOME/.bun/bin"
       "$HOME/.avm/bin"
-      "$HOME/.local/share/solana/install/active_release/bin"
+      "$HOME/.config/emacs/bin"
       "$HOME/.local/bin"
       "$HOME/.local/share/nvim/mason/bin"
+      "$HOME/.local/share/solana/install/active_release/bin"
     ];
     sessionVariables = {
       TERMINAL = "foot";

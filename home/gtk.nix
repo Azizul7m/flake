@@ -7,9 +7,12 @@
       package = pkgs.papirus-icon-theme;
     };
     cursorTheme = {
-      name = "Vimix Cursors";
-      package = vimix-cursors;
-      size = 16;
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Original-Ice"; # or "Bibata-Modern-Ice" for white/light
+      size = 15;
+      # name = "Vimix Cursors";
+      # package = vimix-cursors;
+      # size = 16;
     };
     font = {
       package = roboto;
