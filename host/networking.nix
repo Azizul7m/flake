@@ -5,10 +5,10 @@
     hostName = "${host}";
     useDHCP = false;
     networkmanager.enable = true;
-
     firewall = {
       enable = true;
       allowedTCPPorts = [
+        53 # DNS for the secondary PC
         22 # SSH
         67 # DHCP
         68 # DHCP
@@ -21,6 +21,9 @@
         8384 # Syncthing GUI
       ];
       allowedUDPPorts = [
+        53 # DNS for the secondary PC
+        67 # DHCP server
+        68 # DHCP client
         4747 # Doris cam
         8384 # Syncthing GUI
         21027 # Syncthing discovery
@@ -39,24 +42,4 @@
       ];
     };
   };
-
-  systemd.services.NetworkManager.serviceConfig = {
-    CapabilityBoundingSet = [
-      "CAP_CHOWN"
-      "CAP_NET_ADMIN"
-      "CAP_DAC_OVERRIDE"
-      "CAP_NET_RAW"
-      "CAP_BPF"
-      "CAP_NET_BIND_SERVICE"
-      "CAP_SETGID"
-      "CAP_SETUID"
-      "CAP_SYS_MODULE"
-      "CAP_AUDIT_WRITE"
-      "CAP_KILL"
-      "CAP_SYS_CHROOT"
-    ];
-    AmbientCapabilities = [ "CAP_CHOWN" ];
-  };
-
-  services.openssh.enable = true;
 }

@@ -2,11 +2,11 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }:
 {
   imports = [
-    inputs.dms.nixosModules.dank-material-shell
     inputs.catppuccin.nixosModules.catppuccin
     inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
@@ -20,6 +20,7 @@
     ./fonts.nix
     ./nix_conf.nix
     ./type_inputs.nix
+    ../modules/programs/dms.nix
   ];
   # Boot loader settings
   boot.loader = {
@@ -58,19 +59,22 @@
     rtkit.enable = true;
     polkit.enable = true; # PolicyKit for privilege management
     sudo.wheelNeedsPassword = false;
-    pam.services.login.enableGnomeKeyring = true;
-    pam.services.swaylock.text = ''
-      auth include login
-    '';
   };
   # PipeWire is enabled in services.nix; keep legacy PulseAudio disabled.
   services.pulseaudio.enable = false;
   #NOTE: other settings
-  hardware.bluetooth.settings = {
-    General = {
-      Experimental = true;
+  hardware = {
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+      settings = {
+        General = {
+          Experimental = true;
+        };
+      };
     };
   };
+
   nixpkgs.config.allowUnfree = true; # Allow unfree packages
   system.stateVersion = "24.05"; # Did you read the comment?
 }

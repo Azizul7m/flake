@@ -25,6 +25,16 @@ with pkgs;
       enable = true; # GPG agent for signing
       enableSSHSupport = true; # Use GPG for SSH authentication
       pinentryPackage = pkgs.pinentry-gnome3;
+
+      # pinentryPackage = pkgs.pinentry-gnome3;
+
+      # # Crucial: Use a graphical popup that works seamlessly in Wayland/Hyprland
+      # pinentryPackage = pkgs.pinentry-qt;
+      # pinentryFlavor = "qt";
+      settings = {
+        default-cache-ttl = 28800;
+        max-cache-ttl = 28800;
+      };
     };
     openvpn3 = {
       enable = true;
@@ -40,20 +50,6 @@ with pkgs;
         obs-backgroundremoval
         obs-composite-blur
       ];
-    };
-    dms-shell = {
-      enable = true;
-      package = inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      # Core features
-      enableSystemMonitoring = true; # System monitoring widgets (dgop)
-      enableDynamicTheming = true; # Wallpaper-based theming (matugen)
-      enableAudioWavelength = true; # Audio visualizer (cava)
-      enableCalendarEvents = true; # Calendar integration (khal)
-      enableClipboardPaste = true;
-    };
-    dsearch = {
-      enable = true;
-      systemd.enable = true; # Enable dsearch systemd service
     };
   };
 }

@@ -1,0 +1,1 @@
+[{"url": "postgresql://pguser:pgpassword@localhost:5432/db", "name": "rust_api"}]

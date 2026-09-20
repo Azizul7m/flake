@@ -10,7 +10,6 @@ with pkgs;
     ##../hypr/hyprpanel.nix
   ];
   home.packages = [
-    inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default
     qt5.qtwayland
     qt5.qtbase # for qt apps
     qt5.qttools # for qt apps
@@ -212,7 +211,7 @@ with pkgs;
                   hl.exec_cmd("openbangla-gui --tray --dark")
                   hl.exec_cmd("wl-paste --type text --watch cliphist store")
                   hl.exec_cmd("wl-paste --type image --watch cliphist store")
-                  hl.exec_cmd("systemctl --user is-active --quiet dms.service || systemctl --user start dms.service")
+                  hl.exec_cmd("dms run --session &")
                   hl.exec_cmd("../../../src/hypr/scripts/startup")
                 end
               '')
@@ -278,17 +277,16 @@ with pkgs;
             (execBind (lua ''${mod} .. " + SHIFT + B"'') "google-chrome-stable")
             (execBind (lua ''${mod} .. " + E"'') fileManager)
             (execBind (lua ''${mod} .. " + SHIFT + E"'') "pcmanfm")
-            (execBind (lua ''${mod} .. " + SHIFT + N"'') "waypaper --random")
             (execBind (lua ''${mod} .. " + semicolon"'') next_input)
             (execBind (lua ''${mod} .. " + CTRL + R"'') "hyprctl reload")
             # (bind (lua ''${mod} .. " + SHIFT + RETURN"'') (lua ''hl.dsp.layout("addmaster")''))
             # (bind (lua ''${mod} .. " + ALT + RETURN"'') (lua ''hl.dsp.layout("removemaster")''))
             (bind (lua ''${mod} .. " + CTRL + Q"'') (lua "hl.dsp.exit()"))
             (bind (lua ''${mod} .. " + Q"'') (lua "hl.dsp.window.close()"))
-            (bind (lua ''${mod} .. " + A"'') (lua ''hl.dsp.window.float({ action = "toggle" })''))
             (bind (lua ''${mod} .. " + SHIFT + P"'') (lua "hl.dsp.window.pseudo()"))
             (bind (lua ''${mod} .. " + SHIFT + J"'') (lua ''hl.dsp.layout("togglesplit")''))
-            (bind (lua ''${mod} .. " + M"'') (lua "hl.dsp.window.fullscreen()"))
+            (bind (lua ''${mod} .. " + SHIFT + M"'') (lua "hl.dsp.window.fullscreen()"))
+            (bind (lua ''${mod} .. " + M"'') (lua ''hl.dsp.window.float({ action = "toggle" })''))
             (bind (lua ''${mod} .. " + SHIFT + O"'') (lua "hl.dsp.window.pin()"))
             (bind (lua ''${mod} .. " + TAB"'') (lua "hl.dsp.window.cycle_next()"))
             (bind (lua ''${mod} .. " + SHIFT + U"'') (lua ''hl.dsp.window.move({ workspace = "special" })''))

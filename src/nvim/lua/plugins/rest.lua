@@ -3,28 +3,27 @@ return {
 		"mistweaverco/kulala.nvim",
 		ft = { "http", "rest", "javascript" },
 		opts = {
-			env_file = vim.fn.expand("~/.config/nvim/kulala.env"),
-      event = { "SessionLoadPost", "VimLeavePre" },
-      kulala_core = {
-        path = nil,
-        timeout = 60000,
-        data_dir = nil,
-        download_url = "https://github.com/mistweaverco/kulala-core/releases/download/%s/%s",
-        download_tool = "curl",
-      },
-      treesitter = {
-        enable = true,
-      },
+			--			env_file = vim.fn.expand("~/.config/nvim/kulala.env"),
+			event = { "SessionLoadPost", "VimLeavePre" },
+			kulala_core = {
+				path = nil,
+				timeout = 60000,
+				data_dir = nil,
+				download_url = "https://github.com/mistweaverco/kulala-core/releases/download/%s/%s",
+				download_tool = "curl",
+			},
+			treesitter = {
+				enable = true,
+			},
 
 			ui = {
-        display_mode = "float",
+				display_mode = "float",
 				icons = {
 					inbound = "󰖟",
 					outbound = "󰖟",
 				},
 			},
 		},
-
 
 		keys = {
 			{

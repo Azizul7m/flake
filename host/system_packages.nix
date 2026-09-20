@@ -2,7 +2,6 @@
 with pkgs;
 {
   environment.systemPackages = [
-    inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default
     ## ───────────────────────────────
     ## Core Development Tools
     ## ───────────────────────────────
@@ -25,10 +24,13 @@ with pkgs;
     systemdUkify
     ags # GJS library
 
-    browserpass
-    pass-wayland
-    passExtensions.pass-import
-    passExtensions.pass-otp
+    zbar # Scanner library for QR codes and barcodes
+    browserpass # browser extension for password management
+    pass-wayland # password
+    passExtensions.pass-import #import passwords from other password managers
+    passExtensions.pass-otp # otp support for pass
+    passExtensions.pass-update # update pass entries from other password managers
+    passExtensions.pass-genphrase # Generate passphrases for pass
 
     ## ───────────────────────────────
     ## Version Control & Signing

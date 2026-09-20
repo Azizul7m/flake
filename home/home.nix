@@ -64,21 +64,4 @@
     };
   };
 
-  # User systemd service: hold a sleep inhibitor while the quickshell-based DMS runs
-  # This checks for a process named "quickshell" owned by the user and blocks suspend while it exists.
-  systemd.user.services.dms-inhibit = {
-    Unit = {
-      Description = "Hold sleep inhibitor while quickshell DMS runs";
-    };
-    Service = {
-      ExecStart = ''
-        /run/current-system/sw/bin/systemd-inhibit --what=sleep --why="DMS active" --mode=block \
-        /bin/sh -c "while /run/current-system/sw/bin/pgrep -u ${user} quickshell >/dev/null; do sleep 5; done"
-      '';
-      Restart = "no";
-    };
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
-  };
 }

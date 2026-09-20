@@ -5,7 +5,6 @@
 }:
 {
   services = {
-    getty.autologinUser = "${user}";
     dbus.enable = true; # inter-process communication (IPC)
     gnome.gnome-keyring.enable = true; # Secret Service provider for apps such as Authenticator
     spice-vdagentd.enable = true;
@@ -15,6 +14,8 @@
     gvfs.enable = true; # trash "Heavy"
     udisks2.enable = true; # auto mount drive  "Heavy"
     blueman.enable = true;
+    fprintd.enable = true; # Fingerprint authentication
+    openssh.enable = true; # SSH
     # ollama = {
     #   enable = true;
     # };

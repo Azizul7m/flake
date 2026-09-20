@@ -10,10 +10,10 @@ return {
 
 			-- Keyboard mappings
 			keybindings = {
-				allow = "<Leader>da",
-				deny = "<Leader>dd",
-				reload = "<Leader>dr",
-				edit = "<Leader>de",
+				allow = "<Leader>tea",
+				deny = "<Leader>ted",
+				reload = "<Leader>ter",
+				edit = "<Leader>tee",
 			},
 		})
 	end,
