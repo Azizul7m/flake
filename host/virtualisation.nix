@@ -1,11 +1,11 @@
 {
   pkgs,
-  inputs,
-  user,
-  system ? pkgs.system,
+  user ? pkgs.system,
   ...
 }:
 {
+  # These are command-line tools for working with containers. The services
+  # themselves are configured in the virtualisation block below.
   environment.systemPackages = with pkgs; [
     #    freerdp
     # virt-manager
@@ -16,7 +16,6 @@
     dockfmt # Dockerfile formatter
     docker-ls # Language server
     lazydocker # Docker UI
-    # lxd-lts # Ensure lxd is explicitly listed
   ];
   virtualisation = {
     # libvirtd = {
@@ -26,6 +25,8 @@
     #     runAsRoot = true;
     #   };
     # };
+    # Docker is rootless for normal user commands and also enabled as a
+    # system service for compatibility with tools that expect its socket.
     docker = {
       enable = true;
       rootless = {
@@ -37,6 +38,7 @@
       autoPrune.enable = true;
       extraPackages = with pkgs; [ criu ];
       daemon.settings = {
+        # This path must be on a mounted filesystem before Docker starts.
         data-root = "/home/${user}/store_drive/.sys/docker";
         log-driver = "json-file";
         log-opts = {
@@ -47,9 +49,7 @@
     };
     spiceUSBRedirection.enable = true;
   };
-  services = {
-    dockerRegistry.enable = true;
-  };
+  # Prevent Docker from starting before the external storage path is ready.
   systemd.services.docker.serviceConfig.RequiresMountsFor = [
     "/home/${user}/store_drive/.sys/docker-storage"
   ];
@@ -58,5 +58,4 @@
     "net.ipv4.conf.all.forwarding" = true;
     "net.ipv4.conf.default.forwarding" = true;
   };
-  boot.kernelModules = [ "nf_nat_ftp" ];
 }

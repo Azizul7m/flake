@@ -122,7 +122,6 @@ Fish is configured with helpful aliases for convenience:
 - 🖥️ *Virt-manager*: Manage virtual machines via libvirt.
 - 📂 *Zoxide*: Smart directory navigation.
 - 🌟 *Starship*: A fast, customizable shell prompt.
-- 🎨 *Stylix*: Manages system-wide theming with a consistent color scheme.
 
 
 ** 📜 License

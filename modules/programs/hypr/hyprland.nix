@@ -1,4 +1,7 @@
 {
+  # Hyprland desktop settings and the tools launched by its keybindings live
+  # together here. Hardware-specific monitor names may need changing on a new
+  # machine.
   lib,
   pkgs,
   inputs,
@@ -181,6 +184,8 @@ with pkgs;
               disable_splash_rendering = true;
             };
           };
+          # Replace LVDS-1 and DP-1 with the output names reported by
+          # `hyprctl monitors` when using different displays.
           monitor = [
             {
               output = "LVDS-1";
@@ -202,6 +207,8 @@ with pkgs;
             }
           ];
           env = map (value: { _args = value; }) env;
+          # Startup commands depend on DMS, Fcitx5, cliphist, and the local
+          # startup script. Update these together if the desktop is replaced.
           on = {
             _args = [
               "hyprland.start"

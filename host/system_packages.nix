@@ -1,18 +1,16 @@
 { pkgs, inputs, ... }:
 with pkgs;
 {
+  # Keep this list for tools needed across the whole system. GUI applications
+  # and personal applications belong in home/packages.nix instead.
   environment.systemPackages = [
     ## ───────────────────────────────
-    ## Core Development Tools
+    ## Compilers and build tools used by local development
     ## ───────────────────────────────
 
-    cacert # SSL certificates
     clang # C compiler
     lld # LLVM linker (lld)
-    zlib # Often needed for linking
     gcc # C/C++ compiler (added for compilation support)
-    libgcc # GCC runtime libraries (fixes missing Scrt1.o, crti.o)
-    glibc # GNU C Library (fixes missing libc and related files)
     libclang # Needed for Rust/C FFI (e.g., bindgen)
     gnumake # Classic Make build system
     cmake # Cross-platform C/C++ project builder
@@ -20,8 +18,6 @@ with pkgs;
     pkg-config # Metadata for compiling/linking
     libtool # Portable library builder
     cpio # Extracts RPMs and initramfs
-    systemd # For system libraries (not running daemon)
-    systemdUkify
     ags # GJS library
 
     zbar # Scanner library for QR codes and barcodes
@@ -33,7 +29,7 @@ with pkgs;
     passExtensions.pass-genphrase # Generate passphrases for pass
 
     ## ───────────────────────────────
-    ## Version Control & Signing
+    ## Version control, signing, and password-store tools
     ## ───────────────────────────────
     git # Main VCS
     gh # GitHub CLI
@@ -50,7 +46,6 @@ with pkgs;
     starship
     eza
     lsd
-    bat
     grc
     bemenu
 
@@ -79,10 +74,10 @@ with pkgs;
     adbfs-rootless # FUSE filesystem
 
     ## ───────────────────────────────
-    ## Networking & Remote Access
+    ## Networking, diagnostics, VPN, and remote access
     ## ───────────────────────────────
-    iproute2 # Required for WinApps
-    netcat # Required for WinApps
+    iproute2 # Network interface and routing tools
+    netcat # TCP/UDP connection utility
     wrk
     sshfs # Mount remote FS via SSH
     nmap # Network scanner
@@ -90,7 +85,6 @@ with pkgs;
     openssl # SSL libraries
     openvpn # VPN client
     networkmanager-openvpn
-    networkmanagerapplet # System tray Wi-Fi manager
     speechd # Text-to-speech daemon
 
     ## ───────────────────────────────
@@ -98,20 +92,16 @@ with pkgs;
     ## ───────────────────────────────
     wlprop # Inspect Wayland properties
     wlr-randr # RandR-like tool for wlroots
-    wayland-protocols # Wayland protocols
 
     ## ───────────────────────────────
     ## USB & Device Utilities
     ## ───────────────────────────────
-    libusb1 # USB access from user-space
     usbutils # List and inspect USB devices
     pciutils # Inspect PCI devices
-    udisks2 # Mounting GUI backend
 
     ## ───────────────────────────────
     ## System Utilities (missing by default or enhanced)
     ## ───────────────────────────────
-    home-manager # User-level config management
     tuigreet
     unzip # Extract zip archives
     pulsemixer # Terminal audio control
@@ -119,6 +109,5 @@ with pkgs;
     desktop-file-utils
 
     cups # Printing system
-    fontconfig # System-wide font config (optional but often useful)
   ];
 }

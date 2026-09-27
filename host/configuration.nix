@@ -6,6 +6,8 @@
   ...
 }:
 {
+  # Keep hardware-specific settings in hardware-configuration.nix and put
+  # reusable system settings in the smaller files imported below.
   imports = [
     inputs.catppuccin.nixosModules.catppuccin
     inputs.home-manager.nixosModules.home-manager
@@ -22,13 +24,14 @@
     ./type_inputs.nix
     ../modules/programs/dms.nix
   ];
-  # Boot loader settings
+  # Boot loader settings. Changing the timeout only affects the boot menu;
+  # do not remove EFI support unless this machine no longer boots with UEFI.
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
     timeout = 1;
   };
-  #NOTE: system settings
+  # Machine-level kernel and boot settings.
   boot = {
     kernelModules = [ "v4l2loopback" ];
     extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -43,6 +46,7 @@
       verbose = true;
     };
 
+    # Let AppImage files run through appimage-run when launched as binaries.
     binfmt.registrations.appimage = {
       wrapInterpreterInShell = false;
       interpreter = "${pkgs.appimage-run}/bin/appimage-run";
@@ -54,7 +58,7 @@
   };
   time.timeZone = "Asia/Dhaka"; # Set your time zone.
 
-  #NOTE: security settings
+  # Basic desktop security and authentication settings.
   security = {
     rtkit.enable = true;
     polkit.enable = true; # PolicyKit for privilege management
@@ -75,6 +79,10 @@
     };
   };
 
-  nixpkgs.config.allowUnfree = true; # Allow unfree packages
-  system.stateVersion = "24.05"; # Did you read the comment?
+  # Some selected applications are unfree. Remove this only after removing
+  # every unfree package from the package lists.
+  nixpkgs.config.allowUnfree = true;
+  # Keep this at the original installation version. It is not the current
+  # NixOS release and should only change when following the stateVersion guide.
+  system.stateVersion = "24.05";
 }

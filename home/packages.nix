@@ -1,6 +1,8 @@
 { pkgs, inputs, ... }:
 {
   home = {
+    # Personal desktop applications. Move a package to host/system_packages.nix
+    # only when it must be available before the user session starts.
     packages = (
       with pkgs;
       [

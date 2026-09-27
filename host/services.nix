@@ -5,6 +5,8 @@
 }:
 {
   services = {
+    # Desktop integration services. GVFS/UDisks are used by Nautilus for
+    # removable drives and trash; disabling them changes file-manager behavior.
     dbus.enable = true; # inter-process communication (IPC)
     gnome.gnome-keyring.enable = true; # Secret Service provider for apps such as Authenticator
     spice-vdagentd.enable = true;
@@ -28,7 +30,8 @@
     #     PASSPHRASE = "//112233";
     #   };
     # };
-    # Sound settings
+    # PipeWire provides the audio server for desktop applications and
+    # Bluetooth audio. PulseAudio compatibility is enabled for older apps.
 
     pipewire = {
       enable = true;

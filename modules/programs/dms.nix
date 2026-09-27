@@ -1,4 +1,6 @@
 {
+  # Dank Material Shell is a NixOS module because it provides the greeter,
+  # PAM integration, and system services in addition to the user session.
   inputs,
   pkgs,
   user,
@@ -31,6 +33,8 @@
     compositor.name = "hyprland";
   };
 
+  # These options enable U2F/fingerprint authentication for selected PAM
+  # services. Remove or adjust them if the machine has no compatible device.
   security.pam = {
     services.login = {
       enableGnomeKeyring = true;

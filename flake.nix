@@ -1,5 +1,8 @@
 {
-  description = "A very basic flake";
+  description = "Personal NixOS and Home Manager configuration";
+
+  # Add external projects here only when the configuration imports or uses
+  # them below. After changing inputs, update the lock file with `nix flake lock`.
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
@@ -41,6 +44,8 @@
       ...
     }:
     let
+      # These values describe the machine and user. Change all of them when
+      # adapting this flake instead of editing the same value in many files.
       system = "x86_64-linux";
       host = "nixos";
       user = "anower";
@@ -75,6 +80,9 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
+                # Home Manager renames conflicting dotfiles instead of
+                # overwriting them during the first activation.
+                backupFileExtension = "hm-backup";
                 extraSpecialArgs = {
                   inherit
                     flake-utils

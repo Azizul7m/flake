@@ -2,11 +2,15 @@
 
 {
   networking = {
+    # NetworkManager owns the interfaces. Configure static addresses and
+    # sharing profiles in NetworkManager rather than networking.interfaces.
     hostName = "${host}";
     useDHCP = false;
     networkmanager.enable = true;
     firewall = {
       enable = true;
+      # Open only ports needed by services on this machine. Remove a port
+      # when its corresponding service is no longer used.
       allowedTCPPorts = [
         53 # DNS for the secondary PC
         22 # SSH
