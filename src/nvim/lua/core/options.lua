@@ -1,8 +1,11 @@
 local opt = vim.opt
 local g = vim.g
 
+
 -- Fix for NixOS: point to the correct sqlite library path
-g.sqlite_clib_path = "/nix/store/bn7m7qn8k7b27jy5lkq3bg4vcxnyjpq0-sqlite-3.51.2/lib/libsqlite3.so"
+if vim.fn.has("win32") == 0 then
+  g.sqlite_clib_path = "/nix/store/bn7m7qn8k7b27jy5lkq3bg4vcxnyjpq0-sqlite-3.51.2/lib/libsqlite3.so"
+end
 
 -- Editor
 opt.number = true
@@ -40,7 +43,7 @@ opt.splitbelow = true
 opt.swapfile = false
 opt.backup = false
 opt.undofile = true
-opt.undodir = os.getenv("HOME") .. "/.cache/nvim"
+opt.undodir = vim.fn.stdpath("cache") .. "/undo"
 
 -- Misc
 opt.clipboard = "unnamedplus"
