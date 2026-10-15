@@ -7,8 +7,20 @@
     hostName = "${host}";
     useDHCP = false;
     networkmanager.enable = true;
+    interfaces = {
+      eno1 = {
+        ipv4.addresses = [{
+            address = "10.0.0.1";
+            prefixLength = 24;
+          }];
+      };
+    };
+    defaultGateway={
+        address = "";
+    };
     firewall = {
       enable = true;
+      trustedInterfaces = ["eno1"];
       # Open only ports needed by services on this machine. Remove a port
       # when its corresponding service is no longer used.
       allowedTCPPorts = [

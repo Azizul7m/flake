@@ -6,6 +6,11 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,7 +45,6 @@
     inputs@{
       self,
       nixpkgs,
-      flake-utils,
       ...
     }:
     let
@@ -66,7 +70,6 @@
           inherit system;
           specialArgs = {
             inherit
-              flake-utils
               host
               user
               userEmail
@@ -85,7 +88,6 @@
                 backupFileExtension = "hm-backup";
                 extraSpecialArgs = {
                   inherit
-                    flake-utils
                     host
                     user
                     userEmail
@@ -96,6 +98,22 @@
                 users."${user}" = import ./home/home.nix;
               };
             }
+          ];
+        };
+        wsl = nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit
+              host
+              user
+              userEmail
+              fullName
+              inputs
+              ;
+          };
+          modules = [
+            inputs.nixos-wsl.nixosModules.default
+            ./host/wsl.nix
           ];
         };
       };

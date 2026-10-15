@@ -4,6 +4,12 @@
   ...
 }:
 {
+  environment.systemPackages = with pkgs; [
+    tailscale
+    remmina    # A user-friendly, graphical RDP/VNC client
+    wol        # Keeps your wake-on-lan utility available
+    freerdp    # FreeRDP is a free implementation of the Remote Desktop Protocol (RDP)
+  ];
   services = {
     # Desktop integration services. GVFS/UDisks are used by Nautilus for
     # removable drives and trash; disabling them changes file-manager behavior.
@@ -18,6 +24,32 @@
     blueman.enable = true;
     fprintd.enable = true; # Fingerprint authentication
     openssh.enable = true; # SSH
+    tailscale.enable= true; # remote access
+    samba = {
+      enable = true;
+      openFirewall = true;
+      settings = {
+        global = {
+          "workgroup" = "WORKGROUP";
+          "security" = "user";
+        };
+
+        store_derive = {
+          path = "/home/${user}/store_drive";
+          "read only" = "no";
+          "browseable" = "yes";
+          "guest ok" = "no";
+          "valid users" = user;
+        };
+      };
+    };
+
+    xrdp = {
+        enable = true;
+        openFirewall = true;
+        defaultWindowManager = "hyprland";
+      };
+
     # ollama = {
     #   enable = true;
     # };
